@@ -1,0 +1,21 @@
+{
+  "name": "emby",
+  "version": "1.0.0",
+  "description": "POC for rebuilding Emby web client in modern technologies",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tadams88/emby.git"
+  },
+  "author": "TedA",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.7.13",
+    "connect-history-api-fallback": "^1.1.0",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.0.0-rc.1"
+  }
+}
