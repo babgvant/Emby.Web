@@ -7,6 +7,12 @@ page('/login', route.login);
 // In addition, the theme can list out dependencies for each route and we can pass them into require() before loading it
 // When theme js is loaded it will call ObjectManager.register (see objects.js)
 // Then we'll figure out which theme to load and call a method on it to get it's route list
+// Example: theme.getRoutes
+// Each route has:
+// path (string)
+// content (object) - we can let them add a string for an html url, or maybe a string for a dom selector. Or function delegate for advanced usage
+// contentType - if necessary to distinguish string from url/dom selector
+// dependencies array
 page('/home', route.home);
 page('/movies', route.movies);
 page('*', render.content);
