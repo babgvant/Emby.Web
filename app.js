@@ -10,7 +10,7 @@
 
         defineRoute({
             path: '/login',
-            content: 'views/login.html'
+            content: '/views/login.html'
         });
     }
 
