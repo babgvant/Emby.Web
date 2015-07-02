@@ -2,8 +2,6 @@
     // Private
     var cache = {};
 
-    var currentApiClient;
-
     function get(url, cb) {
         if (cache[url]) return cb(cache[url]);
 
@@ -44,22 +42,40 @@
     }
 
     function authenticate(ctx, next) {
-        if (currentApiClient && currentApiClient.getCurrentUserId()) {
-            next();
-            return;
+
+        require(['currentServer'], function (server) {
+
+            if (server && server.UserId && server.AccessToken) {
+                next();
+                return;
+            }
+
+            if (!allowAnonymous(ctx)) {
+                page.redirect('login');
+            }
+            else {
+                next();
+            }
+        });
+    }
+
+    function loadContent(ctx, next, html) {
+        var contentElement = document.querySelector('.pageContainer');
+
+        if (contentElement) {
+            contentElement.innerHTML = html;
+        }
+        else {
+            alert('pageContainer is missing! The theme must render an element with className pageContainer');
         }
 
-        if (!allowAnonymous(ctx))
-            page.redirect('login');
-        else
-            next();
+        //next();
     }
 
     function loadContentUrl(ctx, next, url) {
 
         get(url, function (html) {
-            ctx.partials.content = html;
-            next();
+            loadContent(ctx, next, html);
         });
     }
 
@@ -71,8 +87,7 @@
                 if (typeof route.content === 'string') {
 
                     if (route.contentType == 'html') {
-                        ctx.partials.content = route.content;
-                        next();
+                        loadContent(ctx, next, route.content);
 
                     } else {
                         loadContentUrl(ctx, next, route.content);

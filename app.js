@@ -48,13 +48,17 @@
 
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
-        $(connectionManager).on('apiclientcreated', function (e, newApiClient) {
+        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
 
             //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
         });
 
         define('connectionManager', [], function () {
             return connectionManager;
+        });
+
+        define('currentServer', [], function () {
+            return connectionManager.getLastUsedServer();
         });
     }
 
@@ -93,6 +97,7 @@
         var list = [
           'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
+          'bower_components/bean/bean.min',
           'js/objects',
           'js/routes'
         ];
@@ -210,11 +215,13 @@
                 defineCoreRoutes();
                 definePluginRoutes();
 
+                createConnectionManager();
+
                 // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
                 loadDefaultTheme(function () {
                     // TODO: Catch window unload event to try to gracefully stop any active media playback
 
-                    page('*', RouteManager.renderContent);
+                    //page('*', RouteManager.renderContent);
                     page();
                 });
             });
