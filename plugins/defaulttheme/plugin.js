@@ -21,7 +21,6 @@
 
         self.getDependencies = function () {
 
-            // css and js, relative to the current directory. The app will handle normalizing the full path
             var files = [
                 'css!' + PluginManager.mapPath(self, 'css/style')
             ];

@@ -1,7 +1,6 @@
 (function (document, window) {
     // Private
-    var cache = {},
-		contentEl = document.getElementById('content');
+    var cache = {};
 
     var currentApiClient;
 
@@ -31,9 +30,9 @@
         if (ctx.init) {
             next();
         } else {
-            contentEl.classList.add('transition');
+            //contentEl.classList.add('transition');
             setTimeout(function () {
-                content.classList.remove('transition');
+                //content.classList.remove('transition');
                 next();
             }, 300);
         }
@@ -90,19 +89,59 @@
     function renderContent(ctx, next) {
 
         get('views/content.html', function (html) {
-            var template = Hogan.compile(html),
-                content = template.render(ctx.data, ctx.partials);
-            contentEl.innerHTML = content;
+            var template = Hogan.compile(html);
+            var content = template.render(ctx.data, ctx.partials);
+
+            var contentElement = document.querySelector('.pageContainer');
+
+            if (!contentElement) {
+                alert('pageContainer is missing! The theme must render an element with className pageContainer');
+                return;
+            }
+
+            contentElement.innerHTML = content;
 
             //if (typeof done === 'function') done(ctx.data.index);
         });
+    }
+
+    function getWindowUrl(win) {
+        return (win || window).location.href;
+    }
+
+    function getWindowLocationSearch(win) {
+
+        var search = (win || window).location.search;
+
+        if (!search) {
+
+            var index = window.location.href.indexOf('?');
+            if (index != -1) {
+                search = window.location.href.substring(index);
+            }
+        }
+
+        return search || '';
+    }
+
+    function param(name, url) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS, "i");
+
+        var results = regex.exec(url || getWindowLocationSearch());
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
     window.RouteManager = {
         authenticate: authenticate,
         getHandler: getHandler,
         ctx: ctx,
-        renderContent: renderContent
+        renderContent: renderContent,
+        param: param
     };
 
 })(document, window);

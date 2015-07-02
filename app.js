@@ -3,17 +3,6 @@
     var appInfo;
     var connectionManager;
 
-    function defineCoreRoutes() {
-
-        page('*', RouteManager.ctx);
-        page('*', RouteManager.authenticate);
-
-        defineRoute({
-            path: 'login',
-            content: 'views/login.html'
-        });
-    }
-
     function defineRoute(newRoute) {
 
         page(newRoute.path, RouteManager.getHandler(newRoute));
@@ -27,6 +16,17 @@
 
             page(currentRoute.path, RouteManager.getHandler(currentRoute));
         }
+    }
+
+    function defineCoreRoutes() {
+
+        page('*', RouteManager.ctx);
+        page('*', RouteManager.authenticate);
+
+        defineRoute({
+            path: 'login',
+            content: 'views/login.html'
+        });
     }
 
     function definePluginRoutes() {
@@ -180,6 +180,9 @@
         require(theme.getDependencies(), function () {
 
             document.documentElement.className = theme.bodyClassName || theme.packageName;
+
+            document.querySelector('.themeContent').innerHTML = '<div class="pageContainer"></div>';
+
             callback();
         });
     }
@@ -209,8 +212,6 @@
                 loadDefaultTheme(function () {
                     // TODO: Catch window unload event to try to gracefully stop any active media playback
 
-                    // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
-                    // Or do we call page() and then do our logic? Probably need to learn more page.js first
                     page('*', RouteManager.renderContent);
                     page();
                 });
@@ -222,6 +223,9 @@
         start: start
     };
 
-})(this);
+    // call start unless configured not to
+    if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
+        start();
+    }
 
-App.start();
+})(this);
