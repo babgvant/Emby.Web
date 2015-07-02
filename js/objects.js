@@ -1,9 +1,9 @@
 (function (globalScope) {
 
-    function objectManager() {
+    function pluginManager() {
 
         var self = this;
-        var objects = [];
+        var plugins = [];
 
         // In lieu of automatic discovery, plugins will register dynamic objects
         // Each object will have the following properties:
@@ -11,21 +11,27 @@
         // type (theme, screensaver, etc)
         self.register = function (obj) {
 
-            objects.push(obj);
+            plugins.push(obj);
         };
 
         self.ofType = function (type) {
 
-            return objects.filter(function (o) {
+            return plugins.filter(function (o) {
                 return o.type == type;
             });
         };
 
-        self.objects = function () {
-            return objects;
+        self.plugins = function () {
+            return plugins;
         };
+
+        self.mapPath = function (plugin, path) {
+
+            return 'plugins/' + plugin.packageName + '/' + path;
+
+        }
     }
 
-    globalScope.ObjectManager = new objectManager();
+    globalScope.PluginManager = new pluginManager();
 
 })(this);

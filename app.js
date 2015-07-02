@@ -31,13 +31,13 @@
 
     function definePluginRoutes() {
 
-        var objects = ObjectManager.objects();
+        var plugins = PluginManager.plugins();
 
-        for (var i = 0, length = objects.length; i < length; i++) {
+        for (var i = 0, length = plugins.length; i < length; i++) {
 
-            var obj = objects[i];
-            if (obj.getRoutes) {
-                defineRoutes(obj.getRoutes());
+            var plugin = plugins[i];
+            if (plugin.getRoutes) {
+                defineRoutes(plugin.getRoutes());
             }
         }
     }
@@ -90,7 +90,9 @@
         var list = [
           'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
-          'bower_components/bean/bean.min.js'
+          'bower_components/bean/bean.min.js',
+          'js/objects',
+          'js/routes'
         ];
 
         require(list, function (promise, page, bean) {
@@ -164,6 +166,24 @@
         };
     }
 
+    function loadDefaultTheme(callback) {
+
+        var theme = PluginManager.plugins().filter(function (p) {
+            return p.packageName == 'defaulttheme';
+        })[0];
+
+        loadTheme(theme, callback);
+    }
+
+    function loadTheme(theme, callback) {
+
+        require(theme.getDependencies(), function () {
+
+            document.documentElement.className = theme.bodyClassName || theme.packageName;
+            callback();
+        });
+    }
+
     function start(hostApplicationInfo) {
 
         // Whoever calls start will supply info about the host app. If empty, assume it's just in a browser
@@ -185,12 +205,15 @@
                 defineCoreRoutes();
                 definePluginRoutes();
 
-                // TODO: Catch window unload event to try to gracefully stop any active media playback
+                // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
+                loadDefaultTheme(function () {
+                    // TODO: Catch window unload event to try to gracefully stop any active media playback
 
-                // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
-                // Or do we call page() and then do our logic? Probably need to learn more page.js first
-                page('*', RouteManager.renderContent);
-                page();
+                    // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
+                    // Or do we call page() and then do our logic? Probably need to learn more page.js first
+                    page('*', RouteManager.renderContent);
+                    page();
+                });
             });
         });
     }

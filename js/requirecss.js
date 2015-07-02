@@ -12,7 +12,9 @@ define(function () {
 
     cssAPI.load = function (cssId, req, load, config) {
 
-        var url = req.toUrl(cssId + '.css');
+        // Somehow if the url starts with /css, require will get all screwed up since this extension is also called css
+        cssId = cssId.replace('js/requirecss', 'css');
+        var url = cssId + '.css';
 
         if (importedCss.indexOf(url) == -1) {
             importedCss.push(url);

@@ -39,13 +39,18 @@
         }
     }
 
+    function allowAnonymous(ctx) {
+
+        return ctx.pathname == 'login';
+    }
+
     function authenticate(ctx, next) {
         if (currentApiClient && currentApiClient.getCurrentUserId()) {
             next();
             return;
         }
 
-        if (ctx.pathname !== 'login')
+        if (!allowAnonymous(ctx))
             page.redirect('login');
         else
             next();
