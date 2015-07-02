@@ -81,28 +81,20 @@
         define("connectservice", ["apiclient/connectservice"]);
     }
 
-    function getCoreDependencies() {
-
-        var list = 'bower_components/page.js/page.js';
-
-        if (!globalScope.Promise) {
-            list.push('bower_components/native-promise-only/lib/npo.src');
-        }
-
-        return list;
-    }
-
     function loadCoreDependencies(callback) {
 
         var list = [
-          'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
           'bower_components/bean/bean.min',
           'js/objects',
           'js/routes'
         ];
 
-        require(list, function (promise, page, bean) {
+        if (!globalScope.Promise) {
+            list.push('bower_components/native-promise-only/lib/npo.src');
+        }
+
+        require(list, function (page, bean) {
 
             window.page = page;
             window.bean = bean;
@@ -186,9 +178,9 @@
 
         require(theme.getDependencies(), function () {
 
-            document.documentElement.className = theme.bodyClassName || theme.packageName;
+            document.documentElement.className = theme.getOuterClassName();
 
-            document.querySelector('.themeContent').innerHTML = '<div class="pageContainer"></div>';
+            document.querySelector('.themeContent').innerHTML = theme.getPageContent();
 
             callback();
         });
