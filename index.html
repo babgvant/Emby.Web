@@ -1,29 +1,41 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Emby</title>
+    <meta charset="UTF-8">
+    <title>Emby</title>
 
-	<link rel="stylesheet" href="public/css/style.css" />
+    <link rel="stylesheet" href="public/css/style.css" />
 </head>
 <body>
-	<div class="shell">
-		<nav id="navigation">
-			<ul>
-				<li><a href="home">home</a></li>
-				<li><a href="movies">movies</a></li>
-			</ul>
-		</nav>
+    <div class="shell">
+        <nav id="navigation">
+            <ul>
+                <li><a href="home">home</a></li>
+                <li><a href="movies">movies</a></li>
+            </ul>
+        </nav>
 
-		<section id="content">
-			<!-- Content will be dynamically inserted here -->
-		</section>
-	</div>
-	<script src="bower_components/page.js/page.js"></script>
-	<script src="bower_components/hogan/web/builds/3.02/template-3.0.2.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="public/js/events.js"></script>
-	<script src="public/js/auth.js"></script>
-	<script src="routes/index.js"></script>
-	<script src="app.js"></script>
+        <section id="content">
+            <!-- Content will be dynamically inserted here -->
+        </section>
+    </div>
+
+    <script src="bower_components/page.js/page.js"></script>
+    <script src="bower_components/bean/bean.min.js"></script>
+    <script src="bower_components/requirejs/require.js"></script>
+    <script src="bower_components/hogan/web/builds/3.0.2/template-3.0.2.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="apiclient/logger.js"></script>
+    <script src="apiclient/md5.js"></script>
+    <script src="apiclient/sha1.js"></script>
+    <script src="apiclient/store.js"></script>
+    <script src="apiclient/device.js"></script>
+    <script src="apiclient/credentials.js"></script>
+    <script src="apiclient/ajax.js"></script>
+    <script src="apiclient/events.js"></script>
+    <script src="apiclient/deferred.js"></script>
+    <script src="public/js/objects.js"></script>
+    <script src="public/js/routes.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
