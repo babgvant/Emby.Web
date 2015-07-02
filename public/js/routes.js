@@ -45,8 +45,8 @@
             return;
         }
 
-        if (ctx.pathname !== '/login')
-            page.redirect('/login');
+        if (ctx.pathname !== 'login')
+            page.redirect('login');
         else
             next();
     }
