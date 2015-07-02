@@ -9,7 +9,6 @@
         // Each object will have the following properties:
         // name
         // type (theme, screensaver, etc)
-        // instance
         self.register = function (obj) {
 
             objects.push(obj);
@@ -20,6 +19,10 @@
             return objects.filter(function (o) {
                 return o.type == type;
             });
+        };
+
+        self.objects = function () {
+            return objects;
         };
     }
 

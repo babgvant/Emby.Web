@@ -1,22 +1,142 @@
-// Define core routes
-page('*', init.ctx);
-page('*', init.auth);
-page('/login', route.login);
+(function (globalScope) {
 
-// Define theme routes - theme object should have a method to return these so that the theme doesn't have to work with page.js
-// In addition, the theme can list out dependencies for each route and we can pass them into require() before loading it
-// When theme js is loaded it will call ObjectManager.register (see objects.js)
-// Then we'll figure out which theme to load and call a method on it to get it's route list
-// Example: theme.getRoutes
-// Each route has:
-// path (string)
-// content (object) - we can let them add a string for an html url, or maybe a string for a dom selector. Or function delegate for advanced usage
-// contentType - if necessary to distinguish string from url/dom selector
-// dependencies array
-page('/home', route.home);
-page('/movies', route.movies);
-page('*', render.content);
+    var appInfo;
+    var connectionManager;
 
-// There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
-// Or do we call page() and then do our logic? Probably need to learn more page.js first
-page();
+    function defineCoreRoutes() {
+
+        page('*', init.ctx);
+        page('*', init.auth);
+        page('/login', route.login);
+    }
+
+    function defineRoutes(routes) {
+
+        for (var i = 0, length = routes.length; i < length; i++) {
+
+            var currentRoute = routes[i];
+
+            page(currentRoute.path, route.getHandler(currentRoute));
+        }
+    }
+
+    function definePluginRoutes() {
+
+        var objects = ObjectManager.objects();
+
+        for (var i = 0, length = objects.length; i < length; i++) {
+
+            var obj = objects[i];
+            if (obj.getRoutes) {
+                defineRoutes(obj.getRoutes());
+            }
+        }
+    }
+
+    function createConnectionManager() {
+
+        var credentialProvider = new MediaBrowser.CredentialProvider();
+
+        connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
+
+        $(connectionManager).on('apiclientcreated', function (e, newApiClient) {
+
+            //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
+        });
+
+        define('connectionManager', [], function () {
+            return connectionManager;
+        });
+    }
+
+    function initRequire() {
+
+        requirejs.config({
+            urlArgs: "v=" + appInfo.version,
+
+            paths: {
+                "velocity": "bower_components/velocity/velocity.min"
+            }
+        });
+
+        define('page', ['bower_components/page.js/page']);
+        define("connectservice", ["apiclient/connectservice"]);
+    }
+
+    function getSupportedRemoteCommands() {
+
+        // Full list
+        // https://github.com/MediaBrowser/MediaBrowser/blob/master/MediaBrowser.Model/Session/GeneralCommand.cs
+        return [
+            "GoHome",
+            "GoToSettings",
+            "VolumeUp",
+            "VolumeDown",
+            "Mute",
+            "Unmute",
+            "ToggleMute",
+            "SetVolume",
+            "SetAudioStreamIndex",
+            "SetSubtitleStreamIndex",
+            "DisplayContent",
+            "GoToSearch",
+            "DisplayMessage"
+        ];
+    }
+
+    function getCapabilities(supportsPersistentIdentifier, deviceProfile) {
+
+        var caps = {
+            PlayableMediaTypes: ['Audio', 'Video'],
+
+            SupportedCommands: getSupportedRemoteCommands(),
+            SupportsPersistentIdentifier: supportsPersistentIdentifier,
+            SupportsMediaControl: true,
+            SupportedLiveMediaTypes: ['Audio', 'Video'],
+            DeviceProfile: deviceProfile
+        };
+
+        return caps;
+    }
+
+    function getDefaultAppInfo() {
+
+        return {
+            name: 'Emby Theater',
+            version: '3.0',
+            deviceName: 'Web Browser',
+            deviceId: MediaBrowser.generateDeviceId()
+        };
+    }
+
+    function start(hostApplicationInfo) {
+
+        // Whoever calls start will supply info about the host app. If empty, assume it's just in a browser
+        var isDefaultAppInfo = false;
+        if (!hostApplicationInfo) {
+            hostApplicationInfo = getDefaultAppInfo();
+            isDefaultAppInfo = true;
+        }
+
+        appInfo = hostApplicationInfo;
+        appInfo.capabilities = getCapabilities(!isDefaultAppInfo);
+
+        initRequire();
+        defineCoreRoutes();
+        definePluginRoutes();
+
+        // TODO: Catch window unload event to try to gracefully stop any active media playback
+
+        // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
+        // Or do we call page() and then do our logic? Probably need to learn more page.js first
+        page('*', render.content);
+        page();
+    }
+
+    globalScope.App = {
+        start: start
+    };
+
+})(this);
+
+App.start();
