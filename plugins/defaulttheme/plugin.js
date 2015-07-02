@@ -9,15 +9,6 @@
         return routes;
     }
 
-    function getDependencies() {
-
-        // css and js, relative to the current directory. The app will handle normalizing the full path
-
-        var files = [];
-
-        return files;
-    }
-
     function theme() {
 
         var self = this;
@@ -25,10 +16,20 @@
         self.name = 'Default Theme';
         self.type = 'theme';
         self.packageName = 'defaulttheme';
+        self.bodyClassName = 'defaultTheme';
         self.getRoutes = getRoutes;
-        self.getDependencies = getDependencies;
 
-        ObjectManager.register(self);
+        self.getDependencies = function () {
+
+            // css and js, relative to the current directory. The app will handle normalizing the full path
+            var files = [
+                'css!' + PluginManager.mapPath(self, 'css/style')
+            ];
+
+            return files;
+        };
     }
+
+    PluginManager.register(new theme());
 
 })();
