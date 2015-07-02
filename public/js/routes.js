@@ -25,69 +25,123 @@
         request.send();
     }
 
-    // Public
-    window.init = {
-        auth: function (ctx, next) {
+    function ctx(ctx, next) {
+        ctx.data = {};
+        ctx.partials = {};
+        if (ctx.init) {
+            next();
+        } else {
+            contentEl.classList.add('transition');
+            setTimeout(function () {
+                content.classList.remove('transition');
+                next();
+            }, 300);
+        }
+    }
 
-            if (currentApiClient && currentApiClient.getCurrentUserId()) {
-                next();
-                return;
-            }
+    function authenticate(ctx, next) {
+        if (currentApiClient && currentApiClient.getCurrentUserId()) {
+            next();
+            return;
+        }
 
-            if (ctx.pathname !== '/login')
-                page.redirect('/login');
-            else
-                next();
-        },
-        ctx: function (ctx, next) {
-            ctx.data = {};
-            ctx.partials = {};
-            if (ctx.init) {
-                next();
+        if (ctx.pathname !== '/login')
+            page.redirect('/login');
+        else
+            next();
+    }
+
+    var importedCss = [];
+    function loadCss(url) {
+
+        if (importedCss.indexOf(url) != -1) {
+            return;
+        }
+
+        importedCss.push(url);
+
+        if (document.createStyleSheet) {
+            document.createStyleSheet(url);
+        }
+        else {
+            var link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('type', 'text/css');
+            link.setAttribute('href', url);
+            document.head.appendChild(link);
+        }
+    }
+
+    function loadDependencies(dependencies, callback) {
+
+        var css = [];
+
+        var list = dependencies.filter(function (d) {
+
+            if (d.indexOf('css!') == 0) {
+
+                css.push(d.substring(4));
+                return false;
             } else {
-                contentEl.classList.add('transition');
-                setTimeout(function () {
-                    content.classList.remove('transition');
-                    next();
-                }, 300);
+
+                return true;
             }
-        }
-    };
+        });
 
-    window.route = {
-        login: function (ctx, next) {
-            get('views/login.html', function (html) {
-                ctx.data.index = -1;
-                ctx.partials.content = html;
-                next();
+        for (var i = 0, length = css.length; i < length; i++) {
+            loadCss(css[i]);
+        }
+
+        require(list, callback);
+    }
+
+    function loadContentUrl(ctx, next, url) {
+
+        get(url, function (html) {
+            ctx.partials.content = html;
+            next();
+        });
+    }
+
+    function getHandler(route) {
+        return function (ctx, next) {
+
+            loadDependencies(route.dependencies || [], function () {
+
+                if (typeof route.content === 'string') {
+
+                    if (route.contentType == 'html') {
+                        ctx.partials.content = route.content;
+                        next();
+
+                    } else {
+                        loadContentUrl(ctx, next, route.content);
+                    }
+
+                } else {
+                    // ? TODO
+                    next();
+                }
             });
-        },
-        getHandler: function (route) {
+        };
+    }
 
-            return function (ctx, next) {
+    function renderContent(ctx, next) {
 
-                // TODO
-                // route has:
-                // path (string)
-                // content (object) - we can let them add a string for an html url, or maybe a string for a dom selector. Or function delegate for advanced usage
-                // contentType - if necessary to distinguish string from url/dom selector
-                // dependencies array
+        get('views/content.html', function (html) {
+            var template = Hogan.compile(html),
+                content = template.render(ctx.data, ctx.partials);
+            contentEl.innerHTML = content;
 
-            };
-        }
+            //if (typeof done === 'function') done(ctx.data.index);
+        });
+    }
+
+    window.RouteManager = {
+        authenticate: authenticate,
+        getHandler: getHandler,
+        ctx: ctx,
+        renderContent: renderContent
     };
 
-    window.render = {
-        content: function (ctx, next) {
-            get('views/content.html', function (html) {
-                var template = Hogan.compile(html),
-					content = template.render(ctx.data, ctx.partials);
-                contentEl.innerHTML = content;
-                changeActive(ctx.data.index);
-                if (typeof done === 'function') done(ctx.data.index);
-            });
-        }
-    };
-
-    window.done = null;
 })(document, window);

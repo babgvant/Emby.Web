@@ -5,9 +5,18 @@
 
     function defineCoreRoutes() {
 
-        page('*', init.ctx);
-        page('*', init.auth);
-        page('/login', route.login);
+        page('*', RouteManager.ctx);
+        page('*', RouteManager.authenticate);
+
+        defineRoute({
+            path: '/login',
+            content: 'views/login.html'
+        });
+    }
+
+    function defineRoute(newRoute) {
+
+        page(newRoute.path, RouteManager.getHandler(newRoute));
     }
 
     function defineRoutes(routes) {
@@ -16,7 +25,7 @@
 
             var currentRoute = routes[i];
 
-            page(currentRoute.path, route.getHandler(currentRoute));
+            page(currentRoute.path, RouteManager.getHandler(currentRoute));
         }
     }
 
@@ -129,7 +138,7 @@
 
         // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
         // Or do we call page() and then do our logic? Probably need to learn more page.js first
-        page('*', render.content);
+        page('*', RouteManager.renderContent);
         page();
     }
 
