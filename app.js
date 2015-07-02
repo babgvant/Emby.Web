@@ -65,11 +65,57 @@
 
             paths: {
                 "velocity": "bower_components/velocity/velocity.min"
+            },
+
+            map: {
+                '*': {
+                    'css': 'js/requirecss'
+                }
             }
         });
 
-        define('page', ['bower_components/page.js/page']);
         define("connectservice", ["apiclient/connectservice"]);
+    }
+
+    function getCoreDependencies() {
+
+        return [
+          'bower_components/native-promise-only/lib/npo.src',
+          'bower_components/page.js/page.js'
+        ];
+    }
+
+    function loadCoreDependencies(callback) {
+
+        var list = [
+          'bower_components/native-promise-only/lib/npo.src',
+          'bower_components/page.js/page.js',
+          'bower_components/bean/bean.min.js'
+        ];
+
+        require(list, function (promise, page, bean) {
+
+            window.page = page;
+            window.bean = bean;
+            callback();
+        });
+    }
+
+    function loadPlugins() {
+
+        // Load installed plugins
+        // Use a Promise because the web-only version won't be able access the file system, so it may have to look up the plugins from some external location
+
+        return new Promise(function (resolve, reject) {
+
+            var list = [
+                'plugins/defaulttheme/plugin.js'
+            ];
+
+            require(list, function () {
+                resolve();
+            });
+        });
     }
 
     function getSupportedRemoteCommands() {
@@ -131,15 +177,22 @@
         appInfo.capabilities = getCapabilities(!isDefaultAppInfo);
 
         initRequire();
-        defineCoreRoutes();
-        definePluginRoutes();
 
-        // TODO: Catch window unload event to try to gracefully stop any active media playback
+        loadCoreDependencies(function () {
 
-        // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
-        // Or do we call page() and then do our logic? Probably need to learn more page.js first
-        page('*', RouteManager.renderContent);
-        page();
+            loadPlugins().then(function () {
+
+                defineCoreRoutes();
+                definePluginRoutes();
+
+                // TODO: Catch window unload event to try to gracefully stop any active media playback
+
+                // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
+                // Or do we call page() and then do our logic? Probably need to learn more page.js first
+                page('*', RouteManager.renderContent);
+                page();
+            });
+        });
     }
 
     globalScope.App = {
