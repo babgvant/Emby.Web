@@ -51,50 +51,6 @@
             next();
     }
 
-    var importedCss = [];
-    function loadCss(url) {
-
-        if (importedCss.indexOf(url) != -1) {
-            return;
-        }
-
-        importedCss.push(url);
-
-        if (document.createStyleSheet) {
-            document.createStyleSheet(url);
-        }
-        else {
-            var link = document.createElement('link');
-            link.setAttribute('rel', 'stylesheet');
-            link.setAttribute('type', 'text/css');
-            link.setAttribute('href', url);
-            document.head.appendChild(link);
-        }
-    }
-
-    function loadDependencies(dependencies, callback) {
-
-        var css = [];
-
-        var list = dependencies.filter(function (d) {
-
-            if (d.indexOf('css!') == 0) {
-
-                css.push(d.substring(4));
-                return false;
-            } else {
-
-                return true;
-            }
-        });
-
-        for (var i = 0, length = css.length; i < length; i++) {
-            loadCss(css[i]);
-        }
-
-        require(list, callback);
-    }
-
     function loadContentUrl(ctx, next, url) {
 
         get(url, function (html) {
@@ -106,7 +62,7 @@
     function getHandler(route) {
         return function (ctx, next) {
 
-            loadDependencies(route.dependencies || [], function () {
+            require(route.dependencies || [], function () {
 
                 if (typeof route.content === 'string') {
 

@@ -1,0 +1,13 @@
+html, body{
+margin: 0;
+padding: 0;
+}
+
+#content {
+  margin: 0 40px;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+  #content.transition {
+    opacity: 0;
+  }
