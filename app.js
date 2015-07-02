@@ -79,10 +79,13 @@
 
     function getCoreDependencies() {
 
-        return [
-          'bower_components/native-promise-only/lib/npo.src',
-          'bower_components/page.js/page.js'
-        ];
+        var list = 'bower_components/page.js/page.js';
+
+        if (!globalScope.Promise) {
+            list.push('bower_components/native-promise-only/lib/npo.src');
+        }
+
+        return list;
     }
 
     function loadCoreDependencies(callback) {
@@ -90,7 +93,6 @@
         var list = [
           'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
-          'bower_components/bean/bean.min.js',
           'js/objects',
           'js/routes'
         ];
