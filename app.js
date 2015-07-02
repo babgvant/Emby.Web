@@ -9,8 +9,8 @@
         page('*', RouteManager.authenticate);
 
         defineRoute({
-            path: '/login',
-            content: '/views/login.html'
+            path: 'login',
+            content: 'views/login.html'
         });
     }
 
