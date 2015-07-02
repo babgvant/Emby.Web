@@ -90,7 +90,9 @@
         var list = [
           'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
-          'bower_components/bean/bean.min.js'
+          'bower_components/bean/bean.min.js',
+          'js/objects',
+          'js/routes'
         ];
 
         require(list, function (promise, page, bean) {
