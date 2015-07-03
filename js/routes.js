@@ -1,9 +1,6 @@
 (function (document, window) {
     // Private
-    var cache = {},
-		contentEl = document.getElementById('content');
-
-    var currentApiClient;
+    var cache = {};
 
     function get(url, cb) {
         if (cache[url]) return cb(cache[url]);
@@ -31,9 +28,9 @@
         if (ctx.init) {
             next();
         } else {
-            contentEl.classList.add('transition');
+            //contentEl.classList.add('transition');
             setTimeout(function () {
-                content.classList.remove('transition');
+                //content.classList.remove('transition');
                 next();
             }, 300);
         }
@@ -45,22 +42,40 @@
     }
 
     function authenticate(ctx, next) {
-        if (currentApiClient && currentApiClient.getCurrentUserId()) {
-            next();
-            return;
+
+        require(['currentServer'], function (server) {
+
+            if (server && server.UserId && server.AccessToken) {
+                next();
+                return;
+            }
+
+            if (!allowAnonymous(ctx)) {
+                page.redirect('login');
+            }
+            else {
+                next();
+            }
+        });
+    }
+
+    function loadContent(ctx, next, html) {
+        var contentElement = document.querySelector('.pageContainer');
+
+        if (contentElement) {
+            contentElement.innerHTML = html;
+        }
+        else {
+            alert('pageContainer is missing! The theme must render an element with className pageContainer');
         }
 
-        if (!allowAnonymous(ctx))
-            page.redirect('login');
-        else
-            next();
+        //next();
     }
 
     function loadContentUrl(ctx, next, url) {
 
         get(url, function (html) {
-            ctx.partials.content = html;
-            next();
+            loadContent(ctx, next, html);
         });
     }
 
@@ -72,8 +87,7 @@
                 if (typeof route.content === 'string') {
 
                     if (route.contentType == 'html') {
-                        ctx.partials.content = route.content;
-                        next();
+                        loadContent(ctx, next, route.content);
 
                     } else {
                         loadContentUrl(ctx, next, route.content);
@@ -90,19 +104,59 @@
     function renderContent(ctx, next) {
 
         get('views/content.html', function (html) {
-            var template = Hogan.compile(html),
-                content = template.render(ctx.data, ctx.partials);
-            contentEl.innerHTML = content;
+            var template = Hogan.compile(html);
+            var content = template.render(ctx.data, ctx.partials);
+
+            var contentElement = document.querySelector('.pageContainer');
+
+            if (!contentElement) {
+                alert('pageContainer is missing! The theme must render an element with className pageContainer');
+                return;
+            }
+
+            contentElement.innerHTML = content;
 
             //if (typeof done === 'function') done(ctx.data.index);
         });
+    }
+
+    function getWindowUrl(win) {
+        return (win || window).location.href;
+    }
+
+    function getWindowLocationSearch(win) {
+
+        var search = (win || window).location.search;
+
+        if (!search) {
+
+            var index = window.location.href.indexOf('?');
+            if (index != -1) {
+                search = window.location.href.substring(index);
+            }
+        }
+
+        return search || '';
+    }
+
+    function param(name, url) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS, "i");
+
+        var results = regex.exec(url || getWindowLocationSearch());
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
     window.RouteManager = {
         authenticate: authenticate,
         getHandler: getHandler,
         ctx: ctx,
-        renderContent: renderContent
+        renderContent: renderContent,
+        param: param
     };
 
 })(document, window);

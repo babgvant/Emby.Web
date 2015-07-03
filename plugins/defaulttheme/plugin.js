@@ -9,6 +9,24 @@
         return routes;
     }
 
+    function getPageContent() {
+
+        var html = '';
+
+        html += '<div class="pageContainer"></div>';
+
+        return html;
+    }
+
+    function getOuterClassName() {
+
+        var name = 'defaultTheme';
+
+        name += ' dark';
+
+        return name;
+    }
+
     function theme() {
 
         var self = this;
@@ -16,12 +34,12 @@
         self.name = 'Default Theme';
         self.type = 'theme';
         self.packageName = 'defaulttheme';
-        self.bodyClassName = 'defaultTheme';
         self.getRoutes = getRoutes;
+        self.getPageContent = getPageContent;
+        self.getOuterClassName = getOuterClassName;
 
         self.getDependencies = function () {
 
-            // css and js, relative to the current directory. The app will handle normalizing the full path
             var files = [
                 'css!' + PluginManager.mapPath(self, 'css/style')
             ];

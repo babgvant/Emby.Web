@@ -1,0 +1,15 @@
+{
+  "name": "ajax",
+  "homepage": "https://github.com/ForbesLindesay/ajax",
+  "version": "0.0.2",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "f60a1f16171b583c863c90ddcbed274baee7de8a"
+  },
+  "_source": "git://github.com/ForbesLindesay/ajax.git",
+  "_target": "~0.0.2",
+  "_originalSource": "ForbesLindesay/ajax",
+  "_direct": true
+}

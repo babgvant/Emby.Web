@@ -3,17 +3,6 @@
     var appInfo;
     var connectionManager;
 
-    function defineCoreRoutes() {
-
-        page('*', RouteManager.ctx);
-        page('*', RouteManager.authenticate);
-
-        defineRoute({
-            path: 'login',
-            content: 'views/login.html'
-        });
-    }
-
     function defineRoute(newRoute) {
 
         page(newRoute.path, RouteManager.getHandler(newRoute));
@@ -27,6 +16,17 @@
 
             page(currentRoute.path, RouteManager.getHandler(currentRoute));
         }
+    }
+
+    function defineCoreRoutes() {
+
+        page('*', RouteManager.ctx);
+        page('*', RouteManager.authenticate);
+
+        defineRoute({
+            path: 'login',
+            content: 'views/login.html'
+        });
     }
 
     function definePluginRoutes() {
@@ -48,13 +48,17 @@
 
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
-        $(connectionManager).on('apiclientcreated', function (e, newApiClient) {
+        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
 
             //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
         });
 
         define('connectionManager', [], function () {
             return connectionManager;
+        });
+
+        define('currentServer', [], function () {
+            return connectionManager.getLastUsedServer();
         });
     }
 
@@ -77,25 +81,20 @@
         define("connectservice", ["apiclient/connectservice"]);
     }
 
-    function getCoreDependencies() {
-
-        return [
-          'bower_components/native-promise-only/lib/npo.src',
-          'bower_components/page.js/page.js'
-        ];
-    }
-
     function loadCoreDependencies(callback) {
 
         var list = [
-          'bower_components/native-promise-only/lib/npo.src',
           'bower_components/page.js/page.js',
-          'bower_components/bean/bean.min.js',
+          'bower_components/bean/bean.min',
           'js/objects',
           'js/routes'
         ];
 
-        require(list, function (promise, page, bean) {
+        if (!globalScope.Promise) {
+            list.push('bower_components/native-promise-only/lib/npo.src');
+        }
+
+        require(list, function (page, bean) {
 
             window.page = page;
             window.bean = bean;
@@ -179,7 +178,10 @@
 
         require(theme.getDependencies(), function () {
 
-            document.documentElement.className = theme.bodyClassName || theme.packageName;
+            document.documentElement.className = theme.getOuterClassName();
+
+            document.querySelector('.themeContent').innerHTML = theme.getPageContent();
+
             callback();
         });
     }
@@ -205,13 +207,13 @@
                 defineCoreRoutes();
                 definePluginRoutes();
 
+                createConnectionManager();
+
                 // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
                 loadDefaultTheme(function () {
                     // TODO: Catch window unload event to try to gracefully stop any active media playback
 
-                    // There will be an async call here. Depending on the result we will either call page(), bounce to login, or bounce to startup wizard
-                    // Or do we call page() and then do our logic? Probably need to learn more page.js first
-                    page('*', RouteManager.renderContent);
+                    //page('*', RouteManager.renderContent);
                     page();
                 });
             });
@@ -222,6 +224,9 @@
         start: start
     };
 
-})(this);
+    // call start unless configured not to
+    if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
+        start();
+    }
 
-App.start();
+})(this);
