@@ -87,7 +87,10 @@
           'bower_components/page.js/page.js',
           'bower_components/bean/bean.min',
           'js/objects',
-          'js/routes'
+          'js/routes',
+          'js/viewmanager',
+          'js/globalize',
+          'js/thememanager'
         ];
 
         if (!globalScope.Promise) {
@@ -167,23 +170,7 @@
 
     function loadDefaultTheme(callback) {
 
-        var theme = PluginManager.plugins().filter(function (p) {
-            return p.packageName == 'defaulttheme';
-        })[0];
-
-        loadTheme(theme, callback);
-    }
-
-    function loadTheme(theme, callback) {
-
-        require(theme.getDependencies(), function () {
-
-            document.documentElement.className = theme.getOuterClassName();
-
-            document.querySelector('.themeContent').innerHTML = theme.getPageContent();
-
-            callback();
-        });
+        Emby.ThemeManager.loadTheme('defaulttheme', callback);
     }
 
     function start(hostApplicationInfo) {
