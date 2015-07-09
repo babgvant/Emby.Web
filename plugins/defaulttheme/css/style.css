@@ -1,15 +1,40 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto);
+/*@import url(http://fonts.googleapis.com/css?family=Roboto);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700);*/
+@import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
 .defaultTheme {
-    font-family: Helvetica Neue, Roboto;
+    font-family: Helvetica Neue, Varela Round;
+    font-size: 130%;
 }
 
-    .defaultTheme.dark {
-        background: -webkit-linear-gradient(#000000, #333); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(#000000, #333); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(#000000, #333); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(#000000, #333); /* Standard syntax */
+h1 {
+    font-weight: 400;
+    font-size: 40px;
+}
+
+h2 {
+    font-weight: 400;
+}
+
+.preLoginHeader {
+    padding: 1em 1em 0;
+}
+
+    .preLoginHeader .logo {
+        background-image: url(images/touchicon144.png);
+        background-position: center center;
         background-repeat: no-repeat;
-        background-attachment: fixed;
-        color: #fff;
+        background-size: cover;
+        width: 60px;
+        height: 60px;
     }
+
+.preLoginContent {
+    width: 70%;
+    max-width: 800px;
+    margin: 0 auto;
+}

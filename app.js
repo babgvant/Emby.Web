@@ -27,6 +27,11 @@
             path: 'login',
             content: 'views/login.html'
         });
+
+        defineRoute({
+            path: 'welcome',
+            content: 'views/welcome.html'
+        });
     }
 
     function definePluginRoutes() {
@@ -73,12 +78,14 @@
 
             map: {
                 '*': {
-                    'css': 'js/requirecss'
+                    'css': 'js/requirecss',
+                    'html': 'js/requirehtml'
                 }
             }
         });
 
         define("connectservice", ["apiclient/connectservice"]);
+        define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
     }
 
     function loadCoreDependencies(callback) {

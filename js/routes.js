@@ -38,7 +38,7 @@
 
     function allowAnonymous(ctx) {
 
-        return ctx.pathname == 'login';
+        return ctx.pathname == 'login' || ctx.pathname == 'welcome';
     }
 
     function authenticate(ctx, next) {
@@ -51,7 +51,7 @@
             }
 
             if (!allowAnonymous(ctx)) {
-                page.redirect('login');
+                page.redirect('welcome');
             }
             else {
                 next();

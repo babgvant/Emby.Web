@@ -41,7 +41,10 @@
         self.getDependencies = function () {
 
             var files = [
-                'css!' + PluginManager.mapPath(self, 'css/style')
+                'css!' + PluginManager.mapPath(self, 'css/style'),
+                'css!' + PluginManager.mapPath(self, 'css/colors.dark'),
+                'css!' + PluginManager.mapPath(self, 'css/paperstyles'),
+                'webcomponentsjs'
             ];
 
             return files;
