@@ -27,6 +27,11 @@
             path: 'login',
             content: 'views/login.html'
         });
+
+        defineRoute({
+            path: 'welcome',
+            content: 'views/welcome.html'
+        });
     }
 
     function definePluginRoutes() {
@@ -73,12 +78,14 @@
 
             map: {
                 '*': {
-                    'css': 'js/requirecss'
+                    'css': 'js/requirecss',
+                    'html': 'js/requirehtml'
                 }
             }
         });
 
         define("connectservice", ["apiclient/connectservice"]);
+        define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
     }
 
     function loadCoreDependencies(callback) {
@@ -87,7 +94,10 @@
           'bower_components/page.js/page.js',
           'bower_components/bean/bean.min',
           'js/objects',
-          'js/routes'
+          'js/routes',
+          'js/viewmanager',
+          'js/globalize',
+          'js/thememanager'
         ];
 
         if (!globalScope.Promise) {
@@ -167,23 +177,7 @@
 
     function loadDefaultTheme(callback) {
 
-        var theme = PluginManager.plugins().filter(function (p) {
-            return p.packageName == 'defaulttheme';
-        })[0];
-
-        loadTheme(theme, callback);
-    }
-
-    function loadTheme(theme, callback) {
-
-        require(theme.getDependencies(), function () {
-
-            document.documentElement.className = theme.getOuterClassName();
-
-            document.querySelector('.themeContent').innerHTML = theme.getPageContent();
-
-            callback();
-        });
+        Emby.ThemeManager.loadTheme('defaulttheme', callback);
     }
 
     function start(hostApplicationInfo) {

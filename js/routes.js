@@ -38,7 +38,7 @@
 
     function allowAnonymous(ctx) {
 
-        return ctx.pathname == 'login';
+        return ctx.pathname == 'login' || ctx.pathname == 'welcome';
     }
 
     function authenticate(ctx, next) {
@@ -51,7 +51,7 @@
             }
 
             if (!allowAnonymous(ctx)) {
-                page.redirect('login');
+                page.redirect('welcome');
             }
             else {
                 next();
@@ -60,14 +60,10 @@
     }
 
     function loadContent(ctx, next, html) {
-        var contentElement = document.querySelector('.pageContainer');
 
-        if (contentElement) {
-            contentElement.innerHTML = html;
-        }
-        else {
-            alert('pageContainer is missing! The theme must render an element with className pageContainer');
-        }
+        html = Globalize.translateHtml(html);
+
+        Emby.ViewManager.loadView(html);
 
         //next();
     }
