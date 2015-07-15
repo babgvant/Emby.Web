@@ -1,26 +1,4 @@
 (function (document, window) {
-    // Private
-    var cache = {};
-
-    function get(url, cb) {
-        if (cache[url]) return cb(cache[url]);
-
-        var request = new XMLHttpRequest();
-        request.open('GET', url, true);
-        request.onload = function () {
-            if (request.status >= 200 && request.status < 400) {
-                var data = request.responseText;
-                cache[url] = data;
-                cb(data);
-            } else {
-                // Server returned error
-            }
-        };
-        request.onerror = function () {
-            // Connection error
-        };
-        request.send();
-    }
 
     function ctx(ctx, next) {
         ctx.data = {};
@@ -38,7 +16,7 @@
 
     function allowAnonymous(ctx) {
 
-        return ctx.pathname == 'login' || ctx.pathname == 'welcome';
+        return ctx.pathname.indexOf('startup/') != -1;
     }
 
     function authenticate(ctx, next) {
@@ -51,7 +29,7 @@
             }
 
             if (!allowAnonymous(ctx)) {
-                page.redirect('welcome');
+                page.redirect('/startup/welcome');
             }
             else {
                 next();
@@ -59,19 +37,31 @@
         });
     }
 
-    function loadContent(ctx, next, html) {
+    function loadContent(ctx, next, html, id, url) {
 
         html = Globalize.translateHtml(html);
-
-        Emby.ViewManager.loadView(html);
+        Emby.ViewManager.loadView({
+            id: id,
+            view: html,
+            url: url
+        });
 
         //next();
     }
 
-    function loadContentUrl(ctx, next, url) {
+    function loadContentUrl(ctx, next, url, id, routeUrl) {
 
-        get(url, function (html) {
-            loadContent(ctx, next, html);
+        HttpClient.send({
+
+            url: url,
+            type: 'GET',
+            dataType: 'html'
+
+        }).done(function (html) {
+            loadContent(ctx, next, html, id, routeUrl);
+
+        }).fail(function () {
+            next();
         });
     }
 
@@ -80,13 +70,18 @@
 
             require(route.dependencies || [], function () {
 
-                if (typeof route.content === 'string') {
+                var url = window.location.href;
+
+                if (Emby.ViewManager.tryRestoreView(url)) {
+                    // done
+                }
+                else if (typeof route.content === 'string') {
 
                     if (route.contentType == 'html') {
-                        loadContent(ctx, next, route.content);
+                        loadContent(ctx, next, route.content, route.id, url);
 
                     } else {
-                        loadContentUrl(ctx, next, route.content);
+                        loadContentUrl(ctx, next, route.content, route.id, url);
                     }
 
                 } else {
@@ -95,25 +90,6 @@
                 }
             });
         };
-    }
-
-    function renderContent(ctx, next) {
-
-        get('views/content.html', function (html) {
-            var template = Hogan.compile(html);
-            var content = template.render(ctx.data, ctx.partials);
-
-            var contentElement = document.querySelector('.pageContainer');
-
-            if (!contentElement) {
-                alert('pageContainer is missing! The theme must render an element with className pageContainer');
-                return;
-            }
-
-            contentElement.innerHTML = content;
-
-            //if (typeof done === 'function') done(ctx.data.index);
-        });
     }
 
     function getWindowUrl(win) {
@@ -151,7 +127,6 @@
         authenticate: authenticate,
         getHandler: getHandler,
         ctx: ctx,
-        renderContent: renderContent,
         param: param
     };
 

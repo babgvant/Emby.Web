@@ -1,40 +1,82 @@
 (function (globalScope, document) {
 
-    function loadView(view) {
+    function loadView(options) {
 
-        var contentElement = document.querySelector('.pageContainer');
+        var id = options.id;
 
-        if (contentElement) {
-            contentElement.innerHTML = view;
+        var pageContainer = document.querySelector('.pageContainer');
 
-            onViewChange(contentElement);
+        if (pageContainer) {
+
+            var div = document.createElement('div');
+            div.classList.add('page-view');
+            div.setAttribute('data-id', id);
+            div.setAttribute('data-url', options.url);
+            div.innerHTML = options.view;
+
+            hideViews();
+
+            pageContainer.appendChild(div);
+
+            onViewChange(div);
         }
         else {
             alert('pageContainer is missing! The theme must render an element with className pageContainer');
         }
     }
 
-    function onViewChange(contentElement) {
+    function getExistingViews() {
+        return document.querySelectorAll('.pageContainer .page-view');
+    }
+
+    function tryRestoreView(url) {
+
+        var views = getExistingViews();
+
+        for (var i = 0, length = views.length; i < length; i++) {
+
+            if (views[i].getAttribute('data-url') == url) {
+                restoreView(views[i]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function restoreView(view) {
+
+        hideViews();
+        view.style.display = 'block';
+        onViewChange(div);
+    }
+
+    function hideViews() {
+
+        var views = getExistingViews();
+
+        for (var i = 0, length = views.length; i < length; i++) {
+            views[i].style.display = 'none';
+        }
+    }
+
+    function onViewChange(view) {
 
         // TODO: Is there a better way to determine that the view has loaded as opposed to a delay?
         setTimeout(function () {
 
-            var autoFocus = contentElement.querySelector('*[autofocus]');
+            var autoFocus = view.querySelector('*[autofocus]');
             if (autoFocus) {
                 autoFocus.focus();
             }
 
-            var view = contentElement.querySelector('.view');
-
-            if (view) {
-
-                onShow(view);
-            }
+            onShow(view);
 
         }, 500);
     }
 
     function onShow(view) {
+
         var myEvent = new CustomEvent("viewshow", {
             detail: {
                 element: view,
@@ -52,7 +94,8 @@
     }
 
     globalScope.Emby.ViewManager = {
-        loadView: loadView
+        loadView: loadView,
+        tryRestoreView: tryRestoreView
     };
 
 })(this, document);

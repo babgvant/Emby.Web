@@ -1,3 +1,21 @@
+.clearButton {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    color: inherit;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.clearLink {
+    text-decoration: none;
+    font-weight: inherit !important;
+    vertical-align: middle;
+    color: inherit !important;
+}
+
 paper-button {
     font-weight: 500;
     vertical-align: middle;
