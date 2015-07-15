@@ -8,29 +8,33 @@
 
         send: function (request) {
 
-            // See https://github.com/ForbesLindesay/ajax
-
-            // This library is probably preferred:
-            // https://github.com/visionmedia/superagent
-            // But don't really want to spend time integrating that right now
-
-            request.timeout = request.timeout || 30000;
-
             var deferred = DeferredBuilder.Deferred();
 
-            request.success = function (data, status, xhr) {
-                deferred.resolveWith(null, [data]);
-            };
+            require(['type', 'bower_components/ajax/index'], function () {
 
-            request.error = function (xhr, type, error) {
-                deferred.rejectWith(request, [xhr]);
-            };
+                // See https://github.com/ForbesLindesay/ajax
 
-            try {
-                return ajax(request.url, request)
-            } catch (err) {
-                deferred.rejectWith(request, []);
-            }
+                // This library is probably preferred:
+                // https://github.com/visionmedia/superagent
+                // But don't really want to spend time integrating that right now
+
+                request.timeout = request.timeout || 30000;
+
+                request.success = function (data, status, xhr) {
+                    deferred.resolveWith(null, [data]);
+                };
+
+                request.error = function (xhr, type, error) {
+                    deferred.rejectWith(request, [xhr]);
+                };
+
+                try {
+                    return ajax(request)
+                } catch (err) {
+                    Logger.log(err);
+                    deferred.rejectWith(request, []);
+                }
+            });
 
             return deferred.promise();
         }

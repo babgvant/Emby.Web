@@ -8,7 +8,7 @@
         return Emby.ThemeManager.getCurrentTheme();
     }
 
-    globalScope.Emby.Elements = {
+    globalScope.Emby.elements = {
         loading: {
             show: function () {
 

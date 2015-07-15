@@ -1,12 +1,3 @@
-var type
-try {
-  type = require('type-of')
-} catch (ex) {
-  //hide from browserify
-  var r = require
-  type = r('type')
-}
-
 var jsonpID = 0,
     document = window.document,
     key,
@@ -18,7 +9,7 @@ var jsonpID = 0,
     htmlType = 'text/html',
     blankRE = /^\s*$/
 
-var ajax = module.exports = function(options){
+var ajax = function(options){
   var settings = extend({}, options || {})
   for (key in ajax.settings) if (settings[key] === undefined) settings[key] = ajax.settings[key]
 
@@ -59,12 +50,11 @@ var ajax = module.exports = function(options){
         dataType = dataType || mimeToDataType(xhr.getResponseHeader('content-type'))
         result = xhr.responseText
 
-        try {
+          try {
           if (dataType == 'script')    (1,eval)(result)
           else if (dataType == 'xml')  result = xhr.responseXML
           else if (dataType == 'json') result = blankRE.test(result) ? null : JSON.parse(result)
         } catch (e) { error = e }
-
         if (error) ajaxError(error, 'parsererror', xhr, settings)
         else ajaxSuccess(result, xhr, settings)
       } else {

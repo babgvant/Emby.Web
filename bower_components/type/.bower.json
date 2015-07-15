@@ -1,0 +1,33 @@
+{
+  "name": "type",
+  "version": "0.0.3",
+  "author": {
+    "name": "Component contributors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:matthewp/type.git",
+    "github": "https://github.com/matthewp/type"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "dependencies": {},
+  "ignore": [
+    "build"
+  ],
+  "homepage": "https://github.com/matthewp/type",
+  "_release": "0.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.3",
+    "commit": "d5db5807bf53f55d24d522c848b0f150e8e2037a"
+  },
+  "_source": "git://github.com/matthewp/type.git",
+  "_target": "~0.0.3",
+  "_originalSource": "type",
+  "_direct": true
+}

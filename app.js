@@ -25,12 +25,14 @@
 
         defineRoute({
             path: 'login',
-            content: 'views/login.html'
+            content: 'views/startup/login.html',
+            dependencies: ['views/startup/startup']
         });
 
         defineRoute({
             path: 'welcome',
-            content: 'views/welcome.html'
+            content: 'views/startup/welcome.html',
+            dependencies: ['views/startup/startup']
         });
     }
 
@@ -86,6 +88,7 @@
 
         define("connectservice", ["apiclient/connectservice"]);
         define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
+        define("type", ["bower_components/type/dist/type"]);
     }
 
     function loadCoreDependencies(callback) {
@@ -97,8 +100,12 @@
           'js/routes',
           'js/viewmanager',
           'js/globalize',
-          'js/thememanager'
+          'js/thememanager',
+          'js/elements',
+          'bower_components/keylime/keylime.min'
         ];
+
+        list.push('js/defaultelements');
 
         if (!globalScope.Promise) {
             list.push('bower_components/native-promise-only/lib/npo.src');
