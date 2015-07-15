@@ -4,7 +4,7 @@
 
         element.querySelector('.btnWelcomeNext').addEventListener('click', function () {
 
-            Emby.elements.loading.show();
+            page.redirect('/startup/connectlogin');
         });
     }
     document.addEventListener("viewshow", function (e) {

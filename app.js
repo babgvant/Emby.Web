@@ -20,19 +20,32 @@
 
     function defineCoreRoutes() {
 
+        var baseRoute = window.location.pathname.replace('/index.html', '');
+        //baseRoute = window.location.protocol + '//' + baseRoute;
+        page.base(baseRoute);
+
         page('*', RouteManager.ctx);
         page('*', RouteManager.authenticate);
 
         defineRoute({
-            path: 'login',
-            content: 'views/startup/login.html',
-            dependencies: ['views/startup/startup']
+            path: '/startup/login',
+            id: 'login',
+            content: 'login.html',
+            dependencies: ['startup']
         });
 
         defineRoute({
-            path: 'welcome',
-            content: 'views/startup/welcome.html',
-            dependencies: ['views/startup/startup']
+            path: '/startup/welcome',
+            id: 'welcome',
+            content: 'welcome.html',
+            dependencies: ['startup']
+        });
+
+        defineRoute({
+            path: '/startup/connectlogin',
+            id: 'connectlogin',
+            content: 'connectlogin.html',
+            dependencies: ['startup']
         });
     }
 

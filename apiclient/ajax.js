@@ -28,6 +28,8 @@
                     deferred.rejectWith(request, [xhr]);
                 };
 
+                Logger.log('Sending request to ' + request.url);
+
                 try {
                     return ajax(request)
                 } catch (err) {
