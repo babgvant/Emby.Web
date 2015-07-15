@@ -126,15 +126,15 @@ paper-button span {
     vertical-align: middle;
 }
 
-paper-button:not(.iconRight) iron-icon, paper-button:not(.iconRight) .fa {
-    margin-right: .5em;
+paper-button:not(.iconRight) iron-icon + span {
+    margin-left: .5em;
 }
 
-paper-button:not(.iconRight) .material-icons {
-    margin-right: .25em;
+paper-button:not(.iconRight) span + iron-icon {
+    margin-left: .5em;
 }
 
-paper-button.iconRight iron-icon, paper-button.iconRight .fa, paper-button.iconRight .material-icons {
+paper-button.iconRight iron-icon {
     position: absolute;
     right: 10px;
     top: 18px;
