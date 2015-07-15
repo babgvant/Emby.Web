@@ -1,7 +1,8 @@
 (function (globalScope, document) {
 
+    var currentTheme;
     function getCurrentTheme() {
-
+        return currentTheme;
     }
 
     function loadTheme(packageName, callback) {
@@ -12,11 +13,20 @@
 
         require(theme.getDependencies(), function () {
 
-            document.documentElement.className = theme.getOuterClassName();
+            var translations = theme.getTranslations ? theme.getTranslations() : [];
 
-            document.querySelector('.themeContent').innerHTML = theme.getPageContent();
+            Globalize.loadTranslations({
 
-            callback();
+                name: 'theme',
+                translations: translations
+
+            }).then(function () {
+                document.documentElement.className = theme.getOuterClassName();
+
+                document.querySelector('.themeContent').innerHTML = theme.getPageContent();
+                currentTheme = theme;
+                callback();
+            });
         });
     }
 

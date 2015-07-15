@@ -136,8 +136,8 @@ paper-button:not(.iconRight) .material-icons {
 
 paper-button.iconRight iron-icon, paper-button.iconRight .fa, paper-button.iconRight .material-icons {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 10px;
+    top: 18px;
 }
 
 paper-button .material-icons {
