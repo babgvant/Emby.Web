@@ -31,21 +31,42 @@
             path: '/startup/login.html',
             id: 'login',
             content: 'login.html',
-            dependencies: ['startup']
+            dependencies: ['startup/startup']
+        });
+
+        defineRoute({
+            path: '/startup/manuallogin.html',
+            id: 'manuallogin',
+            content: 'manuallogin.html',
+            dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/welcome.html',
             id: 'welcome',
             content: 'welcome.html',
-            dependencies: ['startup']
+            dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/connectlogin.html',
             id: 'connectlogin',
             content: 'connectlogin.html',
-            dependencies: ['startup']
+            dependencies: ['startup/startup']
+        });
+
+        defineRoute({
+            path: '/startup/manualserver.html',
+            id: 'manualserver',
+            content: 'manualserver.html',
+            dependencies: ['startup/startup']
+        });
+
+        defineRoute({
+            path: '/startup/selectserver.html',
+            id: 'selectserver',
+            content: 'selectserver.html',
+            dependencies: ['startup/startup']
         });
     }
 
@@ -65,6 +86,7 @@
     function createConnectionManager() {
 
         var credentialProvider = new MediaBrowser.CredentialProvider();
+        //credentialProvider.clear();
 
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
@@ -84,7 +106,12 @@
 
     function initRequire() {
 
+        var baseRoute = window.location.pathname.replace('/index.html', '');
+        baseRoute = window.location.protocol + '//' + baseRoute;
+
         requirejs.config({
+
+            baseUrl: baseRoute,
             urlArgs: "v=" + appInfo.version,
 
             paths: {
@@ -100,6 +127,8 @@
         });
 
         define("connectservice", ["apiclient/connectservice"]);
+        define("serverdiscovery", ["apiclient/serverdiscovery"]);
+        define("wakeonlan", ["apiclient/wakeonlan"]);
         define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
         define("type", ["bower_components/type/dist/type"]);
     }
@@ -115,7 +144,8 @@
           'js/globalize',
           'js/thememanager',
           'js/elements',
-          'bower_components/keylime/keylime.min'
+          'js/focusmanager',
+          'bower_components/keylime/keylime'
         ];
 
         list.push('js/defaultelements');
@@ -126,10 +156,31 @@
 
         require(list, function (page, bean) {
 
+            configureKeylime();
             window.page = page;
             window.bean = bean;
             callback();
         });
+    }
+
+    function configureKeylime() {
+        window.keyLime.config = window.keyLime.config || {};
+        window.keyLime.config.noauto = true;
+
+        document.addEventListener('keydown', function (evt) {
+
+            if (evt.keyCode == 13) {
+                var tag = evt.target.tagName;
+
+                if ((evt.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA')) {
+
+                    window.keyLime.show();
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+        }, true);
     }
 
     function loadPlugins() {
@@ -229,8 +280,7 @@
 
                     //page('*', RouteManager.renderContent);
                     page({
-                        popstate: true,
-                        dispatch: true
+                        click: false
                     });
                 });
             });

@@ -36,5 +36,9 @@ h2 {
 .preLoginContent {
     width: 70%;
     max-width: 800px;
-    margin: 100px auto 0;
+    margin: 40px auto 0;
+}
+
+.fieldDescription {
+    font-size: 85%;
 }

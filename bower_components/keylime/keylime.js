@@ -483,8 +483,8 @@ function swallowEvt (evt) {
  * Submits the current form if there is one and hides the IME
  */
 function submit () {
-    if (document.activeElement.form)
-        document.activeElement.form.submit();
+    //if (document.activeElement.form)
+        //document.activeElement.form.submit();
 
     hideIME();
 }
@@ -641,7 +641,7 @@ document.addEventListener('focus', function (evt) {
  * Automatically shows the IME on focus if settings permit
  */
 document.addEventListener('blur', function () {
-    if (visible && !exports.config.noauto)
+    if (visible)
         hideIME();
 }, true);
 

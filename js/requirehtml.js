@@ -24,9 +24,13 @@ define(function () {
             link.href = url;
             document.head.appendChild(link);
 
-            setTimeout(function() {
+            // Unfortunately it's hard to know exactly when load is complete
+            setTimeout(function () {
+
                 load();
-            }, 100);
+
+            }, 500);
+
             return;
         }
 

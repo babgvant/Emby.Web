@@ -1,0 +1,21 @@
+<div class="preLoginHeader">
+    <div class="logo"></div>
+</div>
+<div class="preLoginContent">
+    <form style="text-align: left; margin: 0 auto;">
+
+        <h1 style="text-align: left;">${HeaderPleaseSignIn}</h1>
+        <div>
+            <paper-input autofocus class="txtUserName" label="${LabelEnterConnectUserName}" required="required"></paper-input>
+        </div>
+        <br />
+        <div>
+            <paper-input class="txtPassword" label="${LabelPassword}" required="required"></paper-input>
+        </div>
+        <br />
+        <button type="submit" data-role="none" class="clearButton">
+            <paper-button raised class="block"><iron-icon icon="check"></iron-icon><span>${ButtonSignIn}</span></paper-button>
+        </button>
+        <paper-button class="block buttonCancel"><iron-icon icon="close"></iron-icon><span>${ButtonCancel}</span></paper-button>
+    </form>
+</div>

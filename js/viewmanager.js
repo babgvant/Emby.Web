@@ -65,10 +65,7 @@
         // TODO: Is there a better way to determine that the view has loaded as opposed to a delay?
         setTimeout(function () {
 
-            var autoFocus = view.querySelector('*[autofocus]');
-            if (autoFocus) {
-                autoFocus.focus();
-            }
+            Emby.FocusManager.autoFocus(view);
 
             onShow(view);
 

@@ -20,6 +20,18 @@
             return true;
         }
 
+        if (path.indexOf('manuallogin') != -1) {
+            return true;
+        }
+
+        if (path.indexOf('manualserver') != -1) {
+            return true;
+        }
+
+        if (path.indexOf('selectserver') != -1) {
+            return true;
+        }
+
         return false;
     }
 
@@ -33,7 +45,7 @@
             }
 
             if (!allowAnonymous(ctx)) {
-                page.redirect('/startup/welcome.html');
+                page.show('/startup/welcome.html');
             }
             else {
                 next();
