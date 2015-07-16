@@ -106,9 +106,6 @@
 
     function initRequire() {
 
-        var baseRoute = window.location.pathname.replace('/index.html', '');
-        baseRoute = window.location.protocol + '//' + baseRoute;
-
         var config = {
 
             urlArgs: "v=" + appInfo.version,
@@ -125,10 +122,13 @@
             }
         };
 
-        var baseUrl = window.location.protocol.indexOf('file') == -1 ? null : baseRoute;
+        var baseRoute = window.location.pathname.replace('/index.html', '');
+        baseRoute = window.location.protocol + '//' + baseRoute;
 
         if (window.location.protocol.indexOf('file') != -1) {
             config.baseUrl = baseUrl;
+        } else {
+            config.baseUrl = 'http://mediabrowser.github.io/Emby.Web';
         }
 
         requirejs.config(config);
