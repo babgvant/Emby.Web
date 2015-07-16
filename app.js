@@ -85,8 +85,12 @@
 
     function createConnectionManager() {
 
+        if (!appInfo.deviceId) {
+            appInfo.deviceId = MediaBrowser.generateDeviceId();
+        }
+
         var credentialProvider = new MediaBrowser.CredentialProvider();
-        //credentialProvider.clear();
+        credentialProvider.clear();
 
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
@@ -126,7 +130,7 @@
         baseRoute = window.location.protocol + '//' + baseRoute;
 
         if (window.location.protocol.indexOf('file') != -1) {
-            config.baseUrl = baseUrl;
+            config.baseUrl = baseRoute;
         } else {
             config.baseUrl = 'http://mediabrowser.github.io/Emby.Web';
         }
@@ -152,7 +156,18 @@
           'js/thememanager',
           'js/elements',
           'js/focusmanager',
-          'bower_components/keylime/keylime'
+          'bower_components/keylime/keylime',
+          'apiclient/logger',
+          'apiclient/sha1',
+          'apiclient/md5',
+          'apiclient/credentials',
+          'apiclient/device',
+          'apiclient/store',
+          'apiclient/deferred',
+          'apiclient/events',
+          'apiclient/ajax',
+          'apiclient/apiclient',
+          'apiclient/connectionmanager'
         ];
 
         list.push('js/defaultelements');
@@ -248,8 +263,7 @@
         return {
             name: 'Emby Theater',
             version: '3.0',
-            deviceName: 'Web Browser',
-            deviceId: MediaBrowser.generateDeviceId()
+            deviceName: 'Web Browser'
         };
     }
 
@@ -302,5 +316,59 @@
     if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
         start();
     }
+
+    var lastLeft;
+    var lastDir;
+
+    function moveKeyFocus(dir) {
+
+        var selector = 'input,select,textarea,button,.focusable';
+
+        var focused = document.activeElement;
+
+        if (!focused) {
+            var elem = document.querySelector(selector);
+            if (elem) {
+                Emby.FocusManager.focus(elem);
+            }
+        }
+        else {
+            var rect = focused.getBoundingClientRect(),
+                hght = focused.offsetHeight,
+                y = rect.top + (dir === 'down' ? hght : -hght),
+                x = lastLeft;
+
+            if (!lastLeft)
+                x = lastLeft = rect.left + (focused.offsetWidth / 2);
+
+            // As the key layout may be staggered, we should assume the user wants
+            // to reach the farthest key in the direction they were going.
+            // We check the location slightly to the left or right of the middle of
+            // the focused key first...
+            var next = document.elementFromPoint(lastDir === 'left' ? x - 10 : x + 10, y);
+
+            // ...if there was no key at that point, try the other side
+            if (!next.classList.contains('lime-key'))
+                next = document.elementFromPoint(x + 10, y);
+        }
+    }
+
+    document.addEventListener('keydown', function (evt) {
+
+        var key = evt.key.replace(/^Arrow/, '');
+
+        switch (key) {
+            case 'Left':
+            case 'Right':
+            case 'Up':
+            case 'Down':
+
+                evt.preventDefault();
+                evt.stopPropagation();
+
+                moveKeyFocus(key.toLowerCase());
+                break;
+        }
+    }, true);
 
 })(this);

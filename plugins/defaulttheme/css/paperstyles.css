@@ -1,9 +1,9 @@
 .clearButton {
     background: transparent;
-    border: 0;
-    padding: 0;
+    border: 0 !important;
+    padding: 0 !important;
     cursor: pointer;
-    outline: none;
+    outline: none !important;
     color: inherit;
     width: 100%;
     vertical-align: middle;

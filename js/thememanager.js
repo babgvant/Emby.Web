@@ -24,7 +24,7 @@
 
                 document.documentElement.className = theme.getOuterClassName();
 
-                document.querySelector('.themeContent').innerHTML = theme.getPageContent();
+                //document.querySelector('.themeContent').innerHTML = theme.getPageContent();
                 currentTheme = theme;
                 callback();
             });

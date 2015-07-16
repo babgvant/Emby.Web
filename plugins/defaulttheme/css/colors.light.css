@@ -1,0 +1,45 @@
+html {
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e6e6e6), color-stop(10%, #ffffff), color-stop(90%, #ffffff), color-stop(100%, #e6e6e6));
+    background: -webkit-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background: -moz-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background: -o-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background: linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background-color: white;
+    font-weight: 400;
+    color: #333;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.fieldDescription {
+    color: #555;
+}
+
+paper-input label {
+    color: #333 !important;
+}
+
+paper-input input {
+    color: #000 !important;
+}
+
+paper-input .focused-line {
+    background-color: #52B54B !important;
+}
+
+paper-button {
+    background: #f0f0f0;
+}
+
+    paper-button iron-icon {
+        color: #000;
+    }
+
+    paper-button[focused] {
+        background: #52B54B;
+    }
+
+        paper-button[focused], paper-button[focused] iron-icon {
+            background: #52B54B;
+            color: #fff;
+        }
