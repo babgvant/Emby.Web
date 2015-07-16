@@ -1,22 +1,26 @@
 (function (document, window) {
 
     function ctx(ctx, next) {
-        ctx.data = {};
-        ctx.partials = {};
-        if (ctx.init) {
-            next();
-        } else {
-            //contentEl.classList.add('transition');
-            setTimeout(function () {
-                //content.classList.remove('transition');
-                next();
-            }, 300);
-        }
+        next();
     }
 
     function allowAnonymous(ctx) {
 
-        return ctx.pathname.indexOf('startup/') != -1;
+        var path = ctx.pathname;
+
+        if (path.indexOf('welcome') != -1) {
+            return true;
+        }
+
+        if (path.indexOf('connectlogin') != -1) {
+            return true;
+        }
+
+        if (path.indexOf('login') != -1) {
+            return true;
+        }
+
+        return false;
     }
 
     function authenticate(ctx, next) {
@@ -29,7 +33,7 @@
             }
 
             if (!allowAnonymous(ctx)) {
-                page.redirect('/startup/welcome');
+                page.redirect('/startup/welcome.html');
             }
             else {
                 next();
@@ -46,6 +50,7 @@
             url: url
         });
 
+        ctx.handled = true;
         //next();
     }
 

@@ -48,7 +48,7 @@
 
         hideViews();
         view.style.display = 'block';
-        onViewChange(div);
+        onViewChange(view);
     }
 
     function hideViews() {

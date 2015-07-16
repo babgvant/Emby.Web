@@ -28,21 +28,21 @@
         page('*', RouteManager.authenticate);
 
         defineRoute({
-            path: '/startup/login',
+            path: '/startup/login.html',
             id: 'login',
             content: 'login.html',
             dependencies: ['startup']
         });
 
         defineRoute({
-            path: '/startup/welcome',
+            path: '/startup/welcome.html',
             id: 'welcome',
             content: 'welcome.html',
             dependencies: ['startup']
         });
 
         defineRoute({
-            path: '/startup/connectlogin',
+            path: '/startup/connectlogin.html',
             id: 'connectlogin',
             content: 'connectlogin.html',
             dependencies: ['startup']
@@ -228,7 +228,10 @@
                     // TODO: Catch window unload event to try to gracefully stop any active media playback
 
                     //page('*', RouteManager.renderContent);
-                    page();
+                    page({
+                        popstate: true,
+                        dispatch: true
+                    });
                 });
             });
         });
