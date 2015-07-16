@@ -9,15 +9,6 @@
         return routes;
     }
 
-    function getPageContent() {
-
-        var html = '';
-
-        html += '<div class="pageContainer"></div>';
-
-        return html;
-    }
-
     function getOuterClassName() {
 
         var name = 'defaultTheme';
@@ -35,7 +26,6 @@
         self.type = 'theme';
         self.packageName = 'defaulttheme';
         self.getRoutes = getRoutes;
-        self.getPageContent = getPageContent;
         self.getOuterClassName = getOuterClassName;
 
         self.getDependencies = function () {
@@ -49,7 +39,13 @@
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + PluginManager.mapPath(self, 'icons.html'),
                 'html!bower_components/paper-button/paper-button.html',
-                'html!bower_components/paper-input/paper-input.html'
+                'html!bower_components/paper-input/paper-input.html',
+                'html!bower_components/paper-material/paper-material.html',
+                'html!bower_components/neon-animation/neon-animated-pages.html',
+            'html!bower_components/neon-animation/animations/slide-from-left-animation.html',
+            'html!bower_components/neon-animation/animations/slide-from-right-animation.html',
+            'html!bower_components/neon-animation/animations/slide-left-animation.html',
+            'html!bower_components/neon-animation/animations/slide-right-animation.html'
             ];
 
             return files;
