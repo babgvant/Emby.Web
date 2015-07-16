@@ -109,11 +109,8 @@
         var baseRoute = window.location.pathname.replace('/index.html', '');
         baseRoute = window.location.protocol + '//' + baseRoute;
 
-        var baseUrl = window.location.protocol.indexOf('file') == -1 ? null : baseRoute;
+        var config = {
 
-        requirejs.config({
-
-            baseUrl: baseUrl,
             urlArgs: "v=" + appInfo.version,
 
             paths: {
@@ -126,7 +123,15 @@
                     'html': 'js/requirehtml'
                 }
             }
-        });
+        };
+
+        var baseUrl = window.location.protocol.indexOf('file') == -1 ? null : baseRoute;
+
+        if (window.location.protocol.indexOf('file') != -1) {
+            config.baseUrl = baseUrl;
+        }
+
+        requirejs.config(config);
 
         define("connectservice", ["apiclient/connectservice"]);
         define("serverdiscovery", ["apiclient/serverdiscovery"]);
