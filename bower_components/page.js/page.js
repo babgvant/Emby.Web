@@ -425,8 +425,18 @@
    * @api public
    */
 
-  Context.prototype.save = function() {
-    history.replaceState(this.state, this.title, hashbang && this.path !== '/' ? '#!' + this.path : this.canonicalPath);
+  Context.prototype.save = function () {
+      var self = this;
+
+      /*
+       * Wrap history.replaceState in a setTimeout to allow the dispatching queue
+       * to flush out and change the URL before we save. Otherwise a
+       * context.save() in a route handler will replace the state using the wrong
+       * URL! See: https://github.com/visionmedia/page.js/issues/230
+       */
+      setTimeout(function () {
+          history.replaceState(self.state, self.title, hashbang && self.path !== '/' ? '#!' + self.path : self.canonicalPath);
+      }, 0);
   };
 
   /**
