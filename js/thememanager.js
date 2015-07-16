@@ -21,6 +21,7 @@
                 translations: translations
 
             }).then(function () {
+
                 document.documentElement.className = theme.getOuterClassName();
 
                 document.querySelector('.themeContent').innerHTML = theme.getPageContent();
@@ -30,13 +31,18 @@
         });
     }
 
+    function loadUserTheme() {
+        alert('user logged in, time to load theme!');
+    }
+
     if (!globalScope.Emby) {
         globalScope.Emby = {};
     }
 
     globalScope.Emby.ThemeManager = {
         getCurrentTheme: getCurrentTheme,
-        loadTheme: loadTheme
+        loadTheme: loadTheme,
+        loadUserTheme: loadUserTheme
     };
 
 })(this, document);

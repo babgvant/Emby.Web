@@ -48,7 +48,8 @@
                 'html!bower_components/iron-icon/iron-icon.html',
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + PluginManager.mapPath(self, 'icons.html'),
-                'html!bower_components/paper-button/paper-button.html'
+                'html!bower_components/paper-button/paper-button.html',
+                'html!bower_components/paper-input/paper-input.html'
             ];
 
             return files;

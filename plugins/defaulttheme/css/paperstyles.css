@@ -7,6 +7,8 @@
     color: inherit;
     width: 100%;
     vertical-align: middle;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .clearLink {
@@ -14,6 +16,8 @@
     font-weight: inherit !important;
     vertical-align: middle;
     color: inherit !important;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 paper-button {
@@ -27,118 +31,9 @@ paper-button {
         display: block;
     }
 
-    paper-button.blue {
-        color: #03a9f4;
+    paper-button .keyboard-focus {
+        font-weight: 500 !important;
     }
-
-        paper-button.blue:hover {
-            background: #e1f5f3;
-        }
-
-    paper-button.menuButton {
-        color: #212121;
-        text-align: left;
-    }
-
-        paper-button.menuButton:hover {
-            background: #e1f5f3;
-        }
-
-    paper-button.ripple::shadow paper-ripple {
-        color: #ff3bee;
-    }
-
-    paper-button.ripple paper-ripple {
-        color: #ff3bee;
-    }
-
-    paper-button.submit {
-        color: #4285f4;
-    }
-
-    paper-button[raised].submit {
-        background: #4285f4;
-        color: #fff;
-    }
-
-    paper-button.more {
-        color: #EC407A;
-    }
-
-    paper-button[raised].more {
-        background: #EC407A;
-        color: #fff;
-    }
-
-    paper-button.secondary {
-        color: #52B54B;
-    }
-
-    paper-button[raised].secondary {
-        background: #52B54B;
-        color: #fff;
-    }
-
-    paper-button.accent {
-        color: #52B54B;
-    }
-
-    paper-button[raised].accent {
-        background: #52B54B;
-        color: #fff;
-    }
-
-    paper-button.alt {
-        color: #F57F17;
-    }
-
-    paper-button[raised].alt {
-        background: #F57F17;
-        color: #fff;
-    }
-
-.ui-page-theme-b paper-button.cancel {
-    color: #444;
-}
-
-.ui-page-theme-b paper-button[raised].cancel {
-    background: #444;
-    color: #fff;
-}
-
-paper-button.cancelDark {
-    color: #444;
-}
-
-paper-button[raised].cancelDark {
-    background: #444;
-    color: #fff;
-}
-
-.ui-page-theme-b paper-button.subdued:not([disabled]) {
-    color: #484848;
-}
-
-.ui-page-theme-b paper-button[raised].subdued:not([disabled]) {
-    background: #484848;
-    color: #fff;
-}
-
-.ui-page-theme-b paper-button[raised][disabled].subdued {
-    background: #111;
-}
-
-paper-button.hover:hover {
-    background: #eee;
-}
-
-paper-button.ripple::shadow paper-ripple {
-    color: var(--paper-pink-a200);
-}
-
-paper-button.ripple paper-ripple {
-    color: var(--paper-pink-a200);
-}
 
 paper-button span {
     vertical-align: middle;

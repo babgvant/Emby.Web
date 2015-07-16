@@ -7,3 +7,31 @@
     background-attachment: fixed;
     color: #fff;
 }
+
+.fieldDescription {
+    color: #ccc;
+}
+
+paper-input label {
+    color: #ccc!important;
+}
+
+paper-input input {
+    color: #fff!important;
+}
+
+paper-input .focused-line {
+    background-color: #52B54B!important;
+ } 
+
+paper-button {
+    background: #444;
+}
+
+    paper-button iron-icon {
+        color: #fff;
+    }
+
+    paper-button[focused] {
+        background: #52B54B;
+    }
