@@ -5,8 +5,13 @@
     background: linear-gradient(#000000, #333); /* Standard syntax */
     background-repeat: no-repeat;
     background-attachment: fixed;
+	background: #1c1c1c;
     color: #fff;
 }
+
+    .preLoginHeader .logo {
+        background-image: url(images/logowhite.png);
+    }
 
 .fieldDescription {
     color: #ccc;

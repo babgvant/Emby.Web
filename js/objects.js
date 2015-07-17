@@ -32,6 +32,10 @@
         }
     }
 
-    globalScope.PluginManager = new pluginManager();
+    if (!globalScope.Emby) {
+        globalScope.Emby = {};
+    }
+
+    globalScope.Emby.PluginManager = new pluginManager();
 
 })(this);

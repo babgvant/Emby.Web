@@ -7,7 +7,7 @@
 
     function loadTheme(packageName, callback) {
 
-        var theme = PluginManager.plugins().filter(function (p) {
+        var theme = Emby.PluginManager.plugins().filter(function (p) {
             return p.packageName == packageName;
         })[0];
 

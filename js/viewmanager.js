@@ -34,10 +34,14 @@
 
         var pageIndex = animatedPages.selected === 0 ? 1 : 0;
         var animatable = animatedPages.querySelectorAll('neon-animatable')[pageIndex];
-        animatable.innerHTML = html;
-        animatedPages.selected = pageIndex;
 
-        onViewChange(animatable.querySelector('.page-view'));
+        animatable.innerHTML = html;
+
+        setTimeout(function () {
+            animatedPages.selected = pageIndex;
+            onViewChange(animatable.querySelector('.page-view'));
+
+        }, 350);
     }
 
     function setAnimationStyle(animatedPages, transition, isBack) {

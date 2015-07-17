@@ -1,13 +1,12 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 html {
-	overflow-x: hidden;
-	
-	/* Would rather have black during loading than white. */
-	background-color: #000;
+    /* Would rather have black during loading than white. */
+    background-color: #000;
 }
 
 .docspinner {
@@ -20,4 +19,22 @@ html {
     top: 50%;
     left: 50%;
     z-index: 9999999;
+}
+
+.mainAnimatedPages {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+}
+
+.page-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
 }

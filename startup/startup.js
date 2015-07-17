@@ -1,5 +1,21 @@
 (function (document) {
 
+    var clockInterval;
+    function startClockInterval() {
+        stopClockInterval();
+    }
+
+    function stopClockInterval() {
+        if (clockInterval) {
+            clearInterval()
+            clockInterval = null;
+        }
+    }
+
+    function addPreLoginClock(element) {
+        startClockInterval();
+    }
+
     function onWelcomeLoad(element) {
 
         element.querySelector('.btnWelcomeNext').addEventListener('click', function () {
@@ -15,6 +31,7 @@
                 });
             });
         });
+        addPreLoginClock(element);
     }
 
     function onManualLoginLoad(element) {
@@ -56,6 +73,7 @@
 
             history.back();
         });
+        addPreLoginClock(element);
     }
 
     function onManualServerLoad(element) {
@@ -91,6 +109,7 @@
 
             page.show('/startup/selectserver.html');
         });
+        addPreLoginClock(element);
     }
 
     function onConnectLoginLoad(element) {
@@ -122,6 +141,7 @@
                 });
             });
         });
+        addPreLoginClock(element);
     }
 
     function signIntoConnect(view) {
@@ -149,6 +169,7 @@
 
             });
         });
+        addPreLoginClock(element);
     }
 
     function handleConnectionResult(result) {
@@ -197,25 +218,387 @@
         }
     }
 
+    function onLoginLoad(element) {
+
+        element.querySelector('.loginTemplate').items = [
+            {
+                name: 'test'
+            },
+            {
+                name: 'test1'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            },
+            {
+                name: 'test2'
+            }];
+
+        addPreLoginClock(element);
+    }
+
     document.addEventListener("viewshow", function (e) {
 
         var element = e.detail.element;
 
         if (e.detail.id == 'welcome') {
             onWelcomeLoad(element);
-        }
-
-        else if (e.detail.id == 'connectlogin') {
+        } else if (e.detail.id == 'connectlogin') {
             onConnectLoginLoad(element);
-        }
-
-        else if (e.detail.id == 'manualserver') {
+        } else if (e.detail.id == 'manualserver') {
             onManualServerLoad(element);
-        }
-
-        else if (e.detail.id == 'manuallogin') {
+        } else if (e.detail.id == 'manuallogin') {
             onManualLoginLoad(element);
+        } else if (e.detail.id == 'login') {
+            onLoginLoad(element);
         }
-    })
+    });
+
+    document.addEventListener("viewhide", stopClockInterval);
 
 })(document);

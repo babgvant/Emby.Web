@@ -1,5 +1,10 @@
 <div class="preLoginHeader">
     <div class="logo"></div>
+    <template class="clock" bind="{{ clock }}">
+        <div class="clockContent">
+            <h2>[[shortTimeString]]</h2>
+        </div>
+    </template>
 </div>
 <div class="preLoginContent">
     <h1>${HeaderWelcomeToEmby}</h1>
