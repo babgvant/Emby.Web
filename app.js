@@ -72,7 +72,7 @@
 
     function definePluginRoutes() {
 
-        var plugins = PluginManager.plugins();
+        var plugins = Emby.PluginManager.plugins();
 
         for (var i = 0, length = plugins.length; i < length; i++) {
 
@@ -105,6 +105,18 @@
 
         define('currentServer', [], function () {
             return connectionManager.getLastUsedServer();
+        });
+
+        define('currentLoggedInServer', [], function () {
+            var server = connectionManager.getLastUsedServer();
+
+            if (server) {
+                if (server.UserId && server.AccessToken) {
+                    return server;
+                }
+            }
+
+            return null;
         });
     }
 
@@ -156,7 +168,12 @@
           'js/thememanager',
           'js/elements',
           'js/focusmanager',
+          'js/inputmanager',
+          'js/screensavermanager',
+          'js/playbackmanager',
+
           'bower_components/keylime/keylime',
+
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',
@@ -213,7 +230,8 @@
         return new Promise(function (resolve, reject) {
 
             var list = [
-                'plugins/defaulttheme/plugin.js'
+                'plugins/defaulttheme/plugin.js',
+                'plugins/logoscreensaver/plugin.js'
             ];
 
             require(list, function () {
@@ -353,22 +371,40 @@
         }
     }
 
-    document.addEventListener('keydown', function (evt) {
+    //document.addEventListener('keydown', function (evt) {
 
-        var key = evt.key.replace(/^Arrow/, '');
+    //    var key = evt.key.replace(/^Arrow/, '');
 
-        switch (key) {
-            case 'Left':
-            case 'Right':
-            case 'Up':
-            case 'Down':
+    //    switch (key) {
+    //        case 'Left':
+    //        case 'Right':
+    //        case 'Up':
+    //        case 'Down':
 
-                evt.preventDefault();
-                evt.stopPropagation();
+    //            evt.preventDefault();
+    //            evt.stopPropagation();
 
-                moveKeyFocus(key.toLowerCase());
-                break;
+    //            moveKeyFocus(key.toLowerCase());
+    //            break;
+    //    }
+    //}, true);
+
+    var clock = {};
+
+    function updateClock() {
+        var templates = document.querySelectorAll('template.clock');
+
+        var now = new Date();
+
+        clock.shortTimeString = now.toLocaleTimeString();
+
+        for (var i = 0, length = templates.length; i < length; i++) {
+            templates[i].model = {
+                clock: clock
+            };
         }
-    }, true);
+    }
+    updateClock();
+    setInterval(updateClock, 5000);
 
 })(this);

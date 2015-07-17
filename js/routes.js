@@ -37,9 +37,9 @@
 
     function authenticate(ctx, next) {
 
-        require(['currentServer'], function (server) {
+        require(['currentLoggedInServer'], function (server) {
 
-            if (server && server.UserId && server.AccessToken) {
+            if (server) {
                 next();
                 return;
             }

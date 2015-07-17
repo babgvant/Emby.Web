@@ -6,10 +6,15 @@ html {
     background: linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
     background-color: white;
     font-weight: 400;
+	background: #efefef;
     color: #333;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+    .preLoginHeader .logo {
+        background-image: url(images/logo.png);
+    }
 
 .fieldDescription {
     color: #555;
