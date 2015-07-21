@@ -2,26 +2,8 @@
 
     function loadView(options) {
 
-        var pageContainer = document.querySelector('.pageContainer');
-
-        if (!pageContainer) {
-            alert('pageContainer is missing! The theme must render an element with className pageContainer');
-            return;
-        }
-
-        var animatedPages = pageContainer.querySelector('neon-animated-pages');
-        var delay = 0;
-
-        if (!animatedPages) {
-            animatedPages = document.createElement('neon-animated-pages');
-            animatedPages.innerHTML = '<neon-animatable></neon-animatable><neon-animatable></neon-animatable>';
-            pageContainer.appendChild(animatedPages);
-            delay = 3000;
-        }
-
-        setTimeout(function () {
-            loadViewInternal(animatedPages, options);
-        }, delay);
+        var animatedPages = document.querySelector('.mainAnimatedPages');
+        loadViewInternal(animatedPages, options);
     }
 
     function loadViewInternal(animatedPages, options) {
@@ -107,16 +89,22 @@
 
     function onShow(view) {
 
-        var myEvent = new CustomEvent("viewshow", {
-            detail: {
-                element: view,
-                id: view.getAttribute('data-id')
-            },
-            bubbles: true,
-            cancelable: false
-        });
+        require(['bower_components/query-string/index'], function() {
+            
+            var params = queryString.parse(window.location.search);
 
-        document.dispatchEvent(myEvent);
+            var myEvent = new CustomEvent("viewshow", {
+                detail: {
+                    element: view,
+                    id: view.getAttribute('data-id'),
+                    params: params
+                },
+                bubbles: true,
+                cancelable: false
+            });
+
+            document.dispatchEvent(myEvent);
+        });
     }
 
     if (!globalScope.Emby) {

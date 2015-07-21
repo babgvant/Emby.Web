@@ -18,6 +18,33 @@
         return name;
     }
 
+    function updateClock() {
+
+        var date = new Date();
+        var time = date.toLocaleTimeString().toLowerCase();
+
+        if (time.indexOf('am') != -1 || time.indexOf('pm') != -1) {
+
+            var hour = date.getHours() % 12;
+            var suffix = date.getHours() > 11 ? 'pm' : 'am';
+            if (!hour) {
+                hour = 12;
+            }
+            var minutes = date.getMinutes();
+
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            time = hour + ':' + minutes + suffix;
+        }
+
+        var clock = document.querySelector('.clock');
+
+        if (clock) {
+            clock.innerHTML = time;
+        }
+    }
+
     function theme() {
 
         var self = this;
@@ -27,6 +54,10 @@
         self.packageName = 'defaulttheme';
         self.getRoutes = getRoutes;
         self.getOuterClassName = getOuterClassName;
+
+        self.getAnonymousHeaderTemplate = function () {
+            return Emby.PluginManager.mapPath(self, 'anonymousheader.html');
+        };
 
         self.getDependencies = function () {
 
@@ -62,6 +93,20 @@
             });
 
             return files;
+        };
+
+        var clockInterval;
+        self.load = function () {
+            updateClock();
+            setInterval(updateClock, 50000);
+        };
+
+        self.unload = function () {
+
+            if (clockInterval) {
+                clearInterval(clockInterval);
+                clockInterval = null;
+            }
         };
     }
 

@@ -90,7 +90,6 @@
         }
 
         var credentialProvider = new MediaBrowser.CredentialProvider();
-        credentialProvider.clear();
 
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
@@ -122,9 +121,12 @@
 
     function initRequire() {
 
+        var urlArgs = "v=" + appInfo.version;
+        urlArgs = "t=" + new Date().getTime();
+
         var config = {
 
-            urlArgs: "v=" + appInfo.version,
+            urlArgs: urlArgs,
 
             paths: {
                 "velocity": "bower_components/velocity/velocity.min"
@@ -138,14 +140,9 @@
             }
         };
 
-        var baseRoute = window.location.pathname.replace('/index.html', '');
-        baseRoute = window.location.protocol + '//' + baseRoute;
+        var baseRoute = window.location.href.replace('/index.html', '');
 
-        if (window.location.protocol.indexOf('file') != -1) {
-            config.baseUrl = baseRoute;
-        } else {
-            config.baseUrl = 'http://mediabrowser.github.io/Emby.Web';
-        }
+        config.baseUrl = baseRoute;
 
         requirejs.config(config);
 
@@ -388,23 +385,5 @@
     //            break;
     //    }
     //}, true);
-
-    var clock = {};
-
-    function updateClock() {
-        var templates = document.querySelectorAll('template.clock');
-
-        var now = new Date();
-
-        clock.shortTimeString = now.toLocaleTimeString();
-
-        for (var i = 0, length = templates.length; i < length; i++) {
-            templates[i].model = {
-                clock: clock
-            };
-        }
-    }
-    updateClock();
-    setInterval(updateClock, 5000);
 
 })(this);

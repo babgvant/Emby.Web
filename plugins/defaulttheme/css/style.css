@@ -21,8 +21,8 @@ h2 {
 }
 
 .preLoginHeader {
-    padding: 1.5em 1.5em 0;
-	position: relative;
+    padding: 1.5em 1.5em;
+    position: relative;
 }
 
     .preLoginHeader .logo {
@@ -32,17 +32,17 @@ h2 {
         width: 198px;
         height: 60px;
     }
-	
-	.preLoginHeader .clockContent {
-		position: absolute;
-		top: 13px;
-		right: 1.5em;
-	}
+
+    .preLoginHeader .clock {
+        position: absolute;
+        top: 8px;
+        right: 1.25em;
+    }
 
 .preLoginContent {
     width: 70%;
     max-width: 800px;
-    margin: 40px auto 0;
+    margin: 20px auto 0;
 }
 
 .fieldDescription {
@@ -92,6 +92,7 @@ h2 {
     border-radius: 4px;
     background-color: #333;
     border: 3px solid #1c1c1c;
+    width: 320px;
 }
 
     .cardButton[focused] {
@@ -103,14 +104,17 @@ h2 {
         padding: 0 !important;
     }
 
-    .cardButton .cardImage {
-        height: 300px;
-        width: 300px;
+    .cardButton .cardImageContainer {
+        height: 320px;
         background-color: #38c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .cardButton .cardContent {
-        padding: 1em;
+        padding: 1em .3em;
+        overflow: hidden;
     }
 
 .cardText {
@@ -121,22 +125,14 @@ h2 {
         opacity: .7;
     }
 
-.Aligner {
-    height: auto;
-    min-height: 24em;
+.cardImage {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
 }
 
-.Aligner {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+.cardImageIcon {
+    width: 50% !important;
+    height: 50% !important;
 }

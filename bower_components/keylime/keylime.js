@@ -721,12 +721,18 @@ document.addEventListener('keydown', function (evt) {
  * Fan service: flash the buttons as they are pressed on a hardware keyboard
  */
 document.addEventListener('keypress', function (evt) {
+
     // Fix for Firefox to get the demo working
     if (evt.charCode === 0)
         return;
 
-    var s = String.fromCharCode(evt.keyCode).toLowerCase(),
-        e = imeCtr.querySelector('li[data-text="'+s+'"]');
+    var s = String.fromCharCode(evt.keyCode).toLowerCase().trim();
+
+    if (!s) {
+        return;
+    }
+
+    var e = imeCtr.querySelector('li[data-text="'+s+'"]');
 
     if (e) {
         newFocus(e);

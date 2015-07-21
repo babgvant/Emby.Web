@@ -1,22 +1,25 @@
-<div class="preLoginHeader">
-    <div class="logo"></div>
-</div>
-<div class="preLoginContent Aligner" style="max-width:none;width:100%;margin:0 0 0;position:fixed;top:100px;right:0;left:0;bottom:100px;">
+<div class="preLoginContent" style="max-width:none;width:100%;margin-top:3%;">
 
-    <div style="flex: 1;">
-        <h1 style="text-align: center;">${HeaderPleaseSignIn}</h1>
-        <div class="scrollX">
-            <template is="dom-repeat" items="{{items}}" class="loginTemplate">
-                <paper-button raised class="cardButton">
-                    <div class="cardImage">
+    <h1 style="text-align: center;">${HeaderPleaseSignIn}</h1>
+    <div class="scrollX" style="text-align:center;">
+        <template is="dom-repeat" items="{{items}}" class="loginTemplate">
+            <paper-button raised class="cardButton" autofocus>
+                <div class="cardImageContainer">
 
-                    </div>
-                    <div class="cardContent">
-                        <div class="cardText">[[item.name]]</div>
-                        <div class="cardText dim">Last active never</div>
-                    </div>
-                </paper-button>
-            </template>
-        </div>
+                    <template is="dom-if" if="{{item.showIcon}}">
+                        <iron-icon class="cardImageIcon" icon="person"></iron-icon>
+                    </template>
+                    <template is="dom-if" if="{{item.showImage}}">
+                        <div class="cardImage" style$="{{item.style}}">
+
+                        </div>
+                    </template>
+                </div>
+                <div class="cardContent">
+                    <div class="cardText">[[item.name]]</div>
+                    <div class="cardText dim">[[item.lastActive]]</div>
+                </div>
+            </paper-button>
+        </template>
     </div>
 </div>
