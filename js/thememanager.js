@@ -21,12 +21,46 @@
                 translations: translations
 
             }).then(function () {
+                loadThemeHeader(theme, callback);
+            });
+        });
+    }
 
-                document.documentElement.className = theme.getOuterClassName();
+    function loadThemeHeader(theme, callback) {
 
-                //document.querySelector('.themeContent').innerHTML = theme.getPageContent();
-                currentTheme = theme;
-                callback();
+        getThemeHeader(theme).then(function (headerHtml) {
+
+            document.querySelector('.header').innerHTML = headerHtml;
+
+            document.documentElement.className = theme.getOuterClassName();
+
+            //document.querySelector('.themeContent').innerHTML = theme.getPageContent();
+            currentTheme = theme;
+            theme.load();
+            callback();
+        });
+    }
+
+    function getThemeHeader(theme) {
+
+        return new Promise(function (resolve, reject) {
+
+            if (!theme.getAnonymousHeaderTemplate) {
+                resolve('');
+                return;
+            }
+
+            HttpClient.send({
+
+                url: theme.getAnonymousHeaderTemplate(),
+                type: 'GET',
+                dataType: 'html'
+
+            }).done(function (html) {
+                resolve(html);
+
+            }).fail(function () {
+                resolve('');
             });
         });
     }
