@@ -1,0 +1,128 @@
+.card {
+    text-transform: none;
+    background-color: transparent;
+    margin: 8px;
+    float: left;
+}
+
+    .card paper-material {
+    }
+
+.cardScalable {
+    position: relative;
+}
+
+.backdropCard .cardPadder, .smallBackdropCard .cardPadder, .overflowBackdropCard .cardPadder {
+    padding-bottom: 56.25%;
+}
+
+.squareCard .cardPadder, .overflowSquareCard .cardPadder {
+    padding-bottom: 100%;
+}
+
+.letterBoxCard .cardPadder {
+    padding-bottom: 75%;
+}
+
+.portraitCard .cardPadder, .overflowPortraitCard .cardPadder {
+    padding-bottom: 150%;
+}
+
+.bannerCard .cardPadder {
+    padding-bottom: 18.5%;
+}
+
+.cardContent {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* Needed to keep the cardOverlayTarget from showing outside the bounds while it animates */
+    overflow: hidden;
+}
+
+.card paper-ripple {
+    /* Just give it a value to ensure it will be visible over the content */
+    z-index: 1;
+}
+
+.card[focused] {
+    -webkit-box-shadow: #fff 0px 0px 12px 5px;
+}
+
+.card:hover {
+    -webkit-box-shadow: #fff 0px 0px 12px 5px;
+}
+
+.card paper-material {
+    padding: 0 !important;
+}
+
+.cardImageContainer {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    width: 100%;
+    height: 100%;
+    background-color: #38c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardFooter {
+    padding: 1em .25em;
+}
+
+.cardText {
+    padding: .25em;
+    white-space: nowrap;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+}
+
+.cardImageIcon {
+    width: 50% !important;
+    height: 50% !important;
+    color: #fff;
+}
+
+/* Square */
+.squareCard {
+    width: 50%;
+}
+
+@media all and (min-width: 900px) {
+
+    .squareCard {
+        width: 33.3%;
+    }
+}
+
+@media all and (min-width: 1200px) {
+
+    .squareCard {
+        width: 25%;
+    }
+}
+
+
+@media all and (min-width: 1600px) {
+
+    .squareCard {
+        width: 20%;
+    }
+}
+
+@media all and (min-width: 1920px) {
+
+    .squareCard {
+        width: 14.285714285714285714285714285714%;
+    }
+}

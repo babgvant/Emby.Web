@@ -52,3 +52,19 @@ paper-material.card {
     paper-material[elevation="2"] {
         box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.86), 0 1px 10px 0 rgba(0, 0, 0, 0.88), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
     }
+
+.cardFooter {
+    background-color: #333;
+}
+
+.scrollbar .handle {
+    background: #888;
+}
+
+.cardText {
+    color: #fff;
+}
+
+    .cardText.dim {
+        color: #aaa;
+    }

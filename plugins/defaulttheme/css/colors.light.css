@@ -1,20 +1,20 @@
 html {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e6e6e6), color-stop(10%, #ffffff), color-stop(90%, #ffffff), color-stop(100%, #e6e6e6));
-    background: -webkit-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
-    background: -moz-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
-    background: -o-linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
-    background: linear-gradient(#e6e6e6,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaeaea), color-stop(10%, #ffffff), color-stop(90%, #ffffff), color-stop(100%, #eaeaea));
+    background: -webkit-linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#eaeaea);
+    background: -moz-linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#e6e6e6);
+    background: -o-linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#eaeaea);
+    background: linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#eaeaea);
     background-color: white;
     font-weight: 400;
-	background: #efefef;
+    /*background: #fcfcfc;*/
     color: #333;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-    .preLoginHeader .logo {
-        background-image: url(images/logo.png);
-    }
+.preLoginHeader .logo {
+    background-image: url(images/logo.png);
+}
 
 .fieldDescription {
     color: #555;
@@ -48,3 +48,19 @@ paper-button {
             background: #52B54B;
             color: #fff;
         }
+
+.cardFooter {
+    background-color: #fff;
+}
+
+.scrollbar .handle {
+    background: #888;
+}
+
+.cardText {
+    color: #000;
+}
+
+    .cardText.dim {
+        color: #555;
+    }

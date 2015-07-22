@@ -63,6 +63,7 @@
 
             var files = [
                 'css!' + Emby.PluginManager.mapPath(self, 'css/style'),
+                'css!' + Emby.PluginManager.mapPath(self, 'css/card'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/paperstyles'),
                 'webcomponentsjs',
