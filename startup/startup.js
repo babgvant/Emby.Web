@@ -247,7 +247,7 @@
 
             Emby.elements.loading.hide();
 
-            require(["sly"], function (sly) {
+            require(["Sly"], function (Sly) {
 
                 var scrollFrame = view.querySelector('.scrollFrame');
 
@@ -274,7 +274,7 @@
                     dynamicHandle: 1,
                     clickBar: 1
                 };
-                var frame = new sly(scrollFrame, options).init();
+                var frame = new Sly(scrollFrame, options).init();
 
                 var keyframes = [
                  { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
