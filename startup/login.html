@@ -1,25 +1,35 @@
-<div class="preLoginContent" style="max-width:none;width:100%;margin-top:3%;">
+<div class="preLoginContent" style="max-width:none;width:100%;">
 
     <h1 style="text-align: center;">${HeaderPleaseSignIn}</h1>
-    <div class="scrollX" style="text-align:center;">
-        <template is="dom-repeat" items="{{items}}" class="loginTemplate">
-            <paper-button raised class="cardButton" autofocus>
-                <div class="cardImageContainer">
+    <div class="scrollbar scrollbarX">
+        <div class="handle"><div class="mousearea"></div></div>
+    </div>
+    <div class="scrollFrame scrollFrameX" style="white-space: nowrap;display:none;">
+        <div class="scrollSlider" style="text-align:center;">
+            <template is="dom-repeat" items="{{items}}" class="loginTemplate">
+                <paper-button raised class="card squareCard" style="width:300px;">
+                    <div class="cardScalable">
+                        <div class="cardPadder"></div>
+                        <div class="cardContent">
+                            <div class="cardImageContainer">
 
-                    <template is="dom-if" if="{{item.showIcon}}">
-                        <iron-icon class="cardImageIcon" icon="person"></iron-icon>
-                    </template>
-                    <template is="dom-if" if="{{item.showImage}}">
-                        <div class="cardImage" style$="{{item.style}}">
+                                <template is="dom-if" if="{{item.showIcon}}">
+                                    <iron-icon class="cardImageIcon" icon="person"></iron-icon>
+                                </template>
+                                <template is="dom-if" if="{{item.showImage}}">
+                                    <div class="cardImage" style$="{{item.style}}">
 
+                                    </div>
+                                </template>
+                            </div>
                         </div>
-                    </template>
-                </div>
-                <div class="cardContent">
-                    <div class="cardText">[[item.name]]</div>
-                    <div class="cardText dim">[[item.lastActive]]</div>
-                </div>
-            </paper-button>
-        </template>
+                    </div>
+                    <div class="cardFooter">
+                        <div class="cardText">[[item.name]]</div>
+                        <div class="cardText dim">[[item.lastActive]]</div>
+                    </div>
+                </paper-button>
+            </template>
+        </div>
     </div>
 </div>

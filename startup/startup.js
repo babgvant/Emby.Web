@@ -199,6 +199,8 @@
 
     function onLoginLoad(element, params) {
 
+        Emby.elements.loading.show();
+
         var serverId = params.serverid;
 
         require(['connectionManager'], function (connectionManager) {
@@ -206,23 +208,21 @@
             apiClient.getPublicUsers().done(function (result) {
 
                 renderLoginUsers(element, apiClient, result);
-                Emby.elements.loading.hide();
 
             }).fail(function (result) {
 
                 renderLoginUsers(element, apiClient, []);
-                Emby.elements.loading.hide();
             });
         });
     }
 
     function renderLoginUsers(view, apiClient, users) {
 
-        view.querySelector('.loginTemplate').items = users.map(function (user) {
+        var items = users.map(function (user) {
 
             var imgUrl = user.PrimaryImageTag ?
                 apiClient.getUserImageUrl(user.Id, {
-                    width: 300,
+                    width: 400,
                     tag: user.PrimaryImageTag,
                     type: "Primary"
                 }) :
@@ -236,6 +236,49 @@
                 style: "background-image:url('" + imgUrl + "');"
             };
 
+        });
+
+        view.querySelector('.loginTemplate').items = items;
+
+        require(["sly"], function () {
+
+            var scrollFrame = view.querySelector('.scrollFrame');
+
+            Emby.elements.loading.hide();
+            scrollFrame.style.display = 'block';
+
+            var options = {
+                horizontal: 1,
+                itemNav: 'forceCentered',
+                mouseDragging: 1,
+                touchDragging: 1,
+                slidee: view.querySelector('.scrollSlider'),
+                itemSelector: '.card',
+                activateOn: 'click focus',
+                smart: true,
+                easing: 'swing',
+                releaseSwing: true,
+                scrollBar: view.querySelector('.scrollbar'),
+                scrollBy: 1,
+                speed: 200,
+                moveBy: 600,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1
+            };
+            var frame = new Sly(scrollFrame, options).init();
+
+            var keyframes = [
+             { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
+             { opacity: '1', transform: 'none', offset: 1 }];
+                var timing = { duration: 900, iterations: 1 };
+                scrollFrame.animate(keyframes, timing);
+
+            //var keyframes = [{ transform: 'scale3d(.3, .3, .3)  ', opacity: '0', offset: 0 },
+            //  { transform: 'none', opacity: '1', offset: 1 }];
+            //var timing = { duration: 900, iterations: 1 };
+            //view.querySelector('.scrollFrame').animate(keyframes, timing).onfinish = onAnimationFinish;
         });
     }
 

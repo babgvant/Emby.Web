@@ -42,20 +42,17 @@
         require(['connectionManager'], function (connectionManager) {
             connectionManager.connect().done(function (result) {
 
-                Emby.elements.loading.hide();
-
                 switch (result.State) {
 
                     case MediaBrowser.ConnectionState.SignedIn:
                         {
                             Emby.ThemeManager.loadUserTheme();
+                            Emby.elements.loading.hide();
                         }
                         break;
                     case MediaBrowser.ConnectionState.ServerSignIn:
                         {
-                            Emby.elements.loading.show();
                             result.ApiClient.getPublicUsers().done(function (users) {
-                                Emby.elements.loading.hide();
 
                                 if (users.length) {
                                     page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
