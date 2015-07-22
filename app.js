@@ -152,7 +152,12 @@
         define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
         define("type", ["bower_components/type/dist/type"]);
         define('jquery', ["bower_components/jquery/dist/jquery.min"]);
-        define('sly', ['jquery', "bower_components/sly/dist/sly.min"]);
+
+        define("sly", ["jquery", "bower_components/sly/dist/sly.min"],
+            function (jquery, sly) {
+                return Sly;
+            }
+        );
     }
 
     function loadCoreDependencies(callback) {
