@@ -2,6 +2,8 @@
 
     function onWelcomeLoad(element) {
 
+        Emby.elements.loading.hide();
+
         element.querySelector('.btnWelcomeNext').addEventListener('click', function () {
 
             Emby.elements.loading.show();
