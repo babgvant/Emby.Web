@@ -154,7 +154,7 @@
         define('jquery', ["bower_components/jquery/dist/jquery.min"]);
 
         define("sly", ["jquery", "bower_components/sly/dist/sly.min"],
-            function (jquery, sly) {
+            function () {
                 return Sly;
             }
         );
