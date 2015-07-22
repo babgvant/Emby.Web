@@ -240,46 +240,48 @@
 
         view.querySelector('.loginTemplate').items = items;
 
-        require(["sly"], function () {
-
-            var scrollFrame = view.querySelector('.scrollFrame');
+        // TODO: Is there a better way to figure out the polymer elements have loaded besides a timeout?
+        setTimeout(function () {
 
             Emby.elements.loading.hide();
-            scrollFrame.style.display = 'block';
 
-            var options = {
-                horizontal: 1,
-                itemNav: 'forceCentered',
-                mouseDragging: 1,
-                touchDragging: 1,
-                slidee: view.querySelector('.scrollSlider'),
-                itemSelector: '.card',
-                activateOn: 'click focus',
-                smart: true,
-                easing: 'swing',
-                releaseSwing: true,
-                scrollBar: view.querySelector('.scrollbar'),
-                scrollBy: 1,
-                speed: 200,
-                moveBy: 600,
-                elasticBounds: 1,
-                dragHandle: 1,
-                dynamicHandle: 1,
-                clickBar: 1
-            };
-            var frame = new Sly(scrollFrame, options).init();
+            require(["sly"], function () {
 
-            var keyframes = [
-             { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
-             { opacity: '1', transform: 'none', offset: 1 }];
+                var scrollFrame = view.querySelector('.scrollFrame');
+
+                Emby.elements.loading.hide();
+                scrollFrame.style.display = 'block';
+
+                var options = {
+                    horizontal: 1,
+                    itemNav: 'forceCentered',
+                    mouseDragging: 1,
+                    touchDragging: 1,
+                    slidee: view.querySelector('.scrollSlider'),
+                    itemSelector: '.card',
+                    activateOn: 'click focus',
+                    smart: true,
+                    easing: 'swing',
+                    releaseSwing: true,
+                    scrollBar: view.querySelector('.scrollbar'),
+                    scrollBy: 1,
+                    speed: 200,
+                    moveBy: 600,
+                    elasticBounds: 1,
+                    dragHandle: 1,
+                    dynamicHandle: 1,
+                    clickBar: 1
+                };
+                var frame = new Sly(scrollFrame, options).init();
+
+                var keyframes = [
+                 { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
+                 { opacity: '1', transform: 'none', offset: 1 }];
                 var timing = { duration: 900, iterations: 1 };
                 scrollFrame.animate(keyframes, timing);
+            });
 
-            //var keyframes = [{ transform: 'scale3d(.3, .3, .3)  ', opacity: '0', offset: 0 },
-            //  { transform: 'none', opacity: '1', offset: 1 }];
-            //var timing = { duration: 900, iterations: 1 };
-            //view.querySelector('.scrollFrame').animate(keyframes, timing).onfinish = onAnimationFinish;
-        });
+        }, 500);
     }
 
     function getLastActiveText(user) {
@@ -337,7 +339,7 @@
         ];
 
         var dt = new Date;
-        var date = parseISO8601Date(date_str, { toLocal: true });
+        var date = parseISO8601Date(date_str);
 
         var seconds = ((dt - date) / 1000);
         var token = ' ago';
@@ -366,9 +368,7 @@
         return date_str;
     }
 
-    function parseISO8601Date(s, options) {
-
-        options = options || {};
+    function parseISO8601Date(s, toLocal) {
 
         // parenthese matches:
         // year month day    hours minutes seconds
@@ -418,7 +418,7 @@
             } else {
                 ms += offset;
             }
-        } else if (!options.toLocal) {
+        } else if (toLocal === false) {
             ms += new Date().getTimezoneOffset() * 60000;
         }
 
