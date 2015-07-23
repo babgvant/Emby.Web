@@ -64,3 +64,16 @@ paper-button {
     .cardText.dim {
         color: #555;
     }
+
+
+.card[data-cardtype='embyconnect'] .cardImageContainer {
+    background-color: #52B54B;
+}
+
+.card[data-cardtype='manuallogin'] .cardImageContainer {
+    background-color: #444;
+}
+
+.card[data-cardtype='changeserver'] .cardImageContainer {
+    background-color: #444;
+}

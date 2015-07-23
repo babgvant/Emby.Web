@@ -5,13 +5,13 @@
     background: linear-gradient(#000000, #333); /* Standard syntax */
     background-repeat: no-repeat;
     background-attachment: fixed;
-	background: #1c1c1c;
+    background: #1c1c1c;
     color: #fff;
 }
 
-    .preLoginHeader .logo {
-        background-image: url(images/logowhite.png);
-    }
+.preLoginHeader .logo {
+    background-image: url(images/logowhite.png);
+}
 
 .fieldDescription {
     color: #ccc;
@@ -45,13 +45,13 @@ paper-material.card {
     background: #000;
 }
 
-    paper-material[elevation="1"] {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.86), 0 1px 5px 0 rgba(0, 0, 0, 0.88), 0 3px 1px -2px rgba(0, 0, 0, 0.8);
-    }
+paper-material[elevation="1"] {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.86), 0 1px 5px 0 rgba(0, 0, 0, 0.88), 0 3px 1px -2px rgba(0, 0, 0, 0.8);
+}
 
-    paper-material[elevation="2"] {
-        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.86), 0 1px 10px 0 rgba(0, 0, 0, 0.88), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
-    }
+paper-material[elevation="2"] {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.86), 0 1px 10px 0 rgba(0, 0, 0, 0.88), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
+}
 
 .cardFooter {
     background-color: #333;
@@ -68,3 +68,15 @@ paper-material.card {
     .cardText.dim {
         color: #aaa;
     }
+
+.card[data-cardtype='embyconnect'] .cardImageContainer {
+    background-color: #52B54B;
+}
+
+.card[data-cardtype='manuallogin'] .cardImageContainer {
+    background-color: #444;
+}
+
+.card[data-cardtype='changeserver'] .cardImageContainer {
+    background-color: #444;
+}
