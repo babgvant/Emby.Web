@@ -48,11 +48,11 @@
 }
 
 .card[focused] {
-    -webkit-box-shadow: #fff 0px 0px 12px 5px;
+    -webkit-box-shadow: #fff 0px 0px 6px 5px;
 }
 
 .card:hover {
-    -webkit-box-shadow: #fff 0px 0px 12px 5px;
+    -webkit-box-shadow: #fff 0px 0px 6px 5px;
 }
 
 .card paper-material {

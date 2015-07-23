@@ -234,10 +234,43 @@
                 name: user.Name,
                 showIcon: !imgUrl,
                 showImage: imgUrl,
+                icon: 'person',
                 lastActive: getLastActiveText(user),
-                style: "background-image:url('" + imgUrl + "');"
+                cardImageStyle: "background-image:url('" + imgUrl + "');",
+                cardType: '',
+                hasLastActive: true
             };
 
+        });
+
+        items.push({
+            name: Globalize.translate('ButtonManualLogin'),
+            showIcon: true,
+            showImage: false,
+            icon: 'lock',
+            cardImageStyle: '',
+            cardType: 'manuallogin',
+            defaultText: true
+        });
+
+        items.push({
+            name: Globalize.translate('HeaderSignInWithConnect'),
+            showIcon: true,
+            showImage: false,
+            icon: 'cloud',
+            cardImageStyle: '',
+            cardType: 'embyconnect',
+            defaultText: true
+        });
+
+        items.push({
+            name: Globalize.translate('ButtonChangeServer'),
+            showIcon: true,
+            showImage: false,
+            icon: 'cast',
+            cardImageStyle: '',
+            cardType: 'changeserver',
+            defaultText: true
         });
 
         view.querySelector('.loginTemplate').items = items;
@@ -267,7 +300,7 @@
                     releaseSwing: true,
                     scrollBar: view.querySelector('.scrollbar'),
                     scrollBy: 1,
-                    speed: 200,
+                    speed: 600,
                     moveBy: 600,
                     elasticBounds: 1,
                     dragHandle: 1,
@@ -279,8 +312,11 @@
                 var keyframes = [
                  { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
                  { opacity: '1', transform: 'none', offset: 1 }];
-                var timing = { duration: 900, iterations: 1 };
-                scrollFrame.animate(keyframes, timing);
+
+                scrollFrame.animate(keyframes, {
+                    duration: 900,
+                    iterations: 1
+                });
             });
 
         }, 500);
