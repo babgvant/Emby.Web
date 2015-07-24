@@ -1,4 +1,4 @@
-define(['html!/bower_components/paper-dialog/paper-dialog', 'html!/bower_components/neon-animation/animations/fade-in-animation.html', 'html!/bower_components/neon-animation/animations/fade-out-animation.html'], function () {
+define(['html!bower_components/paper-dialog/paper-dialog', 'html!bower_components/neon-animation/animations/fade-in-animation.html', 'html!bower_components/neon-animation/animations/fade-out-animation.html'], function () {
 
     return function (options) {
 
