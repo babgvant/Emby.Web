@@ -21,7 +21,7 @@
     function defineCoreRoutes() {
 
         var baseRoute = window.location.pathname.replace('/index.html', '');
-        //baseRoute = window.location.protocol + '//' + baseRoute;
+
         page.base(baseRoute);
 
         page('*', RouteManager.ctx);
