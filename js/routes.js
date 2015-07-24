@@ -118,7 +118,11 @@
         //next();
     }
 
+    var baseRoute = window.location.href.replace('/index.html', '');
+
     function loadContentUrl(ctx, next, url, id, routeUrl) {
+
+        url = baseRoute + '/' + url;
 
         HttpClient.send({
 
