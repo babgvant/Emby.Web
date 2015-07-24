@@ -29,49 +29,47 @@
 
         page.base(baseRoute);
 
-        page('*', RouteManager.ctx);
-        page('*', RouteManager.authenticate);
-
         defineRoute({
             path: '/startup/login.html',
             id: 'login',
-            content: 'login.html',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/manuallogin.html',
             id: 'manuallogin',
-            content: 'manuallogin.html',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/welcome.html',
             id: 'welcome',
-            content: 'welcome.html',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/connectlogin.html',
             id: 'connectlogin',
-            content: 'connectlogin.html',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/manualserver.html',
             id: 'manualserver',
-            content: 'manualserver.html',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/selectserver.html',
             id: 'selectserver',
-            content: 'selectserver.html',
             dependencies: ['startup/startup']
+        });
+
+        defineRoute({
+            path: '/index.html',
+            id: 'index',
+            isDefaultRoute: true,
+            dependencies: []
         });
     }
 
