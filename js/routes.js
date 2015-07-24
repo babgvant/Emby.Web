@@ -85,26 +85,37 @@
         require(['connectionManager'], function (connectionManager) {
 
             var server = connectionManager.currentLoggedInServer();
+            var pathname = ctx.pathname.toLowerCase();
+
+            Logger.log('RouteManager - processing path request ' + pathname);
 
             if (server) {
 
-                var pathname = ctx.pathname.toLowerCase();
+                Logger.log('RouteManager - user is authenticated');
+
                 if (pathname.indexOf('/') == 0) {
                     pathname = pathname.substring(1);
                 }
 
                 if (pathname == 'index.html') {
+                    Logger.log('RouteManager - loading theme home page');
                     Emby.ThemeManager.loadUserTheme();
                 } else {
+                    Logger.log('RouteManager - next()');
                     next();
                 }
                 return;
             }
+
+            Logger.log('RouteManager - user is not authenticated');
+
             if (!allowAnonymous(ctx)) {
 
+                Logger.log('RouteManager - route does not allow anonymous access, redirecting to login');
                 redirectToLogin();
             }
             else {
+                Logger.log('RouteManager - proceeding to ' + pathname);
                 next();
             }
         });
