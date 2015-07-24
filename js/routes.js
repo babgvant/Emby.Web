@@ -88,7 +88,12 @@
 
             if (server) {
 
-                if (ctx.pathname.toLowerCase() == '/index.html') {
+                var pathname = ctx.pathname.toLowerCase();
+                if (pathname.indexOf('/') == 0) {
+                    pathname = pathname.substring(1);
+                }
+
+                if (pathname == 'index.html') {
                     Emby.ThemeManager.loadUserTheme();
                 } else {
                     next();
