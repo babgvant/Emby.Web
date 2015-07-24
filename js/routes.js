@@ -37,17 +37,18 @@
 
     function redirectToLogin(ctx, next) {
 
-        Emby.elements.loading.show();
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
-        require(['connectionManager'], function (connectionManager) {
+            loading.show();
+
             connectionManager.connect().done(function (result) {
 
                 switch (result.State) {
 
                     case MediaBrowser.ConnectionState.SignedIn:
                         {
+                            loading.hide();
                             Emby.ThemeManager.loadUserTheme();
-                            Emby.elements.loading.hide();
                         }
                         break;
                     case MediaBrowser.ConnectionState.ServerSignIn:
@@ -84,7 +85,7 @@
         require(['currentLoggedInServer'], function (server) {
 
             if (server) {
-                
+
                 if (ctx.path.toLowerCase() == '/index.html') {
                     Emby.ThemeManager.loadUserTheme();
                 } else {

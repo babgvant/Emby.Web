@@ -93,7 +93,7 @@
             
             var params = queryString.parse(window.location.search);
 
-            var myEvent = new CustomEvent("viewshow", {
+            document.dispatchEvent(new CustomEvent("viewshow-" + view.getAttribute('data-id'), {
                 detail: {
                     element: view,
                     id: view.getAttribute('data-id'),
@@ -101,9 +101,17 @@
                 },
                 bubbles: true,
                 cancelable: false
-            });
+            }));
 
-            document.dispatchEvent(myEvent);
+            document.dispatchEvent(new CustomEvent("viewshow", {
+                detail: {
+                    element: view,
+                    id: view.getAttribute('data-id'),
+                    params: params
+                },
+                bubbles: true,
+                cancelable: false
+            }));
         });
     }
 

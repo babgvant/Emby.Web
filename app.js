@@ -90,7 +90,7 @@
         }
 
         var credentialProvider = new MediaBrowser.CredentialProvider();
-
+        //credentialProvider.clear();
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
         Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
@@ -121,6 +121,13 @@
 
     function initRequire() {
 
+        var paths = {
+            alert: "components/polymer/alert",
+            confirm: "components/polymer/confirm",
+            toast: "components/polymer/toast",
+            loading: "components/polymer/loading"
+        };
+
         var urlArgs = "v=" + appInfo.version;
         urlArgs = "t=" + new Date().getTime();
 
@@ -128,14 +135,11 @@
 
             urlArgs: urlArgs,
 
-            paths: {
-                "velocity": "bower_components/velocity/velocity.min"
-            },
-
+            paths: paths,
             map: {
                 '*': {
-                    'css': 'js/requirecss',
-                    'html': 'js/requirehtml'
+                    'css': 'js/require/requirecss',
+                    'html': 'js/require/requirehtml'
                 }
             },
             shim: {
@@ -161,7 +165,7 @@
         define("wakeonlan", ["apiclient/wakeonlan"]);
         define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
         define("type", ["bower_components/type/dist/type"]);
-        define("Sly", ["bower_components/sly/dist/sly.min"], function() {
+        define("Sly", ["bower_components/sly/dist/sly.min"], function () {
             return window.Sly;
         });
     }
@@ -171,12 +175,11 @@
         var list = [
           'bower_components/page.js/page.js',
           'bower_components/bean/bean.min',
-          'js/objects',
+          'js/pluginmanager',
           'js/routes',
           'js/viewmanager',
           'js/globalize',
           'js/thememanager',
-          'js/elements',
           'js/focusmanager',
           'js/inputmanager',
           'js/screensavermanager',
@@ -196,8 +199,6 @@
           'apiclient/apiclient',
           'apiclient/connectionmanager'
         ];
-
-        list.push('js/defaultelements');
 
         if (!globalScope.Promise) {
             list.push('bower_components/native-promise-only/lib/npo.src');

@@ -20,12 +20,12 @@ h2 {
     font-weight: 400;
 }
 
-.preLoginHeader {
+.header {
     padding: 1.5em 1.5em 1.5em 1em;
     position: relative;
 }
 
-    .preLoginHeader .logo {
+    .header .logo {
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -35,7 +35,7 @@ h2 {
         vertical-align: middle;
     }
 
-    .preLoginHeader .backButtonContainer {
+    .header .backButtonContainer {
         display: inline-block;
         vertical-align: middle;
         margin-right: .5em;
@@ -46,7 +46,7 @@ h2 {
     height: 40px;
 }
 
-.preLoginHeader .clock {
+.header .clock {
     position: absolute;
     top: 8px;
     right: 1.25em;
