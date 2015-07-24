@@ -1,9 +1,5 @@
 (function (document, window) {
 
-    function ctx(ctx, next) {
-        next();
-    }
-
     function allowAnonymous(ctx) {
 
         var path = ctx.pathname;
@@ -80,7 +76,29 @@
         });
     }
 
-    function authenticate(ctx, next) {
+    function handleRoute(ctx, next, route) {
+
+        authenticate(ctx, route, function () {
+            require(route.dependencies || [], function () {
+
+                var url = window.location.href;
+
+                if (Emby.ViewManager.tryRestoreView(url)) {
+                    // done
+                }
+                else if (typeof route.path === 'string') {
+
+                    loadContentUrl(ctx, next, route.path, route.id, url);
+
+                } else {
+                    // ? TODO
+                    next();
+                }
+            });
+        });
+    }
+
+    function authenticate(ctx, route, callback) {
 
         require(['connectionManager'], function (connectionManager) {
 
@@ -93,16 +111,12 @@
 
                 Logger.log('RouteManager - user is authenticated');
 
-                if (pathname.indexOf('/') == 0) {
-                    pathname = pathname.substring(1);
-                }
-
-                if (pathname == 'index.html') {
+                if (route.isDefaultRoute) {
                     Logger.log('RouteManager - loading theme home page');
                     Emby.ThemeManager.loadUserTheme();
                 } else {
                     Logger.log('RouteManager - next()');
-                    next();
+                    callback();
                 }
                 return;
             }
@@ -116,7 +130,7 @@
             }
             else {
                 Logger.log('RouteManager - proceeding to ' + pathname);
-                next();
+                callback();
             }
         });
     }
@@ -159,23 +173,7 @@
 
     function getHandler(route) {
         return function (ctx, next) {
-
-            require(route.dependencies || [], function () {
-
-                var url = window.location.href;
-
-                if (Emby.ViewManager.tryRestoreView(url)) {
-                    // done
-                }
-                else if (typeof route.path === 'string') {
-
-                    loadContentUrl(ctx, next, route.path, route.id, url);
-
-                } else {
-                    // ? TODO
-                    next();
-                }
-            });
+            handleRoute(ctx, next, route);
         };
     }
 
@@ -215,9 +213,7 @@
     }
 
     window.RouteManager = {
-        authenticate: authenticate,
         getHandler: getHandler,
-        ctx: ctx,
         param: param,
         back: back
     };
