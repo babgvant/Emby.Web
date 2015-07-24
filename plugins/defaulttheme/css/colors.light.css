@@ -12,7 +12,7 @@ html {
     background-attachment: fixed;
 }
 
-.preLoginHeader .logo {
+.header .logo {
     background-image: url(images/logo.png);
 }
 

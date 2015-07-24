@@ -33,16 +33,16 @@ var
 
     // Didn't seem worth having a separate file for the default styles, so here they are
     cssRules = [
-        '.lime-container { background-color: #CBCCD3; position: fixed; bottom: 0; left: 0; right: 0; color: #000; z-index:1000000; font-family: Roboto, sans-serif; padding: .5em; }',
+        '.lime-container { background-color: #000; position: fixed; bottom: 0; left: 0; right: 0; color: #fff; z-index:1000000; font-family: Roboto, sans-serif; padding: .5em; }',
         '.lime-container-dim::before { position: absolute; content: ""; top: 0; left: 0; right: 0; bottom: 0; background-color: #000; opacity: 0.5; }',
         '.lime-key-row { list-style-type: none; clear: both; text-align: center; padding: 0; margin: 0; font-size: 28px; }',
         '.lime-diacritics-row { position: absolute; z-index: 2; overflow: hidden; -webkit-transition: width 400ms; transition: width 400ms; white-space: nowrap; }',
-        '.lime-key { vertical-align: top; display: inline-block; border: 3px solid #CBCCD3; background-color: #fff; width: 66px; line-height: 50px; -webkit-transition: all 400ms linear; transition: all 400ms linear; border-radius: 7px; }',
+        '.lime-key { vertical-align: top; display: inline-block; border: 3px solid #000; background-color: #333; width: 70px; line-height: 54px; -webkit-transition: all 400ms linear; transition: all 400ms linear; border-radius: 5px; }',
 
         '.lime-key[data-text]::before { content: attr(data-text) }',
         '.lime-container.symbol-toggle .lime-key[data-symbol]::before { content: attr(data-symbol) }',
         '.lime-container.shift-toggle .lime-key[data-text]:not(.lime-http):not(.lime-dotcom):not(.lime-wwwdot)::before { text-transform: uppercase; }',
-        '.lime-special-key { background-color: #A1A4B3; color: #000; }',
+        '.lime-special-key { background-color: #222; color: #ccc; }',
         '.lime-return { background:#017AFD;color: #fff; width: 138px; }',
         '.lime-focus { background-color: #E91E63; color: #fff; }',
         '.lime-toggle { background-color: #2f2; color: #fff; position: relative; }',

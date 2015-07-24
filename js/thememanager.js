@@ -30,7 +30,7 @@
 
         getThemeHeader(theme).then(function (headerHtml) {
 
-            document.querySelector('.header').innerHTML = headerHtml;
+            document.querySelector('.mainHeader').innerHTML = headerHtml;
 
             document.documentElement.className = theme.getOuterClassName();
 
