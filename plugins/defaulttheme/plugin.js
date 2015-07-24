@@ -94,7 +94,7 @@
             var routes = [];
 
             routes.push({
-                path: Emby.PluginManager.mapPath(self, 'home.html'),
+                path: '/'+Emby.PluginManager.mapPath(self, 'home.html'),
                 id: 'defaulttheme-home',
                 type: 'home',
                 dependencies: []

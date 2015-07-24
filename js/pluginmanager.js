@@ -27,7 +27,7 @@
 
         self.mapPath = function (plugin, path) {
 
-            return '/plugins/' + plugin.packageName + '/' + path;
+            return 'plugins/' + plugin.packageName + '/' + path;
 
         }
     }
