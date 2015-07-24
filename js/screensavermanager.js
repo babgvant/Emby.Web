@@ -10,7 +10,9 @@
 
         var screensavers = Emby.PluginManager.ofType('screensaver');
 
-        require(['currentLoggedInServer'], function (server) {
+        require(['connectionManager'], function (connectionManager) {
+
+            var server = connectionManager.currentLoggedInServer();
 
             screensavers = screensavers.filter(function (screensaver) {
 

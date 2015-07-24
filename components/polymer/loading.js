@@ -1,4 +1,4 @@
-define(['html!bower_components/paper-spinner/paper-spinner'], function () {
+define(['html!/bower_components/paper-spinner/paper-spinner'], function () {
 
     return {
         show: function () {
