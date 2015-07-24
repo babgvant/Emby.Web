@@ -1,14 +1,5 @@
 (function () {
 
-    function getRoutes() {
-
-        // Routes, relative to the current directory. The app will handle normalizing the full path
-
-        var routes = [];
-
-        return routes;
-    }
-
     function getOuterClassName() {
 
         var name = 'defaultTheme';
@@ -52,7 +43,6 @@
         self.name = 'Default Theme';
         self.type = 'theme';
         self.packageName = 'defaulttheme';
-        self.getRoutes = getRoutes;
         self.getOuterClassName = getOuterClassName;
 
         self.getAnonymousHeaderTemplate = function () {
@@ -71,6 +61,7 @@
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapPath(self, 'icons.html'),
                 'html!bower_components/paper-button/paper-button.html',
+                'html!bower_components/paper-icon-button/paper-icon-button.html',
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/iron-list/iron-list.html',
                 'html!bower_components/paper-material/paper-material.html',
@@ -94,6 +85,21 @@
             });
 
             return files;
+        };
+
+        self.getRoutes = function () {
+            // Routes, relative to the current directory. The app will handle normalizing the full path
+
+            var routes = [];
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'home.html'),
+                id: 'defaulttheme-home',
+                type: 'home',
+                dependencies: []
+            });
+
+            return routes;
         };
 
         var clockInterval;

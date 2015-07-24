@@ -21,8 +21,16 @@
 
     function onManualLoginLoad(element, params) {
 
-        element.querySelector('.txtUserName').value = '';
+        var serverId = params.serverid;
+
+        element.querySelector('.txtUserName').value = params.user || '';
         element.querySelector('.txtPassword').value = '';
+
+        if (params.user) {
+            Emby.FocusManager.focus(element.querySelector('.txtPassword'));
+        } else {
+            Emby.FocusManager.focus(element.querySelector('.txtUserName'));
+        }
 
         element.querySelector('form').addEventListener('submit', function (e) {
 
@@ -31,23 +39,8 @@
             var username = this.querySelector('.txtUserName').value;
             var password = this.querySelector('.txtPassword').value;
 
-            var serverId = params.serverid;
-
             require(['connectionManager'], function (connectionManager) {
-                connectionManager.getApiClient(serverId).authenticateUserByName(username, password).done(function (result) {
-
-                    Emby.elements.loading.hide();
-
-                    Emby.ThemeManager.loadUserTheme();
-
-                }).fail(function (result) {
-
-                    Emby.elements.loading.hide();
-
-                    Emby.elements.alert({
-                        text: Globalize.translate('MessageInvalidUser')
-                    });
-                });
+                authenticateUser(connectionManager.getApiClient(serverId), username, password);
             });
 
             e.preventDefault();
@@ -153,13 +146,17 @@
         });
     }
 
+    function onServerUserSignedIn() {
+        Emby.ThemeManager.loadUserTheme();
+    }
+
     function handleConnectionResult(result) {
 
         switch (result.State) {
 
             case MediaBrowser.ConnectionState.SignedIn:
                 {
-                    Emby.ThemeManager.loadUserTheme();
+                    onServerUserSignedIn();
                 }
                 break;
             case MediaBrowser.ConnectionState.ServerSignIn:
@@ -209,16 +206,16 @@
             var apiClient = connectionManager.getApiClient(serverId);
             apiClient.getPublicUsers().done(function (result) {
 
-                renderLoginUsers(element, apiClient, result);
+                renderLoginUsers(element, apiClient, result, serverId);
 
             }).fail(function (result) {
 
-                renderLoginUsers(element, apiClient, []);
+                renderLoginUsers(element, apiClient, [], serverId);
             });
         });
     }
 
-    function renderLoginUsers(view, apiClient, users) {
+    function renderLoginUsers(view, apiClient, users, serverId) {
 
         var items = users.map(function (user) {
 
@@ -230,6 +227,10 @@
                 }) :
                 '';
 
+            var url = user.HasPassword ?
+                ('/startup/manuallogin.html?serverid=' + serverId + '&user=' + user.Name) :
+                '';
+
             return {
                 name: user.Name,
                 showIcon: !imgUrl,
@@ -238,7 +239,9 @@
                 lastActive: getLastActiveText(user),
                 cardImageStyle: "background-image:url('" + imgUrl + "');",
                 cardType: '',
-                hasLastActive: true
+                hasLastActive: true,
+                id: user.Id,
+                url: url
             };
 
         });
@@ -250,7 +253,8 @@
             icon: 'lock',
             cardImageStyle: '',
             cardType: 'manuallogin',
-            defaultText: true
+            defaultText: true,
+            url: '/startup/manuallogin.html?serverid=' + serverId
         });
 
         items.push({
@@ -260,7 +264,8 @@
             icon: 'cloud',
             cardImageStyle: '',
             cardType: 'embyconnect',
-            defaultText: true
+            defaultText: true,
+            url: '/startup/connectlogin.html'
         });
 
         items.push({
@@ -270,10 +275,11 @@
             icon: 'cast',
             cardImageStyle: '',
             cardType: 'changeserver',
-            defaultText: true
+            defaultText: true,
+            url: '/startup/selectserver.html'
         });
 
-        view.querySelector('.loginTemplate').items = items;
+        view.querySelector('.itemTemplate').items = items;
 
         // TODO: Is there a better way to figure out the polymer elements have loaded besides a timeout?
         setTimeout(function () {
@@ -282,45 +288,159 @@
 
             require(["Sly"], function (Sly) {
 
-                var scrollFrame = view.querySelector('.scrollFrame');
-
-                Emby.elements.loading.hide();
-                scrollFrame.style.display = 'block';
-
-                var options = {
-                    horizontal: 1,
-                    itemNav: 'forceCentered',
-                    mouseDragging: 1,
-                    touchDragging: 1,
-                    slidee: view.querySelector('.scrollSlider'),
-                    itemSelector: '.card',
-                    activateOn: 'click focus',
-                    smart: true,
-                    easing: 'swing',
-                    releaseSwing: true,
-                    scrollBar: view.querySelector('.scrollbar'),
-                    scrollBy: 1,
-                    speed: 600,
-                    moveBy: 600,
-                    elasticBounds: 1,
-                    dragHandle: 1,
-                    dynamicHandle: 1,
-                    clickBar: 1
-                };
-                var frame = new Sly(scrollFrame, options).init();
-
-                var keyframes = [
-                 { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
-                 { opacity: '1', transform: 'none', offset: 1 }];
-
-                scrollFrame.animate(keyframes, {
-                    duration: 900,
-                    iterations: 1
-                });
+                createHorizontalScroller(view);
             });
 
         }, 500);
+
+        view.querySelector('.scrollSlider').addEventListener('click', function (e) {
+
+            var model = view.querySelector('.itemTemplate').itemForElement(event.target);
+
+            if (model.url) {
+                page.show(model.url);
+            } else {
+                authenticateUser(apiClient, model.name);
+            }
+
+        });
     }
+
+    function authenticateUser(apiClient, username, password) {
+
+        Emby.elements.loading.show();
+
+        apiClient.authenticateUserByName(username, password).done(function (result) {
+
+            Emby.elements.loading.hide();
+
+            onServerUserSignedIn();
+
+        }).fail(function (result) {
+
+            Emby.elements.loading.hide();
+
+            Emby.elements.alert({
+                text: Globalize.translate('MessageInvalidUser')
+            });
+        });
+    }
+
+    function onSelectServerLoad(element, params) {
+
+        Emby.elements.loading.show();
+
+        require(['connectionManager'], function (connectionManager) {
+            connectionManager.getAvailableServers().done(function (result) {
+
+                renderSelectServerItems(element, result);
+
+            }).fail(function (result) {
+
+                renderSelectServerItems(element, []);
+            });
+        });
+    }
+
+    function createHorizontalScroller(view) {
+        
+        var scrollFrame = view.querySelector('.scrollFrame');
+
+        Emby.elements.loading.hide();
+        scrollFrame.style.display = 'block';
+
+        var options = {
+            horizontal: 1,
+            itemNav: 'forceCentered',
+            mouseDragging: 1,
+            touchDragging: 1,
+            slidee: view.querySelector('.scrollSlider'),
+            itemSelector: '.card',
+            activateOn: 'click focus',
+            smart: true,
+            easing: 'swing',
+            releaseSwing: true,
+            scrollBar: view.querySelector('.scrollbar'),
+            scrollBy: 1,
+            speed: 600,
+            moveBy: 600,
+            elasticBounds: 1,
+            dragHandle: 1,
+            dynamicHandle: 1,
+            clickBar: 1
+        };
+        var frame = new Sly(scrollFrame, options).init();
+
+        var keyframes = [
+         { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
+         { opacity: '1', transform: 'none', offset: 1 }];
+
+        scrollFrame.animate(keyframes, {
+            duration: 900,
+            iterations: 1
+        });
+    }
+
+    function renderSelectServerItems(view, servers) {
+
+        var items = servers.map(function (server) {
+
+            return {
+                name: server.Name,
+                showIcon: true,
+                icon: 'cast',
+                cardType: '',
+                id: server.Id,
+                server: server
+            };
+
+        });
+
+        items.push({
+            name: Globalize.translate('ButtonNewServer'),
+            showIcon: true,
+            showImage: false,
+            icon: 'add',
+            cardImageStyle: '',
+            cardType: 'changeserver',
+            defaultText: true,
+            url: '/startup/manualserver.html'
+        });
+
+        view.querySelector('.itemTemplate').items = items;
+
+        // TODO: Is there a better way to figure out the polymer elements have loaded besides a timeout?
+        setTimeout(function () {
+
+            Emby.elements.loading.hide();
+
+            require(["Sly"], function (Sly) {
+                createHorizontalScroller(view);
+            });
+
+        }, 500);
+
+        view.querySelector('.scrollSlider').addEventListener('click', function (e) {
+
+            var model = view.querySelector('.itemTemplate').itemForElement(event.target);
+
+            if (model.url) {
+                page.show(model.url);
+            } else {
+                Emby.elements.loading.show();
+
+                require(['connectionManager'], function (connectionManager) {
+                    connectionManager.connectToServer(model.server).done(function (result) {
+
+                        Emby.elements.loading.hide();
+
+                        handleConnectionResult(result);
+                    });
+                });
+            }
+        });
+    }
+
 
     function getLastActiveText(user) {
 
@@ -345,6 +465,8 @@
             onManualLoginLoad(element, e.detail.params);
         } else if (e.detail.id == 'login') {
             onLoginLoad(element, e.detail.params);
+        } else if (e.detail.id == 'selectserver') {
+            onSelectServerLoad(element, e.detail.params);
         }
     });
 

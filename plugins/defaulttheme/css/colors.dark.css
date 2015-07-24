@@ -80,3 +80,7 @@ paper-material[elevation="2"] {
 .card[data-cardtype='changeserver'] .cardImageContainer {
     background-color: #444;
 }
+
+.backButtonContainer .backButton {
+    color: #aaa;
+}

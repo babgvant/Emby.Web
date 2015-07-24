@@ -36,7 +36,7 @@
     }
 
     function redirectToLogin(ctx, next) {
-        
+
         Emby.elements.loading.show();
 
         require(['connectionManager'], function (connectionManager) {
@@ -84,7 +84,12 @@
         require(['currentLoggedInServer'], function (server) {
 
             if (server) {
-                next();
+                
+                if (ctx.path.toLowerCase() == '/index.html') {
+                    Emby.ThemeManager.loadUserTheme();
+                } else {
+                    next();
+                }
                 return;
             }
 
@@ -136,14 +141,9 @@
                 if (Emby.ViewManager.tryRestoreView(url)) {
                     // done
                 }
-                else if (typeof route.content === 'string') {
+                else if (typeof route.path === 'string') {
 
-                    if (route.contentType == 'html') {
-                        loadContent(ctx, next, route.content, route.id, url);
-
-                    } else {
-                        loadContentUrl(ctx, next, route.content, route.id, url);
-                    }
+                    loadContentUrl(ctx, next, route.path, route.id, url);
 
                 } else {
                     // ? TODO
@@ -184,11 +184,16 @@
             return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+    function back() {
+        history.back();
+    }
+
     window.RouteManager = {
         authenticate: authenticate,
         getHandler: getHandler,
         ctx: ctx,
-        param: param
+        param: param,
+        back: back
     };
 
 })(document, window);

@@ -21,7 +21,7 @@ h2 {
 }
 
 .preLoginHeader {
-    padding: 1.5em 1.5em;
+    padding: 1.5em 1.5em 1.5em 1em;
     position: relative;
 }
 
@@ -31,13 +31,26 @@ h2 {
         background-size: cover;
         width: 198px;
         height: 60px;
+        display: inline-block;
+        vertical-align: middle;
     }
 
-    .preLoginHeader .clock {
-        position: absolute;
-        top: 8px;
-        right: 1.25em;
+    .preLoginHeader .backButtonContainer {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: .5em;
     }
+
+.backButtonContainer iron-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.preLoginHeader .clock {
+    position: absolute;
+    top: 8px;
+    right: 1.25em;
+}
 
 .preLoginContent {
     width: 70%;

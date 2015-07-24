@@ -66,7 +66,17 @@
     }
 
     function loadUserTheme() {
-        alert('user logged in, time to load theme!');
+
+        var routes = currentTheme.getRoutes().filter(function (r) {
+            return r.type == 'home';
+        });
+
+        if (!routes.length) {
+            alert('theme has no home route defined!');
+            return;
+        }
+
+        page.show(routes[0].path);
     }
 
     if (!globalScope.Emby) {
