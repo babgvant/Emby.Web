@@ -83,6 +83,8 @@
         }
     }
 
+    var localApiClient;
+
     function createConnectionManager() {
 
         if (!appInfo.deviceId) {
@@ -93,21 +95,8 @@
         //credentialProvider.clear();
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
-        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
-
-            //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
-        });
-
-        define('connectionManager', [], function () {
-            return connectionManager;
-        });
-
-        define('currentServer', [], function () {
-            return connectionManager.getLastUsedServer();
-        });
-
-        define('currentLoggedInServer', [], function () {
-            var server = connectionManager.getLastUsedServer();
+        connectionManager.currentLoggedInServer = function () {
+            var server = localApiClient ? localApiClient.serverInfo() : connectionManager.getLastUsedServer();
 
             if (server) {
                 if (server.UserId && server.AccessToken) {
@@ -116,6 +105,20 @@
             }
 
             return null;
+        };
+
+        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
+
+            //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
+        });
+
+        Events.on(connectionManager, 'localusersignedin', function (e, user) {
+
+            localApiClient = connectionManager.getApiClient(user.ServerId);
+        });
+
+        define('connectionManager', [], function () {
+            return connectionManager;
         });
     }
 

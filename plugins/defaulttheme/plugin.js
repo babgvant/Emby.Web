@@ -69,7 +69,8 @@
                 'html!bower_components/neon-animation/animations/slide-from-left-animation.html',
                 'html!bower_components/neon-animation/animations/slide-from-right-animation.html',
                 'html!bower_components/neon-animation/animations/slide-left-animation.html',
-                'html!bower_components/neon-animation/animations/slide-right-animation.html'
+                'html!bower_components/neon-animation/animations/slide-right-animation.html',
+                'html!bower_components/iron-form/iron-form.html'
             ];
 
             return files;

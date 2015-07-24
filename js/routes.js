@@ -82,19 +82,21 @@
 
     function authenticate(ctx, next) {
 
-        require(['currentLoggedInServer'], function (server) {
+        require(['connectionManager'], function (connectionManager) {
+
+            var server = connectionManager.currentLoggedInServer();
 
             if (server) {
 
-                if (ctx.path.toLowerCase() == '/index.html') {
+                if (ctx.pathname.toLowerCase() == '/index.html') {
                     Emby.ThemeManager.loadUserTheme();
                 } else {
                     next();
                 }
                 return;
             }
-
             if (!allowAnonymous(ctx)) {
+
                 redirectToLogin();
             }
             else {

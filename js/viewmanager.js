@@ -23,7 +23,7 @@
             animatedPages.selected = pageIndex;
             onViewChange(animatable.querySelector('.page-view'));
 
-        }, 350);
+        }, 400);
     }
 
     function setAnimationStyle(animatedPages, transition, isBack) {
@@ -81,7 +81,6 @@
         setTimeout(function () {
 
             Emby.FocusManager.autoFocus(view);
-
             onShow(view);
 
         }, 500);

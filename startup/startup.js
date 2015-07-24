@@ -58,6 +58,18 @@
 
             history.back();
         });
+
+        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+
+            // Do a fake form submit this the button isn't a real submit button
+            var fakeSubmit = document.createElement('input');
+            fakeSubmit.setAttribute('type', 'submit');
+            fakeSubmit.style.display = 'none';
+            var form = element.querySelector('form');
+            form.appendChild(fakeSubmit);
+            fakeSubmit.click();
+            form.removeChild(fakeSubmit);
+        });
     });
 
     document.addEventListener("viewshow-manualserver", function (e) {
@@ -97,6 +109,18 @@
 
             page.show('/startup/selectserver.html');
         });
+
+        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+
+            // Do a fake form submit this the button isn't a real submit button
+            var fakeSubmit = document.createElement('input');
+            fakeSubmit.setAttribute('type', 'submit');
+            fakeSubmit.style.display = 'none';
+            var form = element.querySelector('form');
+            form.appendChild(fakeSubmit);
+            fakeSubmit.click();
+            form.removeChild(fakeSubmit);
+        });
     });
 
     document.addEventListener("viewshow-connectlogin", function (e) {
@@ -128,6 +152,18 @@
                     }
                 });
             });
+        });
+
+        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+
+            // Do a fake form submit this the button isn't a real submit button
+            var fakeSubmit = document.createElement('input');
+            fakeSubmit.setAttribute('type', 'submit');
+            fakeSubmit.style.display = 'none';
+            var form = element.querySelector('form');
+            form.appendChild(fakeSubmit);
+            fakeSubmit.click();
+            form.removeChild(fakeSubmit);
         });
     });
 
@@ -181,6 +217,7 @@
                             loading.hide();
 
                             if (users.length) {
+
                                 page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
                             } else {
                                 page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
@@ -315,7 +352,7 @@
 
         view.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
-            var model = view.querySelector('.itemTemplate').itemForElement(event.target);
+            var model = view.querySelector('.itemTemplate').itemForElement(e.target);
 
             if (model.url) {
                 page.show(model.url);
@@ -454,7 +491,7 @@
 
         view.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
-            var model = view.querySelector('.itemTemplate').itemForElement(event.target);
+            var model = view.querySelector('.itemTemplate').itemForElement(e.target);
 
             if (model.url) {
                 page.show(model.url);
