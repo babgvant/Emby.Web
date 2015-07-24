@@ -1,14 +1,5 @@
 (function () {
 
-    function getRoutes() {
-
-        // Routes, relative to the current directory. The app will handle normalizing the full path
-
-        var routes = [];
-
-        return routes;
-    }
-
     function getOuterClassName() {
 
         var name = 'defaultTheme';
@@ -52,7 +43,6 @@
         self.name = 'Default Theme';
         self.type = 'theme';
         self.packageName = 'defaulttheme';
-        self.getRoutes = getRoutes;
         self.getOuterClassName = getOuterClassName;
 
         self.getAnonymousHeaderTemplate = function () {
@@ -95,6 +85,21 @@
             });
 
             return files;
+        };
+
+        self.getRoutes = function () {
+            // Routes, relative to the current directory. The app will handle normalizing the full path
+
+            var routes = [];
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'home.html'),
+                id: 'defaulttheme-home',
+                type: 'home',
+                dependencies: []
+            });
+
+            return routes;
         };
 
         var clockInterval;

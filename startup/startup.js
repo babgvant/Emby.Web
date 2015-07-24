@@ -146,13 +146,17 @@
         });
     }
 
+    function onServerUserSignedIn() {
+        Emby.ThemeManager.loadUserTheme();
+    }
+
     function handleConnectionResult(result) {
 
         switch (result.State) {
 
             case MediaBrowser.ConnectionState.SignedIn:
                 {
-                    Emby.ThemeManager.loadUserTheme();
+                    onServerUserSignedIn();
                 }
                 break;
             case MediaBrowser.ConnectionState.ServerSignIn:
@@ -310,7 +314,7 @@
 
             Emby.elements.loading.hide();
 
-            Emby.ThemeManager.loadUserTheme();
+            onServerUserSignedIn();
 
         }).fail(function (result) {
 
