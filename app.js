@@ -22,6 +22,8 @@
 
         var baseRoute = window.location.pathname.replace('/index.html', '');
 
+        console.log('Setting page base to ' + baseRoute);
+
         page.base(baseRoute);
 
         page('*', RouteManager.ctx);
@@ -161,6 +163,9 @@
         if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
             baseRoute = baseRoute.substring(0, baseRoute.length - 1);
         }
+
+        console.log('Setting require baseUrl to ' + baseRoute);
+
         config.baseUrl = baseRoute;
 
         requirejs.config(config);
