@@ -158,7 +158,6 @@
         };
 
         var baseRoute = window.location.href.replace('/index.html', '');
-        alert(baseRoute);
         config.baseUrl = baseRoute;
 
         requirejs.config(config);
