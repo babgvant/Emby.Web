@@ -96,3 +96,7 @@ paper-button.notext {
     left: 50%;
     z-index: 9999999;
 }
+
+paper-icon-button paper-ripple {
+    color: inherit !important;
+}

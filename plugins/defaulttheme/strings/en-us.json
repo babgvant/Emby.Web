@@ -26,5 +26,7 @@
     "HeaderConnectToServer": "Connect to Server",
     "TextConnectToServerManually": "Connect to server manually",
     "ButtonCancel": "Cancel",
-    "HeaderPleaseSignIn": "Please Sign In"
+    "HeaderSelectServer": "Select Server",
+    "HeaderPleaseSignIn": "Please Sign In",
+    "ButtonNewServer": "New Server"
 }

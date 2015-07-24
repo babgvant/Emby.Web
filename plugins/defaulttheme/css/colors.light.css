@@ -77,3 +77,7 @@ paper-button {
 .card[data-cardtype='changeserver'] .cardImageContainer {
     background-color: #444;
 }
+
+.backButtonContainer .backButton {
+    color: #bbb;
+}

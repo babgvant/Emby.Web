@@ -36,7 +36,7 @@
     }
 
     function redirectToLogin(ctx, next) {
-        
+
         Emby.elements.loading.show();
 
         require(['connectionManager'], function (connectionManager) {
@@ -184,11 +184,16 @@
             return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+    function back() {
+        history.back();
+    }
+
     window.RouteManager = {
         authenticate: authenticate,
         getHandler: getHandler,
         ctx: ctx,
-        param: param
+        param: param,
+        back: back
     };
 
 })(document, window);

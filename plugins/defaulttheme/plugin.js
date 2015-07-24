@@ -71,6 +71,7 @@
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapPath(self, 'icons.html'),
                 'html!bower_components/paper-button/paper-button.html',
+                'html!bower_components/paper-icon-button/paper-icon-button.html',
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/iron-list/iron-list.html',
                 'html!bower_components/paper-material/paper-material.html',
