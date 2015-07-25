@@ -11,7 +11,15 @@
             return p.packageName == packageName;
         })[0];
 
-        require(theme.getDependencies(), function () {
+        if (currentTheme) {
+            unloadTheme(currentTheme);
+        }
+
+        var deps = theme.getDependencies().map(function(d) {
+            return d.replace('css!', 'css!theme#');
+        });
+
+        require(deps, function () {
 
             var translations = theme.getTranslations ? theme.getTranslations() : [];
 
@@ -24,6 +32,10 @@
                 loadThemeHeader(theme, callback);
             });
         });
+    }
+
+    function unloadTheme(theme) {
+        // Todo: unload css here
     }
 
     function loadThemeHeader(theme, callback) {

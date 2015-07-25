@@ -1,7 +1,7 @@
 define(function () {
-    var cssAPI = {};
+    var requireCss = {};
 
-    cssAPI.normalize = function (name, normalize) {
+    requireCss.normalize = function (name, normalize) {
         if (name.substr(name.length - 4, 4) == '.css')
             name = name.substr(0, name.length - 4);
 
@@ -10,29 +10,35 @@ define(function () {
 
     var importedCss = [];
 
-    cssAPI.load = function (cssId, req, load, config) {
+    requireCss.load = function (cssId, req, load, config) {
 
         // Somehow if the url starts with /css, require will get all screwed up since this extension is also called css
         cssId = cssId.replace('js/requirecss', 'css');
         var url = cssId + '.css';
 
+        var cssClass = 'themecss';
+
+        if (url.indexOf('theme#') != -1) {
+            url = url.replace('theme#', '');
+        }
+
         if (importedCss.indexOf(url) == -1) {
             importedCss.push(url);
 
-            if (document.createStyleSheet) {
-                document.createStyleSheet(url);
+            var link = document.createElement('link');
+
+            if (cssClass) {
+                link.classList.add(cssClass);
             }
-            else {
-                var link = document.createElement('link');
-                link.setAttribute('rel', 'stylesheet');
-                link.setAttribute('type', 'text/css');
-                link.setAttribute('href', url);
-                document.head.appendChild(link);
-            }
+
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('type', 'text/css');
+            link.setAttribute('href', url);
+            document.head.appendChild(link);
         }
 
         load();
     }
 
-    return cssAPI;
+    return requireCss;
 });
