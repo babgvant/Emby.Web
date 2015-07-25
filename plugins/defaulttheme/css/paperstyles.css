@@ -35,57 +35,57 @@ paper-button {
         font-weight: 500 !important;
     }
 
-paper-button span {
-    vertical-align: middle;
-}
-
-paper-button:not(.iconRight) iron-icon + span {
-    margin-left: .5em;
-}
-
-paper-button:not(.iconRight) span + iron-icon {
-    margin-left: .5em;
-}
-
-paper-button.iconRight iron-icon {
-    position: absolute;
-    right: 10px;
-    top: 18px;
-}
-
-paper-button .material-icons {
-    font-size: 150%;
-    vertical-align: middle;
-}
-
-paper-button .fa {
-    vertical-align: middle;
-}
-
-paper-button.mini {
-    min-width: initial;
-}
-
-    paper-button.mini .content {
-        padding: 0.3em 0.7em;
+    paper-button span {
+        vertical-align: middle;
     }
 
-    paper-button.mini.noIcon .content {
-        padding: 0.5em 0.7em;
+    paper-button:not(.iconRight) iron-icon + span {
+        margin-left: .5em;
     }
 
-paper-button.notext {
-    min-width: 2.8em;
-}
-
-    paper-button.notext .content {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+    paper-button:not(.iconRight) span + iron-icon {
+        margin-left: .5em;
     }
 
-    paper-button.notext iron-icon {
-        margin-right: 0;
+    paper-button.iconRight iron-icon {
+        position: absolute;
+        right: 10px;
+        top: 18px;
     }
+
+    paper-button .material-icons {
+        font-size: 150%;
+        vertical-align: middle;
+    }
+
+    paper-button .fa {
+        vertical-align: middle;
+    }
+
+    paper-button.mini {
+        min-width: initial;
+    }
+
+        paper-button.mini .content {
+            padding: 0.3em 0.7em;
+        }
+
+        paper-button.mini.noIcon .content {
+            padding: 0.5em 0.7em;
+        }
+
+    paper-button.notext {
+        min-width: 2.8em;
+    }
+
+        paper-button.notext .content {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        paper-button.notext iron-icon {
+            margin-right: 0;
+        }
 
 #docspinner {
     display: block;
@@ -99,4 +99,8 @@ paper-button.notext {
 
 paper-icon-button paper-ripple {
     color: inherit !important;
+}
+
+paper-input label, paper-input input {
+    font-size: inherit!important;
 }

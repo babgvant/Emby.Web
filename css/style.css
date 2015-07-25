@@ -10,6 +10,10 @@ html {
     background-color: #000;
 }
 
+.mouseIdle {
+    cursor: none;
+}
+
 .docspinner {
     display: block;
     margin-top: -30px;
