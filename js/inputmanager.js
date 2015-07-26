@@ -26,8 +26,27 @@
         }
     });
 
-    document.addEventListener('keydown', function () {
+    document.addEventListener('keydown', function (evt) {
         lastInputTime = new Date().getTime();
+
+        if (evt.keyCode == 13) {
+
+            var tag = evt.target.tagName;
+
+            if ((evt.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA')) {
+
+                var keyboard = getKeyboard();
+
+                if (keyboard) {
+
+                    keyboard.show(evt.target);
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+        }
+
     });
 
     setInterval(function () {
@@ -38,6 +57,14 @@
         }
 
     }, 5000);
+
+    function getKeyboard() {
+        return Emby.PluginManager.ofType('keyboard')[0];
+    }
+
+    document.addEventListener('keydown', function (evt) {
+
+    }, true);
 
     if (!globalScope.Emby) {
         globalScope.Emby = {};
