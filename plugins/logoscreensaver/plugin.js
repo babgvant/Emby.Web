@@ -9,14 +9,6 @@
         self.packageName = 'logoscreensaver';
         self.supportsAnonymous = true;
 
-        self.getDependencies = function () {
-
-            var files = [
-            ];
-
-            return files;
-        };
-
         self.show = function () {
 
         };

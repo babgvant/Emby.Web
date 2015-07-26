@@ -35,11 +35,13 @@
 
         }
 
+        function showKeyLime() {
+            window.keyLime.show();
+        }
+
         self.show = function (field) {
 
-            loadKeyLime().then(function () {
-                window.keyLime.show();
-            });
+            loadKeyLime().then(showKeyLime);
 
         };
     }

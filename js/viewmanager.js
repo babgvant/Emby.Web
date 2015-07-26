@@ -8,36 +8,61 @@
 
     function loadViewInternal(animatedPages, options) {
 
-        setAnimationStyle(animatedPages, 'slide', false);
+        setAnimationStyle(animatedPages, options.transition, options.isBack).then(function () {
+            var html = '<div class="page-view" data-id="' + options.id + '" data-url="' + options.url + '">';
+            html += options.view;
+            html += '</div>';
 
-        var html = '<div class="page-view" data-id="' + options.id + '" data-url="' + options.url + '">';
-        html += options.view;
-        html += '</div>';
+            var pageIndex = animatedPages.selected === 0 ? 1 : 0;
+            var animatable = animatedPages.querySelectorAll('neon-animatable')[pageIndex];
 
-        var pageIndex = animatedPages.selected === 0 ? 1 : 0;
-        var animatable = animatedPages.querySelectorAll('neon-animatable')[pageIndex];
+            animatable.innerHTML = html;
 
-        animatable.innerHTML = html;
+            setTimeout(function () {
+                animatedPages.selected = pageIndex;
+                onViewChange(animatable.querySelector('.page-view'));
 
-        setTimeout(function () {
-            animatedPages.selected = pageIndex;
-            onViewChange(animatable.querySelector('.page-view'));
-
-        }, 400);
+            }, 400);
+        });
     }
 
     function setAnimationStyle(animatedPages, transition, isBack) {
 
+        var entryAnimation = '';
+        var exitAnimation = '';
+
+        var deps = [];
+
         if (transition == 'slide') {
 
             if (isBack) {
-                animatedPages.entryAnimation = 'slide-from-left-animation';
-                animatedPages.exitAnimation = 'slide-right-animation';
+                entryAnimation = 'slide-from-left-animation';
+                exitAnimation = 'slide-right-animation';
+
+                deps.push('html!bower_components/neon-animation/animations/slide-from-left-animation.html');
+                deps.push('html!bower_components/neon-animation/animations/slide-right-animation.html');
+
             } else {
-                animatedPages.entryAnimation = 'slide-from-right-animation';
-                animatedPages.exitAnimation = 'slide-left-animation';
+
+                deps.push('html!bower_components/neon-animation/animations/slide-left-animation.html');
+                deps.push('html!bower_components/neon-animation/animations/slide-from-right-animation.html');
+
+                entryAnimation = 'slide-from-right-animation';
+                exitAnimation = 'slide-left-animation';
             }
+        } else {
+            entryAnimation = '';
+            exitAnimation = '';
         }
+
+        return new Promise(function (resolve, reject) {
+            require(deps, function () {
+
+                animatedPages.entryAnimation = entryAnimation;
+                animatedPages.exitAnimation = exitAnimation;
+                resolve();
+            });
+        });
     }
 
     function getExistingViews() {
@@ -88,8 +113,8 @@
 
     function onShow(view) {
 
-        require(['bower_components/query-string/index'], function() {
-            
+        require(['bower_components/query-string/index'], function () {
+
             var params = queryString.parse(window.location.search);
 
             document.dispatchEvent(new CustomEvent("viewshow-" + view.getAttribute('data-id'), {

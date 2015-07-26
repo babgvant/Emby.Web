@@ -5,7 +5,7 @@
 
     function defineRoute(newRoute) {
 
-        page(newRoute.path, RouteManager.getHandler(newRoute));
+        page(newRoute.path, Emby.Page.getHandler(newRoute));
     }
 
     function defineRoutes(routes) {
@@ -14,7 +14,7 @@
 
             var currentRoute = routes[i];
 
-            page(currentRoute.path, RouteManager.getHandler(currentRoute));
+            page(currentRoute.path, Emby.Page.getHandler(currentRoute));
         }
     }
 
@@ -32,36 +32,42 @@
         defineRoute({
             path: '/startup/login.html',
             id: 'login',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/manuallogin.html',
             id: 'manuallogin',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/welcome.html',
             id: 'welcome',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/connectlogin.html',
             id: 'connectlogin',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/manualserver.html',
             id: 'manualserver',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
         defineRoute({
             path: '/startup/selectserver.html',
             id: 'selectserver',
+            transition: 'slide',
             dependencies: ['startup/startup']
         });
 
@@ -69,6 +75,7 @@
             path: '/index.html',
             id: 'index',
             isDefaultRoute: true,
+            transition: 'slide',
             dependencies: []
         });
     }
@@ -206,7 +213,8 @@
           'apiclient/events',
           'apiclient/ajax',
           'apiclient/apiclient',
-          'apiclient/connectionmanager'
+          'apiclient/connectionmanager',
+          'webcomponentsjs'
         ];
 
         if (!globalScope.Promise) {
@@ -217,7 +225,12 @@
 
             window.page = page;
             window.bean = bean;
-            callback();
+
+            // Second level dependencies that have to be loaded after the first set
+            require([
+                'html!bower_components/neon-animation/neon-animated-pages.html'
+            ], callback);
+
         });
     }
 
@@ -231,7 +244,8 @@
             var list = [
                 'plugins/defaulttheme/plugin.js',
                 'plugins/logoscreensaver/plugin.js',
-                'plugins/keyboard/plugin.js'
+                'plugins/keyboard/plugin.js',
+                'plugins/wmctheme/plugin.js'
             ];
 
             require(list, function () {
@@ -317,7 +331,7 @@
                 loadDefaultTheme(function () {
                     // TODO: Catch window unload event to try to gracefully stop any active media playback
 
-                    //page('*', RouteManager.renderContent);
+                    //page('*', Emby.Page.renderContent);
                     page({
                         click: false
                     });

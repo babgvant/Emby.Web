@@ -12,10 +12,15 @@
         })[0];
 
         if (currentTheme) {
+
+            if (currentTheme.packageName == packageName) {
+                // Nothing to do, it's already the active theme
+                return;
+            }
             unloadTheme(currentTheme);
         }
 
-        var deps = theme.getDependencies().map(function(d) {
+        var deps = theme.getDependencies().map(function (d) {
             return d.replace('css!', 'css!theme#');
         });
 
@@ -35,7 +40,17 @@
     }
 
     function unloadTheme(theme) {
-        // Todo: unload css here
+
+        Logger.log('Unloading theme: ' + theme.name);
+        requireCss.unloadPackage('theme');
+    }
+
+    function loadCss(theme, url) {
+
+    }
+
+    function unloadCss(theme, url) {
+
     }
 
     function loadThemeHeader(theme, callback) {
@@ -43,8 +58,6 @@
         getThemeHeader(theme).then(function (headerHtml) {
 
             document.querySelector('.mainHeader').innerHTML = headerHtml;
-
-            document.documentElement.className = theme.getOuterClassName();
 
             //document.querySelector('.themeContent').innerHTML = theme.getPageContent();
             currentTheme = theme;
@@ -57,21 +70,21 @@
 
         return new Promise(function (resolve, reject) {
 
-            if (!theme.getAnonymousHeaderTemplate) {
+            if (!theme.getHeaderTemplate) {
                 resolve('');
                 return;
             }
 
-            HttpClient.send({
+            HttpClient.request({
 
-                url: theme.getAnonymousHeaderTemplate(),
+                url: theme.getHeaderTemplate(),
                 type: 'GET',
                 dataType: 'html'
 
-            }).done(function (html) {
+            }).then(function (html) {
                 resolve(html);
 
-            }).fail(function () {
+            }, function () {
                 resolve('');
             });
         });
@@ -79,16 +92,20 @@
 
     function loadUserTheme() {
 
-        var routes = currentTheme.getRoutes().filter(function (r) {
-            return r.type == 'home';
+        var userTheme = Emby.PluginManager.ofType('theme')[0];
+
+        loadTheme(userTheme.packageName, function () {
+            var routes = currentTheme.getRoutes().filter(function (r) {
+                return r.type == 'home';
+            });
+
+            if (!routes.length) {
+                alert('theme has no home route defined!');
+                return;
+            }
+
+            Emby.Page.show(routes[0].path);
         });
-
-        if (!routes.length) {
-            alert('theme has no home route defined!');
-            return;
-        }
-
-        page.show(routes[0].path);
     }
 
     if (!globalScope.Emby) {
@@ -98,7 +115,9 @@
     globalScope.Emby.ThemeManager = {
         getCurrentTheme: getCurrentTheme,
         loadTheme: loadTheme,
-        loadUserTheme: loadUserTheme
+        loadUserTheme: loadUserTheme,
+        loadCss: loadCss,
+        unloadCss: unloadCss
     };
 
 })(this, document);
