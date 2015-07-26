@@ -1,4 +1,4 @@
-(function (document, window) {
+(function (globalScope) {
 
     function allowAnonymous(ctx) {
 
@@ -52,21 +52,21 @@
                             result.ApiClient.getPublicUsers().done(function (users) {
 
                                 if (users.length) {
-                                    page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
+                                    Emby.Page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
                                 } else {
-                                    page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
+                                    Emby.Page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
                                 }
                             });
                         }
                         break;
                     case MediaBrowser.ConnectionState.ServerSelection:
                         {
-                            page.show('/startup/selectserver.html');
+                            Emby.Page.show('/startup/selectserver.html');
                         }
                         break;
                     case MediaBrowser.ConnectionState.ConnectSignIn:
                         {
-                            page.show('/startup/welcome.html');
+                            Emby.Page.show('/startup/welcome.html');
                         }
                         break;
                     default:
@@ -74,6 +74,22 @@
                 }
             });
         });
+    }
+
+    function loadContentUrl(ctx, next, route) {
+
+        var url = baseRoute + '/' + route.path;
+
+        HttpClient.request({
+
+            url: url,
+            type: 'GET',
+            dataType: 'html'
+
+        }).then(function (html) {
+            loadContent(ctx, next, route, html);
+
+        }, next);
     }
 
     function handleRoute(ctx, next, route) {
@@ -88,7 +104,7 @@
                 }
                 else if (typeof route.path === 'string') {
 
-                    loadContentUrl(ctx, next, route.path, route.id, url);
+                    loadContentUrl(ctx, next, route);
 
                 } else {
                     // ? TODO
@@ -105,43 +121,61 @@
             var server = connectionManager.currentLoggedInServer();
             var pathname = ctx.pathname.toLowerCase();
 
-            Logger.log('RouteManager - processing path request ' + pathname);
+            Logger.log('Emby.Page - processing path request ' + pathname);
 
             if (server) {
 
-                Logger.log('RouteManager - user is authenticated');
+                Logger.log('Emby.Page - user is authenticated');
 
                 if (route.isDefaultRoute) {
-                    Logger.log('RouteManager - loading theme home page');
+                    Logger.log('Emby.Page - loading theme home page');
                     Emby.ThemeManager.loadUserTheme();
                 } else {
-                    Logger.log('RouteManager - next()');
+                    Logger.log('Emby.Page - next()');
                     callback();
                 }
                 return;
             }
 
-            Logger.log('RouteManager - user is not authenticated');
+            Logger.log('Emby.Page - user is not authenticated');
 
             if (!allowAnonymous(ctx)) {
 
-                Logger.log('RouteManager - route does not allow anonymous access, redirecting to login');
+                Logger.log('Emby.Page - route does not allow anonymous access, redirecting to login');
                 redirectToLogin();
             }
             else {
-                Logger.log('RouteManager - proceeding to ' + pathname);
+                Logger.log('Emby.Page - proceeding to ' + pathname);
                 callback();
             }
         });
     }
 
-    function loadContent(ctx, next, html, id, url) {
+    var backUrl;
+    document.addEventListener('viewshow', function () {
+
+        if (window.location.href != backUrl) {
+            backUrl = null;
+        }
+    });
+
+    window.addEventListener("popstate", function () {
+        backUrl = window.location.href;
+    });
+
+    function isBack() {
+        return backUrl == window.location.href;
+    }
+
+    function loadContent(ctx, next, route, html) {
 
         html = Globalize.translateHtml(html);
         Emby.ViewManager.loadView({
-            id: id,
+            id: route.id,
             view: html,
-            url: url
+            url: window.location.href,
+            transition: route.transition,
+            isBack: isBack()
         });
 
         ctx.handled = true;
@@ -151,24 +185,6 @@
     var baseRoute = window.location.href.replace('/index.html', '');
     if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
         baseRoute = baseRoute.substring(0, baseRoute.length - 1);
-    }
-
-    function loadContentUrl(ctx, next, url, id, routeUrl) {
-
-        url = baseRoute + '/' + url;
-
-        HttpClient.send({
-
-            url: url,
-            type: 'GET',
-            dataType: 'html'
-
-        }).done(function (html) {
-            loadContent(ctx, next, html, id, routeUrl);
-
-        }).fail(function () {
-            next();
-        });
     }
 
     function getHandler(route) {
@@ -211,11 +227,19 @@
     function back() {
         history.back();
     }
+    function show(path, options) {
+        page.show(path, options);
+    }
 
-    window.RouteManager = {
+    if (!globalScope.Emby) {
+        globalScope.Emby = {};
+    }
+
+    globalScope.Emby.Page = {
         getHandler: getHandler,
         param: param,
-        back: back
+        back: back,
+        show: show
     };
 
-})(document, window);
+})(this);

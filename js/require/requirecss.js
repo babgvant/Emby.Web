@@ -10,25 +10,40 @@ define(function () {
 
     var importedCss = [];
 
+    function isLoaded(url) {
+        return importedCss.indexOf(url) != -1;
+    }
+
+    function removeFromLoadHistory(url) {
+
+        url = url.toLowerCase();
+
+        importedCss = importedCss.filter(function (c) {
+            return url.indexOf(c.toLowerCase()) == -1;
+        });
+    }
+
     requireCss.load = function (cssId, req, load, config) {
 
         // Somehow if the url starts with /css, require will get all screwed up since this extension is also called css
         cssId = cssId.replace('js/requirecss', 'css');
-        var url = cssId + '.css';
+        var url = config.baseUrl + cssId + '.css';
 
-        var cssClass = 'themecss';
+        var packageName = '';
 
+        // TODO: handle any value before the #
         if (url.indexOf('theme#') != -1) {
             url = url.replace('theme#', '');
+            packageName = 'theme';
         }
 
-        if (importedCss.indexOf(url) == -1) {
+        if (!isLoaded(url)) {
             importedCss.push(url);
 
             var link = document.createElement('link');
 
-            if (cssClass) {
-                link.classList.add(cssClass);
+            if (packageName) {
+                link.setAttribute('data-package', packageName);
             }
 
             link.setAttribute('rel', 'stylesheet');
@@ -39,6 +54,22 @@ define(function () {
 
         load();
     }
+
+    window.requireCss = {
+        unloadPackage: function (packageName) {
+
+            // Todo: unload css here
+            var stylesheets = document.head.querySelectorAll("link[data-package='" + packageName + "']");
+            for (var i = 0, length = stylesheets.length; i < length; i++) {
+
+                var stylesheet = stylesheets[i];
+
+                Logger.log('Unloading stylesheet: ' + stylesheet.href);
+                stylesheet.parentNode.removeChild(stylesheet);
+                removeFromLoadHistory(stylesheet.href);
+            }
+        }
+    };
 
     return requireCss;
 });

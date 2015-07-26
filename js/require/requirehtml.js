@@ -14,7 +14,7 @@ define(function () {
 
         // Somehow if the url starts with /css, require will get all screwed up since this extension is also called css
         cssId = cssId.replace('js/requirehtml', 'html');
-        var url = cssId + '.html';
+        var url = config.baseUrl + cssId + '.html';
 
         if (importedFiles.indexOf(url) == -1) {
             importedFiles.push(url);

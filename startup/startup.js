@@ -107,7 +107,7 @@
 
         element.querySelector('.buttonCancel').addEventListener('click', function (e) {
 
-            page.show('/startup/selectserver.html');
+            Emby.Page.show('/startup/selectserver.html');
         });
 
         element.querySelector('.paperSubmit').addEventListener('click', function (e) {
@@ -146,7 +146,7 @@
                     loading.hide();
 
                     if (result.State == MediaBrowser.ConnectionState.ConnectSignIn) {
-                        page.show('/startup/manualserver.html');
+                        Emby.Page.show('/startup/manualserver.html');
                     } else {
                         handleConnectionResult(result);
                     }
@@ -180,7 +180,7 @@
 
                 loading.hide();
 
-                page.show('/startup/selectserver.html');
+                Emby.Page.show('/startup/selectserver.html');
 
             }).fail(function () {
 
@@ -218,9 +218,9 @@
 
                             if (users.length) {
 
-                                page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
+                                Emby.Page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
                             } else {
-                                page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
+                                Emby.Page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
                             }
                         });
                     });
@@ -228,12 +228,12 @@
                 break;
             case MediaBrowser.ConnectionState.ServerSelection:
                 {
-                    page.show('/startup/selectserver.html');
+                    Emby.Page.show('/startup/selectserver.html');
                 }
                 break;
             case MediaBrowser.ConnectionState.ConnectSignIn:
                 {
-                    page.show('/startup/connectlogin.html');
+                    Emby.Page.show('/startup/connectlogin.html');
                 }
                 break;
             case MediaBrowser.ConnectionState.Unavailable:
@@ -355,7 +355,7 @@
             var model = view.querySelector('.itemTemplate').itemForElement(e.target);
 
             if (model.url) {
-                page.show(model.url);
+                Emby.Page.show(model.url);
             } else {
                 authenticateUser(apiClient, model.name);
             }
@@ -494,7 +494,7 @@
             var model = view.querySelector('.itemTemplate').itemForElement(e.target);
 
             if (model.url) {
-                page.show(model.url);
+                Emby.Page.show(model.url);
             } else {
 
                 require(['connectionManager', 'loading'], function (connectionManager, loading) {

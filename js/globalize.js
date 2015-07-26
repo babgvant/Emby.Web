@@ -59,12 +59,12 @@
                 return;
             }
 
-            HttpClient.send({
+            HttpClient.request({
                 url: filtered[0].path,
                 type: 'GET',
                 dataType: 'json'
 
-            }).done(function (response) {
+            }).then(function (response) {
                 dictionary = extend(dictionary, response);
                 resolve();
             });

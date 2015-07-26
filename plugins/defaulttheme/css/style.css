@@ -6,7 +6,7 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700);
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
-.defaultTheme {
+html {
     font-family: Helvetica Neue, Open Sans, Source Sans Pro, Montserrat, Varela Round;
     font-size: 150%;
 }
@@ -31,8 +31,11 @@ h2 {
         background-size: cover;
         width: 198px;
         height: 60px;
-        display: inline-block;
+    }
+
+    .header .pageTitle {
         vertical-align: middle;
+        display: inline-block;
     }
 
     .header .backButtonContainer {

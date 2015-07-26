@@ -1,14 +1,5 @@
 (function () {
 
-    function getOuterClassName() {
-
-        var name = 'defaultTheme';
-
-        name += ' dark';
-
-        return name;
-    }
-
     function updateClock() {
 
         var date = new Date();
@@ -43,20 +34,19 @@
         self.name = 'Default Theme';
         self.type = 'theme';
         self.packageName = 'defaulttheme';
-        self.getOuterClassName = getOuterClassName;
 
-        self.getAnonymousHeaderTemplate = function () {
-            return Emby.PluginManager.mapPath(self, 'anonymousheader.html');
+        self.getHeaderTemplate = function () {
+            return Emby.PluginManager.mapPath(self, 'header.html');
         };
 
         self.getDependencies = function () {
 
             var files = [
+                Emby.PluginManager.mapPath(self, 'js/header'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/style'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/card'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/paperstyles'),
-                'webcomponentsjs',
                 'html!bower_components/iron-icon/iron-icon.html',
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapPath(self, 'icons.html'),
@@ -65,11 +55,6 @@
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/iron-list/iron-list.html',
                 'html!bower_components/paper-material/paper-material.html',
-                'html!bower_components/neon-animation/neon-animated-pages.html',
-                'html!bower_components/neon-animation/animations/slide-from-left-animation.html',
-                'html!bower_components/neon-animation/animations/slide-from-right-animation.html',
-                'html!bower_components/neon-animation/animations/slide-left-animation.html',
-                'html!bower_components/neon-animation/animations/slide-right-animation.html',
                 'html!bower_components/iron-form/iron-form.html'
             ];
 
@@ -97,6 +82,7 @@
                 path: Emby.PluginManager.mapPath(self, 'home.html'),
                 id: 'defaulttheme-home',
                 type: 'home',
+                transition: 'slide',
                 dependencies: []
             });
 
