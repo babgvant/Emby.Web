@@ -15,6 +15,7 @@
 
             if (currentTheme.packageName == packageName) {
                 // Nothing to do, it's already the active theme
+                callback();
                 return;
             }
             unloadTheme(currentTheme);
