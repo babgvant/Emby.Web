@@ -352,15 +352,53 @@
 
         view.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
-            var model = view.querySelector('.itemTemplate').itemForElement(e.target);
+            onScrollSliderClick(e, function (card) {
+                var model = view.querySelector('.itemTemplate').itemForElement(card);
 
-            if (model.url) {
-                Emby.Page.show(model.url);
-            } else {
-                authenticateUser(apiClient, model.name);
-            }
-
+                if (model.url) {
+                    Emby.Page.show(model.url);
+                } else {
+                    authenticateUser(apiClient, model.name);
+                }
+            });
         });
+    }
+
+    function onScrollSliderClick(e, callback) {
+        var card = e.target;
+
+        while (card && !card.classList.contains('card')) {
+            card = card.parentNode;
+        }
+
+        if (card) {
+            flipElement(card, function () {
+                callback(card);
+            });
+        }
+    }
+
+    function flipElement(elem, callback) {
+
+        // Switch to SequenceEffect once that api is a little more mature
+        flipElementWithDuration(elem, 900, function () {
+            callback();
+        });
+    }
+
+    function flipElementWithDuration(elem, duration, callback) {
+
+        // Switch to SequenceEffect once that api is a little more mature
+        var keyframes = [
+                 { transform: 'perspective(400px) rotate3d(0, 1, 0, -360deg)', offset: 0 },
+                 { transform: 'perspective(400px) translate3d(0, 0, -50px) rotate3d(0, 1, 0, -190deg)', offset: 0.4 },
+                 { transform: 'perspective(400px) translate3d(0, 0, -50px) rotate3d(0, 1, 0, -170deg)', offset: 0.5 },
+                 { transform: 'perspective(400px) scale3d(.95, .95, .95)', offset: 0.8 },
+                 { transform: 'perspective(400px)', offset: 1 }];
+        var timing = { duration: duration, iterations: 1, easing: 'ease-in' };
+        elem.animate(keyframes, timing).onfinish = function () {
+            callback();
+        };
     }
 
     function authenticateUser(apiClient, username, password) {
@@ -491,27 +529,28 @@
 
         view.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
-            var model = view.querySelector('.itemTemplate').itemForElement(e.target);
+            onScrollSliderClick(e, function (card) {
+                var model = view.querySelector('.itemTemplate').itemForElement(card);
 
-            if (model.url) {
-                Emby.Page.show(model.url);
-            } else {
+                if (model.url) {
+                    Emby.Page.show(model.url);
+                } else {
 
-                require(['connectionManager', 'loading'], function (connectionManager, loading) {
+                    require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
-                    loading.show();
+                        loading.show();
 
-                    connectionManager.connectToServer(model.server).done(function (result) {
+                        connectionManager.connectToServer(model.server).done(function (result) {
 
-                        loading.hide();
+                            loading.hide();
 
-                        handleConnectionResult(result);
+                            handleConnectionResult(result);
+                        });
                     });
-                });
-            }
+                }
+            });
         });
     }
-
 
     function getLastActiveText(user) {
 

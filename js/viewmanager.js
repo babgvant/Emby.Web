@@ -22,7 +22,7 @@
                 animatedPages.selected = pageIndex;
                 onViewChange(animatable.querySelector('.page-view'));
 
-            }, 400);
+            }, 0);
         });
     }
 
