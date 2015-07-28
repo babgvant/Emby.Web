@@ -9,4 +9,4 @@ This will install the http server module. To start the server, enter
 
 http-server -p 8088
 
-It will only be available using localhost. Then you can test by opening index.html 
+It will only be available using localhost. Then you can test by opening http://localhost:8088/index.html
