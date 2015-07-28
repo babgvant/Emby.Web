@@ -232,7 +232,6 @@
             require([
                 'html!bower_components/neon-animation/neon-animated-pages.html'
             ], callback);
-            Emby.AudioManager.playSoundEffect();
         });
     }
 
