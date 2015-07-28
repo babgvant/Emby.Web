@@ -138,7 +138,8 @@
             alert: "components/polymer/alert",
             confirm: "components/polymer/confirm",
             toast: "components/polymer/toast",
-            loading: "components/polymer/loading"
+            loading: "components/polymer/loading",
+            soundeffect: "components/soundeffect"
         };
 
         var urlArgs = "v=" + appInfo.version;
@@ -167,7 +168,7 @@
             }
         };
 
-        var baseRoute = window.location.href.replace('/index.html', '');
+        var baseRoute = window.location.href.split('?')[0].replace('/index.html', '');
         if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
             baseRoute = baseRoute.substring(0, baseRoute.length - 1);
         }
@@ -202,6 +203,7 @@
           'js/inputmanager',
           'js/screensavermanager',
           'js/playbackmanager',
+          'js/audiomanager',
 
           'apiclient/logger',
           'apiclient/sha1',
@@ -230,7 +232,6 @@
             require([
                 'html!bower_components/neon-animation/neon-animated-pages.html'
             ], callback);
-
         });
     }
 
@@ -347,6 +348,9 @@
     // call start unless configured not to
     if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
         start();
+    } else {
+
+        document.dispatchEvent(new CustomEvent("embyready", {}));
     }
 
     var lastLeft;
