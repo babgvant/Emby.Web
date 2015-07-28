@@ -167,7 +167,7 @@
             }
         };
 
-        var baseRoute = window.location.href.replace('/index.html', '');
+        var baseRoute = window.location.href.split('?')[0].replace('/index.html', '');
         if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
             baseRoute = baseRoute.substring(0, baseRoute.length - 1);
         }
@@ -347,6 +347,9 @@
     // call start unless configured not to
     if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
         start();
+    } else {
+
+        document.dispatchEvent(new CustomEvent("embyready", {}));
     }
 
     var lastLeft;
