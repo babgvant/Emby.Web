@@ -138,7 +138,8 @@
             alert: "components/polymer/alert",
             confirm: "components/polymer/confirm",
             toast: "components/polymer/toast",
-            loading: "components/polymer/loading"
+            loading: "components/polymer/loading",
+            soundeffect: "components/soundeffect"
         };
 
         var urlArgs = "v=" + appInfo.version;
@@ -202,6 +203,7 @@
           'js/inputmanager',
           'js/screensavermanager',
           'js/playbackmanager',
+          'js/audiomanager',
 
           'apiclient/logger',
           'apiclient/sha1',
@@ -230,7 +232,7 @@
             require([
                 'html!bower_components/neon-animation/neon-animated-pages.html'
             ], callback);
-
+            Emby.AudioManager.playSoundEffect();
         });
     }
 
