@@ -345,7 +345,7 @@
 
                 loading.hide();
 
-                createHorizontalScroller(view);
+                createHorizontalScroller(view, Sly);
             });
 
         }, 500);
@@ -365,10 +365,15 @@
     }
 
     function onScrollSliderClick(e, callback) {
+
         var card = e.target;
 
-        while (card && !card.classList.contains('card')) {
+        while (!card.classList || !card.classList.contains('card')) {
             card = card.parentNode;
+
+            if (!card) {
+                return;
+            }
         }
 
         if (card) {
@@ -446,7 +451,7 @@
         });
     });
 
-    function createHorizontalScroller(view) {
+    function createHorizontalScroller(view, Sly) {
 
         var scrollFrame = view.querySelector('.scrollFrame');
 
@@ -522,7 +527,7 @@
             require(["Sly", 'loading'], function (Sly, loading) {
                 loading.hide();
 
-                createHorizontalScroller(view);
+                createHorizontalScroller(view, Sly);
             });
 
         }, 500);

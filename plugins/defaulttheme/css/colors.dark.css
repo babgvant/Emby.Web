@@ -11,6 +11,10 @@ html {
     background-image: url(images/logowhite.png);
 }
 
+.controlBox {
+    color: #ccc;
+}
+
 .fieldDescription {
     color: #ccc;
 }
@@ -27,17 +31,25 @@ paper-input .focused-line {
     background-color: #52B54B !important;
 }
 
-paper-button {
+paper-button.flat {
+    color: #bbb;
+}
+
+paper-button.flat[focused], paper-button.flat.selected {
+    color: #2ad;
+}
+
+paper-button[raised] {
     background: #404040;
 }
 
-    paper-button iron-icon {
-        color: #fff;
-    }
+paper-button iron-icon {
+    color: #fff;
+}
 
-    paper-button[focused] {
-        background: #52B54B;
-    }
+paper-button[raised][focused] {
+    background: #52B54B;
+}
 
 paper-material.card {
     background: #000;

@@ -1,20 +1,22 @@
-<div class="preLoginContent">
-    <form class="manualServerForm" style="text-align: left; margin: 0 auto;">
-        <h1 style="text-align: left;">${HeaderConnectToServer}</h1>
-        <div>
-            <paper-input autofocus class="txtServerHost" label="${LabelServerHost}" type="text" required="required"></paper-input>
-            <div class="fieldDescription" style="text-align:left;">${LabelServerHostHelp}</div>
-        </div>
-        <br />
-        <div>
-            <paper-input class="txtServerPort" label="${LabelServerPort}" type="text" step="1" min="0"></paper-input>
-        </div>
-        <br />
+<div class="pageContainer">
+    <div class="centeredPageContent">
+        <form class="manualServerForm" style="text-align: left; margin: 0 auto;">
+            <h1 style="text-align: left;">${HeaderConnectToServer}</h1>
+            <div>
+                <paper-input autofocus class="txtServerHost" label="${LabelServerHost}" type="text" required="required"></paper-input>
+                <div class="fieldDescription" style="text-align:left;">${LabelServerHostHelp}</div>
+            </div>
+            <br />
+            <div>
+                <paper-input class="txtServerPort" label="${LabelServerPort}" type="text" step="1" min="0"></paper-input>
+            </div>
+            <br />
 
-        <paper-button raised class="block paperSubmit">
-            <iron-icon icon="check"></iron-icon><span>${ButtonConnect}</span>
-        </paper-button>
+            <paper-button raised class="block paperSubmit">
+                <iron-icon icon="check"></iron-icon><span>${ButtonConnect}</span>
+            </paper-button>
 
-        <paper-button class="block buttonCancel"><iron-icon icon="close"></iron-icon><span>${ButtonCancel}</span></paper-button>
-    </form>
+            <paper-button class="block buttonCancel"><iron-icon icon="close"></iron-icon><span>${ButtonCancel}</span></paper-button>
+        </form>
+    </div>
 </div>
