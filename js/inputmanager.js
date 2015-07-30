@@ -74,4 +74,6 @@
         idleTime: idleTime
     };
 
+    // https://github.com/gilmoreorless/jquery-nearest
+
 })(this, document);

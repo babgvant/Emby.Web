@@ -82,7 +82,9 @@
                 id: 'defaulttheme-home',
                 type: 'home',
                 transition: 'slide',
-                dependencies: []
+                dependencies: [
+                    Emby.PluginManager.mapPath(self, 'home/home')
+                ]
             });
 
             return routes;

@@ -66,10 +66,32 @@ h2 {
     right: 45px;
 }
 
-.preLoginContent {
+.pageContainer {
+    position: absolute;
+    top: 132px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centeredPageContent {
     width: 70%;
     max-width: 800px;
-    margin: 20px auto 0;
+    margin: 0 auto;
+    /* If the content is small, try to prevent it from getting shoved too far down the screen*/
+    min-height: 70%;
+}
+
+    .centeredPageContent h1 {
+        margin-top: 0;
+    }
+
+.horizontalPageContent {
+    width: 100%;
 }
 
 .fieldDescription {
@@ -136,4 +158,12 @@ h2 {
     .scrollbarX .handle {
         width: 100px; /* overriden if dynamicHandle: 1 */
         height: 100%;
+    }
+
+.userViewNames {
+    margin-bottom: 5px;
+}
+
+    .userViewNames paper-button {
+        font-size: 28px;
     }

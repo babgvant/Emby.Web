@@ -117,6 +117,14 @@
             return null;
         };
 
+        connectionManager.currentApiClient = function () {
+
+            if (!localApiClient && connectionManager.getLastUsedServer()) {
+                localApiClient = connectionManager.getLastUsedApiClient();
+            }
+            return localApiClient;
+        };
+
         Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
 
             //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
