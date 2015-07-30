@@ -139,7 +139,8 @@
             confirm: "components/polymer/confirm",
             toast: "components/polymer/toast",
             loading: "components/polymer/loading",
-            soundeffect: "components/soundeffect"
+            soundeffect: "components/soundeffect",
+            appwindow: "components/appwindow"
         };
 
         var urlArgs = "v=" + appInfo.version;
@@ -305,16 +306,16 @@
         Emby.ThemeManager.loadTheme('defaulttheme', callback);
     }
 
-    function start(hostApplicationInfo) {
+    function start(appStartInfo) {
 
         // Whoever calls start will supply info about the host app. If empty, assume it's just in a browser
         var isDefaultAppInfo = false;
-        if (!hostApplicationInfo) {
-            hostApplicationInfo = getDefaultAppInfo();
+        if (!appStartInfo) {
+            appStartInfo = getDefaultAppInfo();
             isDefaultAppInfo = true;
         }
 
-        appInfo = hostApplicationInfo;
+        appInfo = appStartInfo;
         appInfo.capabilities = getCapabilities(!isDefaultAppInfo);
 
         initRequire();
@@ -341,8 +342,17 @@
         });
     }
 
-    globalScope.App = {
-        start: start
+    function exit() {
+        window.location.href = 'about:blank';
+    }
+
+    if (!globalScope.Emby) {
+        globalScope.Emby = {};
+    }
+
+    globalScope.Emby.App = {
+        start: start,
+        exit: exit
     };
 
     // call start unless configured not to

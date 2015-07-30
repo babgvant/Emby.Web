@@ -11,6 +11,10 @@ html {
     background-image: url(images/logowhite.png);
 }
 
+.controlBox{
+    color: #ccc;
+}
+
 .fieldDescription {
     color: #ccc;
 }

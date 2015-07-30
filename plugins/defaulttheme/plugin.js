@@ -42,7 +42,6 @@
         self.getDependencies = function () {
 
             var files = [
-                Emby.PluginManager.mapPath(self, 'js/header'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/style'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/card'),
                 'css!' + Emby.PluginManager.mapPath(self, 'css/colors.dark'),
@@ -91,17 +90,67 @@
 
         var clockInterval;
         self.load = function () {
+
             updateClock();
             setInterval(updateClock, 50000);
+            bindEvents();
+            loadControlBox();
         };
 
         self.unload = function () {
+
+            unbindEvents();
 
             if (clockInterval) {
                 clearInterval(clockInterval);
                 clockInterval = null;
             }
         };
+
+        function loadControlBox() {
+
+            require(['appwindow'], function (appwindow) {
+                updateWindowState(appwindow.getWindowState());
+            });
+        }
+
+        function bindEvents() {
+
+            document.addEventListener('windowstatechanged', onWindowStateChanged);
+
+            document.querySelector('.appExitButton').addEventListener('click', function () {
+                Emby.App.exit();
+            });
+
+            document.querySelector('.minimizeButton').addEventListener('click', function () {
+                require(['appwindow'], function (appwindow) {
+                    appwindow.setWindowState('Minimized');
+                });
+            });
+
+            document.querySelector('.fullscreenExitButton').addEventListener('click', function () {
+                require(['appwindow'], function (appwindow) {
+                    appwindow.setWindowState('Normal');
+                });
+            });
+        }
+
+        function unbindEvents() {
+
+            document.removeEventListener('windowstatechanged', onWindowStateChanged);
+        }
+
+        function onWindowStateChanged(e) {
+            updateWindowState(e.detail.windowState);
+        }
+
+        function updateWindowState(windowState) {
+            if (windowState == 'Maximized') {
+                document.querySelector('.controlBox').classList.remove('hide');
+            } else {
+                document.querySelector('.controlBox').classList.add('hide');
+            }
+        }
     }
 
     Emby.PluginManager.register(new theme());
