@@ -147,6 +147,7 @@
         }
 
         function updateWindowState(windowState) {
+            
             if (windowState == 'Maximized') {
                 document.querySelector('.controlBox').classList.remove('hide');
             } else {

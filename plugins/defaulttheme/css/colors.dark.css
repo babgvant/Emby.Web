@@ -32,11 +32,12 @@ paper-input .focused-line {
 }
 
 paper-button.flat {
-    color: #bbb;
+    opacity: .4;
 }
 
 paper-button.flat[focused], paper-button.flat.selected {
-    color: #2ad;
+    color: #00BCD4;
+    opacity: 1;
 }
 
 paper-button[raised] {

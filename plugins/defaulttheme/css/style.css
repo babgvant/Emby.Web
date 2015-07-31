@@ -165,5 +165,9 @@ h2 {
 }
 
     .userViewNames paper-button {
-        font-size: 28px;
+        font-size: 32px;
     }
+
+.userViewNames, .homeScrollFrame {
+    padding-left: 70px;
+}

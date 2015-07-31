@@ -102,7 +102,7 @@
         }
 
         var credentialProvider = new MediaBrowser.CredentialProvider();
-        //credentialProvider.clear();
+        credentialProvider.clear();
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
 
         connectionManager.currentLoggedInServer = function () {
