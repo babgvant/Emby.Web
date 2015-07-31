@@ -1,7 +1,8 @@
 .card {
     text-transform: none;
-    background-color: transparent;
-    margin: 6px;
+    background-color: transparent !important;
+    background: none !important;
+    margin: 0;
     float: left;
 }
 
@@ -47,16 +48,17 @@
     z-index: 1;
 }
 
-.card[focused] {
-    -webkit-box-shadow: #fff 0px 0px 6px 5px;
-}
-
-.card:hover {
-    -webkit-box-shadow: #fff 0px 0px 6px 5px;
-}
-
 .card paper-material {
     padding: 0 !important;
+    margin: 6px;
+}
+
+.card[focused] paper-material {
+    -webkit-box-shadow: #fff 0px 0px 6px 5px;
+}
+
+.card:hover paper-material {
+    -webkit-box-shadow: #fff 0px 0px 6px 5px;
 }
 
 .cardImageContainer {
@@ -99,7 +101,6 @@
 }
 
 .backdropCard {
-    
 }
 
 @media all and (min-width: 900px) {
