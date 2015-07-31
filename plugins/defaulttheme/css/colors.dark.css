@@ -31,15 +31,6 @@ paper-input .focused-line {
     background-color: #52B54B !important;
 }
 
-paper-button.flat {
-    opacity: .4;
-}
-
-paper-button.flat[focused], paper-button.flat.selected {
-    color: #00BCD4;
-    opacity: 1;
-}
-
 paper-button[raised] {
     background: #404040;
 }
@@ -95,3 +86,13 @@ paper-material[elevation="2"] {
 .backButtonContainer .backButton {
     color: #aaa;
 }
+
+
+.userViewNames paper-button.flat {
+    opacity: .4;
+}
+
+    .userViewNames paper-button.flat.selected {
+        color: #00BCD4;
+        opacity: 1;
+    }

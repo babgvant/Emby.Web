@@ -1,7 +1,7 @@
 .card {
     text-transform: none;
     background-color: transparent;
-    margin: 8px;
+    margin: 6px;
     float: left;
 }
 
@@ -96,6 +96,10 @@
 /* Square */
 .squareCard {
     width: 50%;
+}
+
+.backdropCard {
+    
 }
 
 @media all and (min-width: 900px) {
