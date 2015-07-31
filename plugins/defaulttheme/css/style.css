@@ -25,7 +25,7 @@ h2 {
 }
 
 .header {
-    padding: 1.5em 1.5em 1.5em 1em;
+    padding: 1.25em 1.5em 1.25em 1em;
     position: relative;
 }
 
@@ -68,10 +68,10 @@ h2 {
 
 .pageContainer {
     position: absolute;
-    top: 132px;
+    top: 120px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 120px;
     overflow: auto;
     display: flex;
     align-items: center;
@@ -86,7 +86,7 @@ h2 {
     min-height: 70%;
 }
 
-    .centeredPageContent h1 {
+    .centeredPageContent h1, .horizontalPageContent h1 {
         margin-top: 0;
     }
 
@@ -165,5 +165,9 @@ h2 {
 }
 
     .userViewNames paper-button {
-        font-size: 28px;
+        font-size: 32px;
     }
+
+.userViewNames, .homeScrollFrame {
+    padding-left: 70px;
+}

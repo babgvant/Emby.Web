@@ -3,19 +3,19 @@
 
         <div class="userViewNames">
             <template is="dom-repeat" items="{{items}}" class="userViewsHeaderTemplate">
-                <paper-button class="flat" data-id="{{item.Id}}" data-type="{{item.CollectionType}}">[[item.Name]]</paper-button>
+                <paper-button class="flat btnUserViewHeader" data-id$="{{item.Id}}" data-type$="{{item.CollectionType}}">[[item.Name]]</paper-button>
             </template>
         </div>
 
         <div class="scrollbar scrollbarX">
             <div class="handle"><div class="mousearea"></div></div>
         </div>
-        <div class="scrollFrame scrollFrameX" style="white-space: nowrap;display:none;">
+        <div class="scrollFrame scrollFrameX homeScrollFrame" style="white-space: nowrap;display:none;">
             <div class="scrollSlider" style="width:10000px;">
 
                 <div style="float:left;">
                     <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -38,7 +38,7 @@
                         </paper-button>
                     </div>
                     <div>
-                        <paper-button raised class="card squareCard" style="width:192px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -59,76 +59,7 @@
                                 <div class="cardText">[[item.name]]</div>
                             </div>
                         </paper-button>
-                        <paper-button raised class="card squareCard" style="width:192px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                    </div>
-                </div>
-                <div style="float:left;">
-                    <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                    </div>
-                    <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -153,7 +84,7 @@
                 </div>
                 <div style="float:left;">
                     <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -176,7 +107,7 @@
                         </paper-button>
                     </div>
                     <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -197,7 +128,7 @@
                                 <div class="cardText">[[item.name]]</div>
                             </div>
                         </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -222,7 +153,76 @@
                 </div>
                 <div style="float:left;">
                     <div>
-                        <paper-button raised class="card squareCard focusCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                    </div>
+                    <div>
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                    </div>
+                </div>
+                <div style="float:left;">
+                    <div>
+                        <paper-button raised class="card backdropCard focusCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -245,7 +245,7 @@
                         </paper-button>
                     </div>
                     <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -266,76 +266,7 @@
                                 <div class="cardText">[[item.name]]</div>
                             </div>
                         </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                    </div>
-                </div>
-                <div style="float:left;">
-                    <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                    </div>
-                    <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
-                            <div class="cardScalable">
-                                <div class="cardPadder"></div>
-                                <div class="cardContent">
-                                    <div class="cardImageContainer">
-
-                                        <template is="dom-if" if="{{item.showIcon}}">
-                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
-                                        </template>
-                                        <template is="dom-if" if="{{item.showImage}}">
-                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
-
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardFooter">
-                                <div class="cardText">[[item.name]]</div>
-                            </div>
-                        </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -360,7 +291,7 @@
                 </div>
                 <div style="float:left;">
                     <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -383,7 +314,7 @@
                         </paper-button>
                     </div>
                     <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -404,7 +335,7 @@
                                 <div class="cardText">[[item.name]]</div>
                             </div>
                         </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -429,7 +360,7 @@
                 </div>
                 <div style="float:left;">
                     <div>
-                        <paper-button raised class="card squareCard" style="width:400px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -452,7 +383,7 @@
                         </paper-button>
                     </div>
                     <div>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">
@@ -473,7 +404,76 @@
                                 <div class="cardText">[[item.name]]</div>
                             </div>
                         </paper-button>
-                        <paper-button raised class="card squareCard" style="width:200px;float:none;" data-cardtype$="{{item.cardType}}">
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                    </div>
+                </div>
+                <div style="float:left;">
+                    <div>
+                        <paper-button raised class="card backdropCard" style="width:672px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                    </div>
+                    <div>
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
+                            <div class="cardScalable">
+                                <div class="cardPadder"></div>
+                                <div class="cardContent">
+                                    <div class="cardImageContainer">
+
+                                        <template is="dom-if" if="{{item.showIcon}}">
+                                            <iron-icon class="cardImageIcon" icon="{{item.icon}}"></iron-icon>
+                                        </template>
+                                        <template is="dom-if" if="{{item.showImage}}">
+                                            <div class="cardImage" style$="{{item.cardImageStyle}}">
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardFooter">
+                                <div class="cardText">[[item.name]]</div>
+                            </div>
+                        </paper-button>
+                        <paper-button raised class="card backdropCard" style="width:336px;" data-cardtype$="{{item.cardType}}">
                             <div class="cardScalable">
                                 <div class="cardPadder"></div>
                                 <div class="cardContent">

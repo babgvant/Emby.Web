@@ -95,7 +95,7 @@
 
         var userTheme = Emby.PluginManager.ofType('theme')[0];
 
-        loadTheme(userTheme.packageName, function () {
+        loadTheme('defaulttheme', function () {
             var routes = currentTheme.getRoutes().filter(function (r) {
                 return r.type == 'home';
             });

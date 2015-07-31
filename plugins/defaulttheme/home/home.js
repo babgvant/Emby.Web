@@ -57,7 +57,29 @@
 
     function initFocusHandler(view, slyFrame) {
 
-        view.addEventListener('mousedown', function (e) {
+        // Catch events on the view headers
+        var userViewNames = view.querySelector('.userViewNames');
+        userViewNames.addEventListener('mousedown', function (e) {
+
+            var elem = findParent(e.target, 'btnUserViewHeader');
+
+            if (elem) {
+                elem.focus();
+            }
+        });
+
+        userViewNames.addEventListener('focusin', function (e) {
+
+            var elem = findParent(e.target, 'btnUserViewHeader');
+
+            if (elem) {
+                selectUserView(view, elem.getAttribute('data-id'));
+            }
+        });
+
+        // Catch events on items in the view
+        var scrollSlider = view.querySelector('.scrollSlider');
+        scrollSlider.addEventListener('mousedown', function (e) {
 
             var card = findParent(e.target, 'card');
 
@@ -66,7 +88,7 @@
             }
         });
 
-        view.addEventListener('focusin', function (e) {
+        scrollSlider.addEventListener('focusin', function (e) {
 
             var card = findParent(e.target, 'card');
 
@@ -74,7 +96,6 @@
                 slyFrame.toCenter(card);
             }
         });
-
     }
 
     function findParent(elem, className) {
@@ -88,6 +109,29 @@
         }
 
         return elem;
+    }
+
+    function selectUserView(page, id) {
+
+        var btnView;
+
+        var buttons = page.querySelectorAll('.btnUserViewHeader');
+        for (var i = 0, length = buttons.length; i < length; i++) {
+
+            var button = buttons[i];
+            if (button.getAttribute('data-id') == id) {
+                button.classList.add('selected');
+                btnView = button;
+            } else {
+                button.classList.remove('selected');
+            }
+        }
+
+        loadViewContent(page, id, btnView.getAttribute('data-type'));
+    }
+
+    function loadViewContent(page, id, type) {
+
     }
 
 })();
