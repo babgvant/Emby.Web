@@ -25,7 +25,10 @@
 
     function defineCoreRoutes() {
 
-        var baseRoute = Emby.Page.baseUrl();
+        var baseRoute = window.location.pathname.replace('/index.html', '');
+        if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
+            baseRoute = baseRoute.substring(0, baseRoute.length - 1);
+        }
 
         console.log('Setting page base to ' + baseRoute);
 
