@@ -36,7 +36,7 @@
         self.packageName = 'defaulttheme';
 
         self.getHeaderTemplate = function () {
-            return Emby.PluginManager.mapPath(self, 'header.html');
+            return Emby.PluginManager.mapResource(self, 'header.html');
         };
 
         self.getDependencies = function () {
@@ -114,8 +114,8 @@
 
         function loadControlBox() {
 
-            require(['appwindow'], function (appwindow) {
-                updateWindowState(appwindow.getWindowState());
+            require(['apphost'], function (apphost) {
+                updateWindowState(apphost.getWindowState());
             });
         }
 
@@ -128,14 +128,14 @@
             });
 
             document.querySelector('.minimizeButton').addEventListener('click', function () {
-                require(['appwindow'], function (appwindow) {
-                    appwindow.setWindowState('Minimized');
+                require(['apphost'], function (apphost) {
+                    apphost.setWindowState('Minimized');
                 });
             });
 
             document.querySelector('.fullscreenExitButton').addEventListener('click', function () {
-                require(['appwindow'], function (appwindow) {
-                    appwindow.setWindowState('Normal');
+                require(['apphost'], function (apphost) {
+                    apphost.setWindowState('Normal');
                 });
             });
 
