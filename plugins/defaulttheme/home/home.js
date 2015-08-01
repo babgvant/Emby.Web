@@ -9,16 +9,113 @@
             var apiClient = connectionManager.currentApiClient();
 
             renderUserViews(element, apiClient);
-            createHorizontalScroller(element);
         });
+
+        initEvents(element);
     });
+
+    function initEvents(view) {
+
+        // Catch events on the view headers
+        var userViewNames = view.querySelector('.userViewNames');
+        userViewNames.addEventListener('mousedown', function (e) {
+
+            var elem = findParent(e.target, 'btnUserViewHeader');
+
+            if (elem) {
+                elem.focus();
+            }
+        });
+
+        userViewNames.addEventListener('focusin', function (e) {
+
+            var elem = findParent(e.target, 'btnUserViewHeader');
+
+            if (elem) {
+                setFocusDelay(view, elem);
+            }
+        });
+
+        // Catch events on items in the view
+        view.querySelector('.homeBody').addEventListener('mousedown', function (e) {
+
+            var card = findParent(e.target, 'card');
+
+            if (card) {
+                card.focus();
+            }
+        });
+    }
+
+    function setFocusDelay(view, elem) {
+
+        var btn = view.querySelector('.btnUserViewHeader.selected');
+
+        if (btn) {
+            btn.classList.remove('selected');
+        }
+
+        elem.classList.add('selected');
+
+        setTimeout(function () {
+
+            if (document.activeElement == elem) {
+                selectUserView(view, elem.getAttribute('data-id'));
+            }
+
+        }, 300);
+    }
 
     function renderUserViews(page, apiClient) {
 
         apiClient.getUserViews().then(function (result) {
 
             page.querySelector('.userViewsHeaderTemplate').items = result.Items;
+
+            setTimeout(function () {
+                Emby.FocusManager.focus(page.querySelector('.btnUserViewHeader'));
+
+            }, 500);
         });
+
+    }
+
+    function selectUserView(page, id) {
+
+        var btn = page.querySelector(".btnUserViewHeader[data-id='" + id + "']");
+
+        loadViewContent(page, id, btn.getAttribute('data-type'));
+    }
+
+    function loadViewContent(page, id, type) {
+
+        HttpClient.request({
+
+            url: 'home/generic.html',
+            type: 'GET',
+            dataType: 'html'
+
+        }).then(function (html) {
+
+            loadViewHtml(page, html);
+        });
+    }
+
+    function loadViewHtml(page, html) {
+
+        var homeAnimatedPages = page.querySelector('.homeAnimatedPages');
+
+        homeAnimatedPages.entryAnimation = 'slide-from-right-animation';
+        homeAnimatedPages.exitAnimation = 'slide-left-animation';
+
+        var selected = homeAnimatedPages.selected;
+
+        var newIndex = selected ? 0 : 1;
+
+        var animatedPage = page.querySelector('.scrollerPage' + newIndex);
+        animatedPage.innerHTML = html;
+        createHorizontalScroller(animatedPage);
+        homeAnimatedPages.selected = newIndex;
     }
 
     function createHorizontalScroller(view) {
@@ -57,37 +154,7 @@
 
     function initFocusHandler(view, slyFrame) {
 
-        // Catch events on the view headers
-        var userViewNames = view.querySelector('.userViewNames');
-        userViewNames.addEventListener('mousedown', function (e) {
-
-            var elem = findParent(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                elem.focus();
-            }
-        });
-
-        userViewNames.addEventListener('focusin', function (e) {
-
-            var elem = findParent(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                selectUserView(view, elem.getAttribute('data-id'));
-            }
-        });
-
-        // Catch events on items in the view
         var scrollSlider = view.querySelector('.scrollSlider');
-        scrollSlider.addEventListener('mousedown', function (e) {
-
-            var card = findParent(e.target, 'card');
-
-            if (card) {
-                card.focus();
-            }
-        });
-
         scrollSlider.addEventListener('focusin', function (e) {
 
             var card = findParent(e.target, 'card');
@@ -109,29 +176,6 @@
         }
 
         return elem;
-    }
-
-    function selectUserView(page, id) {
-
-        var btnView;
-
-        var buttons = page.querySelectorAll('.btnUserViewHeader');
-        for (var i = 0, length = buttons.length; i < length; i++) {
-
-            var button = buttons[i];
-            if (button.getAttribute('data-id') == id) {
-                button.classList.add('selected');
-                btnView = button;
-            } else {
-                button.classList.remove('selected');
-            }
-        }
-
-        loadViewContent(page, id, btnView.getAttribute('data-type'));
-    }
-
-    function loadViewContent(page, id, type) {
-
     }
 
 })();
