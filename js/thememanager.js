@@ -76,17 +76,19 @@
                 return;
             }
 
-            HttpClient.request({
+            require(['httpclient'], function (httpclient) {
+                httpclient.request({
 
-                url: theme.getHeaderTemplate(),
-                type: 'GET',
-                dataType: 'html'
+                    url: theme.getHeaderTemplate(),
+                    type: 'GET',
+                    dataType: 'html'
 
-            }).then(function (html) {
-                resolve(html);
+                }).then(function (html) {
+                    resolve(html);
 
-            }, function () {
-                resolve('');
+                }, function () {
+                    resolve('');
+                });
             });
         });
     }

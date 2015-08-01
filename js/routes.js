@@ -315,7 +315,16 @@
     }
 
     function back() {
-        history.back();
+
+        if (canGoBack()) {
+            history.back();
+
+        } else if (Emby.App.supports('exit')) {
+            Emby.App.exit();
+        }
+    }
+    function canGoBack() {
+        return true;
     }
     function show(path, options) {
         page.show(path, options);
@@ -331,7 +340,8 @@
         back: back,
         show: show,
         start: start,
-        baseUrl: baseUrl
+        baseUrl: baseUrl,
+        canGoBack: canGoBack
     };
 
 })(this);
