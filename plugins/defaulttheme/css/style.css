@@ -16,12 +16,17 @@ h1 {
     font-size: 44px;
 }
 
-h2 {
+h2, paper-dialog h2 {
     font-weight: 400;
+    font-size: 36px;
+}
+
+paper-dialog h2 {
+    font-size: 36px !important;
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .header {
@@ -35,22 +40,35 @@ h2 {
         background-size: cover;
         width: 198px;
         height: 60px;
-    }
-
-    .header .pageTitle {
         vertical-align: middle;
         display: inline-block;
     }
 
-    .header .backButtonContainer {
+    .header .headerButtonContainer {
         display: inline-block;
         vertical-align: middle;
-        margin-right: .5em;
     }
 
-.backButtonContainer iron-icon {
+.headerButtonContainer iron-icon {
     width: 40px;
     height: 40px;
+}
+
+.userButtonContainer iron-icon {
+    width: 44px;
+    height: 44px;
+}
+
+.backButtonContainer {
+    margin-right: .5em;
+}
+
+.searchButtonContainer {
+    margin-left: .5em;
+}
+
+.userButtonContainer img {
+    border-radius: 1000px;
 }
 
 .header .controlBox {
@@ -72,7 +90,7 @@ h2 {
     left: 0;
     right: 0;
     bottom: 132px;
-    overflow: auto;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,7 +179,7 @@ h2 {
     }
 
 .userViewNames {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
     .userViewNames paper-button {

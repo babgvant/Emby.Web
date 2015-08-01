@@ -34,3 +34,9 @@ html {
     right: 0px;
     height: 100%;
 }
+
+.mainHeader {
+    position: fixed;
+    /* This will ensure it is on top of the main body */
+    z-index: 1;
+}

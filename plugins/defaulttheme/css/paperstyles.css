@@ -102,5 +102,23 @@ paper-icon-button paper-ripple {
 }
 
 paper-input label, paper-input input {
-    font-size: inherit!important;
+    font-size: inherit !important;
 }
+
+paper-dialog {
+    font-size: inherit !important;
+    font-family: inherit !important;
+}
+
+    paper-dialog h2 {
+        font-family: inherit !important;
+        line-height: initial !important;
+    }
+
+    paper-dialog .buttons {
+        padding: 2em 1em 1em 2em;
+    }
+
+    paper-dialog > * {
+        margin-top: 40px;
+    }
