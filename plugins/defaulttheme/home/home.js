@@ -92,7 +92,7 @@
         require(['httpclient'], function (httpclient) {
             httpclient.request({
 
-                url: Emby.PluginManager.mapPath('defaulttheme', 'home/generic.html'),
+                url: Emby.PluginManager.mapResource('defaulttheme', 'home/generic.html'),
                 type: 'GET',
                 dataType: 'html'
 
