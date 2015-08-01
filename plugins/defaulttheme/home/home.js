@@ -5,7 +5,10 @@
         var element = e.detail.element;
         var params = e.detail.params;
 
-        require(['connectionManager'], function (connectionManager) {
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+
+            loading.show();
+
             var apiClient = connectionManager.currentApiClient();
 
             renderUserViews(element, apiClient);
@@ -13,6 +16,63 @@
 
         initEvents(element);
     });
+
+    function renderUserViews(page, apiClient) {
+
+        apiClient.getUserViews().then(function (result) {
+
+            page.querySelector('.userViewsHeaderTemplate').items = result.Items;
+
+            createHeaderScroller(page);
+        });
+
+    }
+
+    function createHeaderScroller(view) {
+
+        require(['Sly', 'loading'], function (Sly, loading) {
+
+            view = view.querySelector('.userViewNames');
+
+            var scrollFrame = view.querySelector('.scrollFrame');
+
+            scrollFrame.style.display = 'block';
+
+            var options = {
+                horizontal: 1,
+                itemNav: 'basic',
+                mouseDragging: 1,
+                touchDragging: 1,
+                slidee: view.querySelector('.scrollSlider'),
+                itemSelector: '.btnUserViewHeader',
+                activateOn: 'click focus',
+                smart: true,
+                easing: 'swing',
+                releaseSwing: true,
+                scrollBar: view.querySelector('.scrollbar'),
+                scrollBy: 1,
+                speed: 600,
+                moveBy: 600,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1
+            };
+
+            setTimeout(function () {
+
+                var frame = new Sly(scrollFrame, options).init();
+
+                setTimeout(function () {
+
+                    loading.hide();
+                    Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
+
+                }, 700);
+
+            }, 500);
+        });
+    }
 
     function initEvents(view) {
 
@@ -47,6 +107,7 @@
         });
     }
 
+    var focusTimeout;
     function setFocusDelay(view, elem) {
 
         var btn = view.querySelector('.btnUserViewHeader.selected');
@@ -57,27 +118,14 @@
 
         elem.classList.add('selected');
 
-        setTimeout(function () {
+        if (focusTimeout) {
+            clearTimeout(focusTimeout);
+        }
+        focusTimeout = setTimeout(function () {
 
-            if (document.activeElement == elem) {
-                selectUserView(view, elem.getAttribute('data-id'));
-            }
+            selectUserView(view, elem.getAttribute('data-id'));
 
         }, 300);
-    }
-
-    function renderUserViews(page, apiClient) {
-
-        apiClient.getUserViews().then(function (result) {
-
-            page.querySelector('.userViewsHeaderTemplate').items = result.Items;
-
-            setTimeout(function () {
-                Emby.FocusManager.focus(page.querySelector('.btnUserViewHeader'));
-
-            }, 500);
-        });
-
     }
 
     function selectUserView(page, id) {
@@ -89,37 +137,52 @@
 
     function loadViewContent(page, id, type) {
 
+        type = (type || '').toLowerCase();
+
+        var viewName = '';
+
+        switch (type) {
+            default:
+                viewName = 'generic';
+                break;
+        }
+
         require(['httpclient'], function (httpclient) {
             httpclient.request({
 
-                url: Emby.PluginManager.mapResource('defaulttheme', 'home/generic.html'),
+                url: Emby.PluginManager.mapResource('defaulttheme', 'home/views.' + viewName + '.html'),
                 type: 'GET',
                 dataType: 'html'
 
             }).then(function (html) {
 
-                loadViewHtml(page, html);
+                loadViewHtml(page, id, html, viewName);
             });
         });
     }
 
-    function loadViewHtml(page, html) {
+    function loadViewHtml(page, parentId, html, viewName) {
 
         var homeAnimatedPages = page.querySelector('.homeAnimatedPages');
 
         homeAnimatedPages.entryAnimation = 'slide-from-right-animation';
         homeAnimatedPages.exitAnimation = 'slide-left-animation';
 
-        var selected = homeAnimatedPages.selected;
-
-        var newIndex = selected ? 0 : 1;
+        var newIndex = homeAnimatedPages.selected === 0 ? 1 : 0;
 
         var animatedPage = page.querySelector('.scrollerPage' + newIndex);
         animatedPage.innerHTML = html;
-        createHorizontalScroller(animatedPage);
-        homeAnimatedPages.selected = newIndex;
+
+        require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
+
+            new DefaultTheme[viewName + 'View'](animatedPage, parentId);
+            homeAnimatedPages.cancelAnimation();
+            homeAnimatedPages.selected = newIndex;
+            createHorizontalScroller(animatedPage);
+        });
     }
 
+    var currentSlyFrame;
     function createHorizontalScroller(view) {
 
         require(["Sly", 'loading'], function (Sly, loading) {
@@ -148,9 +211,13 @@
                 dynamicHandle: 1,
                 clickBar: 1
             };
-            var frame = new Sly(scrollFrame, options).init();
 
-            initFocusHandler(view, frame);
+            if (currentSlyFrame) {
+                currentSlyFrame.destroy();
+            }
+
+            currentSlyFrame = new Sly(scrollFrame, options).init();
+            initFocusHandler(view, currentSlyFrame);
         });
     }
 

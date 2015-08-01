@@ -3,11 +3,15 @@
 }
 
     .userViewNames paper-button {
-        font-size: 36px;
         min-width: initial;
     }
 
-.userViewNames, .homeScrollFrame {
+.userViewNames .scrollSlider {
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+.homeScrollFrame {
     padding-left: 70px;
 }
 
