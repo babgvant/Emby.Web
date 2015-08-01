@@ -170,6 +170,11 @@
 
         define("slide-from-right-animation", ['html!bower_components/neon-animation/animations/slide-from-right-animation.html']);
         define("slide-left-animation", ['html!bower_components/neon-animation/animations/slide-left-animation.html']);
+        define("slide-from-left-animation", ['html!bower_components/neon-animation/animations/slide-from-left-animation.html']);
+        define("slide-right-animation", ['html!bower_components/neon-animation/animations/slide-right-animation.html']);
+        define("hero-animation", ['html!bower_components/neon-animation/animations/hero-animation.html']);
+        define("ripple-animation", ['html!bower_components/neon-animation/animations/ripple-animation.html']);
+        define("reverse-ripple-animation", ['html!bower_components/neon-animation/animations/reverse-ripple-animation.html']);
     }
 
     function loadCoreDependencies(callback) {
@@ -210,6 +215,10 @@
 
             window.page = page;
             window.bean = bean;
+
+            define("httpclient", [], function () {
+                return window.HttpClient;
+            });
 
             // Second level dependencies that have to be loaded after the first set
             require([

@@ -59,14 +59,16 @@
                 return;
             }
 
-            HttpClient.request({
-                url: filtered[0].path,
-                type: 'GET',
-                dataType: 'json'
+            require(['httpclient'], function (httpclient) {
+                httpclient.request({
+                    url: filtered[0].path,
+                    type: 'GET',
+                    dataType: 'json'
 
-            }).then(function (response) {
-                dictionary = extend(dictionary, response);
-                resolve();
+                }).then(function (response) {
+                    dictionary = extend(dictionary, response);
+                    resolve();
+                });
             });
         });
     }

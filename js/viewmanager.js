@@ -39,8 +39,8 @@
                 entryAnimation = 'slide-from-left-animation';
                 exitAnimation = 'slide-right-animation';
 
-                deps.push('html!bower_components/neon-animation/animations/slide-from-left-animation.html');
-                deps.push('html!bower_components/neon-animation/animations/slide-right-animation.html');
+                deps.push('slide-from-left-animation');
+                deps.push('slide-right-animation');
 
             } else {
 

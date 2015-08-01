@@ -68,7 +68,7 @@
 
             files.push({
                 lang: 'en-us',
-                path: Emby.PluginManager.mapPath(self, 'strings/en-us.json')
+                path: Emby.PluginManager.mapResource(self, 'strings/en-us.json')
             });
 
             return files;
@@ -141,6 +141,7 @@
 
             document.addEventListener('usersignedin', onLocalUserSignedIn);
             document.addEventListener('usersignedout', onLocalUserSignedOut);
+            document.addEventListener('viewshow', onViewShow);
         }
 
         function unbindEvents() {
@@ -148,6 +149,7 @@
             document.removeEventListener('windowstatechanged', onWindowStateChanged);
             document.removeEventListener('usersignedin', onLocalUserSignedIn);
             document.removeEventListener('usersignedout', onLocalUserSignedOut);
+            document.removeEventListener('viewshow', onViewShow);
         }
 
         function onWindowStateChanged(e) {
@@ -180,7 +182,7 @@
                 headerUserButton.src = apiClient.getUserImageUrl(user.Id, {
                     tag: user.PrimaryImageTag,
                     type: 'Primary',
-                    height: 88
+                    height: 44
                 });
 
             } else {
@@ -198,6 +200,15 @@
 
             document.querySelector('.searchButtonContainer').classList.add('hide');
             document.querySelector('.userButtonContainer').classList.add('hide');
+        }
+
+        function onViewShow(e) {
+
+            if (Emby.Page.canGoBack()) {
+                document.querySelector('.backButtonContainer').classList.remove('hide');
+            } else {
+                document.querySelector('.backButtonContainer').classList.add('hide');
+            }
         }
     }
 

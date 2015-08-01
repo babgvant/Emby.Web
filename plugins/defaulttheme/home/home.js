@@ -89,15 +89,17 @@
 
     function loadViewContent(page, id, type) {
 
-        HttpClient.request({
+        require(['httpclient'], function (httpclient) {
+            httpclient.request({
 
-            url: Emby.PluginManager.mapPath('defaulttheme', 'home/generic.html'),
-            type: 'GET',
-            dataType: 'html'
+                url: Emby.PluginManager.mapPath('defaulttheme', 'home/generic.html'),
+                type: 'GET',
+                dataType: 'html'
 
-        }).then(function (html) {
+            }).then(function (html) {
 
-            loadViewHtml(page, html);
+                loadViewHtml(page, html);
+            });
         });
     }
 
