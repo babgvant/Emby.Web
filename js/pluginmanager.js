@@ -44,7 +44,7 @@
 
             var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
 
-            return 'plugins/' + packageName + '/' + path;
+            return Emby.Page.baseUrl() + '/plugins/' + packageName + '/' + path;
         };
     }
 
