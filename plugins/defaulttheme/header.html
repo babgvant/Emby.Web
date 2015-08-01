@@ -5,8 +5,10 @@
         <paper-icon-button icon="close" class="appExitButton"></paper-icon-button>
     </div>
     <div>
-        <div class="backButtonContainer"><paper-icon-button icon="arrow-back" class="backButton" onclick="Emby.Page.back();"></paper-icon-button></div>
-        <div class="pageTitle"><div class="logo"></div></div>
+        <div class="headerButtonContainer backButtonContainer"><paper-icon-button icon="arrow-back" class="backButton" onclick="Emby.Page.back();"></paper-icon-button></div>
+        <div class="logo"></div>
+        <div class="headerButtonContainer userButtonContainer hide"><paper-icon-button icon="person" class="headerUserButton"></paper-icon-button></div>
+        <div class="headerButtonContainer searchButtonContainer hide"><paper-icon-button icon="search" class="headerSearchButton"></paper-icon-button></div>
     </div>
     <h2 class="clock">{{shortTimeString}}</h2>
 </div>

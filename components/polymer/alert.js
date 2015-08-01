@@ -18,6 +18,7 @@ define(['html!bower_components/paper-dialog/paper-dialog', 'html!bower_component
         var dlg = document.createElement('paper-dialog');
         dlg.id = id;
         dlg.role = "alertdialog";
+
         dlg.entryAnimation = 'fade-in-animation';
         dlg.exitAnimation = 'fade-out-animation';
         dlg.withBackdrop = true;
@@ -34,6 +35,8 @@ define(['html!bower_components/paper-dialog/paper-dialog', 'html!bower_component
         dlg.innerHTML = html;
         document.body.appendChild(dlg);
 
+        var activeElement = document.activeElement;
+
         // This timeout is obviously messy but it's unclear how to determine when the webcomponent is ready for use
         // element onload never fires
         setTimeout(function () {
@@ -43,12 +46,19 @@ define(['html!bower_components/paper-dialog/paper-dialog', 'html!bower_component
 
                 this.parentNode.removeChild(this);
 
+                activeElement.focus();
+
                 if (callback) {
                     callback();
                 }
             });
 
             dlg.open();
+
+            // autofocus doesn't seem to be doing the trick here
+            setTimeout(function () {
+                dlg.querySelector('.btnConfirm').focus();
+            }, 700);
 
         }, 300);
     };

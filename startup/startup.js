@@ -172,7 +172,7 @@
         var username = view.querySelector('.txtConnectUserName').value;
         var password = view.querySelector('.txtConnectPassword').value;
 
-        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+        require(['connectionManager', 'loading', 'alert'], function (connectionManager, loading, alert) {
 
             loading.show();
 
@@ -186,7 +186,7 @@
 
                 loading.hide();
 
-                Emby.elements.alert({
+                alert({
                     text: Globalize.translate('MessageInvalidUser'),
                     title: Globalize.translate('HeaderLoginFailure')
                 });
@@ -238,9 +238,12 @@
                 break;
             case MediaBrowser.ConnectionState.Unavailable:
                 {
-                    Emby.elements.alert({
-                        text: Globalize.translate("MessageUnableToConnectToServer"),
-                        title: Globalize.translate("HeaderConnectionFailure")
+                    require(['alert'], function (alert) {
+
+                        alert({
+                            text: Globalize.translate("MessageUnableToConnectToServer"),
+                            title: Globalize.translate("HeaderConnectionFailure")
+                        });
                     });
                 }
                 break;

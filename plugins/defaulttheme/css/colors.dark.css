@@ -96,3 +96,20 @@ paper-material[elevation="2"] {
         color: #00BCD4;
         opacity: 1;
     }
+
+paper-dialog {
+    background: #303030 !important;
+    border-radius: 3px;
+    color: #fff !important;
+}
+
+
+    paper-dialog .buttons {
+        color: #52B54B !important;
+    }
+
+
+        paper-dialog .buttons paper-button[focused] {
+            background-color: #52B54B !important;
+            color: #fff !important;
+        }

@@ -135,11 +135,16 @@
                     appwindow.setWindowState('Normal');
                 });
             });
+
+            document.addEventListener('usersignedin', onLocalUserSignedIn);
+            document.addEventListener('usersignedout', onLocalUserSignedOut);
         }
 
         function unbindEvents() {
 
             document.removeEventListener('windowstatechanged', onWindowStateChanged);
+            document.removeEventListener('usersignedin', onLocalUserSignedIn);
+            document.removeEventListener('usersignedout', onLocalUserSignedOut);
         }
 
         function onWindowStateChanged(e) {
@@ -147,12 +152,49 @@
         }
 
         function updateWindowState(windowState) {
-            
+
             if (windowState == 'Maximized') {
                 document.querySelector('.controlBox').classList.remove('hide');
             } else {
                 document.querySelector('.controlBox').classList.add('hide');
             }
+        }
+
+        function onLocalUserSignedIn(e) {
+
+            var user = e.detail.user;
+            var apiClient = e.detail.apiClient;
+
+            document.querySelector('.logo').classList.add('hide');
+
+            document.querySelector('.searchButtonContainer').classList.remove('hide');
+
+            var headerUserButton = document.querySelector('.headerUserButton');
+
+            if (user.PrimaryImageTag) {
+
+                headerUserButton.icon = null;
+                headerUserButton.src = apiClient.getUserImageUrl(user.Id, {
+                    tag: user.PrimaryImageTag,
+                    type: 'Primary',
+                    height: 88
+                });
+
+            } else {
+                headerUserButton.src = null;
+                headerUserButton.icon = 'person';
+            }
+
+            document.querySelector('.userButtonContainer').classList.remove('hide');
+        }
+
+        function onLocalUserSignedOut(e) {
+
+            // Put the logo back in the page title
+            document.querySelector('.logo').classList.remove('hide');
+
+            document.querySelector('.searchButtonContainer').classList.add('hide');
+            document.querySelector('.userButtonContainer').classList.add('hide');
         }
     }
 

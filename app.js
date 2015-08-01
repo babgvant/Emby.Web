@@ -93,8 +93,6 @@
         }
     }
 
-    var localApiClient;
-
     function createConnectionManager() {
 
         if (!appInfo.deviceId) {
@@ -104,36 +102,6 @@
         var credentialProvider = new MediaBrowser.CredentialProvider();
         //credentialProvider.clear();
         connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
-
-        connectionManager.currentLoggedInServer = function () {
-            var server = localApiClient ? localApiClient.serverInfo() : connectionManager.getLastUsedServer();
-
-            if (server) {
-                if (server.UserId && server.AccessToken) {
-                    return server;
-                }
-            }
-
-            return null;
-        };
-
-        connectionManager.currentApiClient = function () {
-
-            if (!localApiClient && connectionManager.getLastUsedServer()) {
-                localApiClient = connectionManager.getLastUsedApiClient();
-            }
-            return localApiClient;
-        };
-
-        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
-
-            //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
-        });
-
-        Events.on(connectionManager, 'localusersignedin', function (e, user) {
-
-            localApiClient = connectionManager.getApiClient(user.ServerId);
-        });
 
         define('connectionManager', [], function () {
             return connectionManager;
@@ -336,17 +304,16 @@
                 definePluginRoutes();
 
                 createConnectionManager();
-
-                // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
-                loadDefaultTheme(function () {
-                    // TODO: Catch window unload event to try to gracefully stop any active media playback
-
-                    //page('*', Emby.Page.renderContent);
-                    page({
-                        click: false
-                    });
-                });
+                loadPresentation();
             });
+        });
+    }
+
+    function loadPresentation() {
+
+        // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
+        loadDefaultTheme(function () {
+            Emby.Page.start();
         });
     }
 

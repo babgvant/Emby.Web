@@ -38,42 +38,46 @@
             loading.show();
 
             connectionManager.connect().done(function (result) {
-
-                switch (result.State) {
-
-                    case MediaBrowser.ConnectionState.SignedIn:
-                        {
-                            loading.hide();
-                            Emby.ThemeManager.loadUserTheme();
-                        }
-                        break;
-                    case MediaBrowser.ConnectionState.ServerSignIn:
-                        {
-                            result.ApiClient.getPublicUsers().done(function (users) {
-
-                                if (users.length) {
-                                    Emby.Page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
-                                } else {
-                                    Emby.Page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
-                                }
-                            });
-                        }
-                        break;
-                    case MediaBrowser.ConnectionState.ServerSelection:
-                        {
-                            Emby.Page.show('/startup/selectserver.html');
-                        }
-                        break;
-                    case MediaBrowser.ConnectionState.ConnectSignIn:
-                        {
-                            Emby.Page.show('/startup/welcome.html');
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                handleConnectionResult(result, loading);
             });
         });
+    }
+
+    function handleConnectionResult(result, loading) {
+
+        switch (result.State) {
+
+            case MediaBrowser.ConnectionState.SignedIn:
+                {
+                    loading.hide();
+                    Emby.ThemeManager.loadUserTheme();
+                }
+                break;
+            case MediaBrowser.ConnectionState.ServerSignIn:
+                {
+                    result.ApiClient.getPublicUsers().done(function (users) {
+
+                        if (users.length) {
+                            Emby.Page.show('/startup/login.html?serverid=' + result.Servers[0].Id);
+                        } else {
+                            Emby.Page.show('/startup/manuallogin.html?serverid=' + result.Servers[0].Id);
+                        }
+                    });
+                }
+                break;
+            case MediaBrowser.ConnectionState.ServerSelection:
+                {
+                    Emby.Page.show('/startup/selectserver.html');
+                }
+                break;
+            case MediaBrowser.ConnectionState.ConnectSignIn:
+                {
+                    Emby.Page.show('/startup/welcome.html');
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     function loadContentUrl(ctx, next, route) {
@@ -114,9 +118,92 @@
         });
     }
 
+    var firstConnectionResult;
+    function start() {
+
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+
+            loading.show();
+
+            connectionManager.connect().done(function (result) {
+
+                bindConnectionManagerEvents(connectionManager);
+                firstConnectionResult = result;
+
+                loading.hide();
+
+                page({
+                    click: false
+                });
+            });
+        });
+    }
+
+    var localApiClient;
+
+    function bindConnectionManagerEvents(connectionManager) {
+
+        connectionManager.currentLoggedInServer = function () {
+            var server = localApiClient ? localApiClient.serverInfo() : null;
+
+            if (server) {
+                if (server.UserId && server.AccessToken) {
+                    return server;
+                }
+            }
+
+            return null;
+        };
+
+        connectionManager.currentApiClient = function () {
+
+            if (!localApiClient) {
+                var server = connectionManager.getLastUsedServer();
+                localApiClient = connectionManager.getApiClient(server.Id);
+            }
+            return localApiClient;
+        };
+
+        Events.on(connectionManager, 'apiclientcreated', function (e, newApiClient) {
+
+            //$(newApiClient).on("websocketmessage", Dashboard.onWebSocketMessageReceived).on('requestfail', Dashboard.onRequestFail);
+        });
+
+        Events.on(connectionManager, 'localusersignedin', function (e, user) {
+
+            localApiClient = connectionManager.getApiClient(user.ServerId);
+
+            document.dispatchEvent(new CustomEvent("usersignedin", {
+                detail: {
+                    user: user,
+                    apiClient: localApiClient
+                }
+            }));
+        });
+
+        Events.on(connectionManager, 'localusersignedout', function (e, user) {
+
+            localApiClient = connectionManager.getApiClient(user.ServerId);
+            document.dispatchEvent(new CustomEvent("usersignedout", {}));
+        });
+
+    }
+
     function authenticate(ctx, route, callback) {
 
-        require(['connectionManager'], function (connectionManager) {
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+
+            var firstResult = firstConnectionResult;
+            if (firstResult) {
+
+                firstConnectionResult = null;
+
+                if (firstResult.State != MediaBrowser.ConnectionState.SignedIn) {
+
+                    handleConnectionResult(firstResult, loading);
+                    return;
+                }
+            }
 
             var server = connectionManager.currentLoggedInServer();
             var pathname = ctx.pathname.toLowerCase();
@@ -239,7 +326,8 @@
         getHandler: getHandler,
         param: param,
         back: back,
-        show: show
+        show: show,
+        start: start
     };
 
 })(this);
