@@ -1,6 +1,5 @@
 (function (globalScope) {
 
-    var appInfo;
     var connectionManager;
 
     function defineRoute(newRoute) {
@@ -96,18 +95,50 @@
         }
     }
 
+    function getCapabilities(apphost) {
+
+        var caps = apphost.capabilities();
+
+        // Full list
+        // https://github.com/MediaBrowser/MediaBrowser/blob/master/MediaBrowser.Model/Session/GeneralCommand.cs
+        caps.SupportedCommands = [
+            "GoHome",
+            "GoToSettings",
+            "VolumeUp",
+            "VolumeDown",
+            "Mute",
+            "Unmute",
+            "ToggleMute",
+            "SetVolume",
+            "SetAudioStreamIndex",
+            "SetSubtitleStreamIndex",
+            "DisplayContent",
+            "GoToSearch",
+            "DisplayMessage"
+        ];
+
+        caps.SupportsMediaControl = true;
+        caps.SupportedLiveMediaTypes = caps.PlayableMediaTypes;
+
+        return caps;
+    }
+
     function createConnectionManager() {
 
-        if (!appInfo.deviceId) {
-            appInfo.deviceId = MediaBrowser.generateDeviceId();
-        }
+        return new Promise(function (resolve, reject) {
 
-        var credentialProvider = new MediaBrowser.CredentialProvider();
-        //credentialProvider.clear();
-        connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, appInfo.name, appInfo.version, appInfo.deviceName, appInfo.deviceId, appInfo.capabilities);
+            require(['apphost'], function (apphost) {
 
-        define('connectionManager', [], function () {
-            return connectionManager;
+                var credentialProvider = new MediaBrowser.CredentialProvider();
+                //credentialProvider.clear();
+                connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, apphost.appName(), apphost.appVersion(), apphost.deviceName(), apphost.deviceId(), getCapabilities(apphost));
+
+                define('connectionManager', [], function () {
+                    return connectionManager;
+                });
+
+                resolve();
+            });
         });
     }
 
@@ -119,11 +150,10 @@
             toast: "components/polymer/toast",
             loading: "components/polymer/loading",
             soundeffect: "components/soundeffect",
-            appwindow: "components/appwindow"
+            apphost: "components/apphost"
         };
 
-        var urlArgs = "v=" + appInfo.version;
-        urlArgs = "t=" + new Date().getTime();
+        var urlArgs = "t=" + new Date().getTime();
 
         var config = {
 
@@ -247,67 +277,12 @@
         });
     }
 
-    function getSupportedRemoteCommands() {
-
-        // Full list
-        // https://github.com/MediaBrowser/MediaBrowser/blob/master/MediaBrowser.Model/Session/GeneralCommand.cs
-        return [
-            "GoHome",
-            "GoToSettings",
-            "VolumeUp",
-            "VolumeDown",
-            "Mute",
-            "Unmute",
-            "ToggleMute",
-            "SetVolume",
-            "SetAudioStreamIndex",
-            "SetSubtitleStreamIndex",
-            "DisplayContent",
-            "GoToSearch",
-            "DisplayMessage"
-        ];
-    }
-
-    function getCapabilities(supportsPersistentIdentifier, deviceProfile) {
-
-        var caps = {
-            PlayableMediaTypes: ['Audio', 'Video'],
-
-            SupportedCommands: getSupportedRemoteCommands(),
-            SupportsPersistentIdentifier: supportsPersistentIdentifier,
-            SupportsMediaControl: true,
-            SupportedLiveMediaTypes: ['Audio', 'Video'],
-            DeviceProfile: deviceProfile
-        };
-
-        return caps;
-    }
-
-    function getDefaultAppInfo() {
-
-        return {
-            name: 'Emby Theater',
-            version: '3.0',
-            deviceName: 'Web Browser'
-        };
-    }
-
     function loadDefaultTheme(callback) {
 
         Emby.ThemeManager.loadTheme('defaulttheme', callback);
     }
 
     function start(appStartInfo) {
-
-        // Whoever calls start will supply info about the host app. If empty, assume it's just in a browser
-        var isDefaultAppInfo = false;
-        if (!appStartInfo) {
-            appStartInfo = getDefaultAppInfo();
-            isDefaultAppInfo = true;
-        }
-
-        appInfo = appStartInfo;
-        appInfo.capabilities = getCapabilities(!isDefaultAppInfo);
 
         initRequire();
 
@@ -318,8 +293,7 @@
                 defineCoreRoutes();
                 definePluginRoutes();
 
-                createConnectionManager();
-                loadPresentation();
+                createConnectionManager().then(loadPresentation);
             });
         });
     }
@@ -333,7 +307,17 @@
     }
 
     function exit() {
-        window.location.href = 'about:blank';
+
+        require(['apphost'], function (apphost) {
+
+            if (apphost.supports('Exit')) {
+                apphost.exit();
+            } else {
+
+                // TODO: Sign out since that's the closest thing we can do to closing the app
+
+            }
+        });
     }
 
     if (!globalScope.Emby) {
@@ -341,17 +325,10 @@
     }
 
     globalScope.Emby.App = {
-        start: start,
         exit: exit
     };
 
-    // call start unless configured not to
-    if (window.location.href.toLowerCase().indexOf('autostart=false') == -1) {
-        start();
-    } else {
-
-        document.dispatchEvent(new CustomEvent("embyready", {}));
-    }
+    start();
 
     var lastLeft;
     var lastDir;
