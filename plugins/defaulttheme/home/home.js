@@ -91,7 +91,7 @@
 
         HttpClient.request({
 
-            url: 'home/generic.html',
+            url: Emby.PluginManager.mapPath('defaulttheme', 'home/generic.html'),
             type: 'GET',
             dataType: 'html'
 

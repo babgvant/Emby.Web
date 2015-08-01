@@ -27,7 +27,7 @@ define(function () {
 
         // Somehow if the url starts with /css, require will get all screwed up since this extension is also called css
         cssId = cssId.replace('js/requirecss', 'css');
-        var url = config.baseUrl + cssId + '.css';
+        var url = cssId + '.css';
 
         var packageName = '';
 
@@ -35,6 +35,10 @@ define(function () {
         if (url.indexOf('theme#') != -1) {
             url = url.replace('theme#', '');
             packageName = 'theme';
+        }
+
+        if (url.indexOf('http') != 0) {
+            url = config.baseUrl + url;
         }
 
         if (!isLoaded(url)) {

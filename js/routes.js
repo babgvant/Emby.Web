@@ -82,7 +82,7 @@
 
     function loadContentUrl(ctx, next, route) {
 
-        var url = baseRoute + '/' + route.path;
+        var url = baseUrl() + '/' + route.path;
 
         HttpClient.request({
 
@@ -273,6 +273,9 @@
     if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
         baseRoute = baseRoute.substring(0, baseRoute.length - 1);
     }
+    function baseUrl() {
+        return baseRoute;
+    }
 
     function getHandler(route) {
         return function (ctx, next) {
@@ -327,7 +330,8 @@
         param: param,
         back: back,
         show: show,
-        start: start
+        start: start,
+        baseUrl: baseUrl
     };
 
 })(this);

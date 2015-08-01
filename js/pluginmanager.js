@@ -29,9 +29,17 @@
 
             var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
 
+            return '/' + 'plugins/' + packageName + '/' + path;
+
+        };
+
+        self.mapRequire = function (plugin, path) {
+
+            var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
+
             return 'plugins/' + packageName + '/' + path;
 
-        }
+        };
     }
 
     if (!globalScope.Emby) {
