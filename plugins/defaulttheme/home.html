@@ -2,18 +2,30 @@
     <div class="horizontalPageContent">
 
         <div class="userViewNames">
-            <template is="dom-repeat" items="{{items}}" class="userViewsHeaderTemplate">
-                <paper-button class="flat btnUserViewHeader" data-id$="{{item.Id}}" data-type$="{{item.CollectionType}}">[[item.Name]]</paper-button>
-            </template>
+            <div class="scrollbar scrollbarX">
+                <div class="handle"><div class="mousearea"></div></div>
+            </div>
+            <div class="scrollFrame scrollFrameX" style="white-space: nowrap;">
+                <div class="scrollSlider">
+                    <template is="dom-repeat" items="{{items}}" class="userViewsHeaderTemplate">
+                        <paper-button class="flat btnUserViewHeader" data-id$="{{item.Id}}" data-type$="{{item.CollectionType}}"><h2>[[item.Name]]</h2></paper-button>
+                    </template>
+                </div>
+            </div>
         </div>
 
         <div class="homeBody">
             <neon-animated-pages class="homeAnimatedPages">
-                <neon-animatable class="scrollerPage0">
+                <neon-animatable>
+                    <div class="scrollerPage0">
 
-
+                    </div>
                 </neon-animatable>
-                <neon-animatable class="scrollerPage1"></neon-animatable>
+                <neon-animatable>
+                    <div class="scrollerPage1">
+
+                    </div>
+                </neon-animatable>
             </neon-animated-pages>
         </div>
 
