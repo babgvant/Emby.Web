@@ -78,7 +78,7 @@
         var params = e.detail.params;
 
         element.querySelector('.txtServerHost').value = '';
-        element.querySelector('.txtServerPort').value = '';
+        element.querySelector('.txtServerPort').value = '8096';
 
         element.querySelector('form').addEventListener('submit', function (e) {
 

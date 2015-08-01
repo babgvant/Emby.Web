@@ -5,7 +5,13 @@
 
     function defineRoute(newRoute) {
 
-        page(newRoute.path, Emby.Page.getHandler(newRoute));
+        var baseRoute = Emby.Page.baseUrl();
+
+        var path = newRoute.path;
+
+        path = path.replace(baseRoute, '');
+
+        page(path, Emby.Page.getHandler(newRoute));
     }
 
     function defineRoutes(routes) {
@@ -14,16 +20,13 @@
 
             var currentRoute = routes[i];
 
-            page(currentRoute.path, Emby.Page.getHandler(currentRoute));
+            defineRoute(routes[i]);
         }
     }
 
     function defineCoreRoutes() {
 
-        var baseRoute = window.location.pathname.replace('/index.html', '');
-        if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
-            baseRoute = baseRoute.substring(0, baseRoute.length - 1);
-        }
+        var baseRoute = Emby.Page.baseUrl();
 
         console.log('Setting page base to ' + baseRoute);
 
