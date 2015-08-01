@@ -27,7 +27,9 @@
 
         self.mapPath = function (plugin, path) {
 
-            return 'plugins/' + plugin.packageName + '/' + path;
+            var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
+
+            return 'plugins/' + packageName + '/' + path;
 
         }
     }

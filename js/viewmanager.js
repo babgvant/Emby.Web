@@ -44,8 +44,8 @@
 
             } else {
 
-                deps.push('html!bower_components/neon-animation/animations/slide-left-animation.html');
-                deps.push('html!bower_components/neon-animation/animations/slide-from-right-animation.html');
+                deps.push('slide-left-animation');
+                deps.push('slide-from-right-animation');
 
                 entryAnimation = 'slide-from-right-animation';
                 exitAnimation = 'slide-left-animation';

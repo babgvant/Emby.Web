@@ -177,16 +177,3 @@ paper-dialog h2 {
         width: 100px; /* overriden if dynamicHandle: 1 */
         height: 100%;
     }
-
-.userViewNames {
-    margin-bottom: 30px;
-}
-
-    .userViewNames paper-button {
-        font-size: 32px;
-        min-width: initial;
-    }
-
-.userViewNames, .homeScrollFrame {
-    padding-left: 70px;
-}

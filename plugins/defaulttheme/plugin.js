@@ -54,7 +54,9 @@
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/iron-list/iron-list.html',
                 'html!bower_components/paper-material/paper-material.html',
-                'html!bower_components/iron-form/iron-form.html'
+                'html!bower_components/iron-form/iron-form.html',
+                'slide-from-right-animation',
+                'slide-left-animation'
             ];
 
             return files;
@@ -83,7 +85,8 @@
                 type: 'home',
                 transition: 'slide',
                 dependencies: [
-                    Emby.PluginManager.mapPath(self, 'home/home')
+                    Emby.PluginManager.mapPath(self, 'home/home'),
+                    'css!' + Emby.PluginManager.mapPath(self, 'home/home')
                 ]
             });
 

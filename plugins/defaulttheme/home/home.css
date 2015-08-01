@@ -1,0 +1,16 @@
+.userViewNames {
+    margin-bottom: 30px;
+}
+
+    .userViewNames paper-button {
+        font-size: 32px;
+        min-width: initial;
+    }
+
+.userViewNames, .homeScrollFrame {
+    padding-left: 70px;
+}
+
+.homeBody {
+    height: 550px;
+}

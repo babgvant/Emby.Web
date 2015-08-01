@@ -164,6 +164,9 @@
         define("Sly", ["bower_components/sly/dist/sly.min"], function () {
             return window.Sly;
         });
+
+        define("slide-from-right-animation", ['html!bower_components/neon-animation/animations/slide-from-right-animation.html']);
+        define("slide-left-animation", ['html!bower_components/neon-animation/animations/slide-left-animation.html']);
     }
 
     function loadCoreDependencies(callback) {
