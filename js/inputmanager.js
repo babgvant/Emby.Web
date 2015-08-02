@@ -16,7 +16,30 @@
         lastInputTime = new Date().getTime();
     });
 
-    document.addEventListener('mousemove', function () {
+    var lastMouseMoveData = {
+        x: 0,
+        y: 0
+    };
+
+    document.addEventListener('mousemove', function (e) {
+
+        var obj = lastMouseMoveData;
+
+        var eventX = e.screenX;
+        var eventY = e.screenY;
+
+        // if coord don't exist how could it move
+        if (typeof eventX === "undefined" && typeof eventY === "undefined") {
+            return;
+        }
+
+        // if coord are same, it didn't move
+        if (Math.abs(eventX - obj.x) < 10 && Math.abs(eventY - obj.y) < 10) {
+            return;
+        }
+
+        obj.x = eventX;
+        obj.y = eventY;
 
         lastInputTime = lastMouseInputTime = new Date().getTime();
 

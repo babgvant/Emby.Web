@@ -43,20 +43,19 @@
 
             var files = [
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/style'),
-                'css!' + Emby.PluginManager.mapRequire(self, 'css/card'),
+                'css!' + Emby.PluginManager.mapRequire(self, 'cards/card'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),
+                Emby.PluginManager.mapRequire(self, 'cards/cardbuilder.js'),
                 'html!bower_components/iron-icon/iron-icon.html',
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapRequire(self, 'icons.html'),
                 'html!bower_components/paper-button/paper-button.html',
                 'html!bower_components/paper-icon-button/paper-icon-button.html',
                 'html!bower_components/paper-input/paper-input.html',
-                'html!bower_components/iron-list/iron-list.html',
                 'html!bower_components/paper-material/paper-material.html',
-                'html!bower_components/iron-form/iron-form.html',
-                'slide-from-right-animation',
-                'slide-left-animation'
+                'fade-in-animation',
+                'fade-out-animation'
             ];
 
             return files;

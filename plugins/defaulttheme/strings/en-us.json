@@ -28,5 +28,10 @@
     "ButtonCancel": "Cancel",
     "HeaderSelectServer": "Select Server",
     "HeaderPleaseSignIn": "Please Sign In",
-    "ButtonNewServer": "New Server"
+    "ButtonNewServer": "New Server",
+    "AllSeries": "All Series",
+    "Genres": "Genres",
+    "NextUp": "Next Up",
+    "LatestEpisodes": "Latest Episodes",
+    "ContinueWatching": "Continue Watching"
 }
