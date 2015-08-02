@@ -54,6 +54,7 @@
                 'html!bower_components/paper-icon-button/paper-icon-button.html',
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/paper-material/paper-material.html',
+                'html!bower_components/paper-progress/paper-progress.html',
                 'fade-in-animation',
                 'fade-out-animation'
             ];

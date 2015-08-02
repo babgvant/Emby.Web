@@ -260,6 +260,26 @@
         };
     }
 
+    function getProgressBarHtml(item) {
+
+        if (item.Type == "Recording" && item.CompletionPercentage) {
+
+            return '<paper-progress value="' + item.CompletionPercentage + '" class="block"></paper-progress>';
+        }
+
+        var userData = item.UserData;
+        if (userData) {
+            var pct = userData.PlayedPercentage;
+
+            if (pct && pct < 100) {
+
+                return '<paper-progress value="' + pct + '" class="block"></paper-progress>';
+            }
+        }
+
+        return '';
+    }
+
     function buildCard(item, apiClient, options, className) {
 
         var imgInfo = getCardImageUrl(item, apiClient, options);
@@ -276,6 +296,8 @@
         nameHtml += options.showTitle || imgInfo.forceName ?
            ('<div class="cardText">' + getDisplayName(item) + '</div>') :
            '';
+
+        nameHtml += getProgressBarHtml(item);
 
         var html = '\
 <paper-button raised class="' + className + '"> \
