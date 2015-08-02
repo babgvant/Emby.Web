@@ -168,13 +168,13 @@
 
         var homeAnimatedPages = page.querySelector('.homeAnimatedPages');
 
-        homeAnimatedPages.entryAnimation = 'slide-from-right-animation';
-        homeAnimatedPages.exitAnimation = 'slide-left-animation';
+        homeAnimatedPages.entryAnimation = 'fade-in-animation';
+        homeAnimatedPages.exitAnimation = 'fade-out-animation';
 
         var newIndex = homeAnimatedPages.selected === 0 ? 1 : 0;
 
         var animatedPage = page.querySelector('.scrollerPage' + newIndex);
-        animatedPage.innerHTML = html;
+        animatedPage.innerHTML = Globalize.translateHtml(html);
 
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
 

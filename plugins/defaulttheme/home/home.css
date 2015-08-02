@@ -1,20 +1,53 @@
 .userViewNames {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
     .userViewNames paper-button {
         min-width: initial;
     }
 
-.userViewNames .scrollSlider {
-    padding-left: 70px;
-    padding-right: 70px;
-}
+    .userViewNames .scrollSlider {
+        padding-left: 70px;
+        padding-right: 70px;
+    }
 
 .homeScrollFrame {
     padding-left: 70px;
 }
 
 .homeBody {
-    height: 550px;
+    height: 572px;
+}
+
+.homeSection {
+    float: left;
+}
+
+    .homeSection + .homeSection {
+        margin-left: 40px;
+    }
+
+.homeSquareCard {
+    width: 180px;
+}
+
+.homebackdropSpotlightCard {
+    width: 640px;
+}
+
+.homebackdropCard {
+    width: 320px;
+}
+
+    .homebackdropCard paper-material {
+        margin: 5px 5px 7px !important;
+    }
+
+.sectionTitle {
+    text-transform: uppercase;
+    padding-left: .25em;
+}
+
+.cardColumn {
+    float: left;
 }

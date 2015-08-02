@@ -133,7 +133,7 @@
             require(['apphost'], function (apphost) {
 
                 var credentialProvider = new MediaBrowser.CredentialProvider();
-                credentialProvider.clear();
+                //credentialProvider.clear();
                 connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, apphost.appName(), apphost.appVersion(), apphost.deviceName(), apphost.deviceId(), getCapabilities(apphost));
 
                 define('connectionManager', [], function () {
@@ -216,6 +216,8 @@
         define("hero-animation", ['html!bower_components/neon-animation/animations/hero-animation.html']);
         define("ripple-animation", ['html!bower_components/neon-animation/animations/ripple-animation.html']);
         define("reverse-ripple-animation", ['html!bower_components/neon-animation/animations/reverse-ripple-animation.html']);
+        define("fade-in-animation", ['html!bower_components/neon-animation/animations/fade-in-animation.html']);
+        define("fade-out-animation", ['html!bower_components/neon-animation/animations/fade-out-animation.html']);
     }
 
     function enableWebComponents() {
@@ -237,6 +239,7 @@
           'js/playbackmanager',
           'js/audiomanager',
           'js/viewmanager',
+          'js/imageloader',
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',
