@@ -1,5 +1,7 @@
 (function (globalScope) {
 
+    var thumbWidth = 320;
+
     function loadResume(element, parentId, apiClient) {
 
         var options = {
@@ -26,7 +28,8 @@
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
                 className: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: 320
+                width: thumbWidth,
+                preferThumb: true
             });
         });
     }
@@ -53,7 +56,7 @@
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
                 className: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: 320,
+                width: thumbWidth,
                 preferThumb: true
             });
         });
@@ -63,29 +66,25 @@
 
         var options = {
 
-            SortBy: "DatePlayed",
-            SortOrder: "Descending",
             IncludeItemTypes: "Episode",
-            Filters: "IsResumable",
             Limit: 9,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio,UserData",
-            ExcludeLocationTypes: "Virtual",
+            Fields: "PrimaryImageAspectRatio,SyncInfo",
             ParentId: parentId,
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
 
             var resumeSection = element.querySelector('.latestSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
                 className: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: 320
+                width: thumbWidth,
+                preferThumb: true
             });
         });
     }

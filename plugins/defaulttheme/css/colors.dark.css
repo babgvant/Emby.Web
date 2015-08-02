@@ -1,7 +1,7 @@
 html {
     background-color: #181818;
     color: #fff;
-    background: -webkit-radial-gradient(circle, #242424, #111);
+    background: -webkit-radial-gradient(circle, #262626, #101010);
 }
 
 /*html,body {
@@ -92,7 +92,7 @@ paper-material[elevation="2"] {
 
 
 .userViewNames paper-button.flat {
-    opacity: .3;
+    opacity: .35;
 }
 
     .userViewNames paper-button.flat.selected {

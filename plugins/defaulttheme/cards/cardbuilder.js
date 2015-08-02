@@ -1,5 +1,59 @@
 (function (globalScope) {
 
+    function getAveragePrimaryImageAspectRatio(items) {
+
+        var values = [];
+
+        for (var i = 0, length = items.length; i < length; i++) {
+
+            var ratio = items[i].PrimaryImageAspectRatio || 0;
+
+            if (!ratio) {
+                continue;
+            }
+
+            values[values.length] = ratio;
+        }
+
+        if (!values.length) {
+            return null;
+        }
+
+        // Use the median
+        values.sort(function (a, b) { return a - b; });
+
+        var half = Math.floor(values.length / 2);
+
+        var result;
+
+        if (values.length % 2)
+            result = values[half];
+        else
+            result = (values[half - 1] + values[half]) / 2.0;
+
+        // If really close to 2:3 (poster image), just return 2:3
+        if (Math.abs(0.66666666667 - result) <= .15) {
+            return 0.66666666667;
+        }
+
+        // If really close to 16:9 (episode image), just return 16:9
+        if (Math.abs(1.777777778 - result) <= .2) {
+            return 1.777777778;
+        }
+
+        // If really close to 1 (square image), just return 1
+        if (Math.abs(1 - result) <= .15) {
+            return 1;
+        }
+
+        // If really close to 4:3 (poster image), just return 2:3
+        if (Math.abs(1.33333333333 - result) <= .15) {
+            return 1.33333333333;
+        }
+
+        return result;
+    }
+
     function getDisplayName(item, displayAsSpecial, includeParentInfo) {
 
         if (!item) {
@@ -81,12 +135,29 @@
 
         var width = options.width;
         var height = null;
-        var primaryImageAspectRatio = null;
+        var primaryImageAspectRatio = getAveragePrimaryImageAspectRatio([item]);
         var forceName = false;
+        var imgUrl = null;
 
-        if (options.preferThumb && item.SeriesThumbImageTag && options.inheritThumb !== false) {
+        if (options.preferThumb && item.ImageTags && item.ImageTags.Thumb) {
 
-            return apiClient.getScaledImageUrl(item.SeriesId, {
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
+                type: "Thumb",
+                maxWidth: width,
+                tag: item.ImageTags.Thumb
+            });
+
+        } else if (options.preferBanner && item.ImageTags && item.ImageTags.Banner) {
+
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
+                type: "Banner",
+                maxWidth: width,
+                tag: item.ImageTags.Banner
+            });
+
+        } else if (options.preferThumb && item.SeriesThumbImageTag && options.inheritThumb !== false) {
+
+            imgUrl = apiClient.getScaledImageUrl(item.SeriesId, {
                 type: "Thumb",
                 maxWidth: width,
                 tag: item.SeriesThumbImageTag
@@ -94,14 +165,14 @@
 
         } else if (options.preferThumb && item.ParentThumbItemId && options.inheritThumb !== false) {
 
-            return apiClient.getThumbImageUrl(item.ParentThumbItemId, {
+            imgUrl = apiClient.getThumbImageUrl(item.ParentThumbItemId, {
                 type: "Thumb",
                 maxWidth: width
             });
 
         } else if (options.preferThumb && item.BackdropImageTags && item.BackdropImageTags.length) {
 
-            return apiClient.getScaledImageUrl(item.Id, {
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
                 type: "Backdrop",
                 maxWidth: width,
                 tag: item.BackdropImageTags[0]
@@ -113,7 +184,7 @@
 
             height = width && primaryImageAspectRatio ? Math.round(width / primaryImageAspectRatio) : null;
 
-            return apiClient.getImageUrl(item.Id, {
+            imgUrl = apiClient.getImageUrl(item.Id, {
                 type: "Primary",
                 height: height,
                 width: width,
@@ -123,7 +194,7 @@
         }
         else if (item.ParentPrimaryImageTag) {
 
-            return apiClient.getImageUrl(item.ParentPrimaryImageItemId, {
+            imgUrl = apiClient.getImageUrl(item.ParentPrimaryImageItemId, {
                 type: "Primary",
                 width: width,
                 tag: item.ParentPrimaryImageTag
@@ -133,7 +204,7 @@
 
             width = primaryImageAspectRatio ? Math.round(height * primaryImageAspectRatio) : null;
 
-            return apiClient.getScaledImageUrl(item.AlbumId, {
+            imgUrl = apiClient.getScaledImageUrl(item.AlbumId, {
                 type: "Primary",
                 height: height,
                 width: width,
@@ -143,7 +214,7 @@
         }
         else if (item.Type == 'Season' && item.ImageTags && item.ImageTags.Thumb) {
 
-            return apiClient.getScaledImageUrl(item.Id, {
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
                 type: "Thumb",
                 maxWidth: width,
                 tag: item.ImageTags.Thumb
@@ -152,7 +223,7 @@
         }
         else if (item.BackdropImageTags && item.BackdropImageTags.length) {
 
-            return apiClient.getScaledImageUrl(item.Id, {
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
                 type: "Backdrop",
                 maxWidth: width,
                 tag: item.BackdropImageTags[0]
@@ -160,7 +231,7 @@
 
         } else if (item.ImageTags && item.ImageTags.Thumb) {
 
-            return apiClient.getScaledImageUrl(item.Id, {
+            imgUrl = apiClient.getScaledImageUrl(item.Id, {
                 type: "Thumb",
                 maxWidth: width,
                 tag: item.ImageTags.Thumb
@@ -168,7 +239,7 @@
 
         } else if (item.SeriesThumbImageTag) {
 
-            return apiClient.getScaledImageUrl(item.SeriesId, {
+            imgUrl = apiClient.getScaledImageUrl(item.SeriesId, {
                 type: "Thumb",
                 maxWidth: width,
                 tag: item.SeriesThumbImageTag
@@ -176,21 +247,35 @@
 
         } else if (item.ParentThumbItemId) {
 
-            return apiClient.getThumbImageUrl(item, {
+            imgUrl = apiClient.getThumbImageUrl(item, {
                 type: "Thumb",
                 maxWidth: width
             });
 
         }
 
-        return null;
+        return {
+            imgUrl: imgUrl,
+            forceName: forceName
+        };
     }
 
     function buildCard(item, apiClient, options, className) {
 
-        var imgUrl = getCardImageUrl(item, apiClient, options);
+        var imgInfo = getCardImageUrl(item, apiClient, options);
+        var imgUrl = imgInfo.imgUrl;
 
         var cardImageContainer = imgUrl ? ('<div class="cardImageContainer lazy" data-src="' + imgUrl + '">') : '<div class="cardImageContainer">';
+
+        var nameHtml = '';
+
+        if (options.showParentTitle) {
+            nameHtml += '<div class="cardText">' + (item.EpisodeTitle ? item.Name : (item.SeriesName || item.Album || item.AlbumArtist || item.GameSystem || "")) + '</div>';
+        }
+
+        nameHtml += options.showTitle || imgInfo.forceName ?
+           ('<div class="cardText">' + getDisplayName(item) + '</div>') :
+           '';
 
         var html = '\
 <paper-button raised class="' + className + '"> \
@@ -199,7 +284,7 @@
 <div class="cardContent">\
 ' + cardImageContainer + '\
 <div class="innerCardFooter">\
-<div class="cardText">' + getDisplayName(item) + '</div>\
+' + nameHtml + '\
 </div>\
 </div>\
 </div>\
