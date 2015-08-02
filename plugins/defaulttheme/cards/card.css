@@ -93,9 +93,13 @@
 }
 
 .cardText {
-    padding: .5em;
+    padding: .25em .35em;
     white-space: nowrap;
 }
+
+    .cardText + .cardText {
+        padding-top: .1em;
+    }
 
 .cardImage {
     width: 100%;
