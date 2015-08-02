@@ -116,3 +116,11 @@ paper-dialog {
             background-color: #52B54B !important;
             color: #fff !important;
         }
+
+.allSeriesCard .cardImageContainer {
+    background: #4CAF50;
+}
+
+.seriesGenresCard .cardImageContainer {
+    background: #F44336;
+}

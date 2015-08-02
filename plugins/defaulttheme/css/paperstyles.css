@@ -122,3 +122,16 @@ paper-dialog {
     paper-dialog > * {
         margin-top: 40px;
     }
+
+paper-progress {
+    height: 4px;
+}
+
+    paper-progress.block {
+        display: block;
+        width: 100%;
+    }
+
+    paper-progress #progressContainer {
+        background: transparent !important;
+    }
