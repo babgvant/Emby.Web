@@ -142,6 +142,9 @@
         var viewName = '';
 
         switch (type) {
+            case 'tvshows':
+                viewName = 'tv';
+                break;
             default:
                 viewName = 'generic';
                 break;
