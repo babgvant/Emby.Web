@@ -133,7 +133,7 @@
             require(['apphost'], function (apphost) {
 
                 var credentialProvider = new MediaBrowser.CredentialProvider();
-                //credentialProvider.clear();
+                credentialProvider.clear();
                 connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, apphost.appName(), apphost.appVersion(), apphost.deviceName(), apphost.deviceId(), getCapabilities(apphost));
 
                 define('connectionManager', [], function () {
@@ -147,14 +147,22 @@
 
     function initRequire() {
 
+        var componentType = enableWebComponents() ? 'polymer' : 'default';
+
         var paths = {
-            alert: "components/polymer/alert",
-            confirm: "components/polymer/confirm",
-            toast: "components/polymer/toast",
-            loading: "components/polymer/loading",
+            alert: "components/" + componentType + "/alert",
+            confirm: "components/" + componentType + "/confirm",
+            toast: "components/" + componentType + "/toast",
+            loading: "components/" + componentType + "/loading",
             soundeffect: "components/soundeffect",
             apphost: "components/apphost"
         };
+
+        if (enableWebComponents()) {
+            paths.viewcontainer = 'js/viewcontainer';
+        } else {
+            paths.viewcontainer = 'js/viewcontainer-lite';
+        }
 
         var urlArgs = "t=" + new Date().getTime();
 
@@ -210,6 +218,10 @@
         define("reverse-ripple-animation", ['html!bower_components/neon-animation/animations/reverse-ripple-animation.html']);
     }
 
+    function enableWebComponents() {
+        return true;
+    }
+
     function loadCoreDependencies(callback) {
 
         var list = [
@@ -217,7 +229,6 @@
           'bower_components/bean/bean.min',
           'js/pluginmanager',
           'js/routes',
-          'js/viewmanager',
           'js/globalize',
           'js/thememanager',
           'js/focusmanager',
@@ -225,7 +236,7 @@
           'js/screensavermanager',
           'js/playbackmanager',
           'js/audiomanager',
-
+          'js/viewmanager',
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',
@@ -236,9 +247,12 @@
           'apiclient/events',
           'apiclient/ajax',
           'apiclient/apiclient',
-          'apiclient/connectionmanager',
-          'webcomponentsjs'
+          'apiclient/connectionmanager'
         ];
+
+        if (enableWebComponents()) {
+            list.push('webcomponentsjs');
+        }
 
         if (!globalScope.Promise) {
             list.push('bower_components/native-promise-only/lib/npo.src');
@@ -253,10 +267,14 @@
                 return window.HttpClient;
             });
 
+            var secondLevelDeps = [];
+
+            if (enableWebComponents()) {
+                secondLevelDeps.push('html!bower_components/neon-animation/neon-animated-pages.html');
+            }
+
             // Second level dependencies that have to be loaded after the first set
-            require([
-                'html!bower_components/neon-animation/neon-animated-pages.html'
-            ], callback);
+            require(secondLevelDeps, callback);
         });
     }
 
@@ -270,9 +288,12 @@
             var list = [
                 'plugins/defaulttheme/plugin.js',
                 'plugins/logoscreensaver/plugin.js',
-                'plugins/keyboard/plugin.js',
-                'plugins/wmctheme/plugin.js'
+                'plugins/keyboard/plugin.js'
             ];
+
+            if (enableWebComponents()) {
+                list.push('plugins/wmctheme/plugin.js');
+            }
 
             require(list, function () {
                 resolve();

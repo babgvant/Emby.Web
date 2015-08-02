@@ -91,11 +91,11 @@ paper-material[elevation="2"] {
 
 
 .userViewNames paper-button.flat {
-    opacity: .4;
+    opacity: .3;
 }
 
     .userViewNames paper-button.flat.selected {
-        color: #00BCD4;
+        color: #fff;
         opacity: 1;
     }
 
