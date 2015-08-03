@@ -84,12 +84,40 @@
                 className: 'backdropCard homebackdropCard',
                 rows: 3,
                 width: thumbWidth,
-                preferThumb: true
+                preferThumb: true,
+                showGroupCount: true
+            });
+        });
+    }
+
+    function loadSpotlight(element, parentId, apiClient) {
+
+        var options = {
+
+            SortBy: "Random",
+            IncludeItemTypes: "Series",
+            Limit: 20,
+            Recursive: true,
+            ParentId: parentId,
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Backdrop",
+            ImageTypes: "Backdrop"
+        };
+
+        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+
+            var card = element.querySelector('.homebackdropSpotlightCard');
+
+            require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight')], function () {
+
+                new DefaultTheme.spotlight(card, result.Items, thumbWidth * 2, apiClient);
             });
         });
     }
 
     function view(element, parentId) {
+
+        var self = this;
 
         require(['connectionManager'], function (connectionManager) {
 
@@ -98,7 +126,12 @@
             loadResume(element, parentId, apiClient);
             loadNextUp(element, parentId, apiClient);
             loadLatest(element, parentId, apiClient);
+            loadSpotlight(element, parentId, apiClient);
         });
+
+        self.destroy = function () {
+
+        };
     }
 
     if (!globalScope.DefaultTheme) {

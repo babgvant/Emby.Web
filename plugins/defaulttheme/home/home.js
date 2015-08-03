@@ -110,9 +110,15 @@
     var focusTimeout;
     function setFocusDelay(view, elem) {
 
+        var viewId = elem.getAttribute('data-id');
+
         var btn = view.querySelector('.btnUserViewHeader.selected');
 
         if (btn) {
+
+            if (viewId == btn.getAttribute('data-id')) {
+                return;
+            }
             btn.classList.remove('selected');
         }
 
@@ -123,7 +129,7 @@
         }
         focusTimeout = setTimeout(function () {
 
-            selectUserView(view, elem.getAttribute('data-id'));
+            selectUserView(view, viewId);
 
         }, 300);
     }
@@ -166,27 +172,27 @@
 
     function loadViewHtml(page, parentId, html, viewName) {
 
-        var homeAnimatedPages = page.querySelector('.homeAnimatedPages');
+        var homeBody = page.querySelector('.homeBody');
+        homeBody.innerHTML = Globalize.translateHtml(html);
 
-        homeAnimatedPages.entryAnimation = 'fade-in-animation';
-        homeAnimatedPages.exitAnimation = 'fade-out-animation';
-
-        var newIndex = homeAnimatedPages.selected === 0 ? 1 : 0;
-
-        var animatedPage = page.querySelector('.scrollerPage' + newIndex);
-        animatedPage.innerHTML = Globalize.translateHtml(html);
-
+        var keyframes = [
+                { opacity: '0', offset: 0 },
+                { opacity: '1', offset: 1 }];
+        var timing = { duration: 900, iterations: 1 };
+        homeBody.animate(keyframes, timing);
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
 
-            new DefaultTheme[viewName + 'View'](animatedPage, parentId);
-            homeAnimatedPages.cancelAnimation();
-            homeAnimatedPages.selected = newIndex;
-            createHorizontalScroller(animatedPage);
+            new DefaultTheme[viewName + 'View'](homeBody, parentId);
+            createHorizontalScroller(homeBody);
         });
     }
 
     var currentSlyFrame;
     function createHorizontalScroller(view) {
+
+        if (currentSlyFrame) {
+            currentSlyFrame.destroy();
+        }
 
         require(["Sly", 'loading'], function (Sly, loading) {
 
@@ -214,10 +220,6 @@
                 dynamicHandle: 1,
                 clickBar: 1
             };
-
-            if (currentSlyFrame) {
-                currentSlyFrame.destroy();
-            }
 
             currentSlyFrame = new Sly(scrollFrame, options).init();
             initFocusHandler(view, currentSlyFrame);
