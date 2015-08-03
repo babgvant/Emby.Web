@@ -35,5 +35,9 @@
     "LatestEpisodes": "Latest Episodes",
     "ContinueWatching": "Continue Watching",
     "AllMovies": "All Movies",
-    "LatestMovies": "Latest Movies"
+    "LatestMovies": "Latest Movies",
+    "Channels": "Channels",
+    "LatestFromValue": "Latest from {0}",
+    "All": "All",
+    "Latest": "Latest"
 }

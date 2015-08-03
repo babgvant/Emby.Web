@@ -43,6 +43,23 @@
         };
     }
 
+    function visibleInViewport(elem, partial, threshold) {
+
+        var vpWidth = window.innerWidth,
+            vpHeight = window.innerHeight;
+
+        // Use this native browser method, if available.
+        var rec = elem.getBoundingClientRect(),
+            tViz = rec.top >= 0 && rec.top < vpHeight + threshold,
+            bViz = rec.bottom > 0 && rec.bottom <= vpHeight + threshold,
+            lViz = rec.left >= 0 && rec.left < vpWidth + threshold,
+            rViz = rec.right > 0 && rec.right <= vpWidth + threshold,
+            vVisible = partial ? tViz || bViz : tViz && bViz,
+            hVisible = partial ? lViz || rViz : lViz && rViz;
+
+        return vVisible && hVisible;
+    }
+
     function spotlight(card, items, width, apiClient) {
 
         var self = this;
@@ -63,6 +80,11 @@
 
             if (!isInDocument(card)) {
                 clearInterval(self.interval);
+                return;
+            }
+
+            if (!visibleInViewport(card, true, 0)) {
+                // If it's not visible on screen, skip it
                 return;
             }
 

@@ -20,16 +20,13 @@
     *       the user visible viewport of a web browser.
     *       only accounts for vertical position, not horizontal.
     */
-    function visibleInViewport(elem, partial, hidden, direction, threshold) {
+    function visibleInViewport(elem, partial, threshold) {
 
-        var t = elem,
-            vpWidth = window.innerWidth,
-            vpHeight = window.innerHeight,
-            direction = (direction) ? direction : 'both',
-            clientSize = hidden === true ? t.offsetWidth * t.offsetHeight : true;
+        var vpWidth = window.innerWidth,
+            vpHeight = window.innerHeight;
 
         // Use this native browser method, if available.
-        var rec = t.getBoundingClientRect(),
+        var rec = elem.getBoundingClientRect(),
             tViz = rec.top >= 0 && rec.top < vpHeight + threshold,
             bViz = rec.bottom > 0 && rec.bottom <= vpHeight + threshold,
             lViz = rec.left >= 0 && rec.left < vpWidth + threshold,
@@ -37,12 +34,7 @@
             vVisible = partial ? tViz || bViz : tViz && bViz,
             hVisible = partial ? lViz || rViz : lViz && rViz;
 
-        if (direction === 'both')
-            return clientSize && vVisible && hVisible;
-        else if (direction === 'vertical')
-            return clientSize && vVisible;
-        else if (direction === 'horizontal')
-            return clientSize && hVisible;
+        return vVisible && hVisible;
     }
 
     var unveilId = 0;
@@ -56,7 +48,7 @@
     var threshold = getThreshold();
 
     function isVisible(elem) {
-        return visibleInViewport(elem, true, false, 'both', threshold);
+        return visibleInViewport(elem, true, threshold);
     }
 
     function fillImage(elem) {
@@ -129,8 +121,6 @@
     }
 
     window.ImageLoader = {
-        fillImages: fillImages,
-        lazyImage: lazyImage,
         lazyChildren: lazyChildren
     };
 
