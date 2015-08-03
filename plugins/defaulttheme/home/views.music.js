@@ -13,17 +13,13 @@
 
         apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
 
-            var section = element.querySelector('.latestSection');
-
-            // Needed in case the view has been destroyed
-            if (!section) {
-                return;
-            }
+            var resumeSection = element.querySelector('.latestSection');
 
             DefaultTheme.CardBuilder.buildCards(result, apiClient, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'autoHome'
+                parentContainer: resumeSection,
+                itemsContainer: resumeSection.querySelector('.itemsContainer'),
+                shape: 'autoHome',
+                width: DefaultTheme.CardBuilder.homePortraitWidth
             });
         });
     }
@@ -47,6 +43,6 @@
         globalScope.DefaultTheme = {};
     }
 
-    globalScope.DefaultTheme.genericView = view;
+    globalScope.DefaultTheme.musicView = view;
 
 })(this);

@@ -112,7 +112,7 @@
         }
         else {
             options.shape = 'squareCard homeSquareCard';
-            options.rows = 2;
+            options.rows = 3;
             options.width = DefaultTheme.CardBuilder.homeSquareWidth;
         }
     }
@@ -364,13 +364,27 @@
         return html;
     }
 
+    function isInDocument(card) {
+
+        if (document.contains) {
+            return document.contains(card);
+        }
+        return document.body.contains(card);
+    }
+
     function buildCards(items, apiClient, options) {
+
+        // Abort if the container has been disposed
+        if (!isInDocument(options.parentContainer)) {
+            return;
+        }
 
         if (options.parentContainer) {
             if (items.length) {
                 options.parentContainer.classList.remove('hide');
             } else {
                 options.parentContainer.classList.add('hide');
+                return;
             }
         }
 
@@ -390,7 +404,7 @@
         buildCards: buildCards,
         homeThumbWidth: 320,
         homePortraitWidth: 189,
-        homeSquareWidth: 270
+        homeSquareWidth: 180
     };
 
 })(this);

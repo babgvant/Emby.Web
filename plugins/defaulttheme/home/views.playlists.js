@@ -1,26 +1,26 @@
 (function (globalScope) {
 
-    function loadLatest(element, parentId, apiClient) {
+    function loadAll(element, parentId, apiClient) {
 
         var options = {
 
-            Limit: 24,
             Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
+            EnableImageTypes: "Primary,Backdrop,Thumb",
+            IncludeItemTypes: "Playlist"
         };
 
-        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
+        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items', options)).done(function (result) {
 
-            var section = element.querySelector('.latestSection');
+            var section = element.querySelector('.allSection');
 
             // Needed in case the view has been destroyed
             if (!section) {
                 return;
             }
 
-            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome'
@@ -35,7 +35,7 @@
 
             var apiClient = connectionManager.currentApiClient();
 
-            loadLatest(element, parentId, apiClient);
+            loadAll(element, parentId, apiClient);
         });
 
         self.destroy = function () {
@@ -47,6 +47,6 @@
         globalScope.DefaultTheme = {};
     }
 
-    globalScope.DefaultTheme.genericView = view;
+    globalScope.DefaultTheme.playlistsView = view;
 
 })(this);
