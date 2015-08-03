@@ -10,6 +10,11 @@
 
             var section = element.querySelector('.channelsSection');
 
+            // Needed in case the view has been destroyed
+            if (!section) {
+                return;
+            }
+
             DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),

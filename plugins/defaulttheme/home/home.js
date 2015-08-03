@@ -158,6 +158,12 @@
             case 'channels':
                 viewName = 'channels';
                 break;
+            case 'music':
+                viewName = 'music';
+                break;
+            case 'playlists':
+                viewName = 'playlists';
+                break;
             default:
                 viewName = 'generic';
                 break;
