@@ -12,6 +12,7 @@
             var apiClient = connectionManager.currentApiClient();
 
             renderUserViews(element, apiClient);
+            createHorizontalScroller(element.querySelector('.homeBody'));
         });
 
         initEvents(element);
@@ -97,7 +98,7 @@
         });
 
         // Catch events on items in the view
-        view.querySelector('.homeBody').addEventListener('mousedown', function (e) {
+        view.querySelector('.homeScrollContent').addEventListener('mousedown', function (e) {
 
             var card = findParent(e.target, 'card');
 
@@ -151,6 +152,9 @@
             case 'tvshows':
                 viewName = 'tv';
                 break;
+            case 'movies':
+                viewName = 'movies';
+                break;
             default:
                 viewName = 'generic';
                 break;
@@ -172,27 +176,25 @@
 
     function loadViewHtml(page, parentId, html, viewName) {
 
-        var homeBody = page.querySelector('.homeBody');
-        homeBody.innerHTML = Globalize.translateHtml(html);
+        if (bodySlyFrame) {
+            bodySlyFrame.slideTo(0, true);
+        }
+        var homeScrollContent = page.querySelector('.homeScrollContent');
+        homeScrollContent.innerHTML = Globalize.translateHtml(html);
 
         var keyframes = [
                 { opacity: '0', offset: 0 },
                 { opacity: '1', offset: 1 }];
         var timing = { duration: 900, iterations: 1 };
-        homeBody.animate(keyframes, timing);
+        homeScrollContent.animate(keyframes, timing);
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
 
-            new DefaultTheme[viewName + 'View'](homeBody, parentId);
-            createHorizontalScroller(homeBody);
+            new DefaultTheme[viewName + 'View'](homeScrollContent, parentId);
         });
     }
 
-    var currentSlyFrame;
+    var bodySlyFrame;
     function createHorizontalScroller(view) {
-
-        if (currentSlyFrame) {
-            currentSlyFrame.destroy();
-        }
 
         require(["Sly", 'loading'], function (Sly, loading) {
 
@@ -221,8 +223,8 @@
                 clickBar: 1
             };
 
-            currentSlyFrame = new Sly(scrollFrame, options).init();
-            initFocusHandler(view, currentSlyFrame);
+            bodySlyFrame = new Sly(scrollFrame, options).init();
+            initFocusHandler(view, bodySlyFrame);
         });
     }
 

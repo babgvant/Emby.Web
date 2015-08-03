@@ -73,7 +73,7 @@
             loadItemIntoSpotlight(card, items[index], width, apiClient);
             index++;
 
-        }, 20000);
+        }, 10000);
     }
 
     if (!globalScope.DefaultTheme) {

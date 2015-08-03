@@ -11,9 +11,6 @@
         display: block;
     }
 
-    .card paper-material {
-    }
-
 .cardScalable {
     position: relative;
 }
@@ -22,7 +19,7 @@
     padding-bottom: 56.25%;
 }
 
-.squareCard .cardPadder, .overflowSquareCard .cardPadder {
+.squareCard .cardPadder {
     padding-bottom: 100%;
 }
 
@@ -30,7 +27,7 @@
     padding-bottom: 75%;
 }
 
-.portraitCard .cardPadder, .overflowPortraitCard .cardPadder {
+.portraitCard .cardPadder {
     padding-bottom: 150%;
 }
 

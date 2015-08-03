@@ -255,6 +255,9 @@
 
         if (enableWebComponents()) {
             list.push('webcomponentsjs');
+        } else {
+            // If not using webcomponents then we'll at least need the web animations polyfill
+            list.push('bower_components/web-animations-js/web-animations-next.min');
         }
 
         if (!globalScope.Promise) {
