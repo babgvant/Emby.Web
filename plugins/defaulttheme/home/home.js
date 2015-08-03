@@ -12,6 +12,7 @@
             var apiClient = connectionManager.currentApiClient();
 
             renderUserViews(element, apiClient);
+            createHorizontalScroller(element.querySelector('.homeBody'));
         });
 
         initEvents(element);
@@ -97,7 +98,7 @@
         });
 
         // Catch events on items in the view
-        view.querySelector('.homeBody').addEventListener('mousedown', function (e) {
+        view.querySelector('.homeScrollContent').addEventListener('mousedown', function (e) {
 
             var card = findParent(e.target, 'card');
 
@@ -110,9 +111,15 @@
     var focusTimeout;
     function setFocusDelay(view, elem) {
 
+        var viewId = elem.getAttribute('data-id');
+
         var btn = view.querySelector('.btnUserViewHeader.selected');
 
         if (btn) {
+
+            if (viewId == btn.getAttribute('data-id')) {
+                return;
+            }
             btn.classList.remove('selected');
         }
 
@@ -123,7 +130,7 @@
         }
         focusTimeout = setTimeout(function () {
 
-            selectUserView(view, elem.getAttribute('data-id'));
+            selectUserView(view, viewId);
 
         }, 300);
     }
@@ -144,6 +151,9 @@
         switch (type) {
             case 'tvshows':
                 viewName = 'tv';
+                break;
+            case 'movies':
+                viewName = 'movies';
                 break;
             default:
                 viewName = 'generic';
@@ -166,26 +176,24 @@
 
     function loadViewHtml(page, parentId, html, viewName) {
 
-        var homeAnimatedPages = page.querySelector('.homeAnimatedPages');
+        if (bodySlyFrame) {
+            bodySlyFrame.slideTo(0, true);
+        }
+        var homeScrollContent = page.querySelector('.homeScrollContent');
+        homeScrollContent.innerHTML = Globalize.translateHtml(html);
 
-        homeAnimatedPages.entryAnimation = 'fade-in-animation';
-        homeAnimatedPages.exitAnimation = 'fade-out-animation';
-
-        var newIndex = homeAnimatedPages.selected === 0 ? 1 : 0;
-
-        var animatedPage = page.querySelector('.scrollerPage' + newIndex);
-        animatedPage.innerHTML = Globalize.translateHtml(html);
-
+        var keyframes = [
+                { opacity: '0', offset: 0 },
+                { opacity: '1', offset: 1 }];
+        var timing = { duration: 900, iterations: 1 };
+        homeScrollContent.animate(keyframes, timing);
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
 
-            new DefaultTheme[viewName + 'View'](animatedPage, parentId);
-            homeAnimatedPages.cancelAnimation();
-            homeAnimatedPages.selected = newIndex;
-            createHorizontalScroller(animatedPage);
+            new DefaultTheme[viewName + 'View'](homeScrollContent, parentId);
         });
     }
 
-    var currentSlyFrame;
+    var bodySlyFrame;
     function createHorizontalScroller(view) {
 
         require(["Sly", 'loading'], function (Sly, loading) {
@@ -215,12 +223,8 @@
                 clickBar: 1
             };
 
-            if (currentSlyFrame) {
-                currentSlyFrame.destroy();
-            }
-
-            currentSlyFrame = new Sly(scrollFrame, options).init();
-            initFocusHandler(view, currentSlyFrame);
+            bodySlyFrame = new Sly(scrollFrame, options).init();
+            initFocusHandler(view, bodySlyFrame);
         });
     }
 

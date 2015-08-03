@@ -38,6 +38,9 @@
 .homebackdropCard {
     width: 320px;
 }
+.homePortraitCard {
+    width: 189px;
+}
 
     .homebackdropCard paper-material {
         margin: 5px 5px 7px !important;

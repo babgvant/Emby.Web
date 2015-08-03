@@ -280,12 +280,21 @@
         return '';
     }
 
+    function getCountIndicator(count) {
+
+        return '<div class="cardCountIndicator">' + count + '</div>';
+    }
+
     function buildCard(item, apiClient, options, className) {
 
         var imgInfo = getCardImageUrl(item, apiClient, options);
         var imgUrl = imgInfo.imgUrl;
 
         var cardImageContainer = imgUrl ? ('<div class="cardImageContainer lazy" data-src="' + imgUrl + '">') : '<div class="cardImageContainer">';
+
+        if (options.showGroupCount && item.ChildCount) {
+            cardImageContainer += getCountIndicator(item.ChildCount);
+        }
 
         var nameHtml = '';
 

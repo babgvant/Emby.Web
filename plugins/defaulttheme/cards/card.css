@@ -11,9 +11,6 @@
         display: block;
     }
 
-    .card paper-material {
-    }
-
 .cardScalable {
     position: relative;
 }
@@ -22,7 +19,7 @@
     padding-bottom: 56.25%;
 }
 
-.squareCard .cardPadder, .overflowSquareCard .cardPadder {
+.squareCard .cardPadder {
     padding-bottom: 100%;
 }
 
@@ -30,7 +27,7 @@
     padding-bottom: 75%;
 }
 
-.portraitCard .cardPadder, .overflowPortraitCard .cardPadder {
+.portraitCard .cardPadder {
     padding-bottom: 150%;
 }
 
@@ -72,11 +69,14 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
-    width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .cardFooter {
@@ -90,6 +90,7 @@
     left: 0;
     right: 0;
     text-align: left;
+    z-index: 1;
 }
 
 .cardText {
@@ -115,12 +116,17 @@
     margin-top: -40px;
 }
 
-/* Square */
-.squareCard {
-    width: 50%;
-}
-
-.backdropCard {
+.cardCountIndicator {
+    right: 5px;
+    top: 5px;
+    position: absolute;
+    background: rgba(233,30,99,.86);
+    border-radius: 500px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media all and (min-width: 900px) {

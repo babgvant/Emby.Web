@@ -1,6 +1,7 @@
 (function (globalScope) {
 
     var thumbWidth = 320;
+    var posterWidth = 189;
 
     function loadResume(element, parentId, apiClient) {
 
@@ -8,7 +9,7 @@
 
             SortBy: "DatePlayed",
             SortOrder: "Descending",
-            IncludeItemTypes: "Episode",
+            IncludeItemTypes: "Movie",
             Filters: "IsResumable",
             Limit: 6,
             Recursive: true,
@@ -34,40 +35,12 @@
         });
     }
 
-    function loadNextUp(element, parentId, apiClient) {
-
-        var options = {
-
-            Limit: 18,
-            Fields: "PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo",
-            UserId: apiClient.getCurrentUserId(),
-            ExcludeLocationTypes: "Virtual",
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb",
-            ParentId: parentId
-        };
-
-        apiClient.getNextUpEpisodes(options).done(function (result) {
-
-            var resumeSection = element.querySelector('.nextUpSection');
-
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
-                parentContainer: resumeSection,
-                itemsContainer: resumeSection.querySelector('.itemsContainer'),
-                className: 'backdropCard homebackdropCard',
-                rows: 3,
-                width: thumbWidth,
-                preferThumb: true
-            });
-        });
-    }
-
     function loadLatest(element, parentId, apiClient) {
 
         var options = {
 
-            IncludeItemTypes: "Episode",
-            Limit: 9,
+            IncludeItemTypes: "Movie",
+            Limit: 10,
             Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
@@ -81,11 +54,9 @@
             DefaultTheme.CardBuilder.buildCards(result, apiClient, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
-                className: 'backdropCard homebackdropCard',
-                rows: 3,
-                width: thumbWidth,
-                preferThumb: true,
-                showGroupCount: true
+                className: 'portraitCard homePortraitCard',
+                rows: 2,
+                width: posterWidth
             });
         });
     }
@@ -95,7 +66,7 @@
         var options = {
 
             SortBy: "Random",
-            IncludeItemTypes: "Series",
+            IncludeItemTypes: "Movie",
             Limit: 20,
             Recursive: true,
             ParentId: parentId,
@@ -124,7 +95,6 @@
             var apiClient = connectionManager.currentApiClient();
 
             loadResume(element, parentId, apiClient);
-            loadNextUp(element, parentId, apiClient);
             loadLatest(element, parentId, apiClient);
             loadSpotlight(element, parentId, apiClient);
         });
@@ -138,6 +108,6 @@
         globalScope.DefaultTheme = {};
     }
 
-    globalScope.DefaultTheme.tvView = view;
+    globalScope.DefaultTheme.moviesView = view;
 
 })(this);
