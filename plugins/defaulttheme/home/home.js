@@ -155,6 +155,9 @@
             case 'movies':
                 viewName = 'movies';
                 break;
+            case 'channels':
+                viewName = 'channels';
+                break;
             default:
                 viewName = 'generic';
                 break;

@@ -96,12 +96,37 @@
         return name;
     }
 
+    function setShapeHome(items, options) {
+
+        var primaryImageAspectRatio = getAveragePrimaryImageAspectRatio(items) || 0;
+
+        if (primaryImageAspectRatio && primaryImageAspectRatio < .85) {
+            options.shape = 'portraitCard homePortraitCard';
+            options.rows = 2;
+            options.width = DefaultTheme.CardBuilder.homePortraitWidth;
+        }
+        else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.34) {
+            options.shape = 'backdropCard homebackdropCard';
+            options.rows = 3;
+            options.width = DefaultTheme.CardBuilder.homeThumbWidth;
+        }
+        else {
+            options.shape = 'squareCard homeSquareCard';
+            options.rows = 2;
+            options.width = DefaultTheme.CardBuilder.homeSquareWidth;
+        }
+    }
+
     function buildCardsHtml(items, apiClient, options) {
 
         var className = 'card';
 
-        if (options.className) {
-            className += ' ' + options.className;
+        if (options.shape == 'autoHome') {
+            setShapeHome(items, options);
+        }
+
+        if (options.shape) {
+            className += ' ' + options.shape;
         }
 
         if (options.block || options.rows) {
@@ -260,20 +285,33 @@
         };
     }
 
-    function getProgressBarHtml(item) {
+    function enableProgressIndicator(item) {
 
-        if (item.Type == "Recording" && item.CompletionPercentage) {
-
-            return '<paper-progress value="' + item.CompletionPercentage + '" class="block"></paper-progress>';
+        if (item.MediaType == 'Video' || item.Type == 'Series' || item.Type == 'Season' || item.Type == 'BoxSet' || item.Type == 'Playlist') {
+            if (item.Type != 'TvChannel') {
+                return true;
+            }
         }
 
-        var userData = item.UserData;
-        if (userData) {
-            var pct = userData.PlayedPercentage;
+        return false;
+    }
 
-            if (pct && pct < 100) {
+    function getProgressBarHtml(item) {
 
-                return '<paper-progress value="' + pct + '" class="block"></paper-progress>';
+        if (enableProgressIndicator(item)) {
+            if (item.Type == "Recording" && item.CompletionPercentage) {
+
+                return '<paper-progress value="' + item.CompletionPercentage + '" class="block"></paper-progress>';
+            }
+
+            var userData = item.UserData;
+            if (userData) {
+                var pct = userData.PlayedPercentage;
+
+                if (pct && pct < 100) {
+
+                    return '<paper-progress value="' + pct + '" class="block"></paper-progress>';
+                }
             }
         }
 
@@ -292,7 +330,7 @@
 
         var cardImageContainer = imgUrl ? ('<div class="cardImageContainer lazy" data-src="' + imgUrl + '">') : '<div class="cardImageContainer">';
 
-        if (options.showGroupCount && item.ChildCount) {
+        if (options.showGroupCount && item.ChildCount && item.ChildCount > 1) {
             cardImageContainer += getCountIndicator(item.ChildCount);
         }
 
@@ -349,7 +387,10 @@
 
     globalScope.DefaultTheme.CardBuilder = {
         buildCardsHtml: buildCardsHtml,
-        buildCards: buildCards
+        buildCards: buildCards,
+        homeThumbWidth: 320,
+        homePortraitWidth: 189,
+        homeSquareWidth: 270
     };
 
 })(this);

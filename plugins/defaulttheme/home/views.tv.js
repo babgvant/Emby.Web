@@ -1,7 +1,5 @@
 (function (globalScope) {
 
-    var thumbWidth = 320;
-
     function loadResume(element, parentId, apiClient) {
 
         var options = {
@@ -26,9 +24,9 @@
             DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
-                className: 'backdropCard homebackdropCard',
+                shape: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: thumbWidth,
+                width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true
             });
         });
@@ -54,9 +52,9 @@
             DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
-                className: 'backdropCard homebackdropCard',
+                shape: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: thumbWidth,
+                width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true
             });
         });
@@ -81,9 +79,9 @@
             DefaultTheme.CardBuilder.buildCards(result, apiClient, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
-                className: 'backdropCard homebackdropCard',
+                shape: 'backdropCard homebackdropCard',
                 rows: 3,
-                width: thumbWidth,
+                width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true,
                 showGroupCount: true
             });
@@ -110,7 +108,7 @@
 
             require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight')], function () {
 
-                new DefaultTheme.spotlight(card, result.Items, thumbWidth * 2, apiClient);
+                new DefaultTheme.spotlight(card, result.Items, DefaultTheme.CardBuilder.homeThumbWidth * 2, apiClient);
             });
         });
     }

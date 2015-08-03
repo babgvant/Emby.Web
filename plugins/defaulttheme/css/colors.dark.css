@@ -1,7 +1,7 @@
 html {
     background-color: #181818;
     color: #fff;
-    background: -webkit-radial-gradient(circle, #262626, #101010);
+    background: -webkit-radial-gradient(circle, #242424, #101010);
 }
 
 /*html,body {
@@ -118,6 +118,10 @@ paper-dialog {
         }
 
 .allSeriesCard .cardImageContainer {
+    background: #4CAF50;
+}
+
+.allGenericCard .cardImageContainer {
     background: #4CAF50;
 }
 
