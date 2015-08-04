@@ -39,5 +39,7 @@
     "Channels": "Channels",
     "LatestFromValue": "Latest from {0}",
     "All": "All",
-    "Latest": "Latest"
+    "Latest": "Latest",
+    "Artists": "Artists",
+    "Albums": "Albums"
 }

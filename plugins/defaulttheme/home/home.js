@@ -189,6 +189,8 @@
             bodySlyFrame.slideTo(0, true);
         }
         var homeScrollContent = page.querySelector('.homeScrollContent');
+
+        html = '<div class="homePanel">' + html + '</div>';
         homeScrollContent.innerHTML = Globalize.translateHtml(html);
 
         var keyframes = [
@@ -198,7 +200,8 @@
         homeScrollContent.animate(keyframes, timing);
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
 
-            new DefaultTheme[viewName + 'View'](homeScrollContent, parentId);
+            var homePanel = homeScrollContent.querySelector('.homePanel');
+            new DefaultTheme[viewName + 'View'](homePanel, parentId);
         });
     }
 
