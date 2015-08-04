@@ -164,6 +164,9 @@
             case 'playlists':
                 viewName = 'playlists';
                 break;
+            case 'livetv':
+                viewName = 'livetv';
+                break;
             default:
                 viewName = 'generic';
                 break;

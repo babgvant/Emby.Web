@@ -328,7 +328,11 @@
         var imgInfo = getCardImageUrl(item, apiClient, options);
         var imgUrl = imgInfo.imgUrl;
 
-        var cardImageContainer = imgUrl ? ('<div class="cardImageContainer lazy" data-src="' + imgUrl + '">') : '<div class="cardImageContainer">';
+        var cardImageContainerClass = 'cardImageContainer';
+        if (options.coverImage) {
+            cardImageContainerClass += ' coveredImage';
+        }
+        var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
 
         if (options.showGroupCount && item.ChildCount && item.ChildCount > 1) {
             cardImageContainer += getCountIndicator(item.ChildCount);
