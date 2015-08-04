@@ -92,7 +92,7 @@ paper-material[elevation="2"] {
 
 
 .userViewNames paper-button.flat {
-    opacity: .35;
+    opacity: .25;
 }
 
     .userViewNames paper-button.flat.selected {
@@ -119,6 +119,10 @@ paper-dialog {
 
 .allSeriesCard .cardImageContainer {
     background: #4CAF50;
+}
+
+.albumsCard .cardImageContainer, .recordingsCard .cardImageContainer {
+    background: #38c;
 }
 
 .allGenericCard .cardImageContainer {

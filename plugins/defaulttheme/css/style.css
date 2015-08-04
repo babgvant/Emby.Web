@@ -11,16 +11,17 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
-        width: 264px;
-        height: 80px;
+        width: 198px;
+        height: 60px;
         vertical-align: middle;
         display: inline-block;
     }
 
 @media all and (min-width: 2000px) {
 
-    .centeredPageContent {
-        max-width: 1000px;
+    .header .logo {
+        width: 264px;
+        height: 80px;
     }
 }
 

@@ -124,7 +124,7 @@ paper-dialog {
     }
 
 paper-progress {
-    height: 5px;
+    height: 6px;
 }
 
     paper-progress.block {

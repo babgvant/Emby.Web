@@ -17,7 +17,7 @@ h1 {
 }
 
 h2, paper-dialog h2 {
-    font-weight: 300;
+    font-weight: normal;
     font-size: 36px;
 }
 

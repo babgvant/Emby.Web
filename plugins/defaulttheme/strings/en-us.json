@@ -44,5 +44,8 @@
     "Albums": "Albums",
     "RecentlyPlayed": "Recently Played",
     "FrequentlyPlayed": "Frequently Played",
-    "Library": "Library"
+    "Library": "Library",
+    "Guide": "Guide",
+    "Recordings": "Recordings",
+    "Scheduled": "Scheduled"
 }
