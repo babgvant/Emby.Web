@@ -79,6 +79,10 @@
     bottom: 0;
 }
 
+.coveredImage {
+    background-size: cover;
+}
+
 .cardFooter {
     padding: 1em .25em;
 }

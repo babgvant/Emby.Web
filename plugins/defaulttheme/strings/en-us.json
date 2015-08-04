@@ -47,5 +47,12 @@
     "Library": "Library",
     "Guide": "Guide",
     "Recordings": "Recordings",
-    "Scheduled": "Scheduled"
+    "Scheduled": "Scheduled",
+    "LatestMusic": "Latest Music",
+    "LatestRecordings": "Latest Recordings",
+    "NowPlaying": "Now Playing",
+    "UpcomingPrograms": "Upcoming Programs",
+    "UpcomingMovies": "Upcoming Movies",
+    "UpcomingSports": "Upcoming Sports",
+    "UpcomingForKids": "Upcoming for Kids"
 }
