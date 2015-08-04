@@ -128,32 +128,3 @@
     align-items: center;
     justify-content: center;
 }
-
-@media all and (min-width: 900px) {
-
-    .squareCard {
-        width: 33.3%;
-    }
-}
-
-@media all and (min-width: 1200px) {
-
-    .squareCard {
-        width: 25%;
-    }
-}
-
-
-@media all and (min-width: 1600px) {
-
-    .squareCard {
-        width: 20%;
-    }
-}
-
-@media all and (min-width: 1920px) {
-
-    .squareCard {
-        width: 14.285714285714285714285714285714%;
-    }
-}
