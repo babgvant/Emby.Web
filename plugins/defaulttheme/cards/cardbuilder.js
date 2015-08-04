@@ -344,24 +344,35 @@
             nameHtml += '<div class="cardText">' + (item.EpisodeTitle ? item.Name : (item.SeriesName || item.Album || item.AlbumArtist || item.GameSystem || "")) + '</div>';
         }
 
-        nameHtml += options.showTitle || imgInfo.forceName ?
-           ('<div class="cardText">' + getDisplayName(item) + '</div>') :
-           '';
+        if (options.showTitle || imgInfo.forceName) {
+            var nameClass = 'cardText';
+            if (options.showTitle && options.hiddenTitle) {
+                nameClass += ' hide hiddenTitle';
+                nameHtml += '<div class="' + nameClass + '">' + getDisplayName(item) + '</div>';
+            }
+        }
 
         nameHtml += getProgressBarHtml(item);
 
+        var data = '';
+
+        if (options.addImageData) {
+            var primaryImageTag = (item.ImageTags || {}).Primary || '';
+            data += '<input type="hidden" class="primaryImageTag" value="' + primaryImageTag + '" />';
+        }
+
         var html = '\
-<paper-button raised class="' + className + '"> \
+<paper-button data-id="'+ item.Id + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
 ' + cardImageContainer + '\
+</div>\
 <div class="innerCardFooter">\
 ' + nameHtml + '\
 </div>\
 </div>\
-</div>\
-</div>\
+</div>' + data + '\
 </paper-button>'
         ;
 
