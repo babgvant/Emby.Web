@@ -43,6 +43,7 @@
 
             var files = [
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/style'),
+                'css!' + Emby.PluginManager.mapRequire(self, 'css/fonts'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'cards/card'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),

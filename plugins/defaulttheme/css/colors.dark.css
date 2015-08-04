@@ -128,3 +128,7 @@ paper-dialog {
 .genresCard .cardImageContainer {
     background: #F44336;
 }
+
+.loginSquareCard .cardImageContainer {
+    background: #38c;
+}

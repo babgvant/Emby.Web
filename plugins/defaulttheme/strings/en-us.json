@@ -41,5 +41,8 @@
     "All": "All",
     "Latest": "Latest",
     "Artists": "Artists",
-    "Albums": "Albums"
+    "Albums": "Albums",
+    "RecentlyPlayed": "Recently Played",
+    "FrequentlyPlayed": "Frequently Played",
+    "Library": "Library"
 }

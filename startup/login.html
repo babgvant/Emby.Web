@@ -1,5 +1,5 @@
 <div class="pageContainer">
-    <div class="horizontalPageContent" style="min-height:80%;">
+    <div class="horizontalPageContent">
 
         <h1 style="text-align: center;">${HeaderPleaseSignIn}</h1>
         <div class="scrollbar scrollbarX">
@@ -8,7 +8,7 @@
         <div class="scrollFrame scrollFrameX" style="white-space: nowrap;display:none;">
             <div class="scrollSlider" style="text-align:center;">
                 <template is="dom-repeat" items="{{items}}" class="itemTemplate">
-                    <paper-button raised class="card squareCard" style="width:320px;" data-cardtype$="{{item.cardType}}">
+                    <paper-button raised class="card squareCard loginSquareCard" data-cardtype$="{{item.cardType}}">
                         <div class="cardScalable">
                             <div class="cardPadder"></div>
                             <div class="cardContent">

@@ -34,46 +34,49 @@
 
         page.base(baseRoute);
 
+        var deps = ['startup/startup'];
+        var startupRoot = '/startup/';
+
         defineRoute({
-            path: '/startup/login.html',
+            path: startupRoot + 'login.html',
             id: 'login',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({
-            path: '/startup/manuallogin.html',
+            path: startupRoot + 'manuallogin.html',
             id: 'manuallogin',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({
-            path: '/startup/welcome.html',
+            path: startupRoot + 'welcome.html',
             id: 'welcome',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({
-            path: '/startup/connectlogin.html',
+            path: startupRoot + 'connectlogin.html',
             id: 'connectlogin',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({
-            path: '/startup/manualserver.html',
+            path: startupRoot + 'manualserver.html',
             id: 'manualserver',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({
-            path: '/startup/selectserver.html',
+            path: startupRoot + 'selectserver.html',
             id: 'selectserver',
             transition: 'slide',
-            dependencies: ['startup/startup']
+            dependencies: deps
         });
 
         defineRoute({

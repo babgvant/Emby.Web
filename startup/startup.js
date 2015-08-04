@@ -56,7 +56,7 @@
 
         element.querySelector('.buttonCancel').addEventListener('click', function (e) {
 
-            history.back();
+            Emby.Page.back();
         });
 
         element.querySelector('.paperSubmit').addEventListener('click', function (e) {
@@ -107,7 +107,7 @@
 
         element.querySelector('.buttonCancel').addEventListener('click', function (e) {
 
-            Emby.Page.show('/startup/selectserver.html');
+            Emby.Page.back();
         });
 
         element.querySelector('.paperSubmit').addEventListener('click', function (e) {
