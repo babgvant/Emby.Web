@@ -24,7 +24,11 @@
 
         apiClient.getUserViews().then(function (result) {
 
-            page.querySelector('.userViewsHeaderTemplate').items = result.Items;
+            page.querySelector('.viewsScrollSlider').innerHTML = result.Items.map(function (i) {
+
+                return '<paper-button class="flat btnUserViewHeader" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h2>' + i.Name + '</h2></paper-button>';
+
+            }).join('');
 
             createHeaderScroller(page);
         });
@@ -62,18 +66,14 @@
                 clickBar: 1
             };
 
+            var frame = new Sly(scrollFrame, options).init();
+
             setTimeout(function () {
 
-                var frame = new Sly(scrollFrame, options).init();
+                loading.hide();
+                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
 
-                setTimeout(function () {
-
-                    loading.hide();
-                    Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
-
-                }, 700);
-
-            }, 500);
+            }, 300);
         });
     }
 
