@@ -116,7 +116,7 @@
 
             var card = findParent(e.target, 'card');
 
-            if (card) {
+            if (card && document.activeElement == card) {
                 var id = card.getAttribute('data-id');
 
                 if (id) {
