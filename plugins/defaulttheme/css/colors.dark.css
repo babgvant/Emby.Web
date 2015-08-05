@@ -1,11 +1,11 @@
 html {
     color: #fff;
-    background: -webkit-radial-gradient(circle, #242424, #101010);
+    background: -webkit-radial-gradient(circle, #202020, #101010);
     background-attachment: fixed;
 }
 
 .themeContainer.withBackdrop {
-    background: -webkit-radial-gradient(circle, rgba(30,30,30,.93), rgba(10,10,10,.93));
+    background: -webkit-radial-gradient(circle, rgba(26,26,26,.9), rgba(6,6,6,.9));
 }
 
 .header .logo {

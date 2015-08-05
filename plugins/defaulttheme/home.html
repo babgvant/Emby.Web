@@ -6,10 +6,7 @@
                 <div class="handle"><div class="mousearea"></div></div>
             </div>
             <div class="scrollFrame scrollFrameX" style="white-space: nowrap;">
-                <div class="scrollSlider">
-                    <template is="dom-repeat" items="{{items}}" class="userViewsHeaderTemplate">
-                        <paper-button class="flat btnUserViewHeader" data-id$="{{item.Id}}" data-type$="{{item.CollectionType}}"><h2>[[item.Name]]</h2></paper-button>
-                    </template>
+                <div class="scrollSlider viewsScrollSlider">
                 </div>
             </div>
         </div>
@@ -21,7 +18,7 @@
             <div class="scrollFrame scrollFrameX homeScrollFrame" style="white-space: nowrap;display:none;">
                 <div class="scrollSlider" style="width:10000px;">
                     <div class="homeScrollContent">
-                        
+
                     </div>
                 </div>
             </div>

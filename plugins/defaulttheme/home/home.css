@@ -4,6 +4,7 @@
 
     .userViewNames paper-button {
         min-width: initial;
+        text-transform: none !important;
     }
 
     .userViewNames .scrollSlider {
@@ -38,13 +39,14 @@
 .homebackdropCard {
     width: 320px;
 }
+
 .homePortraitCard {
     width: 189px;
 }
 
-    .homebackdropCard paper-material {
-        margin: 5px 5px 7px !important;
-    }
+.homebackdropCard paper-material {
+    margin: 5px 5px 7px !important;
+}
 
 .sectionTitle {
     text-transform: uppercase;

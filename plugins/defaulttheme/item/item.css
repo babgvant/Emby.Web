@@ -1,9 +1,11 @@
 .userViewNames {
     margin-bottom: 10px;
+    text-align: center;
 }
 
     .userViewNames paper-button {
         min-width: initial;
+        text-transform: none !important;
     }
 
     .userViewNames .scrollSlider {
@@ -13,4 +15,9 @@
 
 .itemBody {
     height: 572px;
+}
+
+.userViewNames .scrollSlider {
+    margin-left: auto;
+    margin-right: auto;
 }

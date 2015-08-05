@@ -2,10 +2,9 @@
 
     function clearBackdrop() {
 
-        var elem = document.documentElement;
-        elem.classList.remove('backdropContainer');
+        var elem = document.querySelector('.backdropContainer');
+        elem.classList.add('hide');
         elem.style.backgroundImage = '';
-
         document.querySelector('.themeContainer').classList.remove('withBackdrop');
     }
 
@@ -15,10 +14,11 @@
 
     function setBackdropImage(url) {
 
-        var elem = document.documentElement;
-        elem.classList.add('backdropContainer');
-        document.querySelector('.themeContainer').classList.add('withBackdrop');
+        var elem = document.querySelector('.backdropContainer');
+        elem.classList.remove('hide');
         elem.style.backgroundImage = "url('" + url + "')";
+
+        document.querySelector('.themeContainer').classList.add('withBackdrop');
     }
 
     function setBackdrops(items) {
