@@ -49,7 +49,23 @@ define([], function () {
                 entryAnimation = 'slide-from-right-animation';
                 exitAnimation = 'slide-left-animation';
             }
-        } else {
+        }
+        else if (transition == 'ripple') {
+
+            if (isBack) {
+                entryAnimation = 'reverse-ripple-animation';
+                exitAnimation = 'ripple-animation';
+
+            } else {
+
+                entryAnimation = 'ripple-animation';
+                exitAnimation = 'reverse-ripple-animation';
+            }
+
+            deps.push('reverse-ripple-animation');
+            deps.push('ripple-animation');
+        }
+        else {
             entryAnimation = '';
             exitAnimation = '';
         }

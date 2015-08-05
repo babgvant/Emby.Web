@@ -4,20 +4,13 @@
 
         var options = {
 
-            SortBy: "DatePlayed",
-            SortOrder: "Descending",
-            IncludeItemTypes: "Movie",
-            Filters: "IsResumable",
             Limit: 6,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio",
-            ExcludeLocationTypes: "Virtual",
             ParentId: parentId,
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.resumable(options).then(function (result) {
 
             var resumeSection = element.querySelector('.resumeSection');
 

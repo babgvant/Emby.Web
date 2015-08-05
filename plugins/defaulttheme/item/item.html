@@ -1,0 +1,21 @@
+<div class="pageContainer">
+    <div class="horizontalPageContent">
+
+        <div class="userViewNames">
+            <div class="scrollbar scrollbarX">
+                <div class="handle"><div class="mousearea"></div></div>
+            </div>
+            <div class="scrollFrame scrollFrameX" style="white-space: nowrap;">
+                <div class="scrollSlider">
+                    <template is="dom-repeat" items="{{items}}" class="itemSectionsTemplate">
+                        <paper-button class="flat btnUserViewHeader" data-type$="{{item.CollectionType}}"><h2>[[item.Name]]</h2></paper-button>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="itemBody">
+        </div>
+
+    </div>
+</div>

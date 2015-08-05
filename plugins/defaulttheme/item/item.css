@@ -1,0 +1,16 @@
+.userViewNames {
+    margin-bottom: 10px;
+}
+
+    .userViewNames paper-button {
+        min-width: initial;
+    }
+
+    .userViewNames .scrollSlider {
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+
+.itemBody {
+    height: 572px;
+}

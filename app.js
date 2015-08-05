@@ -243,6 +243,8 @@
           'js/audiomanager',
           'js/viewmanager',
           'js/imageloader',
+          'js/models',
+          'js/backdrops',
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',
@@ -335,6 +337,9 @@
 
         // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
         loadDefaultTheme(function () {
+
+            document.documentElement.classList.remove('preload');
+
             Emby.Page.start();
         });
     }

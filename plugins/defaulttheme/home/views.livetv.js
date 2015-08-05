@@ -2,13 +2,12 @@
 
     function loadLatestRecordings(element, apiClient) {
 
-        apiClient.getLiveTvRecordings({
+        Emby.Models.liveTvRecordings({
 
-            userId: apiClient.getCurrentUserId(),
             limit: 6,
             IsInProgress: false
 
-        }).done(function (result) {
+        }).then(function (result) {
 
             var section = element.querySelector('.latestRecordingsSection');
 

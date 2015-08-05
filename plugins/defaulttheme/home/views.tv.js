@@ -4,20 +4,13 @@
 
         var options = {
 
-            SortBy: "DatePlayed",
-            SortOrder: "Descending",
-            IncludeItemTypes: "Episode",
-            Filters: "IsResumable",
             Limit: 6,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio",
-            ExcludeLocationTypes: "Virtual",
             ParentId: parentId,
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.resumable(options).then(function (result) {
 
             var section = element.querySelector('.resumeSection');
 
@@ -40,15 +33,12 @@
         var options = {
 
             Limit: 18,
-            Fields: "PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo",
-            UserId: apiClient.getCurrentUserId(),
-            ExcludeLocationTypes: "Virtual",
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb",
             ParentId: parentId
         };
 
-        apiClient.getNextUpEpisodes(options).done(function (result) {
+        Emby.Models.nextUp(options).then(function (result) {
 
             var section = element.querySelector('.nextUpSection');
 
@@ -243,14 +233,17 @@
 
     function flipElementWithDuration(elem, duration, callback) {
 
+        elem.style.transform = 'perspective(400px) rotate3d(1, 0, 0, -180deg)';
+
         // Switch to SequenceEffect once that api is a little more mature
         var keyframes = [
           { transform: 'perspective(400px) ', offset: 0 },
-          { transform: 'perspective(400px) rotate3d(0, 1, 0, -180deg)', offset: 1 }];
+          { transform: 'perspective(400px) rotate3d(1, 0, 0, -180deg)', offset: 1 }];
 
         var timing = { duration: duration, iterations: 1, easing: 'ease-in' };
         elem.animate(keyframes, timing).onfinish = function () {
             callback();
+            elem.style.transform = '';
         };
     }
 

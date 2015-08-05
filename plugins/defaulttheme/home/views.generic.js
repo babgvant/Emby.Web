@@ -5,13 +5,12 @@
         var options = {
 
             Limit: 24,
-            Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
+        Emby.Models.latestItems(options).then(function (result) {
 
             var section = element.querySelector('.latestSection');
 

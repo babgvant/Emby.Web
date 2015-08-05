@@ -1,4 +1,4 @@
-html {
+.themeContainer {
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaeaea), color-stop(10%, #ffffff), color-stop(90%, #ffffff), color-stop(100%, #eaeaea));
     background: -webkit-linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#eaeaea);
     background: -moz-linear-gradient(#eaeaea,#ffffff 10%,#ffffff 90%,#e6e6e6);

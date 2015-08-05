@@ -1,12 +1,12 @@
 html {
-    background-color: #181818;
     color: #fff;
     background: -webkit-radial-gradient(circle, #242424, #101010);
+    background-attachment: fixed;
 }
 
-/*html,body {
-    background-color: transparent !important;
-}*/
+.themeContainer.withBackdrop {
+    background: -webkit-radial-gradient(circle, rgba(30,30,30,.93), rgba(10,10,10,.93));
+}
 
 .header .logo {
     background-image: url(images/logowhite.png);
