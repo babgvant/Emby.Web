@@ -83,7 +83,7 @@
         var userViewNames = view.querySelector('.userViewNames');
         userViewNames.addEventListener('mousedown', function (e) {
 
-            var elem = findParent(e.target, 'btnUserViewHeader');
+            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
 
             if (elem) {
                 elem.focus();
@@ -92,7 +92,7 @@
 
         userViewNames.addEventListener('focusin', function (e) {
 
-            var elem = findParent(e.target, 'btnUserViewHeader');
+            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
 
             if (elem) {
                 setFocusDelay(view, elem);
@@ -104,7 +104,7 @@
         // Catch events on items in the view
         homeScrollContent.addEventListener('mousedown', function (e) {
 
-            var card = findParent(e.target, 'card');
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
 
             if (card) {
                 card.focus();
@@ -114,7 +114,7 @@
         // Catch events on items in the view
         homeScrollContent.addEventListener('click', function (e) {
 
-            var card = findParent(e.target, 'card');
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
 
             if (card && document.activeElement == card) {
                 var id = card.getAttribute('data-id');
@@ -266,25 +266,12 @@
         var scrollSlider = view.querySelector('.scrollSlider');
         scrollSlider.addEventListener('focusin', function (e) {
 
-            var card = findParent(e.target, 'card');
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
 
             if (card) {
                 slyFrame.toCenter(card);
             }
         });
-    }
-
-    function findParent(elem, className) {
-
-        while (!elem.classList || !elem.classList.contains(className)) {
-            elem = elem.parentNode;
-
-            if (!elem) {
-                return null;
-            }
-        }
-
-        return elem;
     }
 
 })();

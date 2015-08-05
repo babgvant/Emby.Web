@@ -379,18 +379,10 @@
         return html;
     }
 
-    function isInDocument(card) {
-
-        if (document.contains) {
-            return document.contains(card);
-        }
-        return document.body.contains(card);
-    }
-
     function buildCards(items, apiClient, options) {
 
         // Abort if the container has been disposed
-        if (!isInDocument(options.parentContainer)) {
+        if (!Emby.Dom.isInDocument(options.parentContainer)) {
             return;
         }
 

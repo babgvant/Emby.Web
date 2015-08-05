@@ -10,33 +10,6 @@
 
 (function () {
 
-    /**
-    * Copyright 2012, Digital Fusion
-    * Licensed under the MIT license.
-    * http://teamdf.com/jquery-plugins/license/
-    *
-    * @author Sam Sehnert
-    * @desc A small plugin that checks whether elements are within
-    *       the user visible viewport of a web browser.
-    *       only accounts for vertical position, not horizontal.
-    */
-    function visibleInViewport(elem, partial, threshold) {
-
-        var vpWidth = window.innerWidth,
-            vpHeight = window.innerHeight;
-
-        // Use this native browser method, if available.
-        var rec = elem.getBoundingClientRect(),
-            tViz = rec.top >= 0 && rec.top < vpHeight + threshold,
-            bViz = rec.bottom > 0 && rec.bottom <= vpHeight + threshold,
-            lViz = rec.left >= 0 && rec.left < vpWidth + threshold,
-            rViz = rec.right > 0 && rec.right <= vpWidth + threshold,
-            vVisible = partial ? tViz || bViz : tViz && bViz,
-            hVisible = partial ? lViz || rViz : lViz && rViz;
-
-        return vVisible && hVisible;
-    }
-
     var unveilId = 0;
 
     function getThreshold() {
@@ -48,7 +21,7 @@
     var threshold = getThreshold();
 
     function isVisible(elem) {
-        return visibleInViewport(elem, true, threshold);
+        return Emby.Dom.visibleInViewport(elem, true, threshold);
     }
 
     function fillImage(elem) {

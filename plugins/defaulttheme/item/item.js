@@ -28,10 +28,27 @@
             type: 'overview'
         });
 
+
         if (item.People && item.People.length) {
             headers.push({
                 name: Globalize.translate('People'),
                 type: 'people'
+            });
+        }
+
+        if (item.LocalTrailerCount && item.LocalTrailerCount > 1) {
+
+            headers.push({
+                name: Globalize.translate('Trailers'),
+                type: 'trailers'
+            });
+        }
+
+        if (item.Chapters && item.Chapters.length) {
+
+            headers.push({
+                name: Globalize.translate('Scenes'),
+                type: 'scenes'
             });
         }
 
@@ -49,6 +66,15 @@
                 });
             }
         }
+
+        if (item.Type == 'Movie' || item.Type == 'Series' || item.Type == 'MusicAlbum' || item.Type == 'Game') {
+            headers.push({
+                name: Globalize.translate('Similar'),
+                type: 'similar'
+            });
+        }
+
+        // TODO: Reviews
 
         view.querySelector('.scrollSlider').innerHTML = headers.map(function (i) {
 
@@ -107,7 +133,7 @@
         var userViewNames = view.querySelector('.userViewNames');
         userViewNames.addEventListener('mousedown', function (e) {
 
-            var elem = findParent(e.target, 'btnUserViewHeader');
+            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
 
             if (elem) {
                 elem.focus();
@@ -116,7 +142,7 @@
 
         userViewNames.addEventListener('focusin', function (e) {
 
-            var elem = findParent(e.target, 'btnUserViewHeader');
+            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
 
             if (elem) {
                 setFocusDelay(view, elem);
@@ -156,19 +182,6 @@
         var btn = page.querySelector(".btnUserViewHeader[data-id='" + id + "']");
 
         //loadViewContent(page, id, btn.getAttribute('data-type'));
-    }
-
-    function findParent(elem, className) {
-
-        while (!elem.classList || !elem.classList.contains(className)) {
-            elem = elem.parentNode;
-
-            if (!elem) {
-                return null;
-            }
-        }
-
-        return elem;
     }
 
 })();
