@@ -1,5 +1,5 @@
 .userViewNames {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
     .userViewNames paper-button {
@@ -17,7 +17,7 @@
 }
 
 .homeBody {
-    height: 572px;
+    height: 602px;
 }
 
 .homeSection {
@@ -29,19 +29,19 @@
     }
 
 .homeSquareCard {
-    width: 180px;
+    width: 190px;
 }
 
 .homebackdropSpotlightCard {
-    width: 640px;
+    width: 675.555555555555555555556px;
 }
 
 .homebackdropCard {
-    width: 320px;
+    width: 337.777777777777777777778px;
 }
 
 .homePortraitCard {
-    width: 189px;
+    width: 197.5px;
 }
 
 .homebackdropCard paper-material {

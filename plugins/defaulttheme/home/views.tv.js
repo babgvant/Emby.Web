@@ -163,7 +163,7 @@
 
         cardFlipTimer = setTimeout(function () {
             flipCard(card);
-        }, 1200);
+        }, 3000);
     }
 
     function flipCard(card) {
