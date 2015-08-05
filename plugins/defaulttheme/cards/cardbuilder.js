@@ -156,6 +156,41 @@
         return html;
     }
 
+    function buildChapterCardsHtml(chapters, options) {
+
+        var className = 'card';
+
+        if (options.shape) {
+            className += ' ' + options.shape;
+        }
+
+        if (options.block || options.rows) {
+            className += ' block';
+        }
+
+        var html = '';
+        var itemsInRow = 0;
+
+        for (var i = 0, length = chapters.length; i < length; i++) {
+
+            if (options.rows && itemsInRow == 0) {
+                html += '<div class="cardColumn">';
+            }
+
+            var chapter = chapters[i];
+
+            html += buildChapterCard(chapter, options, className);
+            itemsInRow++;
+
+            if (options.rows && itemsInRow >= options.rows) {
+                itemsInRow = 0;
+                html += '</div>';
+            }
+        }
+
+        return html;
+    }
+
     function getCardImageUrl(item, apiClient, options) {
 
         var width = options.width;
@@ -379,18 +414,40 @@
         return html;
     }
 
-    function isInDocument(card) {
+    function buildChapterCard(chapter, options, className) {
 
-        if (document.contains) {
-            return document.contains(card);
+        var imgUrl = chapter.images ? chapter.images.primary : '';
+
+        var cardImageContainerClass = 'cardImageContainer';
+        if (options.coverImage) {
+            cardImageContainerClass += ' coveredImage';
         }
-        return document.body.contains(card);
+        var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
+
+        var nameHtml = '';
+
+        var html = '\
+<paper-button raised class="' + className + '"> \
+<div class="cardScalable">\
+<div class="cardPadder"></div>\
+<div class="cardContent">\
+' + cardImageContainer + '\
+</div>\
+<div class="innerCardFooter">\
+' + nameHtml + '\
+</div>\
+</div>\
+</div>\
+</paper-button>'
+        ;
+
+        return html;
     }
 
     function buildCards(items, apiClient, options) {
 
         // Abort if the container has been disposed
-        if (!isInDocument(options.parentContainer)) {
+        if (!Emby.Dom.isInDocument(options.parentContainer)) {
             return;
         }
 
@@ -410,6 +467,29 @@
         ImageLoader.lazyChildren(options.itemsContainer);
     }
 
+    function buildChapterCards(items, options) {
+
+        // Abort if the container has been disposed
+        if (!Emby.Dom.isInDocument(options.parentContainer)) {
+            return;
+        }
+
+        if (options.parentContainer) {
+            if (items.length) {
+                options.parentContainer.classList.remove('hide');
+            } else {
+                options.parentContainer.classList.add('hide');
+                return;
+            }
+        }
+
+        var html = buildChapterCardsHtml(items, options);
+
+        options.itemsContainer.innerHTML = html;
+
+        ImageLoader.lazyChildren(options.itemsContainer);
+    }
+
     if (!globalScope.DefaultTheme) {
         globalScope.DefaultTheme = {};
     }
@@ -417,6 +497,7 @@
     globalScope.DefaultTheme.CardBuilder = {
         buildCardsHtml: buildCardsHtml,
         buildCards: buildCards,
+        buildChapterCards: buildChapterCards,
         homeThumbWidth: 320,
         homePortraitWidth: 189,
         homeSquareWidth: 180

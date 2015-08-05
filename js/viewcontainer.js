@@ -65,6 +65,20 @@ define([], function () {
             deps.push('reverse-ripple-animation');
             deps.push('ripple-animation');
         }
+        else if (transition == 'hero') {
+
+            if (isBack) {
+                entryAnimation = 'hero-animation';
+                exitAnimation = 'hero-animation';
+
+            } else {
+
+                entryAnimation = 'hero-animation';
+                exitAnimation = 'hero-animation';
+            }
+
+            deps.push('hero-animation');
+        }
         else {
             entryAnimation = '';
             exitAnimation = '';

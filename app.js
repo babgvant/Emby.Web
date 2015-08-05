@@ -245,6 +245,7 @@
           'js/imageloader',
           'js/models',
           'js/backdrops',
+          'js/dom',
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',

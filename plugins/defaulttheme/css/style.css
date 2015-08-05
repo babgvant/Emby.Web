@@ -114,6 +114,10 @@
     padding: 0.5em 0.57em;
 }
 
+.scrollFrameY {
+    overflow: hidden;
+}
+
 .scrollFrameX {
     overflow: hidden;
     white-space: nowrap !important;

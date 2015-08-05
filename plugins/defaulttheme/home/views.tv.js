@@ -135,7 +135,7 @@
 
         element.addEventListener('focusin', function (e) {
 
-            var card = findParent(e.target, 'card');
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
 
             if (card) {
                 startCardFlipTimer(card);
@@ -216,19 +216,6 @@
                 }, 4000);
             });
         });
-    }
-
-    function findParent(elem, className) {
-
-        while (!elem.classList || !elem.classList.contains(className)) {
-            elem = elem.parentNode;
-
-            if (!elem) {
-                return null;
-            }
-        }
-
-        return elem;
     }
 
     function flipElementWithDuration(elem, duration, callback) {
