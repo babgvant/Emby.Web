@@ -1,18 +1,24 @@
-<div class="pageContainer">
-    <div class="horizontalPageContent">
+<div class="pageContainer itemPageContainer">
 
-        <div class="userViewNames">
-            <div class="scrollbar scrollbarX">
-                <div class="handle"><div class="mousearea"></div></div>
-            </div>
-            <div class="scrollFrame scrollFrameX" style="white-space: nowrap;">
-                <div class="scrollSlider">
+    <div class="scrollbar scrollbarY">
+        <div class="handle"><div class="mousearea"></div></div>
+    </div>
+    <div class="scrollFrame scrollFrameY itemScrollFrame">
+        <div class="scrollSlider">
+            <div class="itemScrollContent">
+
+                <div class="itemSection peopleSection hide">
+                    <h2>${People}</h2>
                 </div>
+                <div class="itemSection scenesSection hide">
+                    <h2>${Scenes}</h2>
+                    <div class="itemsContainer"></div>
+                </div>
+                <div class="itemSection similarSection hide">
+                    <h2>${Similar}</h2>
+                </div>
+                <div style="height:500px;"></div>
             </div>
         </div>
-
-        <div class="itemBody">
-        </div>
-
     </div>
 </div>

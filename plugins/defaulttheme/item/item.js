@@ -12,12 +12,120 @@
             Emby.Models.item(params.id).then(function (item) {
 
                 Emby.Backdrop.setBackdrops([item]);
-                setHeaders(element, item);
+                //setHeaders(element, item);
+                renderPeople(element, item);
+                renderScenes(element, item);
+                renderSimilar(element, item);
+                createVerticalScroller(element);
             });
         });
 
-        initEvents(element);
+        //initEvents(element);
     });
+
+    function createVerticalScroller(view) {
+
+        require(["Sly", 'loading'], function (Sly, loading) {
+
+            var scrollFrame = view.querySelector('.scrollFrame');
+
+            var options = {
+                horizontal: 0,
+                itemNav: 0,
+                mouseDragging: 1,
+                touchDragging: 1,
+                slidee: view.querySelector('.scrollSlider'),
+                itemSelector: '.card',
+                activateOn: 'click focus',
+                smart: true,
+                easing: 'swing',
+                releaseSwing: true,
+                scrollBar: view.querySelector('.scrollbar'),
+                scrollBy: 40,
+                speed: 600,
+                moveBy: 600,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1
+            };
+
+            var bodySlyFrame = new Sly(scrollFrame, options).init();
+            initFocusHandler(view, bodySlyFrame);
+        });
+    }
+
+    function initFocusHandler(view, slyFrame) {
+
+        var scrollSlider = view.querySelector('.scrollSlider');
+        scrollSlider.addEventListener('focusin', function (e) {
+
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
+
+            if (card) {
+                Logger.log('Calling slyFrame.toCenter');
+                slyFrame.toCenter(card);
+            }
+        });
+    }
+
+    function renderPeople(view, item) {
+
+        var people = item.People || [];
+
+        var peopleSection = view.querySelector('.peopleSection');
+
+        if (!people.length) {
+            peopleSection.classList.add('hide');
+            return;
+        }
+
+        peopleSection.classList.remove('hide');
+    }
+
+    function renderScenes(view, item) {
+
+        Emby.Models.chapters(item, {
+            images: [
+            {
+                type: 'Primary',
+                width: 300
+            }]
+
+        }).then(function (chapters) {
+
+            var section = view.querySelector('.scenesSection');
+
+            if (!chapters.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            DefaultTheme.CardBuilder.buildChapterCards(chapters, {
+                parentContainer: section,
+                itemsContainer: section.querySelector('.itemsContainer'),
+                shape: 'backdropCard itemScenesThumb',
+                width: 300,
+                coverImage: true
+            });
+        });
+    }
+
+    function renderSimilar(view, item) {
+
+        var similarSection = view.querySelector('.similarSection');
+
+        if (item.Type == 'Movie' || item.Type == 'Series' || item.Type == 'MusicAlbum' || item.Type == 'Game') {
+
+        } else {
+            similarSection.classList.add('hide');
+            return;
+        }
+
+        similarSection.classList.remove('hide');
+    }
 
     function setHeaders(view, item) {
 
@@ -83,105 +191,6 @@
         }).join('');
 
         createHeaderScroller(view);
-    }
-
-    function createHeaderScroller(view) {
-
-        require(['Sly', 'loading'], function (Sly, loading) {
-
-            view = view.querySelector('.userViewNames');
-
-            var scrollFrame = view.querySelector('.scrollFrame');
-
-            scrollFrame.style.display = 'block';
-
-            var options = {
-                horizontal: 1,
-                itemNav: 'basic',
-                mouseDragging: 1,
-                touchDragging: 1,
-                slidee: view.querySelector('.scrollSlider'),
-                itemSelector: '.btnUserViewHeader',
-                activateOn: 'click focus',
-                smart: true,
-                easing: 'swing',
-                releaseSwing: true,
-                scrollBar: view.querySelector('.scrollbar'),
-                scrollBy: 1,
-                speed: 600,
-                moveBy: 600,
-                elasticBounds: 1,
-                dragHandle: 1,
-                dynamicHandle: 1,
-                clickBar: 1
-            };
-
-            var frame = new Sly(scrollFrame, options).init();
-
-            setTimeout(function () {
-
-                loading.hide();
-                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
-
-            }, 300);
-        });
-    }
-
-    function initEvents(view) {
-
-        // Catch events on the view headers
-        var userViewNames = view.querySelector('.userViewNames');
-        userViewNames.addEventListener('mousedown', function (e) {
-
-            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                elem.focus();
-            }
-        });
-
-        userViewNames.addEventListener('focusin', function (e) {
-
-            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                setFocusDelay(view, elem);
-            }
-        });
-    }
-
-    var focusTimeout;
-    function setFocusDelay(view, elem) {
-
-        var viewId = elem.getAttribute('data-id');
-
-        var btn = view.querySelector('.btnUserViewHeader.selected');
-
-        if (btn) {
-
-            if (viewId == btn.getAttribute('data-id')) {
-                return;
-            }
-            btn.classList.remove('selected');
-        }
-
-        elem.classList.add('selected');
-
-        if (focusTimeout) {
-            clearTimeout(focusTimeout);
-        }
-        focusTimeout = setTimeout(function () {
-
-            selectUserView(view, viewId);
-
-        }, 300);
-    }
-
-    function selectUserView(page, id) {
-
-        var btn = page.querySelector(".btnUserViewHeader[data-id='" + id + "']");
-
-        //loadViewContent(page, id, btn.getAttribute('data-type'));
     }
 
 })();

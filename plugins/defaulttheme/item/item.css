@@ -21,3 +21,25 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.itemPageContainer {
+    display: block;
+    width: 84%;
+    margin: auto;
+}
+
+.itemScrollFrame {
+    height: 100%;
+}
+
+.itemSection {
+    clear: both;
+}
+
+    .itemSection + .itemSection {
+        margin-top: 100px;
+    }
+
+.itemScenesThumb {
+    width: 300px;
+}

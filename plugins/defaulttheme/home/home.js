@@ -247,7 +247,7 @@
                 easing: 'swing',
                 releaseSwing: true,
                 scrollBar: view.querySelector('.scrollbar'),
-                scrollBy: 1,
+                scrollBy: 40,
                 speed: 600,
                 moveBy: 600,
                 elasticBounds: 1,
