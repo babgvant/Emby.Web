@@ -91,6 +91,16 @@
                 ]
             });
 
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'item/item.html'),
+                id: 'defaulttheme-item',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'item/item'),
+                    'css!' + Emby.PluginManager.mapRequire(self, 'item/item')
+                ]
+            });
+
             return routes;
         };
 
@@ -111,6 +121,10 @@
                 clearInterval(clockInterval);
                 clockInterval = null;
             }
+        };
+
+        self.showItem = function (item) {
+
         };
 
         function loadControlBox() {

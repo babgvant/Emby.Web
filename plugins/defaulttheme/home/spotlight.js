@@ -28,6 +28,7 @@
         newCardImageContainer.style.backgroundImage = "url('" + imgUrl + "')";
 
         card.querySelector('.cardText').innerHTML = item.Name;
+        card.setAttribute('data-id', item.Id);
         cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
         var keyframes = [

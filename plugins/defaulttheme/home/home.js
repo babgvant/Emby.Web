@@ -5,6 +5,8 @@
         var element = e.detail.element;
         var params = e.detail.params;
 
+        Emby.Backdrop.clear();
+
         require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
             loading.show();
@@ -97,13 +99,29 @@
             }
         });
 
+        var homeScrollContent = view.querySelector('.homeScrollContent');
+
         // Catch events on items in the view
-        view.querySelector('.homeScrollContent').addEventListener('mousedown', function (e) {
+        homeScrollContent.addEventListener('mousedown', function (e) {
 
             var card = findParent(e.target, 'card');
 
             if (card) {
                 card.focus();
+            }
+        });
+
+        // Catch events on items in the view
+        homeScrollContent.addEventListener('click', function (e) {
+
+            var card = findParent(e.target, 'card');
+
+            if (card) {
+                var id = card.getAttribute('data-id');
+
+                if (id) {
+                    Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + id);
+                }
             }
         });
     }
