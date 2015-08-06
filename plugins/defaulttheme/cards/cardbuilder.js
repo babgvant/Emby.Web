@@ -1,59 +1,5 @@
 (function (globalScope) {
 
-    function getAveragePrimaryImageAspectRatio(items) {
-
-        var values = [];
-
-        for (var i = 0, length = items.length; i < length; i++) {
-
-            var ratio = items[i].PrimaryImageAspectRatio || 0;
-
-            if (!ratio) {
-                continue;
-            }
-
-            values[values.length] = ratio;
-        }
-
-        if (!values.length) {
-            return null;
-        }
-
-        // Use the median
-        values.sort(function (a, b) { return a - b; });
-
-        var half = Math.floor(values.length / 2);
-
-        var result;
-
-        if (values.length % 2)
-            result = values[half];
-        else
-            result = (values[half - 1] + values[half]) / 2.0;
-
-        // If really close to 2:3 (poster image), just return 2:3
-        if (Math.abs(0.66666666667 - result) <= .15) {
-            return 0.66666666667;
-        }
-
-        // If really close to 16:9 (episode image), just return 16:9
-        if (Math.abs(1.777777778 - result) <= .2) {
-            return 1.777777778;
-        }
-
-        // If really close to 1 (square image), just return 1
-        if (Math.abs(1 - result) <= .15) {
-            return 1;
-        }
-
-        // If really close to 4:3 (poster image), just return 2:3
-        if (Math.abs(1.33333333333 - result) <= .15) {
-            return 1.33333333333;
-        }
-
-        return result;
-    }
-
     function getDisplayName(item, displayAsSpecial, includeParentInfo) {
 
         if (!item) {
@@ -98,7 +44,7 @@
 
     function setShapeHome(items, options) {
 
-        var primaryImageAspectRatio = getAveragePrimaryImageAspectRatio(items) || 0;
+        var primaryImageAspectRatio = Emby.ImageLoader.getPrimaryImageAspectRatio(items) || 0;
 
         if (primaryImageAspectRatio && primaryImageAspectRatio < .85) {
             options.shape = 'portraitCard homePortraitCard';
@@ -117,12 +63,33 @@
         }
     }
 
+    function setShape(items, options) {
+
+        var primaryImageAspectRatio = Emby.ImageLoader.getPrimaryImageAspectRatio(items) || 0;
+
+        if (primaryImageAspectRatio && primaryImageAspectRatio < .85) {
+            options.shape = 'portraitCard';
+            options.width = 280;
+        }
+        else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.34) {
+            options.shape = 'backdropCard';
+            options.width = 300;
+        }
+        else {
+            options.shape = 'squareCard';
+            options.width = 280;
+        }
+    }
+
     function buildCardsHtml(items, apiClient, options) {
 
         var className = 'card';
 
         if (options.shape == 'autoHome') {
             setShapeHome(items, options);
+        }
+        else if (options.shape == 'auto') {
+            setShape(items, options);
         }
 
         if (options.shape) {
@@ -156,46 +123,11 @@
         return html;
     }
 
-    function buildChapterCardsHtml(chapters, options) {
-
-        var className = 'card';
-
-        if (options.shape) {
-            className += ' ' + options.shape;
-        }
-
-        if (options.block || options.rows) {
-            className += ' block';
-        }
-
-        var html = '';
-        var itemsInRow = 0;
-
-        for (var i = 0, length = chapters.length; i < length; i++) {
-
-            if (options.rows && itemsInRow == 0) {
-                html += '<div class="cardColumn">';
-            }
-
-            var chapter = chapters[i];
-
-            html += buildChapterCard(chapter, options, className);
-            itemsInRow++;
-
-            if (options.rows && itemsInRow >= options.rows) {
-                itemsInRow = 0;
-                html += '</div>';
-            }
-        }
-
-        return html;
-    }
-
     function getCardImageUrl(item, apiClient, options) {
 
         var width = options.width;
         var height = null;
-        var primaryImageAspectRatio = getAveragePrimaryImageAspectRatio([item]);
+        var primaryImageAspectRatio = Emby.ImageLoader.getPrimaryImageAspectRatio([item]);
         var forceName = false;
         var imgUrl = null;
 
@@ -414,37 +346,7 @@
         return html;
     }
 
-    function buildChapterCard(chapter, options, className) {
-
-        var imgUrl = chapter.images ? chapter.images.primary : '';
-
-        var cardImageContainerClass = 'cardImageContainer';
-        if (options.coverImage) {
-            cardImageContainerClass += ' coveredImage';
-        }
-        var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
-
-        var nameHtml = '';
-
-        var html = '\
-<paper-button raised class="' + className + '"> \
-<div class="cardScalable">\
-<div class="cardPadder"></div>\
-<div class="cardContent">\
-' + cardImageContainer + '\
-</div>\
-<div class="innerCardFooter">\
-' + nameHtml + '\
-</div>\
-</div>\
-</div>\
-</paper-button>'
-        ;
-
-        return html;
-    }
-
-    function buildCards(items, apiClient, options) {
+    function buildCards(items, options) {
 
         // Abort if the container has been disposed
         if (!Emby.Dom.isInDocument(options.parentContainer)) {
@@ -460,34 +362,16 @@
             }
         }
 
-        var html = buildCardsHtml(items, apiClient, options);
+        require(['connectionManager'], function (connectionManager) {
 
-        options.itemsContainer.innerHTML = html;
+            var apiClient = connectionManager.currentApiClient();
 
-        ImageLoader.lazyChildren(options.itemsContainer);
-    }
+            var html = buildCardsHtml(items, apiClient, options);
 
-    function buildChapterCards(items, options) {
+            options.itemsContainer.innerHTML = html;
 
-        // Abort if the container has been disposed
-        if (!Emby.Dom.isInDocument(options.parentContainer)) {
-            return;
-        }
-
-        if (options.parentContainer) {
-            if (items.length) {
-                options.parentContainer.classList.remove('hide');
-            } else {
-                options.parentContainer.classList.add('hide');
-                return;
-            }
-        }
-
-        var html = buildChapterCardsHtml(items, options);
-
-        options.itemsContainer.innerHTML = html;
-
-        ImageLoader.lazyChildren(options.itemsContainer);
+            Emby.ImageLoader.lazyChildren(options.itemsContainer);
+        });
     }
 
     if (!globalScope.DefaultTheme) {
@@ -497,7 +381,6 @@
     globalScope.DefaultTheme.CardBuilder = {
         buildCardsHtml: buildCardsHtml,
         buildCards: buildCards,
-        buildChapterCards: buildChapterCards,
         homeThumbWidth: 320,
         homePortraitWidth: 189,
         homeSquareWidth: 180

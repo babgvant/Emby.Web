@@ -103,11 +103,10 @@
 
             section.classList.remove('hide');
 
-            DefaultTheme.CardBuilder.buildChapterCards(chapters, {
+            DefaultTheme.ChapterCardBuilder.buildChapterCards(chapters, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'backdropCard itemScenesThumb',
-                width: 300,
                 coverImage: true
             });
         });
@@ -115,16 +114,27 @@
 
     function renderSimilar(view, item) {
 
-        var similarSection = view.querySelector('.similarSection');
+        Emby.Models.similar(item, {
 
-        if (item.Type == 'Movie' || item.Type == 'Series' || item.Type == 'MusicAlbum' || item.Type == 'Game') {
+            Limit: 12
 
-        } else {
-            similarSection.classList.add('hide');
-            return;
-        }
+        }).then(function (result) {
 
-        similarSection.classList.remove('hide');
+            var section = view.querySelector('.similarSection');
+
+            if (!result.Items.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
+                parentContainer: section,
+                itemsContainer: section.querySelector('.itemsContainer'),
+                shape: 'auto'
+            });
+        });
     }
 
     function setHeaders(view, item) {

@@ -8,7 +8,7 @@
  * https://github.com/luis-almeida
  */
 
-(function () {
+(function (globalScope) {
 
     var unveilId = 0;
 
@@ -93,11 +93,70 @@
         fillImages([elem]);
     }
 
-    window.ImageLoader = {
-        lazyChildren: lazyChildren
+    function getPrimaryImageAspectRatio(items) {
+
+        var values = [];
+
+        for (var i = 0, length = items.length; i < length; i++) {
+
+            var ratio = items[i].PrimaryImageAspectRatio || 0;
+
+            if (!ratio) {
+                continue;
+            }
+
+            values[values.length] = ratio;
+        }
+
+        if (!values.length) {
+            return null;
+        }
+
+        // Use the median
+        values.sort(function (a, b) { return a - b; });
+
+        var half = Math.floor(values.length / 2);
+
+        var result;
+
+        if (values.length % 2)
+            result = values[half];
+        else
+            result = (values[half - 1] + values[half]) / 2.0;
+
+        // If really close to 2:3 (poster image), just return 2:3
+        if (Math.abs(0.66666666667 - result) <= .15) {
+            return 0.66666666667;
+        }
+
+        // If really close to 16:9 (episode image), just return 16:9
+        if (Math.abs(1.777777778 - result) <= .2) {
+            return 1.777777778;
+        }
+
+        // If really close to 1 (square image), just return 1
+        if (Math.abs(1 - result) <= .15) {
+            return 1;
+        }
+
+        // If really close to 4:3 (poster image), just return 2:3
+        if (Math.abs(1.33333333333 - result) <= .15) {
+            return 1.33333333333;
+        }
+
+        return result;
+    }
+
+    if (!globalScope.Emby) {
+        globalScope.Emby = {};
+    }
+
+    globalScope.Emby.ImageLoader = {
+        lazyChildren: lazyChildren,
+        getPrimaryImageAspectRatio: getPrimaryImageAspectRatio
     };
 
-})();
+})(this);
 
 (function () {
 

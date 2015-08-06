@@ -1,12 +1,8 @@
 (function (globalScope) {
 
-    function loadChannels(element, parentId, apiClient) {
+    function loadChannels(element, parentId) {
 
-        apiClient.getChannels({
-
-            UserId: apiClient.getCurrentUserId()
-
-        }).done(function (result) {
+        Emby.Models.channels().then(function (result) {
 
             var section = element.querySelector('.channelsSection');
 
@@ -15,7 +11,7 @@
                 return;
             }
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'backdropCard homebackdropCard',
@@ -27,12 +23,12 @@
             var latestContainer = element.querySelector('.latestContainer');
 
             for (var i = 0, length = result.Items.length; i < length; i++) {
-                loadLatest(latestContainer, result.Items[i], apiClient);
+                loadLatest(latestContainer, result.Items[i]);
             }
         });
     }
 
-    function loadLatest(element, channel, apiClient) {
+    function loadLatest(element, channel) {
 
         var html = '\
 <div class="sectionTitle">'+ Globalize.translate('LatestFromValue', channel.Name) + '</div>\
@@ -49,15 +45,12 @@
         var options = {
 
             Limit: 6,
-            Fields: "PrimaryImageAspectRatio",
-            Filters: "IsUnplayed",
-            UserId: apiClient.getCurrentUserId(),
             ChannelIds: channel.Id
         };
 
-        apiClient.getJSON(apiClient.getUrl("Channels/Items/Latest", options)).done(function (result) {
+        Emby.Models.latestChannelItems(options).then(function (result) {
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -70,12 +63,7 @@
 
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            loadChannels(element, parentId, apiClient);
-        });
+        loadChannels(element, parentId);
 
         self.destroy = function () {
 

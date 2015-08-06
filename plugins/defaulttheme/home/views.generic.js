@@ -1,12 +1,11 @@
 (function (globalScope) {
 
-    function loadLatest(element, parentId, apiClient) {
+    function loadLatest(element, parentId) {
 
         var options = {
 
             Limit: 24,
             ParentId: parentId,
-            ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
@@ -19,7 +18,7 @@
                 return;
             }
 
-            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome'
@@ -30,12 +29,7 @@
     function view(element, parentId) {
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            loadLatest(element, parentId, apiClient);
-        });
+        loadLatest(element, parentId);
 
         self.destroy = function () {
 
