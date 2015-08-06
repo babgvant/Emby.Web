@@ -1,6 +1,6 @@
-(function () {
+define([], function () {
 
-    function theme() {
+    return function () {
 
         var self = this;
 
@@ -36,7 +36,4 @@
 
         };
     }
-
-    Emby.PluginManager.register(new theme());
-
-})();
+});

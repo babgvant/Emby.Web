@@ -9,7 +9,7 @@
 }
 
 .itemSection {
-    margin-bottom: 70px;
+    margin-bottom: 80px;
 }
 
     .itemSection > h2 {
@@ -30,4 +30,8 @@
 
 .itemScrollContent .portraitCard {
     width: 16.66666666666666667%;
+}
+
+.itemScrollContent .itemPersonThumb {
+    width: 14.285714285714285714285714285714%;
 }

@@ -35,16 +35,24 @@
 
         self.mapRequire = function (plugin, path) {
 
-            var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
+            if (typeof plugin === 'string') {
+                plugin = plugins.filter(function (p) {
+                    return p.packageName == plugin;
+                })[0];
+            }
 
-            return 'plugins/' + packageName + '/' + path;
+            return plugin.baseUrl + '/' + path;
         };
 
         self.mapResource = function (plugin, path) {
 
-            var packageName = typeof plugin === 'string' ? plugin : plugin.packageName;
+            if (typeof plugin === 'string') {
+                plugin = plugins.filter(function (p) {
+                    return p.packageName == plugin;
+                })[0];
+            }
 
-            return Emby.Page.baseUrl() + '/plugins/' + packageName + '/' + path;
+            return plugin.baseUrl + '/' + path;
         };
     }
 

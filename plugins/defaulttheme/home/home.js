@@ -219,7 +219,7 @@
                 { opacity: '1', offset: 1 }];
         var timing = { duration: 900, iterations: 1 };
         homeScrollContent.animate(keyframes, timing);
-        require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName)], function () {
+        require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName + '.js')], function () {
 
             var homePanel = homeScrollContent.querySelector('.homePanel');
             new DefaultTheme[viewName + 'View'](homePanel, parentId);

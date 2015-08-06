@@ -104,7 +104,7 @@
         for (var i = 0, length = chapters.length; i < length; i++) {
             var chapter = chapters[i];
 
-            if (isPrimary) {
+            if (isPrimary && chapter.ImageTag) {
 
                 var imgUrl = apiClient.getScaledImageUrl(itemId, {
                     maxWidth: image.width,
@@ -119,6 +119,27 @@
         }
     }
 
+    function fillItemPeopleImages(itemId, people, image, apiClient) {
+
+        var isPrimary = image.type == 'Primary';
+
+        for (var i = 0, length = people.length; i < length; i++) {
+            var person = people[i];
+
+            if (isPrimary && person.PrimaryImageTag) {
+
+                var imgUrl = apiClient.getScaledImageUrl(person.Id, {
+                    maxWidth: image.width,
+                    tag: person.PrimaryImageTag,
+                    type: "Primary"
+                });
+
+                person.images = person.images || {};
+                person.images.primary = imgUrl;
+            }
+        }
+    }
+
     function chapters(item, options) {
 
         return new Promise(function (resolve, reject) {
@@ -127,7 +148,7 @@
 
                 var apiClient = connectionManager.currentApiClient();
 
-                var chapters = item.Chapters || {};
+                var chapters = item.Chapters || [];
 
                 var images = options.images || [];
 
@@ -136,6 +157,35 @@
                 }
 
                 resolve(chapters);
+            });
+        });
+    }
+
+    function itemPeople(item, options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                var people = item.People || [];
+
+                if (options.limit) {
+                    people.length = Math.min(people.length, options.limit);
+                }
+
+                people = people.filter(function (p) {
+                    return p.PrimaryImageTag;
+                });
+
+                var images = options.images || [];
+
+                for (var i = 0, length = images.length; i < length; i++) {
+                    fillItemPeopleImages(item.Id, people, images[i], apiClient);
+                }
+
+                resolve(people);
             });
         });
     }
@@ -233,6 +283,23 @@
         });
     }
 
+    function liveTvRecommendedPrograms(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                normalizeOptions(options);
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options.UserId = apiClient.getCurrentUserId();
+
+                apiClient.getLiveTvRecommendedPrograms(options).done(resolve, reject);
+            });
+        });
+    }
+
     globalScope.Emby.Models = {
         resumable: resumable,
         nextUp: nextUp,
@@ -243,7 +310,9 @@
         playlists: playlists,
         channels: channels,
         latestChannelItems: latestChannelItems,
-        similar: similar
+        similar: similar,
+        liveTvRecommendedPrograms: liveTvRecommendedPrograms,
+        itemPeople: itemPeople
     };
 
 })(this, document);

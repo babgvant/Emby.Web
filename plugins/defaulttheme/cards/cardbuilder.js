@@ -254,7 +254,7 @@
 
     function enableProgressIndicator(item) {
 
-        if (item.MediaType == 'Video' || item.Type == 'Series' || item.Type == 'Season' || item.Type == 'BoxSet' || item.Type == 'Playlist') {
+        if (item.MediaType == 'Video') {
             if (item.Type != 'TvChannel') {
                 return true;
             }
