@@ -293,21 +293,37 @@
     function loadPlugins() {
 
         // Load installed plugins
-        // Use a Promise because the web-only version won't be able access the file system, so it may have to look up the plugins from some external location
+
+        var list = [
+        'plugins/defaulttheme/plugin.js',
+        'plugins/logoscreensaver/plugin.js',
+        'plugins/keyboard/plugin.js'
+        ];
+
+        if (enableWebComponents()) {
+            list.push('plugins/wmctheme/plugin.js');
+        }
+
+        return Promise.all(list.map(loadPlugin));
+    }
+
+    function loadPlugin(url) {
 
         return new Promise(function (resolve, reject) {
 
-            var list = [
-                'plugins/defaulttheme/plugin.js',
-                'plugins/logoscreensaver/plugin.js',
-                'plugins/keyboard/plugin.js'
-            ];
+            require([url], function (pluginFactory) {
 
-            if (enableWebComponents()) {
-                list.push('plugins/wmctheme/plugin.js');
-            }
+                var plugin = new pluginFactory();
 
-            require(list, function () {
+                if (url.indexOf() != 0) {
+
+                    url = Emby.Page.baseUrl() + '/' + url;
+                }
+
+                plugin.baseUrl = url.substring(0, url.lastIndexOf('/'));
+
+                Emby.PluginManager.register(plugin);
+
                 resolve();
             });
         });

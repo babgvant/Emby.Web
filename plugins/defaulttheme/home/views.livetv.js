@@ -1,6 +1,6 @@
 (function (globalScope) {
 
-    function loadLatestRecordings(element, apiClient) {
+    function loadLatestRecordings(element) {
 
         Emby.Models.liveTvRecordings({
 
@@ -11,7 +11,7 @@
 
             var section = element.querySelector('.latestRecordingsSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -20,21 +20,19 @@
         });
     }
 
-    function loadNowPlaying(element, apiClient) {
+    function loadNowPlaying(element) {
 
-        apiClient.getLiveTvRecommendedPrograms({
+        Emby.Models.liveTvRecommendedPrograms({
 
-            userId: apiClient.getCurrentUserId(),
             IsAiring: true,
             limit: 9,
-            ImageTypeLimit: 1,
             EnableImageTypes: "Primary"
 
-        }).done(function (result) {
+        }).then(function (result) {
 
             var section = element.querySelector('.nowPlayingSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -44,11 +42,11 @@
         });
     }
 
-    function loadUpcomingPrograms(section, apiClient, options) {
+    function loadUpcomingPrograms(section, options) {
 
-        apiClient.getLiveTvRecommendedPrograms(options).done(function (result) {
+        Emby.Models.liveTvRecommendedPrograms(options).then(function (result) {
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -61,55 +59,46 @@
     function view(element, parentId) {
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
+        loadLatestRecordings(element);
+        loadNowPlaying(element);
 
-            var apiClient = connectionManager.currentApiClient();
+        loadUpcomingPrograms(element.querySelector('.upcomingProgramsSection'), {
 
-            loadLatestRecordings(element, apiClient);
-            loadNowPlaying(element, apiClient);
+            IsAiring: false,
+            HasAired: false,
+            limit: 6,
+            IsMovie: false,
+            IsSports: false,
+            IsKids: false,
+            IsSeries: true
 
-            loadUpcomingPrograms(element.querySelector('.upcomingProgramsSection'), apiClient, {
+        });
 
-                userId: apiClient.getCurrentUserId(),
-                IsAiring: false,
-                HasAired: false,
-                limit: 6,
-                IsMovie: false,
-                IsSports: false,
-                IsKids: false,
-                IsSeries: true
+        loadUpcomingPrograms(element.querySelector('.upcomingMoviesSection'), {
 
-            });
+            IsAiring: false,
+            HasAired: false,
+            limit: 6,
+            IsMovie: true
 
-            loadUpcomingPrograms(element.querySelector('.upcomingMoviesSection'), apiClient, {
+        });
 
-                userId: apiClient.getCurrentUserId(),
-                IsAiring: false,
-                HasAired: false,
-                limit: 6,
-                IsMovie: true
+        loadUpcomingPrograms(element.querySelector('.upcomingSportsSection'), {
 
-            });
+            IsAiring: false,
+            HasAired: false,
+            limit: 6,
+            IsSports: true
 
-            loadUpcomingPrograms(element.querySelector('.upcomingSportsSection'), apiClient, {
+        });
 
-                userId: apiClient.getCurrentUserId(),
-                IsAiring: false,
-                HasAired: false,
-                limit: 6,
-                IsSports: true
+        loadUpcomingPrograms(element.querySelector('.upcomingKidsSection'), {
 
-            });
-
-            loadUpcomingPrograms(element.querySelector('.upcomingKidsSection'), apiClient, {
-
-                userId: apiClient.getCurrentUserId(),
-                IsAiring: false,
-                HasAired: false,
-                limit: 6,
-                IsSports: false,
-                IsKids: true
-            });
+            IsAiring: false,
+            HasAired: false,
+            limit: 6,
+            IsSports: false,
+            IsKids: true
         });
 
         self.destroy = function () {

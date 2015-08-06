@@ -102,7 +102,7 @@
 
             var card = element.querySelector('.homebackdropSpotlightCard');
 
-            require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight')], function () {
+            require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight.js')], function () {
 
                 new DefaultTheme.spotlight(card, result.Items, DefaultTheme.CardBuilder.homeThumbWidth * 2, apiClient);
             });

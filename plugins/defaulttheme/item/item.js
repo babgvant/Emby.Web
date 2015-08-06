@@ -12,7 +12,6 @@
             Emby.Models.item(params.id).then(function (item) {
 
                 Emby.Backdrop.setBackdrops([item]);
-                //setHeaders(element, item);
                 renderPeople(element, item);
                 renderScenes(element, item);
                 renderSimilar(element, item);
@@ -51,6 +50,7 @@
             };
 
             var bodySlyFrame = new Sly(scrollFrame, options).init();
+
             initFocusHandler(view, bodySlyFrame);
         });
     }
@@ -71,16 +71,34 @@
 
     function renderPeople(view, item) {
 
-        var people = item.People || [];
+        Emby.Models.itemPeople(item, {
 
-        var peopleSection = view.querySelector('.peopleSection');
+            limit: 24,
+            images: [
+            {
+                type: 'Primary',
+                width: 220
+            }]
 
-        if (!people.length) {
-            peopleSection.classList.add('hide');
-            return;
-        }
+        }).then(function (people) {
 
-        peopleSection.classList.remove('hide');
+            var section = view.querySelector('.peopleSection');
+
+            if (!people.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            require([Emby.PluginManager.mapRequire('defaulttheme', 'cards/peoplecardbuilder.js')], function () {
+                DefaultTheme.PeopleCardBuilder.buildPeopleCards(people, {
+                    parentContainer: section,
+                    itemsContainer: section.querySelector('.itemsContainer'),
+                    shape: 'portraitCard itemPersonThumb'
+                });
+            });
+        });
     }
 
     function renderScenes(view, item) {
@@ -103,11 +121,13 @@
 
             section.classList.remove('hide');
 
-            DefaultTheme.ChapterCardBuilder.buildChapterCards(chapters, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'backdropCard itemScenesThumb',
-                coverImage: true
+            require([Emby.PluginManager.mapRequire('defaulttheme', 'cards/chaptercardbuilder.js')], function () {
+                DefaultTheme.ChapterCardBuilder.buildChapterCards(chapters, {
+                    parentContainer: section,
+                    itemsContainer: section.querySelector('.itemsContainer'),
+                    shape: 'backdropCard itemScenesThumb',
+                    coverImage: true
+                });
             });
         });
     }
