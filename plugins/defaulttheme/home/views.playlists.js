@@ -1,17 +1,14 @@
 (function (globalScope) {
 
-    function loadAll(element, parentId, apiClient) {
+    function loadAll(element, parentId) {
 
         var options = {
 
-            Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb",
-            IncludeItemTypes: "Playlist"
+            EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items', options)).done(function (result) {
+        Emby.Models.playlists(options).then(function (result) {
 
             var section = element.querySelector('.allSection');
 
@@ -20,7 +17,7 @@
                 return;
             }
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome'
@@ -31,12 +28,7 @@
     function view(element, parentId) {
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            loadAll(element, parentId, apiClient);
-        });
+        loadAll(element, parentId);
 
         self.destroy = function () {
 

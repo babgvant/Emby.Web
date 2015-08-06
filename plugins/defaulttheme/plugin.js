@@ -48,6 +48,7 @@
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),
                 Emby.PluginManager.mapRequire(self, 'cards/cardbuilder.js'),
+                Emby.PluginManager.mapRequire(self, 'cards/chaptercardbuilder.js'),
                 'html!bower_components/iron-icon/iron-icon.html',
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapRequire(self, 'icons.html'),

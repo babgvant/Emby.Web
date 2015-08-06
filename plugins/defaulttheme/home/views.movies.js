@@ -1,6 +1,6 @@
 (function (globalScope) {
 
-    function loadResume(element, parentId, apiClient) {
+    function loadResume(element, parentId) {
 
         var options = {
 
@@ -14,7 +14,7 @@
 
             var resumeSection = element.querySelector('.resumeSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
                 shape: 'backdropCard homebackdropCard',
@@ -41,7 +41,7 @@
 
             var resumeSection = element.querySelector('.latestSection');
 
-            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result, {
                 parentContainer: resumeSection,
                 itemsContainer: resumeSection.querySelector('.itemsContainer'),
                 shape: 'portraitCard homePortraitCard',
@@ -84,7 +84,7 @@
 
             var apiClient = connectionManager.currentApiClient();
 
-            loadResume(element, parentId, apiClient);
+            loadResume(element, parentId);
             loadLatest(element, parentId, apiClient);
             loadSpotlight(element, parentId, apiClient);
         });

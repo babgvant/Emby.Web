@@ -1,6 +1,6 @@
 (function (globalScope) {
 
-    function loadResume(element, parentId, apiClient) {
+    function loadResume(element, parentId) {
 
         var options = {
 
@@ -14,7 +14,7 @@
 
             var section = element.querySelector('.resumeSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'backdropCard homebackdropCard',
@@ -28,7 +28,7 @@
         });
     }
 
-    function loadNextUp(element, parentId, apiClient) {
+    function loadNextUp(element, parentId) {
 
         var options = {
 
@@ -42,7 +42,7 @@
 
             var section = element.querySelector('.nextUpSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'backdropCard homebackdropCard',
@@ -72,7 +72,7 @@
 
             var section = element.querySelector('.latestSection');
 
-            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'backdropCard homebackdropCard',
@@ -117,8 +117,8 @@
 
             var apiClient = connectionManager.currentApiClient();
 
-            loadResume(element, parentId, apiClient);
-            loadNextUp(element, parentId, apiClient);
+            loadResume(element, parentId);
+            loadNextUp(element, parentId);
             loadLatest(element, parentId, apiClient);
             loadSpotlight(element, parentId, apiClient);
         });
