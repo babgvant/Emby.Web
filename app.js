@@ -159,9 +159,9 @@
             loading: "components/" + componentType + "/loading",
             soundeffect: "components/soundeffect",
             apphost: "components/apphost",
-            audioManager: "js/audioManager",
-            screensaverManager: "js/screensaverManager",
-            viewManager: "js/viewManager"
+            audioManager: "js/audiomanager",
+            screensaverManager: "js/screensavermanager",
+            viewManager: "js/viewmanager"
         };
 
         if (enableWebComponents()) {
