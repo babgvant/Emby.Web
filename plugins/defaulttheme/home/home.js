@@ -98,24 +98,12 @@
             }
         });
 
-        var homeScrollContent = view.querySelector('.homeScrollContent');
-
         // Catch events on items in the view
-        homeScrollContent.addEventListener('mousedown', function (e) {
+        view.querySelector('.homeScrollContent').addEventListener('click', function (e) {
 
             var card = Emby.Dom.parentWithClass(e.target, 'card');
 
             if (card) {
-                card.focus();
-            }
-        });
-
-        // Catch events on items in the view
-        homeScrollContent.addEventListener('click', function (e) {
-
-            var card = Emby.Dom.parentWithClass(e.target, 'card');
-
-            if (card && document.activeElement == card) {
                 var id = card.getAttribute('data-id');
 
                 if (id) {

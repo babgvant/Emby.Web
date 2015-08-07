@@ -12,15 +12,35 @@
             Emby.Models.item(params.id).then(function (item) {
 
                 Emby.Backdrop.setBackdrops([item]);
+                renderChildren(element, item);
                 renderPeople(element, item);
                 renderScenes(element, item);
                 renderSimilar(element, item);
                 createVerticalScroller(element);
+
+                loading.hide();
             });
         });
 
-        //initEvents(element);
+        initEvents(element);
     });
+
+    function initEvents(view) {
+
+        // Catch events on items in the view
+        view.querySelector('.itemScrollContent').addEventListener('click', function (e) {
+
+            var card = Emby.Dom.parentWithClass(e.target, 'card');
+
+            if (card) {
+                var id = card.getAttribute('data-id');
+
+                if (id) {
+                    Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + id);
+                }
+            }
+        });
+    }
 
     function createVerticalScroller(view) {
 
@@ -66,6 +86,55 @@
         });
     }
 
+    function renderChildren(view, item) {
+        
+        var section = view.querySelector('.childrenSection');
+
+        if (!item.ChildCount) {
+            section.classList.add('hide');
+            return;
+        }
+
+        var headerText = section.querySelector('h2');
+        var showTitle = false;
+
+        if (item.Type == "Series") {
+            headerText.innerHTML = Globalize.translate('Seasons');
+            headerText.classList.remove('hide');
+
+        } else if (item.Type == "Season") {
+            headerText.innerHTML = Globalize.translate('Episodes');
+            headerText.classList.remove('hide');
+            showTitle = true;
+
+        } else if (item.Type == "MusicAlbum") {
+            headerText.classList.add('hide');
+
+        } else {
+            section.classList.add('hide');
+            return;
+        }
+
+        Emby.Models.children(item, {
+
+        }).then(function (result) {
+
+            if (!result.Items.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
+                parentContainer: section,
+                itemsContainer: section.querySelector('.itemsContainer'),
+                shape: 'auto',
+                showTitle: showTitle
+            });
+        });
+    }
+
     function renderPeople(view, item) {
 
         Emby.Models.itemPeople(item, {
@@ -92,7 +161,8 @@
                 DefaultTheme.PeopleCardBuilder.buildPeopleCards(people, {
                     parentContainer: section,
                     itemsContainer: section.querySelector('.itemsContainer'),
-                    shape: 'portraitCard itemPersonThumb'
+                    shape: 'portraitCard itemPersonThumb',
+                    coverImage: true
                 });
             });
         });

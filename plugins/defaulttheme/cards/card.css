@@ -5,7 +5,7 @@
     margin: 0;
 }
 
-fl .cardScalable {
+.cardScalable {
     position: relative;
 }
 
@@ -73,7 +73,7 @@ fl .cardScalable {
 }
 
 .cardFooter {
-    padding: 1em .25em;
+    padding: .25em .25em;
 }
 
 .innerCardFooter {
@@ -89,6 +89,8 @@ fl .cardScalable {
 .cardText {
     padding: .25em .35em;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
     .cardText + .cardText {

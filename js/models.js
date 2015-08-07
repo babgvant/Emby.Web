@@ -300,6 +300,37 @@
         });
     }
 
+    function children(item, options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                normalizeOptions(options);
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+
+                if (item.Type == "Series") {
+                    
+                }
+                else if (item.Type == "Season") {
+                    
+                }
+                else if (item.Type == "MusicAlbum") {
+
+                }
+                options.SortBy = "DatePlayed";
+                options.ParentId = item.Id;
+
+                normalizeOptions(options);
+
+                apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
     globalScope.Emby.Models = {
         resumable: resumable,
         nextUp: nextUp,
@@ -312,7 +343,8 @@
         latestChannelItems: latestChannelItems,
         similar: similar,
         liveTvRecommendedPrograms: liveTvRecommendedPrograms,
-        itemPeople: itemPeople
+        itemPeople: itemPeople,
+        children: children
     };
 
 })(this, document);
