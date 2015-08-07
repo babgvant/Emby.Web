@@ -106,7 +106,22 @@
     }
 
     function getFocusable() {
-        return document.querySelectorAll('input,textarea,button,paper-button,paper-icon-button');
+        var elems = document.querySelectorAll('input,textarea,button,paper-button,paper-icon-button');
+        var focusableElements = [];
+
+        for (var i = 0, length = elems.length; i < length; i++) {
+
+            var elem = elems[i];
+
+            // http://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
+            if (elem.offsetParent === null) {
+                continue;
+            }
+
+            focusableElements.push(elem);
+        }
+
+        return focusableElements;
     }
 
     function getViewportBoundingClientRect(elem) {
@@ -140,20 +155,22 @@
         require(['nearestElements'], function () {
             var activeElement = document.activeElement;
 
-            if (!activeElement) {
-                return;
+            if (activeElement) {
+                activeElement = Emby.FocusManager.focusableParent(activeElement);
             }
 
-            activeElement = Emby.FocusManager.focusableParent(activeElement);
+            var focusable = getFocusable();
 
             if (!activeElement) {
+                if (focusable.length) {
+                    focusable[0].focus();
+                }
                 return;
             }
 
             var rect = getViewportBoundingClientRect(activeElement);
-            var focusable = getFocusable();
             var focusableElements = [];
-            console.log(activeElement);
+
             for (var i = 0, length = focusable.length; i < length; i++) {
                 var curr = focusable[i];
                 if (curr != activeElement) {
@@ -188,8 +205,6 @@
                             break;
                         case 2:
                             // up
-                            console.log(curr);
-                            console.log(elementRect.top + '--' + rect.top);
                             if (elementRect.top >= rect.top) {
                                 continue;
                             }
@@ -260,7 +275,5 @@
     globalScope.Emby.InputManager = {
         idleTime: idleTime
     };
-
-    // https://github.com/gilmoreorless/jquery-nearest
 
 })(this, document);

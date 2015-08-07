@@ -3,9 +3,9 @@
     background-color: transparent !important;
     background: none !important;
     margin: 0;
-}fl
+}
 
-.cardScalable {
+fl .cardScalable {
     position: relative;
 }
 
@@ -50,11 +50,6 @@
 }
 
 .card[focused] paper-material {
-    -moz-box-shadow: #fff 0px 0px 6px 5px;
-    box-shadow: #fff 0px 0px 6px 5px;
-}
-
-.card:hover paper-material {
     -moz-box-shadow: #fff 0px 0px 6px 5px;
     box-shadow: #fff 0px 0px 6px 5px;
 }
