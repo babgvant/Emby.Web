@@ -32,7 +32,6 @@
 
             createHeaderScroller(page);
         });
-
     }
 
     function createHeaderScroller(view) {

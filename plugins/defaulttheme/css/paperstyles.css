@@ -135,3 +135,7 @@ paper-progress {
     paper-progress #progressContainer {
         background: transparent !important;
     }
+
+paper-toast {
+    font-size: inherit !important;
+}

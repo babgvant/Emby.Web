@@ -73,7 +73,7 @@
         }
         else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.34) {
             options.shape = 'backdropCard';
-            options.width = 300;
+            options.width = 384;
         }
         else {
             options.shape = 'squareCard';
