@@ -82,25 +82,25 @@
                 // left
                 evt.preventDefault();
                 evt.stopPropagation();
-                nav(0);
+                nav(evt, 0);
                 break;
             case 38:
                 // up
                 evt.preventDefault();
                 evt.stopPropagation();
-                nav(2);
+                nav(evt, 2);
                 break;
             case 39:
                 // right
                 evt.preventDefault();
                 evt.stopPropagation();
-                nav(1);
+                nav(evt, 1);
                 break;
             case 40:
                 // down
                 evt.preventDefault();
                 evt.stopPropagation();
-                nav(3);
+                nav(evt, 3);
                 break;
         }
     }
@@ -150,7 +150,7 @@
             && typeof t.scrollTop == 'number' ? t : document.body).scrollTop;
     }
 
-    function nav(direction) {
+    function nav(evt, direction) {
 
         require(['nearestElements'], function () {
             var activeElement = document.activeElement;
@@ -163,7 +163,7 @@
 
             if (!activeElement) {
                 if (focusable.length) {
-                    focusable[0].focus();
+                    focusElement(evt.target, focusable[0]);
                 }
                 return;
             }
@@ -246,9 +246,26 @@
             });
 
             if (nearest.length) {
-                Emby.FocusManager.focus(nearest[0]);
+                focusElement(evt.target, nearest[0]);
             }
         });
+    }
+
+    function focusElement(originalElement, elem) {
+
+        var newParent = Emby.Dom.parentWithClass(elem, 'scrollSlider');
+
+        if (newParent && newParent != Emby.Dom.parentWithClass(originalElement, 'scrollSlider')) {
+
+            var selected = newParent.querySelector('.selected');
+
+            if (selected) {
+                Emby.FocusManager.focus(selected);
+                return;
+            }
+        }
+
+        Emby.FocusManager.focus(elem);
     }
 
     setInterval(function () {

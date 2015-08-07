@@ -48,6 +48,15 @@
         var nameHtml = '';
         nameHtml += '<div class="cardText">' + person.Name + '</div>';
 
+        if (person.Role) {
+            nameHtml += '<div class="cardText">as ' + person.Role + '</div>';
+        }
+        else if (person.Type) {
+            nameHtml += '<div class="cardText">' + person.Type + '</div>';
+        } else {
+            nameHtml += '<div class="cardText">&nbsp;</div>';
+        }
+
         var html = '\
 <paper-button raised class="' + className + '"> \
 <div class="cardScalable">\
@@ -55,10 +64,10 @@
 <div class="cardContent">\
 ' + cardImageContainer + '\
 </div>\
-<div class="innerCardFooter">\
+</div>\
+</div>\
+<div class="cardFooter">\
 ' + nameHtml + '\
-</div>\
-</div>\
 </div>\
 </paper-button>'
         ;

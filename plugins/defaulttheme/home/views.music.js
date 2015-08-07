@@ -16,7 +16,7 @@
 
             var section = element.querySelector('.latestSection');
 
-            DefaultTheme.CardBuilder.buildCards(result, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -43,7 +43,7 @@
 
             var section = element.querySelector('.playlistsSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -72,7 +72,7 @@
 
             var section = element.querySelector('.recentlyPlayedSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
@@ -101,7 +101,7 @@
 
             var section = element.querySelector('.frequentlyPlayedSection');
 
-            DefaultTheme.CardBuilder.buildCards(result.Items, apiClient, {
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
