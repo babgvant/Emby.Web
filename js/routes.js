@@ -31,7 +31,9 @@
         return false;
     }
 
-    function redirectToLogin(ctx, next) {
+    function redirectToLogin() {
+
+        Emby.Backdrop.clear();
 
         require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
@@ -101,19 +103,22 @@
         authenticate(ctx, route, function () {
             require(route.dependencies || [], function () {
 
-                var url = window.location.href;
+                require(['viewManager'], function (viewManager) {
+                    var url = window.location.href;
 
-                if (Emby.ViewManager.tryRestoreView(url)) {
-                    // done
-                }
-                else if (typeof route.path === 'string') {
+                    if (viewManager.tryRestoreView(url)) {
+                        // done
+                        currentRoute = route;
+                    }
+                    else if (typeof route.path === 'string') {
 
-                    loadContentUrl(ctx, next, route);
+                        loadContentUrl(ctx, next, route);
 
-                } else {
-                    // ? TODO
-                    next();
-                }
+                    } else {
+                        // ? TODO
+                        next();
+                    }
+                });
             });
         });
     }
@@ -257,16 +262,21 @@
     function loadContent(ctx, next, route, html) {
 
         html = Globalize.translateHtml(html);
-        Emby.ViewManager.loadView({
-            id: route.id,
-            view: html,
-            url: window.location.href,
-            transition: route.transition,
-            isBack: isBack()
+
+        require(['viewManager'], function (viewManager) {
+
+            viewManager.loadView({
+                id: route.id,
+                view: html,
+                url: window.location.href,
+                transition: route.transition,
+                isBack: isBack()
+            });
+            currentRoute = route;
+            //next();
         });
 
         ctx.handled = true;
-        //next();
     }
 
     var baseRoute = window.location.href.split('?')[0].replace('/index.html', '');
@@ -319,15 +329,30 @@
         if (canGoBack()) {
             history.back();
 
-        } else if (Emby.App.supports('exit')) {
+        } else {
             Emby.App.exit();
         }
     }
     function canGoBack() {
-        return true;
+
+        var curr = current();
+
+        if (!curr) {
+            return false;
+        }
+
+        if (curr.type == 'home') {
+            return false;
+        }
+        return history.length > 1;
     }
     function show(path, options) {
         page.show(path, options);
+    }
+
+    var currentRoute;
+    function current() {
+        return currentRoute;
     }
 
     if (!globalScope.Emby) {
@@ -341,7 +366,9 @@
         show: show,
         start: start,
         baseUrl: baseUrl,
-        canGoBack: canGoBack
+        canGoBack: canGoBack,
+        current: current,
+        redirectToLogin: redirectToLogin
     };
 
 })(this);

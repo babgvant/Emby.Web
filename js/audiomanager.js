@@ -1,20 +1,18 @@
-(function (globalScope, document) {
+define([], function () {
 
-    function playSoundEffect(options) {
-        require(['soundeffect'], function (soundEffects) {
+    function audioManager() {
 
-            if (soundEffects.isSupported()) {
-                soundEffects.play(options);
-            }
-        });
+        var self = this;
+
+        self.playSoundEffect = function (options) {
+            require(['soundeffect'], function (soundEffects) {
+
+                if (soundEffects.isSupported()) {
+                    soundEffects.play(options);
+                }
+            });
+        };
     }
 
-    if (!globalScope.Emby) {
-        globalScope.Emby = {};
-    }
-
-    globalScope.Emby.AudioManager = {
-        playSoundEffect: playSoundEffect
-    };
-
-})(this, document);
+    return new audioManager();
+});

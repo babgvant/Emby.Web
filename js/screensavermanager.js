@@ -1,102 +1,99 @@
-(function (globalScope, document) {
-
-    var activeScreenSaver;
-
-    function isShowing() {
-        return activeScreenSaver != null;
-    }
-
-    function show() {
-
-        var screensavers = Emby.PluginManager.ofType('screensaver');
-
-        require(['connectionManager'], function (connectionManager) {
-
-            var server = connectionManager.currentLoggedInServer();
-
-            screensavers = screensavers.filter(function (screensaver) {
-
-                if (!server) {
-                    return screensaver.supportsAnonymous;
-                }
-
-                return true;
-            });
-
-            // Perform some other filter here to get the configured screensaver
-
-            var current = screensavers.length ? screensavers[0] : null;
-            if (current) {
-                showScreenSaver(current);
-            }
-
-        });
-    }
-
-    function showScreenSaver(screensaver) {
-
-        Logger.log('Showing screensaver ' + screensaver.name);
-
-        screensaver.show();
-        activeScreenSaver = screensaver;
-
-        if (screensaver.hideOnClick !== false) {
-            document.addEventListener('click', hide);
-        }
-        if (screensaver.hideOnMouse !== false) {
-            document.addEventListener('mousemove', hide);
-        }
-        if (screensaver.hideOnKey !== false) {
-            document.addEventListener('keydown', hide);
-        }
-    }
-
-    function hide() {
-
-        if (activeScreenSaver) {
-            Logger.log('Hiding screensaver');
-            activeScreenSaver.hide();
-            activeScreenSaver = null;
-        }
-
-        document.removeEventListener('click', hide);
-        document.removeEventListener('mousemove', hide);
-        document.removeEventListener('keydown', hide);
-    }
+define([], function () {
 
     function getMinIdleTime() {
         // Returns the minimum amount of idle time required before the screen saver can be displayed
         return 30000;
     }
 
-    setInterval(function () {
+    function ScreenSaverManager() {
 
-        if (isShowing()) {
-            return;
+        var self = this;
+        var activeScreenSaver;
+
+        function showScreenSaver(screensaver) {
+
+            Logger.log('Showing screensaver ' + screensaver.name);
+
+            screensaver.show();
+            activeScreenSaver = screensaver;
+
+            if (screensaver.hideOnClick !== false) {
+                document.addEventListener('click', hide);
+            }
+            if (screensaver.hideOnMouse !== false) {
+                document.addEventListener('mousemove', hide);
+            }
+            if (screensaver.hideOnKey !== false) {
+                document.addEventListener('keydown', hide);
+            }
         }
 
-        var minIdleTime = getMinIdleTime();
+        function hide() {
+            if (activeScreenSaver) {
+                Logger.log('Hiding screensaver');
+                activeScreenSaver.hide();
+                activeScreenSaver = null;
+            }
 
-        if (minIdleTime > Emby.InputManager.idleTime()) {
-            return;
+            document.removeEventListener('click', hide);
+            document.removeEventListener('mousemove', hide);
+            document.removeEventListener('keydown', hide);
         }
 
-        if (Emby.PlaybackManager.isPlayingVideo()) {
-            return;
-        }
+        self.isShowing = function () {
+            return activeScreenSaver != null;
+        };
 
-        show();
+        self.show = function () {
+            var screensavers = Emby.PluginManager.ofType('screensaver');
 
-    }, 10000);
+            require(['connectionManager'], function (connectionManager) {
 
-    if (!globalScope.Emby) {
-        globalScope.Emby = {};
+                var server = connectionManager.currentLoggedInServer();
+
+                screensavers = screensavers.filter(function (screensaver) {
+
+                    if (!server) {
+                        return screensaver.supportsAnonymous;
+                    }
+
+                    return true;
+                });
+
+                // Perform some other filter here to get the configured screensaver
+
+                var current = screensavers.length ? screensavers[0] : null;
+                if (current) {
+                    showScreenSaver(current);
+                }
+
+            });
+        };
+
+        self.hide = function () {
+            hide();
+        };
+
+        setInterval(function () {
+
+            if (self.isShowing()) {
+                return;
+            }
+
+            var minIdleTime = getMinIdleTime();
+
+            if (minIdleTime > Emby.InputManager.idleTime()) {
+                return;
+            }
+
+            if (Emby.PlaybackManager.isPlayingVideo()) {
+                return;
+            }
+
+            self.show();
+
+        }, 10000);
     }
 
-    globalScope.Emby.ScreenSaverManager = {
-        isShowing: isShowing,
-        show: show,
-        hide: hide
-    };
-
-})(this, document);
+    return new ScreenSaverManager();
+});

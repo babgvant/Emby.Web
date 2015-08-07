@@ -3,13 +3,7 @@
     background-color: transparent !important;
     background: none !important;
     margin: 0;
-    float: left;
-}
-
-    .card.block {
-        float: none;
-        display: block;
-    }
+}fl
 
 .cardScalable {
     position: relative;

@@ -96,10 +96,6 @@
             className += ' ' + options.shape;
         }
 
-        if (options.block || options.rows) {
-            className += ' block';
-        }
-
         var html = '';
         var itemsInRow = 0;
 
@@ -111,7 +107,16 @@
 
             var item = items[i];
 
+            if (options.block || options.rows) {
+                html += '<div>';
+            }
+
             html += buildCard(item, apiClient, options, className);
+
+            if (options.block || options.rows) {
+                html += '</div>';
+            }
+
             itemsInRow++;
 
             if (options.rows && itemsInRow >= options.rows) {

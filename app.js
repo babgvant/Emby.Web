@@ -158,7 +158,10 @@
             toast: "components/" + componentType + "/toast",
             loading: "components/" + componentType + "/loading",
             soundeffect: "components/soundeffect",
-            apphost: "components/apphost"
+            apphost: "components/apphost",
+            audioManager: "js/audioManager",
+            screensaverManager: "js/screensaverManager",
+            viewManager: "js/viewManager"
         };
 
         if (enableWebComponents()) {
@@ -181,10 +184,17 @@
                 }
             },
             shim: {
+                'bower_components/jquery.easing/js/jquery.easing.min': {
+                    //These script dependencies should be loaded before loading
+                    //backbone.js
+                    deps: ['bower_components/jquery/dist/jquery.min']
+                }
+            },
+            shim: {
                 'bower_components/sly/dist/sly.min': {
                     //These script dependencies should be loaded before loading
                     //backbone.js
-                    deps: ['bower_components/jquery/dist/jquery.min'],
+                    deps: ['bower_components/jquery/dist/jquery.min', 'jquery.easing'],
                     //Once loaded, use the global 'Backbone' as the
                     //module value.
                     exports: 'Sly'
@@ -212,6 +222,9 @@
             return window.Sly;
         });
 
+        define("jquery.easing", ["bower_components/jquery.easing/js/jquery.easing.min"]);
+        define("nearestElements", ["js/nearest"]);
+
         define("slide-from-right-animation", ['html!bower_components/neon-animation/animations/slide-from-right-animation.html']);
         define("slide-left-animation", ['html!bower_components/neon-animation/animations/slide-left-animation.html']);
         define("slide-from-left-animation", ['html!bower_components/neon-animation/animations/slide-from-left-animation.html']);
@@ -238,10 +251,7 @@
           'js/thememanager',
           'js/focusmanager',
           'js/inputmanager',
-          'js/screensavermanager',
           'js/playbackmanager',
-          'js/audiomanager',
-          'js/viewmanager',
           'js/imageloader',
           'js/models',
           'js/backdrops',
@@ -258,6 +268,8 @@
           'apiclient/apiclient',
           'apiclient/connectionmanager'
         ];
+
+        list.push('screensaverManager');
 
         if (enableWebComponents()) {
             list.push('webcomponentsjs');
@@ -369,9 +381,21 @@
                 apphost.exit();
             } else {
 
-                // TODO: Sign out since that's the closest thing we can do to closing the app
-
+                // Sign out since that's the closest thing we can do to closing the app
+                logout();
             }
+        });
+    }
+
+    function logout() {
+
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+
+            loading.show();
+
+            connectionManager.logout().done(function () {
+                Emby.Page.redirectToLogin();
+            });
         });
     }
 
@@ -380,63 +404,10 @@
     }
 
     globalScope.Emby.App = {
-        exit: exit
+        exit: exit,
+        logout: logout
     };
 
     start();
-
-    var lastLeft;
-    var lastDir;
-
-    function moveKeyFocus(dir) {
-
-        var selector = 'input,select,textarea,button,.focusable';
-
-        var focused = document.activeElement;
-
-        if (!focused) {
-            var elem = document.querySelector(selector);
-            if (elem) {
-                Emby.FocusManager.focus(elem);
-            }
-        }
-        else {
-            var rect = focused.getBoundingClientRect(),
-                hght = focused.offsetHeight,
-                y = rect.top + (dir === 'down' ? hght : -hght),
-                x = lastLeft;
-
-            if (!lastLeft)
-                x = lastLeft = rect.left + (focused.offsetWidth / 2);
-
-            // As the key layout may be staggered, we should assume the user wants
-            // to reach the farthest key in the direction they were going.
-            // We check the location slightly to the left or right of the middle of
-            // the focused key first...
-            var next = document.elementFromPoint(lastDir === 'left' ? x - 10 : x + 10, y);
-
-            // ...if there was no key at that point, try the other side
-            if (!next.classList.contains('lime-key'))
-                next = document.elementFromPoint(x + 10, y);
-        }
-    }
-
-    //document.addEventListener('keydown', function (evt) {
-
-    //    var key = evt.key.replace(/^Arrow/, '');
-
-    //    switch (key) {
-    //        case 'Left':
-    //        case 'Right':
-    //        case 'Up':
-    //        case 'Down':
-
-    //            evt.preventDefault();
-    //            evt.stopPropagation();
-
-    //            moveKeyFocus(key.toLowerCase());
-    //            break;
-    //    }
-    //}, true);
 
 })(this);

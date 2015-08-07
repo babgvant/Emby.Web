@@ -6,6 +6,8 @@ define([], function () {
 
             var animatedPages = document.querySelector('.mainAnimatedPages');
 
+            animatedPages.cancelAnimation();
+
             setAnimationStyle(animatedPages, options.transition, options.isBack).then(function () {
                 var html = '<div class="page-view" data-id="' + options.id + '" data-url="' + options.url + '">';
                 html += options.view;
