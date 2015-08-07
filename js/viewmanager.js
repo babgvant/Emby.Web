@@ -1,16 +1,4 @@
-(function (globalScope, document) {
-
-    function loadView(options) {
-
-        require(['viewcontainer'], function (viewcontainer) {
-            viewcontainer.loadView(options).then(onViewChange);
-        });
-    }
-
-    function tryRestoreView(url) {
-
-        return false;
-    }
+define([], function () {
 
     function onViewChange(view) {
 
@@ -51,13 +39,20 @@
         });
     }
 
-    if (!globalScope.Emby) {
-        globalScope.Emby = {};
+    function ViewManager() {
+
+        var self = this;
+
+        self.loadView = function (options) {
+            require(['viewcontainer'], function (viewcontainer) {
+                viewcontainer.loadView(options).then(onViewChange);
+            });
+        };
+
+        self.tryRestoreView = function (url) {
+            return false;
+        };
     }
 
-    globalScope.Emby.ViewManager = {
-        loadView: loadView,
-        tryRestoreView: tryRestoreView
-    };
-
-})(this, document);
+    return new ViewManager();
+});
