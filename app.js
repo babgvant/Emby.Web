@@ -187,14 +187,14 @@
                 'bower_components/jquery.easing/js/jquery.easing.min': {
                     //These script dependencies should be loaded before loading
                     //backbone.js
-                    deps: ['bower_components/jquery/dist/jquery.min']
+                    deps: []
                 }
             },
             shim: {
                 'bower_components/sly/dist/sly.min': {
                     //These script dependencies should be loaded before loading
                     //backbone.js
-                    deps: ['bower_components/jquery/dist/jquery.min', 'jquery.easing'],
+                    deps: ['jquery.easing'],
                     //Once loaded, use the global 'Backbone' as the
                     //module value.
                     exports: 'Sly'
@@ -222,7 +222,7 @@
             return window.Sly;
         });
 
-        define("jquery.easing", ["bower_components/jquery.easing/js/jquery.easing.min"]);
+        define("jquery.easing", ['bower_components/jquery/dist/jquery.min', "bower_components/jquery.easing/js/jquery.easing.min"]);
         define("nearestElements", ["js/nearest"]);
 
         define("slide-from-right-animation", ['html!bower_components/neon-animation/animations/slide-from-right-animation.html']);
