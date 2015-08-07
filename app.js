@@ -184,7 +184,7 @@
                 }
             },
             shim: {
-                'bower_components/sly/dist/sly.min': {
+                'bower_components/sly/src/sly': {
                     //These script dependencies should be loaded before loading
                     //backbone.js
                     deps: ['jquery.easing'],
@@ -216,7 +216,7 @@
         define("wakeonlan", ["apiclient/wakeonlan"]);
         define("webcomponentsjs", ["bower_components/webcomponentsjs/webcomponents-lite.min"]);
         define("type", ["bower_components/type/dist/type"]);
-        define("Sly", ["bower_components/sly/dist/sly.min"], function () {
+        define("Sly", ["bower_components/sly/src/sly"], function () {
             return window.Sly;
         });
 

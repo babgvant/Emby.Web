@@ -408,7 +408,7 @@
 				pos.dest = newPos;
 				trigger('change');
 				if (!renderID) {
-					render();
+				    render();
 				}
 			}
 
@@ -420,6 +420,45 @@
 			updateButtonsState();
 			syncPagesbar();
 		}
+
+	    var currentAnimation;
+        function renderAnimate() {
+
+            trigger('moveStart');
+
+            trigger('move');
+
+            //$slidee[0].cancelAnimation();
+
+            if (currentAnimation) {
+                currentAnimation.cancel();
+                currentAnimation = null;
+            }
+            var keyframes = [
+               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animation.from)) + 'px)', offset: 0 },
+               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animation.to)) + 'px)', offset: 1 }];
+
+            var animationInstance = $slidee[0].animate(keyframes, {
+                duration: o.speed,
+                iterations: 1
+            });
+
+            animationInstance.onfinish = function () {
+
+                currentAnimation = null;
+                pos.cur = animation.to;
+
+                if (transform) {
+                    $slidee[0].style[transform] = gpuAcceleration + (o.horizontal ? 'translateX' : 'translateY') + '(' + (-animation.to) + 'px)';
+                } else {
+                    $slidee[0].style[o.horizontal ? 'left' : 'top'] = -round(animation.to) + 'px';
+                }
+
+                trigger('moveEnd');
+            };
+
+            currentAnimation = animationInstance;
+        }
 
 		/**
 		 * Render animation frame.
