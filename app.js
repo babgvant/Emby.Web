@@ -254,6 +254,7 @@
           'js/models',
           'js/backdrops',
           'js/dom',
+          'js/datetime',
           'apiclient/logger',
           'apiclient/sha1',
           'apiclient/md5',

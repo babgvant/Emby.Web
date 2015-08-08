@@ -17,7 +17,7 @@
         element.focus();
     }
 
-    var focusableTagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'PAPER-BUTTON', 'PAPER-INPUT', 'PAPER-TEXTAREA', 'PAPER-ICON-BUTTON'];
+    var focusableTagNames = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'PAPER-BUTTON', 'PAPER-INPUT', 'PAPER-TEXTAREA', 'PAPER-ICON-BUTTON', 'PAPER-FAB'];
 
     function isFocusable(elem) {
 
@@ -37,6 +37,25 @@
         return elem;
     }
 
+    function getFocusableElements(parent) {
+        var elems = (parent || document).querySelectorAll('input,textarea,button,paper-button,paper-icon-button,paper-fab');
+        var focusableElements = [];
+
+        for (var i = 0, length = elems.length; i < length; i++) {
+
+            var elem = elems[i];
+
+            // http://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
+            if (elem.offsetParent === null) {
+                continue;
+            }
+
+            focusableElements.push(elem);
+        }
+
+        return focusableElements;
+    }
+
     if (!globalScope.Emby) {
         globalScope.Emby = {};
     }
@@ -44,7 +63,8 @@
     globalScope.Emby.FocusManager = {
         autoFocus: autoFocus,
         focus: focus,
-        focusableParent: focusableParent
+        focusableParent: focusableParent,
+        getFocusableElements: getFocusableElements
     };
 
 })(this, document);

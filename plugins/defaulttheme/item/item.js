@@ -19,8 +19,8 @@
                     }
 
                     renderImage(element, item);
-                    renderDetails(element, item);
                     renderChildren(element, item);
+                    renderDetails(element, item);
                     renderPeople(element, item);
                     renderScenes(element, item);
                     renderSimilar(element, item);
@@ -86,11 +86,10 @@
         var scrollSlider = view.querySelector('.scrollSlider');
         scrollSlider.addEventListener('focusin', function (e) {
 
-            var card = Emby.Dom.parentWithClass(e.target, 'card');
+            var focused = Emby.FocusManager.focusableParent(e.target);
 
-            if (card) {
-                Logger.log('Calling slyFrame.toCenter');
-                slyFrame.toCenter(card);
+            if (focused) {
+                slyFrame.toCenter(focused);
             }
         });
     }
@@ -120,6 +119,167 @@
         } else {
             overviewElem.classList.add('hide');
         }
+
+        renderMediaInfo(view, item);
+    }
+
+    function renderMediaInfo(view, item) {
+
+        var html = '';
+
+        html += getStarIconsHtml(item);
+
+        var miscInfo = [];
+
+        var text, date;
+
+        if (item.Type == "Episode" || item.MediaType == 'Photo') {
+
+            if (item.PremiereDate) {
+
+                try {
+                    date = Emby.DateTime.parseISO8601Date(item.PremiereDate);
+
+                    text = date.toLocaleDateString();
+                    miscInfo.push(text);
+                }
+                catch (e) {
+                    Logger.log("Error parsing date: " + item.PremiereDate);
+                }
+            }
+        }
+
+        if (item.StartDate) {
+
+            try {
+                date = Emby.DateTime.parseISO8601Date(item.StartDate);
+
+                text = date.toLocaleDateString();
+                miscInfo.push(text);
+
+                if (item.Type != "Recording") {
+                    text = getDisplayTime(date);
+                    miscInfo.push(text);
+                }
+            }
+            catch (e) {
+                Logger.log("Error parsing date: " + item.PremiereDate);
+            }
+        }
+
+        if (item.ProductionYear && item.Type == "Series") {
+
+            if (item.Status == "Continuing") {
+                miscInfo.push(Globalize.translate('ValueSeriesYearToPresent', item.ProductionYear));
+
+            }
+            else if (item.ProductionYear) {
+
+                text = item.ProductionYear;
+
+                if (item.EndDate) {
+
+                    try {
+
+                        var endYear = Emby.DateTime.parseISO8601Date(item.EndDate).getFullYear();
+
+                        if (endYear != item.ProductionYear) {
+                            text += "-" + Emby.DateTime.parseISO8601Date(item.EndDate).getFullYear();
+                        }
+
+                    }
+                    catch (e) {
+                        Logger.log("Error parsing date: " + item.EndDate);
+                    }
+                }
+
+                miscInfo.push(text);
+            }
+        }
+
+        if (item.Type != "Series" && item.Type != "Episode" && item.MediaType != 'Photo') {
+
+            if (item.ProductionYear) {
+
+                miscInfo.push(item.ProductionYear);
+            }
+            else if (item.PremiereDate) {
+
+                try {
+                    text = Emby.DateTime.parseISO8601Date(item.PremiereDate).getFullYear();
+                    miscInfo.push(text);
+                }
+                catch (e) {
+                    Logger.log("Error parsing date: " + item.PremiereDate);
+                }
+            }
+        }
+
+        var minutes;
+
+        if (item.RunTimeTicks && item.Type != "Series") {
+
+            if (item.Type == "Audio") {
+
+                miscInfo.push(getDisplayRuntime(item.RunTimeTicks));
+
+            } else {
+                minutes = item.RunTimeTicks / 600000000;
+
+                minutes = minutes || 1;
+
+                miscInfo.push(Math.round(minutes) + " mins");
+            }
+        }
+
+        if (item.OfficialRating && item.Type !== "Season" && item.Type !== "Episode") {
+            miscInfo.push(item.OfficialRating);
+        }
+
+        if (item.Video3DFormat) {
+            miscInfo.push("3D");
+        }
+
+        if (item.MediaType == 'Photo' && item.Width && item.Height) {
+            miscInfo.push(item.Width + "x" + item.Height);
+        }
+
+        html += miscInfo.map(function (m) {
+
+            return '<div class="mediaInfoItem">' + m + '</div>';
+
+        }).join('');
+
+        view.querySelector('.mediaInfo').innerHTML = html;
+    }
+
+    function getStarIconsHtml(item) {
+
+        var html = '';
+
+        var rating = item.CommunityRating;
+
+        if (rating) {
+            html += '<div class="starRatingContainer">';
+
+            for (var i = 0; i < 5; i++) {
+                var starValue = (i + 1) * 2;
+
+                if (rating < starValue - 2) {
+                    html += '<iron-icon icon="star-border"></iron-icon>';
+                }
+                else if (rating < starValue) {
+                    html += '<iron-icon icon="star-half"></iron-icon>';
+                }
+                else {
+                    html += '<iron-icon icon="star"></iron-icon>';
+                }
+            }
+
+            html += '</div>';
+        }
+
+        return html;
     }
 
     function renderChildren(view, item) {
@@ -262,70 +422,92 @@
         });
     }
 
-    function setHeaders(view, item) {
+    function getDisplayRuntime(ticks) {
 
-        var headers = [];
+        var ticksPerHour = 36000000000;
+        var ticksPerMinute = 600000000;
+        var ticksPerSecond = 10000000;
 
-        headers.push({
-            name: Globalize.translate('Overview'),
-            type: 'overview'
-        });
+        var parts = [];
 
+        var hours = ticks / ticksPerHour;
+        hours = Math.floor(hours);
 
-        if (item.People && item.People.length) {
-            headers.push({
-                name: Globalize.translate('People'),
-                type: 'people'
-            });
+        if (hours) {
+            parts.push(hours);
         }
 
-        if (item.LocalTrailerCount && item.LocalTrailerCount > 1) {
+        ticks -= (hours * ticksPerHour);
 
-            headers.push({
-                name: Globalize.translate('Trailers'),
-                type: 'trailers'
-            });
+        var minutes = ticks / ticksPerMinute;
+        minutes = Math.floor(minutes);
+
+        ticks -= (minutes * ticksPerMinute);
+
+        if (minutes < 10 && hours) {
+            minutes = '0' + minutes;
         }
+        parts.push(minutes);
 
-        if (item.Chapters && item.Chapters.length) {
+        var seconds = ticks / ticksPerSecond;
+        seconds = Math.floor(seconds);
 
-            headers.push({
-                name: Globalize.translate('Scenes'),
-                type: 'scenes'
-            });
+        if (seconds < 10) {
+            seconds = '0' + seconds;
         }
+        parts.push(seconds);
 
-        if (item.SpecialFeatureCount > 0) {
+        return parts.join(':');
+    }
 
-            if (item.Type == 'Series') {
-                headers.push({
-                    name: Globalize.translate('Specials'),
-                    type: 'specials'
-                });
-            } else {
-                headers.push({
-                    name: Globalize.translate('SpecialFeatures'),
-                    type: 'specials'
-                });
+    function getDisplayTime(date) {
+
+        if ((typeof date).toString().toLowerCase() === 'string') {
+            try {
+
+                date = Emby.DateTime.parseISO8601Date(date);
+
+            } catch (err) {
+                return date;
             }
         }
 
-        if (item.Type == 'Movie' || item.Type == 'Series' || item.Type == 'MusicAlbum' || item.Type == 'Game') {
-            headers.push({
-                name: Globalize.translate('Similar'),
-                type: 'similar'
-            });
+        var lower = date.toLocaleTimeString().toLowerCase();
+
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+
+        var text;
+
+        if (lower.indexOf('am') != -1 || lower.indexOf('pm') != -1) {
+
+            var suffix = hours > 11 ? 'pm' : 'am';
+
+            hours = (hours % 12) || 12;
+
+            text = hours;
+
+            if (minutes) {
+
+                text += ':';
+                if (minutes < 10) {
+                    text += '0';
+                }
+                text += minutes;
+            }
+
+            text += suffix;
+
+        } else {
+            text = hours + ':';
+
+            if (minutes < 10) {
+                text += '0';
+            }
+            text += minutes;
         }
 
-        // TODO: Reviews
-
-        view.querySelector('.scrollSlider').innerHTML = headers.map(function (i) {
-
-            return '<paper-button class="flat btnUserViewHeader" data-type="' + i.type + '"><h2>' + i.name + '</h2></paper-button>';
-
-        }).join('');
-
-        createHeaderScroller(view);
+        return text;
     }
 
 })();

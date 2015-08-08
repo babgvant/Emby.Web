@@ -254,10 +254,10 @@
         var scrollSlider = view.querySelector('.scrollSlider');
         scrollSlider.addEventListener('focusin', function (e) {
 
-            var card = Emby.Dom.parentWithClass(e.target, 'card');
+            var focused = Emby.FocusManager.focusableParent(e.target);
 
-            if (card) {
-                slyFrame.toCenter(card);
+            if (focused) {
+                slyFrame.toCenter(focused);
             }
         });
     }
