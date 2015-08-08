@@ -112,7 +112,14 @@
         require(['viewManager'], function (viewManager) {
             var url = window.location.href;
 
-            viewManager.tryRestoreView(url).then(function () {
+            viewManager.tryRestoreView({
+
+                id: route.id,
+                url: url,
+                transition: route.transition,
+                isBack: isBack()
+
+            }).then(function () {
 
                 // done
                 currentRoute = route;

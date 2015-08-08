@@ -29,7 +29,8 @@ define([], function () {
 
                 setTimeout(function () {
                     animatedPages.selected = pageIndex;
-                    resolve(animatable.querySelector('.page-view'));
+                    var view = animatable.querySelector('.page-view');
+                    resolve(view);
 
                 }, 0);
             });
@@ -114,9 +115,10 @@ define([], function () {
         }
     }
 
-    function tryRestoreView(url) {
+    function tryRestoreView(options) {
         return new Promise(function (resolve, reject) {
 
+            var url = options.url;
             var view = document.querySelector(".page-view[data-url='" + url + "']");
             var page = Emby.Dom.parentWithClass(view, 'mainAnimatedPage');
 
@@ -131,8 +133,12 @@ define([], function () {
                     }
                 }
                 if (index != -1) {
-                    document.querySelector('.mainAnimatedPages').selected = index;
-                    resolve(view);
+                    var animatedPages = document.querySelector('.mainAnimatedPages');
+
+                    setAnimationStyle(animatedPages, options.transition, options.isBack).then(function() {
+                        animatedPages.selected = index;
+                        resolve(view);
+                    });
                     return;
                 }
             }

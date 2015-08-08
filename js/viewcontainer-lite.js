@@ -27,7 +27,7 @@ define([], function () {
         }
     }
 
-    function tryRestoreView(url) {
+    function tryRestoreView(options) {
         return new Promise(function (resolve, reject) {
 
             reject();
