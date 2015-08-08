@@ -50,7 +50,12 @@ define([], function () {
         };
 
         self.tryRestoreView = function (url) {
-            return false;
+            return new Promise(function (resolve, reject) {
+
+                require(['viewcontainer'], function (viewcontainer) {
+                    viewcontainer.tryRestoreView(url).then(resolve, reject);
+                });
+            });
         };
     }
 

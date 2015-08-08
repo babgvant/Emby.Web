@@ -421,21 +421,45 @@
 			syncPagesbar();
 		}
 
-	    var currentAnimation;
+		function getComputedTranslateY(obj) {
+		    if (!window.getComputedStyle) return;
+		    var style = getComputedStyle(obj),
+                transform = style.transform || style.webkitTransform || style.mozTransform;
+		    var mat = transform.match(/^matrix3d\((.+)\)$/);
+		    if (mat) return parseFloat(mat[1].split(', ')[13]);
+		    mat = transform.match(/^matrix\((.+)\)$/);
+		    return mat ? parseFloat(mat[1].split(', ')[5]) : 0;
+		}
+
+		function getComputedTranslateX(obj) {
+		    if (!window.getComputedStyle) return;
+		    var style = getComputedStyle(obj),
+                transform = style.transform || style.webkitTransform || style.mozTransform;
+		    var mat = transform.match(/^matrix3d\((.+)\)$/);
+		    if (mat) return parseFloat(mat[1].split(', ')[13]);
+		    mat = transform.match(/^matrix\((.+)\)$/);
+		    return mat ? parseFloat(mat[1].split(', ')[5]) : 0;
+		}
+
+		var currentAnimation;
         function renderAnimate() {
 
             trigger('moveStart');
 
             trigger('move');
 
-            //$slidee[0].cancelAnimation();
+            var animationFrom = animation.from;
 
             if (currentAnimation) {
+
+                animationFrom = o.horizontal ? animationFrom : -getComputedTranslateY($slidee[0]);
+
                 currentAnimation.cancel();
                 currentAnimation = null;
             }
+
             var keyframes = [
-               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animation.from)) + 'px)', offset: 0 },
+               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animationFrom)) + 'px)', offset: 0 },
                { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animation.to)) + 'px)', offset: 1 }];
 
             var animationInstance = $slidee[0].animate(keyframes, {
@@ -443,7 +467,7 @@
                 iterations: 1
             });
 
-            animationInstance.onfinish = function () {
+            animationInstance.finished.then(function() {
 
                 currentAnimation = null;
                 pos.cur = animation.to;
@@ -455,7 +479,10 @@
                 }
 
                 trigger('moveEnd');
-            };
+
+            }, function () {
+                //$slidee[0].style[transform] = gpuAcceleration + (o.horizontal ? 'translateX' : 'translateY') + '(' + (getComputedTranslateY($slidee[0])) + 'px)';
+            });
 
             currentAnimation = animationInstance;
         }

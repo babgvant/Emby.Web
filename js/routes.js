@@ -102,23 +102,30 @@
 
         authenticate(ctx, route, function () {
             require(route.dependencies || [], function () {
+                sendRouteToViewManager(ctx, next, route);
+            });
+        });
+    }
 
-                require(['viewManager'], function (viewManager) {
-                    var url = window.location.href;
+    function sendRouteToViewManager(ctx, next, route) {
 
-                    if (viewManager.tryRestoreView(url)) {
-                        // done
-                        currentRoute = route;
-                    }
-                    else if (typeof route.path === 'string') {
+        require(['viewManager'], function (viewManager) {
+            var url = window.location.href;
 
-                        loadContentUrl(ctx, next, route);
+            viewManager.tryRestoreView(url).then(function () {
 
-                    } else {
-                        // ? TODO
-                        next();
-                    }
-                });
+                // done
+                currentRoute = route;
+
+            }, function () {
+                if (typeof route.path === 'string') {
+
+                    loadContentUrl(ctx, next, route);
+
+                } else {
+                    // ? TODO
+                    next();
+                }
             });
         });
     }

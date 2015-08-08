@@ -27,9 +27,17 @@ define([], function () {
         }
     }
 
+    function tryRestoreView(url) {
+        return new Promise(function (resolve, reject) {
+
+            reject();
+        });
+    }
+
     replaceAnimatedPages();
 
     return {
-        loadView: loadView
+        loadView: loadView,
+        tryRestoreView: tryRestoreView
     };
 });

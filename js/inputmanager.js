@@ -106,7 +106,7 @@
     }
 
     function getFocusable() {
-        var elems = document.querySelectorAll('input,textarea,button,paper-button,paper-icon-button');
+        var elems = document.querySelectorAll('input,textarea,button,paper-button,paper-icon-button,paper-fab');
         var focusableElements = [];
 
         for (var i = 0, length = elems.length; i < length; i++) {
@@ -280,10 +280,6 @@
     function getKeyboard() {
         return Emby.PluginManager.ofType('keyboard')[0];
     }
-
-    document.addEventListener('keydown', function (evt) {
-
-    }, true);
 
     if (!globalScope.Emby) {
         globalScope.Emby = {};
