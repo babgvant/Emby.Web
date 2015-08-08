@@ -248,15 +248,6 @@
 
     function initFocusHandler(view, slyFrame) {
 
-
-        slyFrame.on('move', function () {
-            console.log('movestart' + new Date().getTime());
-        });
-
-        jQuery(slyFrame).on('moveEnd', function () {
-            console.log('movestart' + new Date().getTime());
-        });
-
         var scrollSlider = view.querySelector('.scrollSlider');
         scrollSlider.addEventListener('focusin', function (e) {
 
