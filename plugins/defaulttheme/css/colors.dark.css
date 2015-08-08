@@ -136,3 +136,9 @@ paper-dialog {
 .loginSquareCard .cardImageContainer {
     background: #38c;
 }
+
+.mediaInfoItem {
+    background: -webkit-linear-gradient(#404040, #101010);
+    background: linear-gradient(#404040, #101010);
+    color: #eee;
+}

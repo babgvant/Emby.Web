@@ -105,25 +105,6 @@
         }
     }
 
-    function getFocusable() {
-        var elems = document.querySelectorAll('input,textarea,button,paper-button,paper-icon-button,paper-fab');
-        var focusableElements = [];
-
-        for (var i = 0, length = elems.length; i < length; i++) {
-
-            var elem = elems[i];
-
-            // http://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
-            if (elem.offsetParent === null) {
-                continue;
-            }
-
-            focusableElements.push(elem);
-        }
-
-        return focusableElements;
-    }
-
     function getViewportBoundingClientRect(elem) {
 
         var offset = jQuery(elem).offset();
@@ -159,7 +140,7 @@
                 activeElement = Emby.FocusManager.focusableParent(activeElement);
             }
 
-            var focusable = getFocusable();
+            var focusable = Emby.FocusManager.getFocusableElements();
 
             if (!activeElement) {
                 if (focusable.length) {

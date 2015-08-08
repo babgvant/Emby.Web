@@ -50,13 +50,39 @@
 }
 
 .itemPageMain {
-    width: 70%;
+    width: 66%;
 }
 
 .bulletSeparator {
     color: #52B54B;
 }
+
 .itemPageButtons paper-icon-button iron-icon {
     width: 44px;
     height: 44px;
+}
+
+.mediaInfo {
+    margin: 1em 0;
+}
+
+.mediaInfoItem {
+    border-radius: 5px;
+    display: inline-block;
+    padding: 4px 12px;
+    margin-right: .5em;
+    font-size: 90%;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.starRatingContainer {
+    display: inline-block;
+    margin-right: 1em;
+}
+
+.starRatingContainer iron-icon {
+    width: 32px;
+    height: 40px;
+    color: #f5de50;
 }
