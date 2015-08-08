@@ -35,3 +35,28 @@
 .itemScrollContent .itemPersonThumb {
     width: 14.285714285714285714285714285714%;
 }
+
+.mainSection {
+    margin-top: 80px;
+}
+
+.itemPageImage, .itemPageMain {
+    float: left;
+    vertical-align: top;
+}
+
+.itemPageImage {
+    width: 28%;
+}
+
+.itemPageMain {
+    width: 72%;
+}
+
+.bulletSeparator {
+    color: #52B54B;
+}
+.itemPageButtons paper-icon-button iron-icon {
+    width: 44px;
+    height: 44px;
+}

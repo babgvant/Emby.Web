@@ -7,22 +7,20 @@
 
         Emby.Backdrop.clear();
 
-        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+        require(['loading'], function (loading) {
 
             loading.show();
 
-            var apiClient = connectionManager.currentApiClient();
-
-            renderUserViews(element, apiClient);
+            renderUserViews(element);
             createHorizontalScroller(element.querySelector('.homeBody'));
         });
 
         initEvents(element);
     });
 
-    function renderUserViews(page, apiClient) {
+    function renderUserViews(page) {
 
-        apiClient.getUserViews().then(function (result) {
+        Emby.Models.userViews().then(function (result) {
 
             page.querySelector('.viewsScrollSlider').innerHTML = result.Items.map(function (i) {
 
@@ -240,12 +238,24 @@
                 clickBar: 1
             };
 
-            bodySlyFrame = new Sly(scrollFrame, options).init();
+            bodySlyFrame = new Sly(scrollFrame, options);
+
+            bodySlyFrame.init();
+
             initFocusHandler(view, bodySlyFrame);
         });
     }
 
     function initFocusHandler(view, slyFrame) {
+
+
+        slyFrame.on('move', function () {
+            console.log('movestart' + new Date().getTime());
+        });
+
+        jQuery(slyFrame).on('moveEnd', function () {
+            console.log('movestart' + new Date().getTime());
+        });
 
         var scrollSlider = view.querySelector('.scrollSlider');
         scrollSlider.addEventListener('focusin', function (e) {

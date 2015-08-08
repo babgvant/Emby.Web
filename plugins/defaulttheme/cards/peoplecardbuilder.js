@@ -58,7 +58,7 @@
         }
 
         var html = '\
-<paper-button raised class="' + className + '"> \
+<paper-button data-id="'+ person.Id + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\

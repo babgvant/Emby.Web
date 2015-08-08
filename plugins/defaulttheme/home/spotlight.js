@@ -36,7 +36,7 @@
         };
     }
 
-    function spotlight(card, items, width, apiClient) {
+    function startSpotlight(card, items, width, apiClient) {
 
         var self = this;
 
@@ -72,6 +72,16 @@
             index++;
 
         }, 10000);
+    }
+
+    function spotlight(card, items, width) {
+
+        require(['connectionManager'], function (connectionManager) {
+
+            var apiClient = connectionManager.currentApiClient();
+
+            startSpotlight(card, items, width, apiClient);
+        });
     }
 
     if (!globalScope.DefaultTheme) {

@@ -56,7 +56,7 @@
         });
     }
 
-    function loadLatest(element, parentId, apiClient) {
+    function loadLatest(element, parentId) {
 
         var options = {
 
@@ -68,7 +68,7 @@
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
+        Emby.Models.latestItems(options).then(function (result) {
 
             var section = element.querySelector('.latestSection');
 
@@ -84,7 +84,7 @@
         });
     }
 
-    function loadSpotlight(element, parentId, apiClient) {
+    function loadSpotlight(element, parentId) {
 
         var options = {
 
@@ -93,18 +93,17 @@
             Limit: 20,
             Recursive: true,
             ParentId: parentId,
-            ImageTypeLimit: 1,
             EnableImageTypes: "Backdrop",
             ImageTypes: "Backdrop"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.items(options).then(function (result) {
 
             var card = element.querySelector('.homebackdropSpotlightCard');
 
             require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight.js')], function () {
 
-                new DefaultTheme.spotlight(card, result.Items, DefaultTheme.CardBuilder.homeThumbWidth * 2, apiClient);
+                new DefaultTheme.spotlight(card, result.Items, DefaultTheme.CardBuilder.homeThumbWidth * 2);
             });
         });
     }
@@ -113,15 +112,10 @@
 
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            loadResume(element, parentId);
-            loadNextUp(element, parentId);
-            loadLatest(element, parentId, apiClient);
-            loadSpotlight(element, parentId, apiClient);
-        });
+        loadSpotlight(element, parentId);
+        loadResume(element, parentId);
+        loadNextUp(element, parentId);
+        loadLatest(element, parentId);
 
         self.destroy = function () {
 

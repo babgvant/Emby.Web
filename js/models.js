@@ -306,17 +306,15 @@
 
             require(['connectionManager'], function (connectionManager) {
 
-                normalizeOptions(options);
-
                 var apiClient = connectionManager.currentApiClient();
 
                 options = options || {};
 
                 if (item.Type == "Series") {
-                    
+
                 }
                 else if (item.Type == "Season") {
-                    
+
                 }
                 else if (item.Type == "MusicAlbum") {
 
@@ -327,6 +325,39 @@
                 normalizeOptions(options);
 
                 apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
+    function items(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+
+                normalizeOptions(options);
+
+                apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
+    function userViews(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+                normalizeOptions(options);
+
+                apiClient.getUserViews({}, apiClient.getCurrentUserId()).done(resolve, reject);
             });
         });
     }
@@ -344,7 +375,9 @@
         similar: similar,
         liveTvRecommendedPrograms: liveTvRecommendedPrograms,
         itemPeople: itemPeople,
-        children: children
+        children: children,
+        items: items,
+        userViews: userViews
     };
 
 })(this, document);

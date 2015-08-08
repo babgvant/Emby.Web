@@ -11,7 +11,13 @@
 
             Emby.Models.item(params.id).then(function (item) {
 
-                Emby.Backdrop.setBackdrops([item]);
+                // If it's a person, leave the backdrop image from wherever we came from
+                if (item.Type != 'Person') {
+                    Emby.Backdrop.setBackdrops([item]);
+                }
+
+                renderImage(element, item);
+                renderDetails(element, item);
                 renderChildren(element, item);
                 renderPeople(element, item);
                 renderScenes(element, item);
@@ -86,8 +92,35 @@
         });
     }
 
+    function renderImage(view, item) {
+
+    }
+
+    function renderDetails(view, item) {
+
+        var genresElem = view.querySelector('.genres')
+        if (item.Genres && item.Genres.length) {
+            genresElem.classList.remove('hide');
+            genresElem.innerHTML = item.Genres.map(function (i) {
+
+                return i;
+
+            }).join('<span class="bulletSeparator"> &bull; </span>');
+        } else {
+            genresElem.classList.add('hide');
+        }
+
+        var overviewElem = view.querySelector('.overview')
+        if (item.Overview) {
+            overviewElem.classList.remove('hide');
+            overviewElem.innerHTML = item.Overview;
+        } else {
+            overviewElem.classList.add('hide');
+        }
+    }
+
     function renderChildren(view, item) {
-        
+
         var section = view.querySelector('.childrenSection');
 
         if (!item.ChildCount) {

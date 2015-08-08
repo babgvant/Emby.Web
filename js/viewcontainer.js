@@ -1,5 +1,7 @@
 define([], function () {
 
+    var pageContainerCount = 3;
+
     function loadView(options) {
 
         return new Promise(function (resolve, reject) {
@@ -9,12 +11,19 @@ define([], function () {
             animatedPages.cancelAnimation();
 
             setAnimationStyle(animatedPages, options.transition, options.isBack).then(function () {
+
+                var selected = animatedPages.selected;
+                var pageIndex = selected == null ? 0 : (selected + 1);
+
+                if (pageIndex >= pageContainerCount) {
+                    pageIndex = 0;
+                }
+
                 var html = '<div class="page-view" data-id="' + options.id + '" data-url="' + options.url + '">';
                 html += options.view;
                 html += '</div>';
 
-                var pageIndex = animatedPages.selected === 0 ? 1 : 0;
-                var animatable = animatedPages.querySelectorAll('neon-animatable')[pageIndex];
+                var animatable = animatedPages.querySelectorAll('.mainAnimatedPage')[pageIndex];
 
                 animatable.innerHTML = html;
 
@@ -96,7 +105,35 @@ define([], function () {
         });
     }
 
+    function tryRestoreView(url) {
+        return new Promise(function (resolve, reject) {
+
+            var view = document.querySelector(".page-view[data-url='" + url + "']");
+            var page = Emby.Dom.parentWithClass(view, 'mainAnimatedPage');
+
+            if (view) {
+
+                var index = -1;
+                var pages = document.querySelectorAll('.mainAnimatedPage');
+                for (var i = 0, length = pages.length; i < length; i++) {
+                    if (pages[i] == page) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    document.querySelector('.mainAnimatedPages').selected = index;
+                    resolve();
+                    return;
+                }
+            }
+
+            reject();
+        });
+    }
+
     return {
-        loadView: loadView
+        loadView: loadView,
+        tryRestoreView: tryRestoreView
     };
 });

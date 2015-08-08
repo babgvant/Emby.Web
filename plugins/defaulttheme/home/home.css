@@ -33,7 +33,7 @@
 }
 
 .homebackdropSpotlightCard {
-    width: 675.555555555555555555556px;
+    width: 682px;
 }
 
 .homebackdropCard {
@@ -42,10 +42,6 @@
 
 .homePortraitCard {
     width: 197.5px;
-}
-
-.homebackdropCard paper-material {
-    margin: 5px 5px 7px !important;
 }
 
 .sectionTitle {
