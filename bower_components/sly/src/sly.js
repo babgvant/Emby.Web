@@ -1,3 +1,4 @@
+
 ;(function ($, w, undefined) {
 	'use strict';
 
@@ -52,6 +53,8 @@
 	 * @param {Object}  callbackMap Callbacks map.
 	 */
 	function Sly(frame, options, callbackMap) {
+		if (!(this instanceof Sly)) return new Sly(frame, options, callbackMap);
+
 		// Extend options
 		var o = $.extend({}, Sly.defaults, options);
 
@@ -408,7 +411,7 @@
 				pos.dest = newPos;
 				trigger('change');
 				if (!renderID) {
-				    render();
+					render();
 				}
 			}
 
@@ -420,72 +423,6 @@
 			updateButtonsState();
 			syncPagesbar();
 		}
-
-		function getComputedTranslateY(obj) {
-		    if (!window.getComputedStyle) return;
-		    var style = getComputedStyle(obj),
-                transform = style.transform || style.webkitTransform || style.mozTransform;
-		    var mat = transform.match(/^matrix3d\((.+)\)$/);
-		    if (mat) return parseFloat(mat[1].split(', ')[13]);
-		    mat = transform.match(/^matrix\((.+)\)$/);
-		    return mat ? parseFloat(mat[1].split(', ')[5]) : 0;
-		}
-
-		function getComputedTranslateX(obj) {
-		    if (!window.getComputedStyle) return;
-		    var style = getComputedStyle(obj),
-                transform = style.transform || style.webkitTransform || style.mozTransform;
-		    var mat = transform.match(/^matrix3d\((.+)\)$/);
-		    if (mat) return parseFloat(mat[1].split(', ')[13]);
-		    mat = transform.match(/^matrix\((.+)\)$/);
-		    return mat ? parseFloat(mat[1].split(', ')[5]) : 0;
-		}
-
-		var currentAnimation;
-        function renderAnimate() {
-
-            trigger('moveStart');
-
-            trigger('move');
-
-            var animationFrom = animation.from;
-
-            if (currentAnimation) {
-
-                animationFrom = o.horizontal ? animationFrom : -getComputedTranslateY($slidee[0]);
-
-                currentAnimation.cancel();
-                currentAnimation = null;
-            }
-
-            var keyframes = [
-               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animationFrom)) + 'px)', offset: 0 },
-               { transform: (o.horizontal ? 'translateX' : 'translateY') + '(' + (-round(animation.to)) + 'px)', offset: 1 }];
-
-            var animationInstance = $slidee[0].animate(keyframes, {
-                duration: o.speed,
-                iterations: 1
-            });
-
-            animationInstance.finished.then(function() {
-
-                currentAnimation = null;
-                pos.cur = animation.to;
-
-                if (transform) {
-                    $slidee[0].style[transform] = gpuAcceleration + (o.horizontal ? 'translateX' : 'translateY') + '(' + (-animation.to) + 'px)';
-                } else {
-                    $slidee[0].style[o.horizontal ? 'left' : 'top'] = -round(animation.to) + 'px';
-                }
-
-                trigger('moveEnd');
-
-            }, function () {
-                //$slidee[0].style[transform] = gpuAcceleration + (o.horizontal ? 'translateX' : 'translateY') + '(' + (getComputedTranslateY($slidee[0])) + 'px)';
-            });
-
-            currentAnimation = animationInstance;
-        }
 
 		/**
 		 * Render animation frame.
@@ -1801,6 +1738,9 @@
 		 * @return {Void}
 		 */
 		self.destroy = function () {
+			// Remove the reference to itself
+			Sly.removeInstance(frame);
+
 			// Unbind all events
 			$scrollSource
 				.add($handle)
@@ -1861,6 +1801,12 @@
 			if (self.initialized) {
 				return;
 			}
+
+			// Disallow multiple instances on the same element
+			if (Sly.getInstance(frame)) throw new Error('There is already a Sly instance on this element');
+
+			// Store the reference to itself
+			Sly.storeInstance(frame, self);
 
 			// Register callbacks map
 			self.on(callbackMap);
@@ -1964,6 +1910,18 @@
 			return self;
 		};
 	}
+
+	Sly.getInstance = function (element) {
+		return $.data(element, namespace);
+	};
+
+	Sly.storeInstance = function (element, sly) {
+		return $.data(element, namespace, sly);
+	};
+
+	Sly.removeInstance = function (element) {
+		return $.removeData(element, namespace);
+	};
 
 	/**
 	 * Return type of the value.
@@ -2158,11 +2116,11 @@
 		// Apply to all elements
 		return this.each(function (i, element) {
 			// Call with prevention against multiple instantiations
-			var plugin = $.data(element, namespace);
+			var plugin = Sly.getInstance(element);
 
 			if (!plugin && !method) {
 				// Create a new object if it doesn't exist yet
-				plugin = $.data(element, namespace, new Sly(element, options, callbackMap).init());
+				plugin = new Sly(element, options, callbackMap).init();
 			} else if (plugin && method) {
 				// Call method
 				if (plugin[method]) {

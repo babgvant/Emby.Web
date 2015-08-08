@@ -34,10 +34,15 @@ define([], function () {
         });
     }
 
+    function reset() {
+        
+    }
+
     replaceAnimatedPages();
 
     return {
         loadView: loadView,
-        tryRestoreView: tryRestoreView
+        tryRestoreView: tryRestoreView,
+        reset: reset
     };
 });

@@ -4,31 +4,34 @@
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
-        require(['loading'], function (loading) {
+        if (!isRestored) {
+            require(['loading'], function (loading) {
 
-            loading.show();
+                loading.show();
 
-            Emby.Models.item(params.id).then(function (item) {
+                Emby.Models.item(params.id).then(function (item) {
 
-                // If it's a person, leave the backdrop image from wherever we came from
-                if (item.Type != 'Person') {
-                    Emby.Backdrop.setBackdrops([item]);
-                }
+                    // If it's a person, leave the backdrop image from wherever we came from
+                    if (item.Type != 'Person') {
+                        Emby.Backdrop.setBackdrops([item]);
+                    }
 
-                renderImage(element, item);
-                renderDetails(element, item);
-                renderChildren(element, item);
-                renderPeople(element, item);
-                renderScenes(element, item);
-                renderSimilar(element, item);
-                createVerticalScroller(element);
+                    renderImage(element, item);
+                    renderDetails(element, item);
+                    renderChildren(element, item);
+                    renderPeople(element, item);
+                    renderScenes(element, item);
+                    renderSimilar(element, item);
+                    createVerticalScroller(element);
 
-                loading.hide();
+                    loading.hide();
+                });
             });
-        });
 
-        initEvents(element);
+            initEvents(element);
+        }
     });
 
     function initEvents(view) {
@@ -248,6 +251,8 @@
             }
 
             section.classList.remove('hide');
+
+            section.querySelector('h2').innerHTML = Globalize.translate('SimilarTo', item.Name);
 
             DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
