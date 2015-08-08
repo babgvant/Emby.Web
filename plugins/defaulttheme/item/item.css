@@ -71,7 +71,6 @@
     display: inline-block;
     padding: 4px 12px;
     margin-right: .5em;
-    font-size: 90%;
     text-transform: uppercase;
     vertical-align: middle;
 }
@@ -82,7 +81,7 @@
 }
 
 .starRatingContainer iron-icon {
-    width: 32px;
-    height: 40px;
+    width: 40px;
+    height: 44px;
     color: #CB272A;
 }

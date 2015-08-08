@@ -55,9 +55,9 @@ define([], function () {
     document.addEventListener('usersignedin', resetCachedViews);
     document.addEventListener('usersignedout', resetCachedViews);
 
-    function tryRestoreInternal(viewcontainer, url, resolve, reject) {
+    function tryRestoreInternal(viewcontainer, options, resolve, reject) {
 
-        viewcontainer.tryRestoreView(url).then(function (view) {
+        viewcontainer.tryRestoreView(options).then(function (view) {
 
             onViewChange(view, true);
             resolve();
@@ -81,7 +81,7 @@ define([], function () {
             });
         };
 
-        self.tryRestoreView = function (url) {
+        self.tryRestoreView = function (options) {
             return new Promise(function (resolve, reject) {
 
                 // Record the element that has focus
@@ -91,7 +91,7 @@ define([], function () {
 
                 require(['viewcontainer'], function (viewcontainer) {
 
-                    tryRestoreInternal(viewcontainer, url, resolve, reject);
+                    tryRestoreInternal(viewcontainer, options, resolve, reject);
                 });
             });
         };

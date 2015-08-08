@@ -6,18 +6,18 @@
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
 
-        if (!isRestored) {
-            require(['loading'], function (loading) {
+        require(['loading'], function (loading) {
 
-                loading.show();
+            loading.show();
 
-                Emby.Models.item(params.id).then(function (item) {
+            Emby.Models.item(params.id).then(function (item) {
 
-                    // If it's a person, leave the backdrop image from wherever we came from
-                    if (item.Type != 'Person') {
-                        Emby.Backdrop.setBackdrops([item]);
-                    }
+                // If it's a person, leave the backdrop image from wherever we came from
+                if (item.Type != 'Person') {
+                    Emby.Backdrop.setBackdrops([item]);
+                }
 
+                if (!isRestored) {
                     renderImage(element, item);
                     renderChildren(element, item);
                     renderDetails(element, item);
@@ -25,11 +25,14 @@
                     renderScenes(element, item);
                     renderSimilar(element, item);
                     createVerticalScroller(element);
+                }
 
-                    loading.hide();
-                });
+                loading.hide();
             });
+        });
 
+
+        if (!isRestored) {
             initEvents(element);
         }
     });
