@@ -105,6 +105,15 @@ define([], function () {
         });
     }
 
+    function reset() {
+
+        var views = document.querySelectorAll(".page-view");
+
+        for (var i = 0, length = views.length; i < length; i++) {
+            views[i].removeAttribute('data-url');
+        }
+    }
+
     function tryRestoreView(url) {
         return new Promise(function (resolve, reject) {
 
@@ -123,7 +132,7 @@ define([], function () {
                 }
                 if (index != -1) {
                     document.querySelector('.mainAnimatedPages').selected = index;
-                    resolve();
+                    resolve(view);
                     return;
                 }
             }
@@ -134,6 +143,7 @@ define([], function () {
 
     return {
         loadView: loadView,
-        tryRestoreView: tryRestoreView
+        tryRestoreView: tryRestoreView,
+        reset: reset
     };
 });

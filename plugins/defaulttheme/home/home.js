@@ -4,18 +4,21 @@
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
-        Emby.Backdrop.clear();
+        if (!isRestored) {
+            Emby.Backdrop.clear();
 
-        require(['loading'], function (loading) {
+            require(['loading'], function (loading) {
 
-            loading.show();
+                loading.show();
 
-            renderUserViews(element);
-            createHorizontalScroller(element.querySelector('.homeBody'));
-        });
+                renderUserViews(element);
+                createHorizontalScroller(element.querySelector('.homeBody'));
+            });
 
-        initEvents(element);
+            initEvents(element);
+        }
     });
 
     function renderUserViews(page) {

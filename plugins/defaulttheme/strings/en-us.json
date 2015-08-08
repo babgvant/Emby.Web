@@ -58,5 +58,6 @@
     "UpcomingPrograms": "Upcoming Programs",
     "UpcomingMovies": "Upcoming Movies",
     "UpcomingSports": "Upcoming Sports",
-    "UpcomingForKids": "Upcoming for Kids"
+    "UpcomingForKids": "Upcoming for Kids",
+    "SimilarTo":  "Similar to {0}"
 }

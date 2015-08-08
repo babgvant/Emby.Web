@@ -1,42 +1,68 @@
 define([], function () {
 
-    function onViewChange(view) {
+    var currentView;
+
+    function onViewChange(view, isRestore) {
+
+        currentView = view;
 
         // TODO: Is there a better way to determine that the view has loaded as opposed to a delay?
         setTimeout(function () {
 
-            Emby.FocusManager.autoFocus(view);
-            onShow(view);
+            if (!isRestore) {
+                Emby.FocusManager.autoFocus(view);
+            }
+            else if (view.activeElement) {
+                view.activeElement.focus();
+            }
+
+            onShow(view, isRestore);
 
         }, 500);
     }
 
-    function onShow(view) {
+    function onShow(view, isRestore) {
 
         require(['bower_components/query-string/index'], function () {
 
             var params = queryString.parse(window.location.search);
 
-            document.dispatchEvent(new CustomEvent("viewshow-" + view.getAttribute('data-id'), {
+            var eventDetail = {
                 detail: {
                     element: view,
                     id: view.getAttribute('data-id'),
-                    params: params
+                    params: params,
+                    isRestored: isRestore
                 },
                 bubbles: true,
                 cancelable: false
-            }));
+            };
 
-            document.dispatchEvent(new CustomEvent("viewshow", {
-                detail: {
-                    element: view,
-                    id: view.getAttribute('data-id'),
-                    params: params
-                },
-                bubbles: true,
-                cancelable: false
-            }));
+            document.dispatchEvent(new CustomEvent("viewshow-" + view.getAttribute('data-id'), eventDetail));
+            document.dispatchEvent(new CustomEvent("viewshow", eventDetail));
+
         });
+    }
+
+    function resetCachedViews() {
+        // Reset all cached views whenever the theme changes
+        require(['viewcontainer'], function (viewcontainer) {
+            viewcontainer.reset();
+        });
+    }
+
+    document.addEventListener('themeunload', resetCachedViews);
+    document.addEventListener('usersignedin', resetCachedViews);
+    document.addEventListener('usersignedout', resetCachedViews);
+
+    function tryRestoreInternal(viewcontainer, url, resolve, reject) {
+
+        viewcontainer.tryRestoreView(url).then(function (view) {
+
+            onViewChange(view, true);
+            resolve();
+
+        }, reject);
     }
 
     function ViewManager() {
@@ -44,6 +70,12 @@ define([], function () {
         var self = this;
 
         self.loadView = function (options) {
+
+            // Record the element that has focus
+            if (currentView) {
+                currentView.activeElement = document.activeElement;
+            }
+
             require(['viewcontainer'], function (viewcontainer) {
                 viewcontainer.loadView(options).then(onViewChange);
             });
@@ -52,8 +84,14 @@ define([], function () {
         self.tryRestoreView = function (url) {
             return new Promise(function (resolve, reject) {
 
+                // Record the element that has focus
+                if (currentView) {
+                    currentView.activeElement = document.activeElement;
+                }
+
                 require(['viewcontainer'], function (viewcontainer) {
-                    viewcontainer.tryRestoreView(url).then(resolve, reject);
+
+                    tryRestoreInternal(viewcontainer, url, resolve, reject);
                 });
             });
         };

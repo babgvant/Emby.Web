@@ -46,6 +46,12 @@
 
         Logger.log('Unloading theme: ' + theme.name);
         requireCss.unloadPackage('theme');
+
+        document.dispatchEvent(new CustomEvent("themeunload", {
+            detail: {
+                name: theme.name
+            }
+        }));
     }
 
     function loadCss(theme, url) {
