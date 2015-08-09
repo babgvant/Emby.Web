@@ -136,7 +136,7 @@
             require(['apphost'], function (apphost) {
 
                 var credentialProvider = new MediaBrowser.CredentialProvider();
-                credentialProvider.clear();
+                //credentialProvider.clear();
                 connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, apphost.appName(), apphost.appVersion(), apphost.deviceName(), apphost.deviceId(), getCapabilities(apphost));
 
                 define('connectionManager', [], function () {
