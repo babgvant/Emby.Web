@@ -388,7 +388,8 @@
         buildCards: buildCards,
         homeThumbWidth: 320,
         homePortraitWidth: 189,
-        homeSquareWidth: 180
+        homeSquareWidth: 180,
+        getDisplayName: getDisplayName
     };
 
 })(this);
