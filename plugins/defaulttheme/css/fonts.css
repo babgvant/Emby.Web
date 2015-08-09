@@ -8,7 +8,7 @@
 
 html {
     font-family: Open Sans, Helvetica Neue, Open Sans, Source Sans Pro, Montserrat, Varela Round;
-    font-size: 26px;
+    font-size: 20px;
 }
 
 h1, h2 {
@@ -17,17 +17,32 @@ h1, h2 {
 
 h1 {
     font-weight: 300;
-    font-size: 44px;
+    font-size: 36px;
 }
 
 h2, paper-dialog h2 {
     font-weight: normal;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 300;
 }
 
 paper-dialog h2 {
     font-size: 36px !important;
+}
+
+@media all and (min-width: 1400px) {
+
+    html {
+        font-size: 26px;
+    }
+
+    h1 {
+        font-size: 44px;
+    }
+
+    h2, paper-dialog h2 {
+        font-size: 36px;
+    }
 }
 
 @media all and (min-width: 1921px) {
