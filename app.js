@@ -235,7 +235,7 @@
     }
 
     function enableWebComponents() {
-        return true;
+        return navigator.userAgent.toLowerCase().indexOf('chrome/') != -1;
     }
 
     function loadCoreDependencies(callback) {
