@@ -117,14 +117,14 @@
             var apiClient = connectionManager.getApiClient(item.ServerId);
 
             var imageTags = item.ImageTags || {};
-            var imageHeight = 820;
+            var imageWidth = 510;
             var url;
 
             if (imageTags.Primary) {
 
                 url = apiClient.getScaledImageUrl(item.Id, {
                     type: "Primary",
-                    height: imageHeight,
+                    width: imageWidth,
                     tag: item.ImageTags.Primary
                 });
             }
@@ -132,7 +132,7 @@
 
                 url = apiClient.getScaledImageUrl(item.Id, {
                     type: "Backdrop",
-                    height: imageHeight,
+                    width: imageWidth,
                     tag: item.BackdropImageTags[0]
                 });
             }
@@ -140,7 +140,7 @@
 
                 url = apiClient.getScaledImageUrl(item.Id, {
                     type: "Thumb",
-                    height: imageHeight,
+                    width: imageWidth,
                     tag: item.ImageTags.Thumb
                 });
             }
@@ -148,7 +148,7 @@
 
                 url = apiClient.getScaledImageUrl(item.Id, {
                     type: "Disc",
-                    height: imageHeight,
+                    width: imageWidth,
                     tag: item.ImageTags.Disc
                 });
             }
@@ -156,7 +156,7 @@
 
                 url = apiClient.getScaledImageUrl(item.AlbumId, {
                     type: "Primary",
-                    height: imageHeight,
+                    width: imageWidth,
                     tag: item.AlbumPrimaryImageTag
                 });
             }
@@ -441,7 +441,7 @@
             images: [
             {
                 type: 'Primary',
-                width: 220
+                width: 250
             }]
 
         }).then(function (people) {
@@ -472,7 +472,7 @@
             images: [
             {
                 type: 'Primary',
-                width: 300
+                width: 440
             }]
 
         }).then(function (chapters) {

@@ -36,9 +36,7 @@
         };
     }
 
-    function startSpotlight(card, items, width, apiClient) {
-
-        var self = this;
+    function startSpotlight(self, card, items, width, apiClient) {
 
         if (!items.length) {
             return;
@@ -76,11 +74,13 @@
 
     function spotlight(card, items, width) {
 
+        var self = this;
+
         require(['connectionManager'], function (connectionManager) {
 
             var apiClient = connectionManager.currentApiClient();
 
-            startSpotlight(card, items, width, apiClient);
+            startSpotlight(self, card, items, width, apiClient);
         });
     }
 
