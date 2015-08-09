@@ -117,7 +117,7 @@
             var apiClient = connectionManager.getApiClient(item.ServerId);
 
             var imageTags = item.ImageTags || {};
-            var imageWidth = 510;
+            var imageWidth = 600;
             var url;
 
             if (imageTags.Primary) {

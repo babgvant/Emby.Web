@@ -123,7 +123,7 @@ define([], function () {
             }
         };
 
-        self.home = function () {
+        self.goHome = function () {
             Emby.Page.show(Emby.PluginManager.mapPath(self, 'home.html'));
         };
 
