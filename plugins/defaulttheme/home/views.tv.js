@@ -33,8 +33,6 @@
         var options = {
 
             Limit: 18,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb",
             ParentId: parentId
         };
 

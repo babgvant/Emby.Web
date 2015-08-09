@@ -30,7 +30,7 @@
         var options = {
 
             IncludeItemTypes: "Movie",
-            Limit: 10,
+            Limit: 12,
             ParentId: parentId,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
@@ -59,7 +59,8 @@
             Recursive: true,
             ParentId: parentId,
             EnableImageTypes: "Backdrop",
-            ImageTypes: "Backdrop"
+            ImageTypes: "Backdrop",
+            Fields: "Taglines"
         };
 
         Emby.Models.items(options).then(function (result) {
@@ -73,6 +74,72 @@
         });
     }
 
+    function loadRecommendations(element, parentId) {
+
+        Emby.Models.movieRecommendations({
+
+            categoryLimit: 4,
+            ItemLimit: 8
+
+        }).then(function (recommendations) {
+
+            var recs = element.querySelector('.recommendations');
+
+            Promise.all(recommendations.map(getRecommendationHtml)).then(function(values) {
+                
+                recs.innerHTML = values.join('');
+                Emby.ImageLoader.lazyChildren(recs);
+            });
+        });
+    }
+
+    function getRecommendationHtml(recommendation) {
+
+        return new Promise(function (resolve, reject) {
+
+            DefaultTheme.CardBuilder.buildCardsHtml(recommendation.Items, {
+                shape: 'portraitCard homePortraitCard',
+                rows: 2,
+                width: DefaultTheme.CardBuilder.homePortraitWidth
+            }).then(function (cardsHtml) {
+
+                var html = '';
+
+                var title = '';
+
+                switch (recommendation.RecommendationType) {
+
+                    case 'SimilarToRecentlyPlayed':
+                        title = Globalize.translate('RecommendationBecauseYouWatched').replace("{0}", recommendation.BaselineItemName);
+                        break;
+                    case 'SimilarToLikedItem':
+                        title = Globalize.translate('RecommendationBecauseYouLike').replace("{0}", recommendation.BaselineItemName);
+                        break;
+                    case 'HasDirectorFromRecentlyPlayed':
+                    case 'HasLikedDirector':
+                        title = Globalize.translate('RecommendationDirectedBy').replace("{0}", recommendation.BaselineItemName);
+                        break;
+                    case 'HasActorFromRecentlyPlayed':
+                    case 'HasLikedActor':
+                        title = Globalize.translate('RecommendationStarring').replace("{0}", recommendation.BaselineItemName);
+                        break;
+                }
+
+                html += '<div class="homeSection">';
+                html += '<div class="sectionTitle">' + title + '</div>';
+
+                html += '<div class="itemsContainer">';
+
+                html += cardsHtml;
+
+                html += '</div>';
+                html += '</div>';
+
+                resolve(html);
+            });
+        });
+    }
+
     function view(element, parentId) {
 
         var self = this;
@@ -80,6 +147,7 @@
         loadResume(element, parentId);
         loadLatest(element, parentId);
         loadSpotlight(element, parentId);
+        loadRecommendations(element, parentId);
 
         self.destroy = function () {
 

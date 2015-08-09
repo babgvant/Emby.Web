@@ -60,5 +60,9 @@
     "UpcomingMovies": "Upcoming Movies",
     "UpcomingSports": "Upcoming Sports",
     "UpcomingForKids": "Upcoming for Kids",
+    "RecommendationBecauseYouLike": "Because you like {0}",
+    "RecommendationBecauseYouWatched": "Because you watched {0}",
+    "RecommendationDirectedBy": "Directed by {0}",
+    "RecommendationStarring": "Starring {0}",
     "SimilarTo":  "Similar to {0}"
 }

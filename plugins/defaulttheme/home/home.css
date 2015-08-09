@@ -22,14 +22,11 @@
 
 .homeSection {
     float: left;
+    margin-right: 40px;
 }
 
-    .homeSection + .homeSection {
-        margin-left: 40px;
-    }
-
 .homeSquareCard {
-    width: 190px;
+    width: 194px;
 }
 
 .homebackdropSpotlightCard {

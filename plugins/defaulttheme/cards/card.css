@@ -123,3 +123,16 @@
     align-items: center;
     justify-content: center;
 }
+
+.playedIndicator {
+    right: 5px;
+    top: 5px;
+    position: absolute;
+    background: rgba(82,181,75,.90);
+    border-radius: 500px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

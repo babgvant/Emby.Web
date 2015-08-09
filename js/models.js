@@ -361,6 +361,23 @@
         });
     }
 
+    function movieRecommendations(options) {
+        
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+                normalizeOptions(options);
+                options.UserId = apiClient.getCurrentUserId();
+
+                apiClient.getJSON(apiClient.getUrl('Movies/Recommendations', options)).done(resolve, reject);
+            });
+        });
+    }
+
     globalScope.Emby.Models = {
         resumable: resumable,
         nextUp: nextUp,
@@ -376,7 +393,8 @@
         itemPeople: itemPeople,
         children: children,
         items: items,
-        userViews: userViews
+        userViews: userViews,
+        movieRecommendations: movieRecommendations
     };
 
 })(this, document);

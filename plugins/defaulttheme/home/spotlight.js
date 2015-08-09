@@ -19,7 +19,7 @@
 
         newCardImageContainer.style.backgroundImage = "url('" + imgUrl + "')";
 
-        card.querySelector('.cardText').innerHTML = item.Name;
+        card.querySelector('.cardText').innerHTML = item.Taglines && item.Taglines.length ? item.Taglines[0] : item.Name;
         card.setAttribute('data-id', item.Id);
         cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
