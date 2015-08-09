@@ -2,6 +2,7 @@
     display: block;
     width: 86%;
     margin: auto;
+    bottom: 0;
 }
 
 .itemScrollFrame {
@@ -9,7 +10,7 @@
 }
 
 .itemSection {
-    margin-bottom: 80px;
+    margin-bottom: 70px;
 }
 
     .itemSection > h2 {
@@ -37,20 +38,20 @@
 }
 
 .mainSection {
-    margin-top: 80px;
+    margin-top: 40px;
 }
 
-.itemPageImage, .itemPageMain {
+.itemPageSide, .itemPageMain {
     float: left;
     vertical-align: top;
 }
 
-.itemPageImage {
-    width: 30%;
+.itemPageSide {
+    max-width: 32%;
 }
 
 .itemPageMain {
-    width: 66%;
+    width: 64%;
 }
 
 .bulletSeparator {
@@ -80,8 +81,35 @@
     margin-right: 1em;
 }
 
-.starRatingContainer iron-icon {
-    width: 40px;
-    height: 44px;
-    color: #CB272A;
+    .starRatingContainer iron-icon {
+        width: 44px;
+        height: 48px;
+        color: #CB272A;
+    }
+
+.itemPageButtons paper-fab iron-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.itemPageButtons paper-fab {
+    background: #666;
+    margin-right: .25em;
+}
+
+    .itemPageButtons paper-fab[focused], .itemPageButtons paper-fab .keyboard-focus {
+        background: #52B54B !important;
+    }
+
+.detailImage {
+    max-width: 92%;
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: contain;
+}
+.nameContainer {
+    text-align: center;
+}
+.nameContainer h2 {
+    margin-top: 0;
 }

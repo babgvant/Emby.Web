@@ -8,7 +8,9 @@
 
         require(['loading'], function (loading) {
 
-            loading.show();
+            if (!isRestored) {
+                loading.show();
+            }
 
             Emby.Models.item(params.id).then(function (item) {
 
@@ -18,6 +20,7 @@
                 }
 
                 if (!isRestored) {
+                    renderName(element, item);
                     renderImage(element, item);
                     renderChildren(element, item);
                     renderDetails(element, item);
@@ -97,8 +100,75 @@
         });
     }
 
+    function renderName(view, item) {
+
+        var nameContainer = view.querySelector('.nameContainer');
+
+        nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
+
+    }
+
     function renderImage(view, item) {
 
+        require(['connectionManager'], function (connectionManager) {
+
+            var apiClient = connectionManager.getApiClient(item.ServerId);
+
+            var imageTags = item.ImageTags || {};
+            var imageHeight = 820;
+            var url;
+
+            if (imageTags.Primary) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Primary",
+                    height: imageHeight,
+                    tag: item.ImageTags.Primary
+                });
+            }
+            else if (item.BackdropImageTags && item.BackdropImageTags.length) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Backdrop",
+                    height: imageHeight,
+                    tag: item.BackdropImageTags[0]
+                });
+            }
+            else if (imageTags.Thumb) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Thumb",
+                    height: imageHeight,
+                    tag: item.ImageTags.Thumb
+                });
+            }
+            else if (imageTags.Disc) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Disc",
+                    height: imageHeight,
+                    tag: item.ImageTags.Disc
+                });
+            }
+            else if (item.AlbumId && item.AlbumPrimaryImageTag) {
+
+                url = apiClient.getScaledImageUrl(item.AlbumId, {
+                    type: "Primary",
+                    height: imageHeight,
+                    tag: item.AlbumPrimaryImageTag
+                });
+            }
+
+            var detailImage = view.querySelector('.detailImageContainer');
+
+            if (url) {
+                detailImage.classList.remove('hide');
+                detailImage.innerHTML = '<img class="detailImage" src="' + url + '" />';
+            } else {
+                detailImage.classList.add('hide');
+                detailImage.innerHTML = '';
+            }
+        });
     }
 
     function renderDetails(view, item) {
@@ -269,7 +339,7 @@
                 var starValue = (i + 1) * 2;
 
                 if (rating < starValue - 2) {
-                    html += '<iron-icon icon="star-border"></iron-icon>';
+                    html += '<iron-icon icon="star" class="emptyStar"></iron-icon>';
                 }
                 else if (rating < starValue) {
                     html += '<iron-icon icon="star-half"></iron-icon>';

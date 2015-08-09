@@ -106,16 +106,7 @@
         var userTheme = Emby.PluginManager.ofType('theme')[0];
 
         loadTheme('defaulttheme', function () {
-            var routes = currentTheme.getRoutes().filter(function (r) {
-                return r.type == 'home';
-            });
-
-            if (!routes.length) {
-                alert('theme has no home route defined!');
-                return;
-            }
-
-            Emby.Page.show(routes[0].path);
+            userTheme.home();
         });
     }
 

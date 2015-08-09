@@ -5,7 +5,7 @@ html {
 }
 
 .themeContainer.withBackdrop {
-    background: -webkit-radial-gradient(circle, rgba(26,26,26,.9), rgba(6,6,6,.9));
+    background: -webkit-radial-gradient(circle, rgba(26,26,26,.88), rgba(6,6,6,.88));
 }
 
 .header .logo {
@@ -141,4 +141,8 @@ paper-dialog {
     background: -webkit-linear-gradient(#404040, #101010);
     background: linear-gradient(#404040, #101010);
     color: #eee;
+}
+
+.emptyStar {
+    color: #bbb !important;
 }

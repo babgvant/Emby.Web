@@ -58,11 +58,18 @@
     right: 35px;
 }
 
-.header .clock {
+.header .headerRight {
     position: fixed;
     top: 40px;
-    margin-top: 0;
     right: 45px;
+    text-align: right;
+}
+
+.header .clock {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 1em;
 }
 
 .pageContainer {

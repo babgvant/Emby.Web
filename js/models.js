@@ -262,7 +262,6 @@
                     promise = apiClient.getSimilarTrailers(item.Id, options);
                 }
                 else if (item.Type == "MusicAlbum") {
-                    options.limit = 4;
                     promise = apiClient.getSimilarAlbums(item.Id, options);
                 }
                 else if (item.Type == "Series") {

@@ -56,6 +56,7 @@ define([], function () {
                 'html!bower_components/paper-input/paper-input.html',
                 'html!bower_components/paper-material/paper-material.html',
                 'html!bower_components/paper-progress/paper-progress.html',
+                'html!bower_components/paper-fab/paper-fab.html',
                 'fade-in-animation',
                 'fade-out-animation'
             ];
@@ -83,7 +84,6 @@ define([], function () {
             routes.push({
                 path: Emby.PluginManager.mapPath(self, 'home.html'),
                 id: 'defaulttheme-home',
-                type: 'home',
                 transition: 'slide',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'home/home.js'),
@@ -121,6 +121,10 @@ define([], function () {
                 clearInterval(clockInterval);
                 clockInterval = null;
             }
+        };
+
+        self.home = function () {
+            Emby.Page.show(Emby.PluginManager.mapPath(self, 'home.html'));
         };
 
         self.showItem = function (item) {
