@@ -4,28 +4,32 @@
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
         require(['loading'], function (loading) {
             loading.hide();
         });
 
-        element.querySelector('.btnWelcomeNext').addEventListener('click', function () {
+        if (!isRestored) {
+            element.querySelector('.btnWelcomeNext').addEventListener('click', function () {
 
-            require(['loading', 'connectionManager'], function (loading, connectionManager) {
-                connectionManager.connect().done(function (result) {
+                require(['loading', 'connectionManager'], function (loading, connectionManager) {
+                    connectionManager.connect().done(function (result) {
 
-                    loading.hide();
+                        loading.hide();
 
-                    handleConnectionResult(result);
+                        handleConnectionResult(result);
+                    });
                 });
             });
-        });
+        }
     });
 
     document.addEventListener("viewshow-manuallogin", function (e) {
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
         element.querySelector('.txtUserName').value = params.user || '';
         element.querySelector('.txtPassword').value = '';
@@ -36,135 +40,143 @@
             Emby.FocusManager.focus(element.querySelector('.txtUserName'));
         }
 
-        element.querySelector('form').addEventListener('submit', function (e) {
+        if (!isRestored) {
+            element.querySelector('form').addEventListener('submit', function (e) {
 
-            var username = this.querySelector('.txtUserName').value;
-            var password = this.querySelector('.txtPassword').value;
+                var username = this.querySelector('.txtUserName').value;
+                var password = this.querySelector('.txtPassword').value;
 
-            require(['connectionManager', 'loading'], function (connectionManager, loading) {
+                require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
-                loading.show();
+                    loading.show();
 
-                var serverId = params.serverid;
+                    var serverId = params.serverid;
 
-                authenticateUser(connectionManager.getApiClient(serverId), username, password);
+                    authenticateUser(serverId, username, password);
+                });
+
+                e.preventDefault();
+                return false;
             });
 
-            e.preventDefault();
-            return false;
-        });
+            element.querySelector('.buttonCancel').addEventListener('click', function (e) {
 
-        element.querySelector('.buttonCancel').addEventListener('click', function (e) {
+                Emby.Page.back();
+            });
 
-            Emby.Page.back();
-        });
+            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
 
-        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
-
-            // Do a fake form submit this the button isn't a real submit button
-            var fakeSubmit = document.createElement('input');
-            fakeSubmit.setAttribute('type', 'submit');
-            fakeSubmit.style.display = 'none';
-            var form = element.querySelector('form');
-            form.appendChild(fakeSubmit);
-            fakeSubmit.click();
-            form.removeChild(fakeSubmit);
-        });
+                // Do a fake form submit this the button isn't a real submit button
+                var fakeSubmit = document.createElement('input');
+                fakeSubmit.setAttribute('type', 'submit');
+                fakeSubmit.style.display = 'none';
+                var form = element.querySelector('form');
+                form.appendChild(fakeSubmit);
+                fakeSubmit.click();
+                form.removeChild(fakeSubmit);
+            });
+        }
     });
 
     document.addEventListener("viewshow-manualserver", function (e) {
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
         element.querySelector('.txtServerHost').value = '';
         element.querySelector('.txtServerPort').value = '8096';
 
-        element.querySelector('form').addEventListener('submit', function (e) {
+        if (!isRestored) {
+            element.querySelector('form').addEventListener('submit', function (e) {
 
-            var address = this.querySelector('.txtServerHost').value;
-            var port = this.querySelector('.txtServerPort').value;
+                var address = this.querySelector('.txtServerHost').value;
+                var port = this.querySelector('.txtServerPort').value;
 
-            if (port) {
-                address += ':' + port;
-            }
+                if (port) {
+                    address += ':' + port;
+                }
 
-            require(['connectionManager', 'loading'], function (connectionManager, loading) {
+                require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
-                loading.show();
+                    loading.show();
 
-                connectionManager.connectToAddress(address).done(function (result) {
+                    connectionManager.connectToAddress(address).done(function (result) {
 
-                    loading.hide();
+                        loading.hide();
 
-                    handleConnectionResult(result);
+                        handleConnectionResult(result);
+                    });
                 });
+
+                e.preventDefault();
+                return false;
             });
 
-            e.preventDefault();
-            return false;
-        });
+            element.querySelector('.buttonCancel').addEventListener('click', function (e) {
 
-        element.querySelector('.buttonCancel').addEventListener('click', function (e) {
+                Emby.Page.back();
+            });
 
-            Emby.Page.back();
-        });
+            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
 
-        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
-
-            // Do a fake form submit this the button isn't a real submit button
-            var fakeSubmit = document.createElement('input');
-            fakeSubmit.setAttribute('type', 'submit');
-            fakeSubmit.style.display = 'none';
-            var form = element.querySelector('form');
-            form.appendChild(fakeSubmit);
-            fakeSubmit.click();
-            form.removeChild(fakeSubmit);
-        });
+                // Do a fake form submit this the button isn't a real submit button
+                var fakeSubmit = document.createElement('input');
+                fakeSubmit.setAttribute('type', 'submit');
+                fakeSubmit.style.display = 'none';
+                var form = element.querySelector('form');
+                form.appendChild(fakeSubmit);
+                fakeSubmit.click();
+                form.removeChild(fakeSubmit);
+            });
+        }
     });
 
     document.addEventListener("viewshow-connectlogin", function (e) {
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
-        element.querySelector('form').addEventListener('submit', function (e) {
+        if (!isRestored) {
+            element.querySelector('form').addEventListener('submit', function (e) {
 
-            signIntoConnect(element);
-            e.preventDefault();
-            return false;
-        });
+                signIntoConnect(element);
+                e.preventDefault();
+                return false;
+            });
 
-        element.querySelector('.btnSkipConnect').addEventListener('click', function (e) {
+            element.querySelector('.btnSkipConnect').addEventListener('click', function (e) {
 
-            require(['connectionManager', 'loading'], function (connectionManager, loading) {
+                require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
-                loading.show();
+                    loading.show();
 
-                connectionManager.connect().done(function (result) {
+                    connectionManager.connect().done(function (result) {
 
-                    loading.hide();
+                        loading.hide();
 
-                    if (result.State == MediaBrowser.ConnectionState.ConnectSignIn) {
-                        Emby.Page.show('/startup/manualserver.html');
-                    } else {
-                        handleConnectionResult(result);
-                    }
+                        if (result.State == MediaBrowser.ConnectionState.ConnectSignIn) {
+                            Emby.Page.show('/startup/manualserver.html');
+                        } else {
+                            handleConnectionResult(result);
+                        }
+                    });
                 });
             });
-        });
 
-        element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
 
-            // Do a fake form submit this the button isn't a real submit button
-            var fakeSubmit = document.createElement('input');
-            fakeSubmit.setAttribute('type', 'submit');
-            fakeSubmit.style.display = 'none';
-            var form = element.querySelector('form');
-            form.appendChild(fakeSubmit);
-            fakeSubmit.click();
-            form.removeChild(fakeSubmit);
-        });
+                // Do a fake form submit this the button isn't a real submit button
+                var fakeSubmit = document.createElement('input');
+                fakeSubmit.setAttribute('type', 'submit');
+                fakeSubmit.style.display = 'none';
+                var form = element.querySelector('form');
+                form.appendChild(fakeSubmit);
+                fakeSubmit.click();
+                form.removeChild(fakeSubmit);
+            });
+        }
     });
 
     function signIntoConnect(view) {
@@ -256,6 +268,7 @@
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
         var serverId = params.serverid;
 
@@ -266,16 +279,32 @@
             var apiClient = connectionManager.getApiClient(serverId);
             apiClient.getPublicUsers().done(function (result) {
 
-                renderLoginUsers(element, apiClient, result, serverId);
+                renderLoginUsers(element, apiClient, result, serverId, !isRestored);
+                element.querySelector('.pageHeader').classList.remove('hide');
 
             }).fail(function (result) {
 
-                renderLoginUsers(element, apiClient, [], serverId);
+                renderLoginUsers(element, apiClient, [], serverId, !isRestored);
             });
         });
+
+        if (!isRestored) {
+            element.querySelector('.scrollSlider').addEventListener('click', function (e) {
+
+                onScrollSliderClick(e, function (card) {
+                    var model = element.querySelector('.itemTemplate').itemForElement(card);
+
+                    if (model.url) {
+                        Emby.Page.show(model.url);
+                    } else {
+                        authenticateUser(model.serverId, model.name);
+                    }
+                });
+            });
+        }
     });
 
-    function renderLoginUsers(view, apiClient, users, serverId) {
+    function renderLoginUsers(view, apiClient, users, serverId, initScroller) {
 
         var items = users.map(function (user) {
 
@@ -301,7 +330,8 @@
                 cardType: '',
                 hasLastActive: true,
                 id: user.Id,
-                url: url
+                url: url,
+                serverId: user.ServerId
             };
 
         });
@@ -348,23 +378,12 @@
 
                 loading.hide();
 
-                createHorizontalScroller(view, Sly);
+                if (initScroller) {
+                    createHorizontalScroller(view, Sly);
+                }
             });
 
         }, 500);
-
-        view.querySelector('.scrollSlider').addEventListener('click', function (e) {
-
-            onScrollSliderClick(e, function (card) {
-                var model = view.querySelector('.itemTemplate').itemForElement(card);
-
-                if (model.url) {
-                    Emby.Page.show(model.url);
-                } else {
-                    authenticateUser(apiClient, model.name);
-                }
-            });
-        });
     }
 
     function onScrollSliderClick(e, callback) {
@@ -409,12 +428,13 @@
         };
     }
 
-    function authenticateUser(apiClient, username, password) {
+    function authenticateUser(serverId, username, password) {
 
-        require(['loading'], function (loading) {
+        require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
             loading.show();
 
+            var apiClient = connectionManager.getApiClient(serverId);
             apiClient.authenticateUserByName(username, password).done(function (result) {
 
                 loading.hide();
@@ -438,6 +458,7 @@
 
         var element = e.detail.element;
         var params = e.detail.params;
+        var isRestored = e.detail.isRestored;
 
         require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
@@ -445,13 +466,41 @@
 
             connectionManager.getAvailableServers().done(function (result) {
 
-                renderSelectServerItems(element, result);
+                renderSelectServerItems(element, result, !isRestored);
+                element.querySelector('.pageHeader').classList.remove('hide');
 
             }).fail(function (result) {
 
-                renderSelectServerItems(element, []);
+                renderSelectServerItems(element, [], !isRestored);
+                element.querySelector('.pageHeader').classList.remove('hide');
             });
         });
+
+        if (!isRestored) {
+            element.querySelector('.scrollSlider').addEventListener('click', function (e) {
+
+                onScrollSliderClick(e, function (card) {
+                    var model = element.querySelector('.itemTemplate').itemForElement(card);
+
+                    if (model.url) {
+                        Emby.Page.show(model.url);
+                    } else {
+
+                        require(['connectionManager', 'loading'], function (connectionManager, loading) {
+
+                            loading.show();
+
+                            connectionManager.connectToServer(model.server).done(function (result) {
+
+                                loading.hide();
+
+                                handleConnectionResult(result);
+                            });
+                        });
+                    }
+                });
+            });
+        }
     });
 
     function createHorizontalScroller(view, Sly) {
@@ -496,7 +545,7 @@
         });
     }
 
-    function renderSelectServerItems(view, servers) {
+    function renderSelectServerItems(view, servers, initScroller) {
 
         var items = servers.map(function (server) {
 
@@ -530,34 +579,12 @@
             require(["Sly", 'loading'], function (Sly, loading) {
                 loading.hide();
 
-                createHorizontalScroller(view, Sly);
+                if (!initScroller) {
+                    createHorizontalScroller(view, Sly);
+                }
             });
 
         }, 500);
-
-        view.querySelector('.scrollSlider').addEventListener('click', function (e) {
-
-            onScrollSliderClick(e, function (card) {
-                var model = view.querySelector('.itemTemplate').itemForElement(card);
-
-                if (model.url) {
-                    Emby.Page.show(model.url);
-                } else {
-
-                    require(['connectionManager', 'loading'], function (connectionManager, loading) {
-
-                        loading.show();
-
-                        connectionManager.connectToServer(model.server).done(function (result) {
-
-                            loading.hide();
-
-                            handleConnectionResult(result);
-                        });
-                    });
-                }
-            });
-        });
     }
 
     function getLastActiveText(user) {

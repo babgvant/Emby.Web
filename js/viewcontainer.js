@@ -27,12 +27,9 @@ define([], function () {
 
                 animatable.innerHTML = html;
 
-                setTimeout(function () {
-                    animatedPages.selected = pageIndex;
-                    var view = animatable.querySelector('.page-view');
-                    resolve(view);
-
-                }, 0);
+                animatedPages.selected = pageIndex;
+                var view = animatable.querySelector('.page-view');
+                resolve(view);
             });
         });
     }
@@ -135,7 +132,7 @@ define([], function () {
                 if (index != -1) {
                     var animatedPages = document.querySelector('.mainAnimatedPages');
 
-                    setAnimationStyle(animatedPages, options.transition, options.isBack).then(function() {
+                    setAnimationStyle(animatedPages, options.transition, options.isBack).then(function () {
                         animatedPages.selected = index;
                         resolve(view);
                     });
