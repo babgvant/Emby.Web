@@ -106,7 +106,7 @@
         var userTheme = Emby.PluginManager.ofType('theme')[0];
 
         loadTheme('defaulttheme', function () {
-            userTheme.home();
+            userTheme.goHome();
         });
     }
 

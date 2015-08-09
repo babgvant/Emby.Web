@@ -50,6 +50,10 @@
     max-width: 34.5%;
 }
 
+.itemPageSideInner {
+    padding-right: 1.7em;
+}
+
 .itemPageMain {
     width: 63%;
 }
@@ -102,14 +106,14 @@
     }
 
 .detailImage {
-    max-width: 92%;
-    background-repeat: no-repeat;
-    background-position: left top;
-    background-size: contain;
+    max-width: 100%;
+    max-height: 700px;
 }
+
 .nameContainer {
     text-align: center;
 }
-.nameContainer h2 {
-    margin-top: 0;
-}
+
+    .nameContainer h2 {
+        margin-top: 0;
+    }
