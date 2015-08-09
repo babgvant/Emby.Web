@@ -1,6 +1,6 @@
 .itemPageContainer {
     display: block;
-    width: 86%;
+    width: 90.5%;
     margin: auto;
     bottom: 0;
 }
@@ -47,11 +47,11 @@
 }
 
 .itemPageSide {
-    max-width: 30%;
+    max-width: 34.5%;
 }
 
 .itemPageMain {
-    width: 66%;
+    width: 63%;
 }
 
 .bulletSeparator {
