@@ -30,6 +30,9 @@
                     createVerticalScroller(element);
                 }
 
+                // Always refresh this
+                renderNextUp(element, item);
+
                 loading.hide();
             });
         });
@@ -105,7 +108,6 @@
         var nameContainer = view.querySelector('.nameContainer');
 
         nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
-
     }
 
     function renderImage(view, item) {
@@ -355,6 +357,33 @@
         return html;
     }
 
+    function renderNextUp(view, item) {
+
+        var section = view.querySelector('.nextUpSection');
+
+        var userData = item.UserData || {};
+
+        if (item.Type != 'Series' || !userData.PlayedPercentage) {
+            section.classList.add('hide');
+            return;
+        }
+
+        Emby.Models.nextUp({
+
+            SeriesId: item.Id
+
+        }).then(function (result) {
+
+            DefaultTheme.CardBuilder.buildCards(result.Items, {
+                parentContainer: section,
+                itemsContainer: section.querySelector('.itemsContainer'),
+                shape: 'backdropCard',
+                width: DefaultTheme.CardBuilder.homeThumbWidth,
+                showTitle: true
+            });
+        });
+    }
+
     function renderChildren(view, item) {
 
         var section = view.querySelector('.childrenSection');
@@ -461,7 +490,7 @@
                 DefaultTheme.ChapterCardBuilder.buildChapterCards(chapters, {
                     parentContainer: section,
                     itemsContainer: section.querySelector('.itemsContainer'),
-                    shape: 'backdropCard itemScenesThumb',
+                    shape: 'backdropCard',
                     coverImage: true
                 });
             });

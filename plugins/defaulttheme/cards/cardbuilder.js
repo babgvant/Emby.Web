@@ -81,7 +81,22 @@
         }
     }
 
-    function buildCardsHtml(items, apiClient, options) {
+    function buildCardsHtml(items, options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                var html = buildCardsHtmlInternal(items, apiClient, options);
+
+                resolve(html);
+            });
+        });
+    }
+
+    function buildCardsHtmlInternal(items, apiClient, options) {
 
         var className = 'card';
 
@@ -295,6 +310,23 @@
         return '<div class="cardCountIndicator">' + count + '</div>';
     }
 
+    function getPlayedIndicator(item) {
+
+        if (item.Type == "Series" || item.Type == "Season" || item.Type == "BoxSet" || item.MediaType == "Video" || item.MediaType == "Game" || item.MediaType == "Book") {
+            if (item.UserData.UnplayedItemCount) {
+                return '<div class="cardCountIndicator">' + item.UserData.UnplayedItemCount + '</div>';
+            }
+
+            if (item.Type != 'TvChannel') {
+                if (item.UserData.PlayedPercentage && item.UserData.PlayedPercentage >= 100 || (item.UserData && item.UserData.Played)) {
+                    return '<div class="playedIndicator"><iron-icon icon="check"></iron-icon></div>';
+                }
+            }
+        }
+
+        return '';
+    }
+
     function buildCard(item, apiClient, options, className) {
 
         var imgInfo = getCardImageUrl(item, apiClient, options);
@@ -306,8 +338,14 @@
         }
         var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
 
-        if (options.showGroupCount && item.ChildCount && item.ChildCount > 1) {
-            cardImageContainer += getCountIndicator(item.ChildCount);
+        if (options.showGroupCount) {
+
+            if (item.ChildCount && item.ChildCount > 1) {
+                cardImageContainer += getCountIndicator(item.ChildCount);
+            }
+        }
+        else {
+            cardImageContainer += getPlayedIndicator(item);
         }
 
         var nameHtml = '';
@@ -371,7 +409,7 @@
 
             var apiClient = connectionManager.currentApiClient();
 
-            var html = buildCardsHtml(items, apiClient, options);
+            var html = buildCardsHtmlInternal(items, apiClient, options);
 
             options.itemsContainer.innerHTML = html;
 
