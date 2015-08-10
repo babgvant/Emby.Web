@@ -37,6 +37,7 @@ define([], function () {
                 path: Emby.PluginManager.mapPath(self, 'home.html'),
                 id: 'wmctheme-home',
                 transition: 'fade',
+                type: 'home',
                 dependencies: []
             });
 

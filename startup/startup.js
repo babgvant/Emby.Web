@@ -292,12 +292,13 @@
             element.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
                 onScrollSliderClick(e, function (card) {
-                    var model = element.querySelector('.itemTemplate').itemForElement(card);
 
-                    if (model.url) {
-                        Emby.Page.show(model.url);
+                    var url = card.getAttribute('data-url');
+
+                    if (url) {
+                        Emby.Page.show(url);
                     } else {
-                        authenticateUser(model.serverId, model.name);
+                        authenticateUser(card.getAttribute('data-serverid'), card.getAttribute('data-name'));
                     }
                 });
             });
@@ -327,7 +328,6 @@
                 icon: 'person',
                 lastActive: getLastActiveText(user),
                 cardImageStyle: "background-image:url('" + imgUrl + "');",
-                cardType: '',
                 hasLastActive: true,
                 id: user.Id,
                 url: url,
@@ -369,34 +369,44 @@
             url: '/startup/selectserver.html'
         });
 
-        view.querySelector('.itemTemplate').items = items;
+        var html = items.map(function (item) {
 
-        // TODO: Is there a better way to figure out the polymer elements have loaded besides a timeout?
-        setTimeout(function () {
+            var secondaryText = item.defaultText ? '&nbsp;' : (item.lastActive || '');
 
-            require(["Sly", 'loading'], function (Sly, loading) {
+            var cardImageContainer = item.showIcon ? ('<iron-icon class="cardImageIcon" icon="' + item.icon + '"></iron-icon>') : ('<div class="cardImage" style="' + item.cardImageStyle + '"></div>');
 
-                loading.hide();
+            return '\
+<paper-button raised class="card squareCard loginSquareCard" data-cardtype="' + item.cardType + '" data-url="' + item.url + '" data-name="' + item.name + '" data-serverid="' + item.serverId + '">\
+<div class="cardScalable">\
+<div class="cardPadder"></div>\
+<div class="cardContent">\
+<div class="cardImageContainer">\
+'+ cardImageContainer + '</div>\
+</div>\
+</div>\
+<div class="cardFooter">\
+<div class="cardText">'+ item.name + '</div>\
+<div class="cardText dim">' + secondaryText + '</div>\
+</div>\
+</paper-button>';
 
-                if (initScroller) {
-                    createHorizontalScroller(view, Sly);
-                }
-            });
+        }).join('');
 
-        }, 500);
+        view.querySelector('.scrollSlider').innerHTML = html;
+
+        require(["Sly", 'loading'], function (Sly, loading) {
+
+            loading.hide();
+
+            if (initScroller) {
+                createHorizontalScroller(view, Sly);
+            }
+        });
     }
 
     function onScrollSliderClick(e, callback) {
 
-        var card = e.target;
-
-        while (!card.classList || !card.classList.contains('card')) {
-            card = card.parentNode;
-
-            if (!card) {
-                return;
-            }
-        }
+        var card = Emby.Dom.parentWithClass(e.target, 'card');
 
         if (card) {
             flipElement(card, function () {
@@ -480,10 +490,11 @@
             element.querySelector('.scrollSlider').addEventListener('click', function (e) {
 
                 onScrollSliderClick(e, function (card) {
-                    var model = element.querySelector('.itemTemplate').itemForElement(card);
 
-                    if (model.url) {
-                        Emby.Page.show(model.url);
+                    var url = card.getAttribute('data-url');
+
+                    if (url) {
+                        Emby.Page.show(url);
                     } else {
 
                         require(['connectionManager', 'loading'], function (connectionManager, loading) {
@@ -540,9 +551,20 @@
          { opacity: '1', transform: 'none', offset: 1 }];
 
         scrollFrame.animate(keyframes, {
-            duration: 900,
+            duration: 600,
             iterations: 1
-        });
+
+        }).onfinish = function () {
+
+            Logger.log('Horizontal animation finished');
+
+            var firstCard = scrollFrame.querySelector('.card');
+
+            if (firstCard) {
+                Logger.log('focusing first card');
+                Emby.FocusManager.focus(firstCard);
+            }
+        };
     }
 
     function renderSelectServerItems(view, servers, initScroller) {
