@@ -17,7 +17,7 @@
 }
 
 .homeBody {
-    height: 602px;
+    height: 420px;
 }
 
 .homeSection {
@@ -26,15 +26,15 @@
 }
 
 .homeSquareCard {
-    width: 194px;
+    width: 138px;
 }
 
 .homebackdropCard {
-    width: 337.777777777777777777778px;
+    width: 242px;
 }
 
 .homePortraitCard {
-    width: 197.5px;
+    width: 144px;
 }
 
 .sectionTitle {
@@ -47,9 +47,52 @@
 }
 
 .wideSpotlightCard {
-    width: 767.25px;
+    width: 540px;
 }
 
-.wideSpotlightCard .cardPadder {
-    padding-bottom: 50%;
+.miniSpotlightCard {
+    width: 267px;
+}
+
+    .wideSpotlightCard .cardPadder, .miniSpotlightCard .cardPadder {
+        padding-bottom: 50%;
+    }
+
+@media all and (max-height: 1080px) {
+
+    .homePageContainer {
+        bottom: 40px;
+        top: 100px;
+    }
+
+    .userViewNames h2 {
+        margin-top: 0;
+    }
+}
+
+@media all and (min-height: 1000px) {
+
+    .homeBody {
+        height: 602px;
+    }
+
+    .homeSquareCard {
+        width: 194px;
+    }
+
+    .homebackdropCard {
+        width: 337.777777777777777777778px;
+    }
+
+    .homePortraitCard {
+        width: 197.5px;
+    }
+
+    .wideSpotlightCard {
+        width: 767.25px;
+    }
+
+    .miniSpotlightCard {
+        width: 380px;
+    }
 }

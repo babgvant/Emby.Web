@@ -107,7 +107,14 @@
 
 .detailImage {
     max-width: 100%;
-    max-height: 700px;
+    max-height: 400px;
+}
+
+@media all and (min-height: 1081px) {
+
+    .detailImage {
+        max-height: 700px;
+    }
 }
 
 .nameContainer {
