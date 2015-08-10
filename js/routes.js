@@ -410,7 +410,8 @@
                 var type = card.getAttribute('data-type');
                 Emby.Page.showItem({
                     Id: id,
-                    Type: type
+                    Type: type,
+                    IsFolder: card.getAttribute('data-isfolder') == 'true'
                 });
             }
         }
