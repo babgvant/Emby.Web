@@ -15,7 +15,7 @@
 
             if (currentTheme.packageName == packageName) {
                 // Nothing to do, it's already the active theme
-                callback();
+                callback(currentTheme);
                 return;
             }
             unloadTheme(currentTheme);
@@ -71,7 +71,7 @@
             //document.querySelector('.themeContent').innerHTML = theme.getPageContent();
             currentTheme = theme;
             theme.load();
-            callback();
+            callback(theme);
         });
     }
 
@@ -103,10 +103,8 @@
 
     function loadUserTheme() {
 
-        var userTheme = Emby.PluginManager.ofType('theme')[0];
-
-        loadTheme('defaulttheme', function () {
-            userTheme.goHome();
+        loadTheme('defaulttheme', function (theme) {
+            theme.goHome();
         });
     }
 
