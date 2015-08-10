@@ -376,6 +376,14 @@
         globalScope.Emby = {};
     }
 
+    function goHome() {
+        Emby.ThemeManager.getCurrentTheme().goHome();
+    }
+
+    function showItem(item) {
+        Emby.ThemeManager.getCurrentTheme().showItem(item);
+    }
+
     globalScope.Emby.Page = {
         getHandler: getHandler,
         param: param,
@@ -385,7 +393,27 @@
         baseUrl: baseUrl,
         canGoBack: canGoBack,
         current: current,
-        redirectToLogin: redirectToLogin
+        redirectToLogin: redirectToLogin,
+        goHome: goHome,
+        showItem: showItem
     };
+
+    // Add some shortcuts
+    document.addEventListener('click', function (e) {
+
+        var card = Emby.Dom.parentWithClass(e.target, 'itemLink');
+
+        if (card) {
+            var id = card.getAttribute('data-id');
+
+            if (id) {
+                var type = card.getAttribute('data-type');
+                Emby.Page.showItem({
+                    Id: id,
+                    Type: type
+                });
+            }
+        }
+    });
 
 })(this);
