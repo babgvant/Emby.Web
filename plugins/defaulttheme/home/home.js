@@ -67,12 +67,8 @@
 
             var frame = new Sly(scrollFrame, options).init();
 
-            setTimeout(function () {
-
-                loading.hide();
-                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
-
-            }, 300);
+            loading.hide();
+            Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
         });
     }
 
@@ -137,7 +133,7 @@
 
             selectUserView(view, viewId);
 
-        }, 300);
+        }, 350);
     }
 
     function selectUserView(page, id) {

@@ -29,10 +29,6 @@
     width: 194px;
 }
 
-.homebackdropSpotlightCard {
-    width: 682px;
-}
-
 .homebackdropCard {
     width: 337.777777777777777777778px;
 }
@@ -48,4 +44,12 @@
 
 .cardColumn {
     float: left;
+}
+
+.wideSpotlightCard {
+    width: 767.25px;
+}
+
+.wideSpotlightCard .cardPadder {
+    padding-bottom: 50%;
 }

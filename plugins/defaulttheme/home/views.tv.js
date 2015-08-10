@@ -97,11 +97,11 @@
 
         Emby.Models.items(options).then(function (result) {
 
-            var card = element.querySelector('.homebackdropSpotlightCard');
+            var card = element.querySelector('.wideSpotlightCard');
 
             require([Emby.PluginManager.mapRequire('defaulttheme', 'home/spotlight.js')], function () {
 
-                new DefaultTheme.spotlight(card, result.Items, DefaultTheme.CardBuilder.homeThumbWidth * 2);
+                new DefaultTheme.spotlight(card, result.Items, 767);
             });
         });
     }
