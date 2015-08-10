@@ -46,20 +46,15 @@
 
         Logger.log('Unloading theme: ' + theme.name);
         requireCss.unloadPackage('theme');
+        requireCss.unloadPackage(theme.packageName);
+
+        theme.unload();
 
         document.dispatchEvent(new CustomEvent("themeunload", {
             detail: {
                 name: theme.name
             }
         }));
-    }
-
-    function loadCss(theme, url) {
-
-    }
-
-    function unloadCss(theme, url) {
-
     }
 
     function loadThemeHeader(theme, callback) {
@@ -115,9 +110,7 @@
     globalScope.Emby.ThemeManager = {
         getCurrentTheme: getCurrentTheme,
         loadTheme: loadTheme,
-        loadUserTheme: loadUserTheme,
-        loadCss: loadCss,
-        unloadCss: unloadCss
+        loadUserTheme: loadUserTheme
     };
 
 })(this, document);
