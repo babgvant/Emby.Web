@@ -106,8 +106,32 @@
     function renderName(view, item) {
 
         var nameContainer = view.querySelector('.nameContainer');
-
         nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
+    }
+
+    function renderLogo(view, item) {
+
+        require(['connectionManager'], function (connectionManager) {
+
+            var apiClient = connectionManager.getApiClient(item.ServerId);
+            var nameContainer = view.querySelector('.nameContainer');
+
+            var imageTags = item.ImageTags || {};
+
+            if (imageTags.Logo) {
+
+                var url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Logo",
+                    width: 200,
+                    tag: item.ImageTags.Logo
+                });
+
+                nameContainer.innerHTML = '<img class="itemLogo" src="' + url + '" />';
+                return;
+            }
+
+            nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
+        });
     }
 
     function renderImage(view, item) {

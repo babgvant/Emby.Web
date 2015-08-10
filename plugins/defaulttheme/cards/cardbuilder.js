@@ -203,6 +203,9 @@
                 tag: item.ImageTags.Primary
             });
 
+            if (options.preferThumb) {
+                forceName = true;
+            }
         }
         else if (item.ParentPrimaryImageTag) {
 
@@ -372,7 +375,7 @@
         }
 
         var html = '\
-<paper-button elevated="1" data-id="'+ item.Id + '" raised class="' + className + '"> \
+<paper-button elevated="1" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\

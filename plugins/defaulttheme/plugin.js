@@ -102,6 +102,16 @@ define([], function () {
                 ]
             });
 
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'list/list.html'),
+                id: 'defaulttheme-list',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'list/list.js'),
+                    'css!' + Emby.PluginManager.mapRequire(self, 'list/list.css')
+                ]
+            });
+
             return routes;
         };
 
