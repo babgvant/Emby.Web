@@ -139,7 +139,7 @@ define([], function () {
         };
 
         self.showItem = function (item) {
-
+            Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + item.Id);
         };
 
         function loadControlBox() {

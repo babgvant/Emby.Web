@@ -58,7 +58,7 @@
         padding-bottom: 50%;
     }
 
-@media all and (max-height: 1080px) {
+@media all and (max-height: 800px) {
 
     .homePageContainer {
         bottom: 40px;

@@ -36,29 +36,7 @@
                 loading.hide();
             });
         });
-
-
-        if (!isRestored) {
-            initEvents(element);
-        }
     });
-
-    function initEvents(view) {
-
-        // Catch events on items in the view
-        view.querySelector('.itemScrollContent').addEventListener('click', function (e) {
-
-            var card = Emby.Dom.parentWithClass(e.target, 'card');
-
-            if (card) {
-                var id = card.getAttribute('data-id');
-
-                if (id) {
-                    Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + id);
-                }
-            }
-        });
-    }
 
     function createVerticalScroller(view) {
 

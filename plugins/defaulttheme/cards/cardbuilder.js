@@ -332,6 +332,8 @@
 
     function buildCard(item, apiClient, options, className) {
 
+        className += " itemLink";
+
         var imgInfo = getCardImageUrl(item, apiClient, options);
         var imgUrl = imgInfo.imgUrl;
 

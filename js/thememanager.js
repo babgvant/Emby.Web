@@ -99,7 +99,7 @@
     function loadUserTheme() {
 
         loadTheme('defaulttheme', function (theme) {
-            theme.goHome();
+            Emby.Page.goHome();
         });
     }
 

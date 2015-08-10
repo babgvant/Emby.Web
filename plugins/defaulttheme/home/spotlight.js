@@ -21,6 +21,9 @@
 
         card.querySelector('.cardText').innerHTML = item.Taglines && item.Taglines.length ? item.Taglines[0] : item.Name;
         card.setAttribute('data-id', item.Id);
+        card.setAttribute('data-type', item.Type);
+        card.classList.add('itemLink');
+
         cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
         var keyframes = [
