@@ -84,18 +84,22 @@
 
     function loadContentUrl(ctx, next, route) {
 
-        var url = baseUrl() + '/' + route.path;
+        require(['httpclient'], function (httpclient) {
 
-        HttpClient.request({
+            var url = baseUrl() + '/' + route.path;
 
-            url: url,
-            type: 'GET',
-            dataType: 'html'
+            httpclient.request({
 
-        }).then(function (html) {
-            loadContent(ctx, next, route, html);
+                url: url + '?t=' + new Date().getTime(),
+                type: 'GET',
+                dataType: 'html'
 
-        }, next);
+            }).then(function (html) {
+
+                loadContent(ctx, next, route, html);
+
+            }, next);
+        });
     }
 
     function handleRoute(ctx, next, route) {
@@ -200,9 +204,8 @@
             }));
         });
 
-        Events.on(connectionManager, 'localusersignedout', function (e, user) {
+        Events.on(connectionManager, 'localusersignedout', function (e) {
 
-            localApiClient = connectionManager.getApiClient(user.ServerId);
             document.dispatchEvent(new CustomEvent("usersignedout", {}));
         });
 

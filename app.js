@@ -88,6 +88,11 @@
         });
     }
 
+    function replaceAll(str, find, replace) {
+
+        return str.split(find).join(replace);
+    }
+
     function definePluginRoutes() {
 
         var plugins = Emby.PluginManager.plugins();
@@ -235,6 +240,7 @@
     }
 
     function enableWebComponents() {
+
         return navigator.userAgent.toLowerCase().indexOf('chrome/') != -1;
     }
 

@@ -85,6 +85,7 @@ define([], function () {
                 path: Emby.PluginManager.mapPath(self, 'home.html'),
                 id: 'defaulttheme-home',
                 transition: 'slide',
+                type: 'home',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'home/home.js'),
                     'css!' + Emby.PluginManager.mapRequire(self, 'home/home.css')

@@ -2,7 +2,7 @@ define([], function () {
 
     var currentView;
 
-    function onViewChange(view, isRestore) {
+    function onViewChange(view, url, isRestore) {
 
         currentView = view;
 
@@ -16,16 +16,17 @@ define([], function () {
                 view.activeElement.focus();
             }
 
-            onShow(view, isRestore);
+            onShow(view, url, isRestore);
 
         }, 500);
     }
 
-    function onShow(view, isRestore) {
+    function onShow(view, url, isRestore) {
 
         require(['bower_components/query-string/index'], function () {
 
-            var params = queryString.parse(window.location.search);
+            var index = url.indexOf('?');
+            var params = index == -1 ? {} : queryString.parse(url.substring(index + 1));
 
             var eventDetail = {
                 detail: {
@@ -59,7 +60,7 @@ define([], function () {
 
         viewcontainer.tryRestoreView(options).then(function (view) {
 
-            onViewChange(view, true);
+            onViewChange(view, options.url, true);
             resolve();
 
         }, reject);
@@ -77,7 +78,9 @@ define([], function () {
             }
 
             require(['viewcontainer'], function (viewcontainer) {
-                viewcontainer.loadView(options).then(onViewChange);
+                viewcontainer.loadView(options).then(function (view) {
+                    onViewChange(view, options.url);
+                });
             });
         };
 
