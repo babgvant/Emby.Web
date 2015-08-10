@@ -139,7 +139,21 @@ define([], function () {
         };
 
         self.showItem = function (item) {
-            Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + item.Id);
+
+            var showList = false;
+
+            if (item.IsFolder) {
+
+                if (item.Type != 'Series' && item.Type != 'Season' && item.Type != 'MusicAlbum' && item.Type != 'MusicArtist' && item.Type != 'Playlist') {
+                    showList = true;
+                }
+            }
+
+            if (showList) {
+                Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'list/list.html') + '?parentid=' + item.Id);
+            } else {
+                Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + item.Id);
+            }
         };
 
         function loadControlBox() {
