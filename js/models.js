@@ -319,11 +319,20 @@
 
                 }
                 options.SortBy = "DatePlayed";
-                options.ParentId = item.Id;
 
                 normalizeOptions(options);
 
-                apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+                if (item.Type == "Channel") {
+
+                    options.UserId = apiClient.getCurrentUserId();
+
+                    apiClient.getJSON(apiClient.getUrl("Channels/" + item.Id + "/Items", options)).done(resolve, reject);
+                } else {
+
+                    options.ParentId = item.Id;
+
+                    apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+                }
             });
         });
     }

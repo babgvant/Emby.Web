@@ -178,7 +178,7 @@
         if (bodySlyFrame) {
             bodySlyFrame.slideTo(0, true);
         }
-        var homeScrollContent = page.querySelector('.homeScrollContent');
+        var homeScrollContent = page.querySelector('.scrollContent');
 
         html = '<div class="homePanel">' + html + '</div>';
         homeScrollContent.innerHTML = Globalize.translateHtml(html);

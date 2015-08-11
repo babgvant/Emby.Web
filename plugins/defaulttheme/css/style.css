@@ -99,6 +99,10 @@
     margin: 0 auto;
 }
 
+.itemScrollFrame.scrollFrameX {
+    padding-left: 70px;
+}
+
 @media all and (min-height: 1000px) {
 
     .centeredPageContent {

@@ -1,0 +1,15 @@
+.listPageContainer {
+    bottom: 100px;
+}
+
+.listBody .squareCard {
+    width: 220px;
+}
+
+.listBody .portraitCard {
+    width: 170px;
+}
+
+.listBody .backdropCard {
+    width: 380px;
+}
