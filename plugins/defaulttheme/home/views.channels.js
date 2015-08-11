@@ -54,7 +54,8 @@
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
-                preferThumb: true
+                preferThumb: true,
+                showTitle: false
             });
         });
     }

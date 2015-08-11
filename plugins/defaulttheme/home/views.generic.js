@@ -31,6 +31,12 @@
 
         loadLatest(element, parentId);
 
+        var allGenericCard = element.querySelector('.allGenericCard');
+        allGenericCard.setAttribute('data-id', parentId);
+        allGenericCard.setAttribute('data-type', 'Folder');
+        allGenericCard.setAttribute('data-isfolder', 'true');
+        allGenericCard.classList.add('itemLink');
+
         self.destroy = function () {
 
         };
