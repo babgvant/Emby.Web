@@ -29,7 +29,7 @@
 
         Emby.Models.children(item, {
             
-            Limit: 400
+            Limit: 500
 
         }).then(function(result) {
 
