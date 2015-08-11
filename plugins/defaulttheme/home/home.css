@@ -12,10 +12,6 @@
         padding-right: 70px;
     }
 
-.homeBody {
-    height: 420px;
-}
-
 .homeSection {
     float: left;
     margin-right: 40px;
@@ -38,10 +34,6 @@
     padding-left: .25em;
 }
 
-.cardColumn {
-    float: left;
-}
-
 .wideSpotlightCard {
     width: 540px;
 }
@@ -54,7 +46,12 @@
         padding-bottom: 50%;
     }
 
-@media all and (max-height: 800px) {
+.homeBody {
+    height: 458px;
+}
+
+
+@media all and (max-height: 1070px) {
 
     .homePageContainer {
         bottom: 40px;
@@ -69,7 +66,7 @@
 @media all and (min-height: 1000px) {
 
     .homeBody {
-        height: 602px;
+        height: 618px;
     }
 
     .homeSquareCard {

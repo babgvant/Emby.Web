@@ -218,3 +218,7 @@
         width: 400px;
     }
 }
+
+.cardColumn {
+    display: inline-block;
+}
