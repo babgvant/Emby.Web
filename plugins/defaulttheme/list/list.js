@@ -27,7 +27,11 @@
 
     function loadChildren(view, item, loading) {
 
-        Emby.Models.children(item).then(function(result) {
+        Emby.Models.children(item, {
+            
+            Limit: 400
+
+        }).then(function(result) {
 
             DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: view.querySelector('.scrollSlider'),

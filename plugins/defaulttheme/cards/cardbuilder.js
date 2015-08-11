@@ -341,6 +341,7 @@
         if (options.coverImage) {
             cardImageContainerClass += ' coveredImage';
         }
+
         var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
 
         if (options.showGroupCount) {
@@ -353,13 +354,19 @@
             cardImageContainer += getPlayedIndicator(item);
         }
 
+        var showTitle = options.showTitle || imgInfo.forceName;
+
+        if (!imgUrl) {
+            cardImageContainer += '<div class="cardText cardCenteredText">' + getDisplayName(item) + '</div>';
+        }
+
         var nameHtml = '';
 
         if (options.showParentTitle) {
             nameHtml += '<div class="cardText">' + (item.EpisodeTitle ? item.Name : (item.SeriesName || item.Album || item.AlbumArtist || item.GameSystem || "")) + '</div>';
         }
 
-        if (options.showTitle || imgInfo.forceName) {
+        if (showTitle) {
             var nameClass = 'cardText';
             if (options.showTitle && options.hiddenTitle) {
                 nameClass += ' hide hiddenTitle';
@@ -390,6 +397,23 @@
 </div>' + data + '\
 </paper-button>'
         ;
+
+//        var html = '\
+//<button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+//<div class="cardBox">\
+//<div class="cardScalable">\
+//<div class="cardPadder"></div>\
+//<div class="cardContent">\
+//' + cardImageContainer + '\
+//</div>\
+//<div class="innerCardFooter">\
+//' + nameHtml + '\
+//</div>\
+//</div>\
+//</div>' + data + '\
+//</div>\
+//</button>'
+//        ;
 
         return html;
     }

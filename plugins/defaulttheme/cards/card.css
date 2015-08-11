@@ -5,6 +5,14 @@
     margin: 0;
 }
 
+button.card {
+    border: 0;
+    padding: 0;
+    outline: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+}
+
 .cardScalable {
     position: relative;
 }
@@ -44,14 +52,16 @@
     z-index: 1;
 }
 
-.card paper-material {
+.card paper-material, .card .cardBox {
     padding: 0 !important;
     margin: 5px;
+    transition: none !important;
+    border-radius: 0 !important;
 }
 
-.card[focused] paper-material {
-    -moz-box-shadow: #fff 0px 0px 1px 5px;
-    box-shadow: #fff 0px 0px 1px 5px;
+.card[focused] paper-material, .card:focus .cardBox {
+    -moz-box-shadow: #52B54B 0px 0px 1px 5px;
+    box-shadow: #52B54B 0px 0px 1px 5px;
 }
 
 .cardImageContainer {
@@ -97,6 +107,10 @@
     .cardText + .cardText {
         padding-top: .1em;
     }
+
+.cardCenteredText {
+    white-space: normal;
+}
 
 .cardImage {
     width: 100%;
