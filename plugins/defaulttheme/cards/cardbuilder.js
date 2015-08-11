@@ -203,7 +203,7 @@
                 tag: item.ImageTags.Primary
             });
 
-            if (options.preferThumb) {
+            if (options.preferThumb && options.showTitle !== false) {
                 forceName = true;
             }
         }

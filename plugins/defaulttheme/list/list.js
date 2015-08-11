@@ -75,9 +75,10 @@
             setTimeout(function() {
                 var firstCard = view.querySelector('.card');
                 if (firstCard) {
+                    slyFrame.toCenter(firstCard, true);
                     Emby.FocusManager.focus(firstCard);
                 }
-            }, 500);
+            }, 700);
         });
     }
 
@@ -89,7 +90,7 @@
             var focused = Emby.FocusManager.focusableParent(e.target);
 
             if (focused) {
-                slyFrame.toCenter(focused);
+                slyFrame.toCenter(focused, true);
             }
         });
     }

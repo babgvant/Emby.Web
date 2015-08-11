@@ -144,3 +144,7 @@ paper-dialog {
 .emptyStar {
     color: #bbb !important;
 }
+
+.userViewNames paper-button[focused] {
+    color: #2ad !important;
+}
