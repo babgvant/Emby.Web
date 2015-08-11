@@ -37,7 +37,7 @@
 
     function createHeaderScroller(view) {
 
-        require(['Sly', 'loading'], function (Sly, loading) {
+        require(['slyScroller', 'loading'], function (slyScroller, loading) {
 
             view = view.querySelector('.userViewNames');
 
@@ -65,10 +65,11 @@
                 clickBar: 1
             };
 
-            var frame = new Sly(scrollFrame, options).init();
-
-            loading.hide();
-            Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
+            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                slyFrame.init();
+                loading.hide();
+                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
+            });
         });
     }
 
@@ -198,7 +199,7 @@
     var bodySlyFrame;
     function createHorizontalScroller(view) {
 
-        require(["Sly", 'loading'], function (Sly, loading) {
+        require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
             var scrollFrame = view.querySelector('.scrollFrame');
 
@@ -223,11 +224,11 @@
                 clickBar: 1
             };
 
-            bodySlyFrame = new Sly(scrollFrame, options);
-
-            bodySlyFrame.init();
-
-            initFocusHandler(view, bodySlyFrame);
+            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                bodySlyFrame = slyFrame;
+                bodySlyFrame.init();
+                initFocusHandler(view, bodySlyFrame);
+            });
         });
     }
 
