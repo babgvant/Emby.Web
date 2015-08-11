@@ -110,7 +110,21 @@
     max-height: 400px;
 }
 
-@media all and (min-height: 1081px) {
+@media all and (min-height: 800px) {
+
+    .detailImage {
+        max-height: 440px;
+    }
+}
+
+@media all and (min-height: 940px) {
+
+    .detailImage {
+        max-height: 500px;
+    }
+}
+
+@media all and (min-height: 1080px) {
 
     .detailImage {
         max-height: 700px;
