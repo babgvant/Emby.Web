@@ -10,6 +10,9 @@
     <div class="backdropContainer hide"></div>
     <div class="mainHeader"></div>
     <neon-animated-pages class="mainAnimatedPages themeContainer"><neon-animatable class="mainAnimatedPage"></neon-animatable><neon-animatable class="mainAnimatedPage"></neon-animatable><neon-animatable class="mainAnimatedPage"></neon-animatable></neon-animated-pages>
-    <script data-main="app.js" src="bower_components/requirejs/require.js"></script>
+    <script src="bower_components/requirejs/require.js"></script>
+    <script>
+        require(['app.js?t=' + new Date().getTime()]);
+    </script>
 </body>
 </html>
