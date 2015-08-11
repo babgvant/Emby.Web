@@ -46,7 +46,7 @@
 
     function createHorizontalScroller(view) {
 
-        require(["Sly", 'loading'], function (Sly, loading) {
+        require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
             var scrollFrame = view.querySelector('.scrollFrame');
 
@@ -71,18 +71,18 @@
                 clickBar: 1
             };
 
-            var slyFrame = new Sly(scrollFrame, options);
-            slyFrame.init();
+            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                slyFrame.init();
+                initFocusHandler(view, slyFrame);
 
-            initFocusHandler(view, slyFrame);
-
-            setTimeout(function() {
-                var firstCard = view.querySelector('.card');
-                if (firstCard) {
-                    slyFrame.toCenter(firstCard, true);
-                    Emby.FocusManager.focus(firstCard);
-                }
-            }, 700);
+                setTimeout(function () {
+                    var firstCard = view.querySelector('.card');
+                    if (firstCard) {
+                        slyFrame.toCenter(firstCard, true);
+                        Emby.FocusManager.focus(firstCard);
+                    }
+                }, 400);
+            });
         });
     }
 

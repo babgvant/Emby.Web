@@ -59,14 +59,10 @@
             images = remaining;
 
             if (!images.length) {
-                Events.off(document, 'focusin.' + eventNamespace);
                 Events.off(document, 'scroll.' + eventNamespace);
                 Events.off(window, 'resize.' + eventNamespace);
             }
         }
-
-        // sly swallows scroll events, so react when focus changes
-        Events.on(document, 'focusin.' + eventNamespace, unveil);
 
         Events.on(document, 'scroll.' + eventNamespace, unveil);
         Events.on(window, 'resize.' + eventNamespace, unveil);

@@ -166,7 +166,8 @@
             apphost: "components/apphost",
             audioManager: "js/audiomanager",
             screensaverManager: "js/screensavermanager",
-            viewManager: "js/viewmanager"
+            viewManager: "js/viewmanager",
+            slyScroller: "components/slyscroller"
         };
 
         if (enableWebComponents()) {

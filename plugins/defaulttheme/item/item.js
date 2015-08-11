@@ -40,7 +40,7 @@
 
     function createVerticalScroller(view) {
 
-        require(["Sly", 'loading'], function (Sly, loading) {
+        require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
             var scrollFrame = view.querySelector('.scrollFrame');
 
@@ -62,9 +62,10 @@
                 clickBar: 1
             };
 
-            var bodySlyFrame = new Sly(scrollFrame, options).init();
-
-            initFocusHandler(view, bodySlyFrame);
+            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                slyFrame.init();
+                initFocusHandler(view, slyFrame);
+            });
         });
     }
 
