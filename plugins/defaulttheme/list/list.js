@@ -17,25 +17,26 @@
                 Emby.Backdrop.setBackdrops([item]);
 
                 if (!isRestored) {
-                    loadChildren(element, item);
+                    loadChildren(element, item, loading);
                     createHorizontalScroller(element.querySelector('.horizontalPageContent'));
                 }
 
-                loading.hide();
             });
         });
     });
 
-    function loadChildren(view, item) {
+    function loadChildren(view, item, loading) {
 
         Emby.Models.children(item).then(function(result) {
 
             DefaultTheme.CardBuilder.buildCards(result.Items, {
-                parentContainer: view.querySelector('.scrollContent'),
-                itemsContainer: view.querySelector('.scrollContent'),
+                parentContainer: view.querySelector('.scrollSlider'),
+                itemsContainer: view.querySelector('.scrollSlider'),
                 shape: 'auto',
-                rows: 3
+                rows: 2
             });
+
+            loading.hide();
         });
     }
 
@@ -70,6 +71,13 @@
             slyFrame.init();
 
             initFocusHandler(view, slyFrame);
+
+            setTimeout(function() {
+                var firstCard = view.querySelector('.card');
+                if (firstCard) {
+                    Emby.FocusManager.focus(firstCard);
+                }
+            }, 500);
         });
     }
 

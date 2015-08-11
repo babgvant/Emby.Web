@@ -2,14 +2,14 @@
     bottom: 100px;
 }
 
-.listBody .squareCard {
-    width: 220px;
+.listPageContainer .squareCard {
+    width: 340px;
 }
 
-.listBody .portraitCard {
-    width: 170px;
+.listPageContainer .portraitCard {
+    width: 250px;
 }
 
-.listBody .backdropCard {
-    width: 380px;
+.listPageContainer .backdropCard {
+    width: 540px;
 }
