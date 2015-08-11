@@ -244,66 +244,85 @@
         return navigator.userAgent.toLowerCase().indexOf('chrome/') != -1;
     }
 
-    function loadCoreDependencies(callback) {
-
+    function loadApiClientDependencies(callback) {
+        
         var list = [
-          'bower_components/page.js/page.js',
-          'bower_components/bean/bean.min',
-          'js/pluginmanager',
-          'js/routes',
-          'js/globalize',
-          'js/thememanager',
-          'js/focusmanager',
-          'js/inputmanager',
-          'js/playbackmanager',
-          'js/imageloader',
-          'js/models',
-          'js/backdrops',
-          'js/dom',
-          'js/datetime',
-          'apiclient/logger',
-          'apiclient/sha1',
-          'apiclient/md5',
-          'apiclient/credentials',
-          'apiclient/device',
-          'apiclient/store',
-          'apiclient/deferred',
-          'apiclient/events',
-          'apiclient/ajax',
-          'apiclient/apiclient',
-          'apiclient/connectionmanager'
+           'bower_components/bean/bean.min',
+           'apiclient/logger',
+           'apiclient/sha1',
+           'apiclient/md5',
+           'apiclient/credentials',
+           'apiclient/device',
+           'apiclient/store',
+           'apiclient/deferred',
+           'apiclient/events',
+           'apiclient/ajax',
+           'apiclient/apiclient',
+           'apiclient/connectionmanager'
         ];
 
-        list.push('screensaverManager');
+        require(list, function (bean) {
 
-        if (enableWebComponents()) {
-            list.push('webcomponentsjs');
-        } else {
-            // If not using webcomponents then we'll at least need the web animations polyfill
-            list.push('bower_components/web-animations-js/web-animations-next.min');
-        }
-
-        if (!globalScope.Promise) {
-            list.push('bower_components/native-promise-only/lib/npo.src');
-        }
-
-        require(list, function (page, bean) {
-
-            window.page = page;
             window.bean = bean;
 
             define("httpclient", [], function () {
                 return window.HttpClient;
             });
 
-            var secondLevelDeps = [];
+            callback();
+        });
+    }
+
+    function loadCoreDependencies(callback) {
+
+        loadApiClientDependencies(function() {
+            
+            var list = [
+             'bower_components/page.js/page.js',
+             'js/pluginmanager',
+             'js/routes',
+             'js/globalize',
+             'js/thememanager',
+             'js/focusmanager',
+             'js/inputmanager',
+             'js/playbackmanager',
+             'js/imageloader',
+             'js/models',
+             'js/backdrops',
+             'js/dom',
+             'js/datetime'
+            ];
+
+            list.push('screensaverManager');
 
             if (enableWebComponents()) {
-                secondLevelDeps.push('html!bower_components/neon-animation/neon-animated-pages.html');
+                list.push('webcomponentsjs');
+            } else {
+                // If not using webcomponents then we'll at least need the web animations polyfill
+                list.push('bower_components/web-animations-js/web-animations-next.min');
             }
 
-            // Second level dependencies that have to be loaded after the first set
-            require(secondLevelDeps, callback);
+            if (!globalScope.Promise) {
+                list.push('bower_components/native-promise-only/lib/npo.src');
+            }
+
+            require(list, function (page) {
+
+                window.page = page;
+
+                define("httpclient", [], function () {
+                    return window.HttpClient;
+                });
+
+                var secondLevelDeps = [];
+
+                if (enableWebComponents()) {
+                    secondLevelDeps.push('html!bower_components/neon-animation/neon-animated-pages.html');
+                }
+
+                // Second level dependencies that have to be loaded after the first set
+                require(secondLevelDeps, callback);
+            });
         });
     }
 
