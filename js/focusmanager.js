@@ -21,7 +21,15 @@
 
     function isFocusable(elem) {
 
-        return focusableTagNames.indexOf(elem.tagName) != -1;
+        if (focusableTagNames.indexOf(elem.tagName) != -1) {
+            return true;
+        }
+
+        if (elem.classList && elem.classList.contains('focusable')) {
+            return true;
+        }
+
+        return false;
     }
 
     function focusableParent(elem) {
@@ -38,7 +46,7 @@
     }
 
     function getFocusableElements(parent) {
-        var elems = (parent || document).querySelectorAll('input,textarea,button,paper-button,paper-icon-button,paper-fab');
+        var elems = (parent || document).querySelectorAll('input,textarea,button,paper-button,paper-icon-button,paper-fab,.focusable');
         var focusableElements = [];
 
         for (var i = 0, length = elems.length; i < length; i++) {

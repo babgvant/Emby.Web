@@ -55,7 +55,15 @@
 }
 
 .itemPageMain {
-    width: 63%;
+    width: 65%;
+}
+
+.miniMainSection .itemPageSide {
+    max-width: 17%;
+}
+
+.miniMainSection .itemPageMain {
+    width: 83%;
 }
 
 .bulletSeparator {

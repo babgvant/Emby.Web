@@ -234,11 +234,11 @@
 
     function focusElement(originalElement, elem) {
 
-        var newParent = Emby.Dom.parentWithClass(elem, 'scrollSlider');
+        var scrollSlider = Emby.Dom.parentWithClass(elem, 'scrollSlider');
 
-        if (newParent && newParent != Emby.Dom.parentWithClass(originalElement, 'scrollSlider')) {
+        if (scrollSlider && scrollSlider != Emby.Dom.parentWithClass(originalElement, 'scrollSlider')) {
 
-            var selected = newParent.querySelector('.selected');
+            var selected = scrollSlider.querySelector('.selected');
 
             if (selected) {
                 Emby.FocusManager.focus(selected);

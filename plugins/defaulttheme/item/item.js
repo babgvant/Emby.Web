@@ -29,6 +29,8 @@
                     renderScenes(element, item);
                     renderSimilar(element, item);
                     createVerticalScroller(element);
+
+                    focusMainSection.call(element.querySelector('.mainSection'));
                 }
 
                 // Always refresh this
@@ -37,7 +39,16 @@
                 loading.hide();
             });
         });
+
+        if (!isRestored) {
+            element.querySelector('.mainSection').focus = focusMainSection;
+        }
     });
+
+    function focusMainSection() {
+
+        Emby.FocusManager.focus(Emby.FocusManager.getFocusableElements(this)[0]);
+    }
 
     function setTitle(item) {
 
@@ -56,7 +67,7 @@
                 });
             }
             else if (item.ParentLogoImageTag) {
-                
+
                 url = apiClient.getScaledImageUrl(item.ParentLogoItemId, {
                     type: "Logo",
                     tag: item.ParentLogoImageTag
@@ -188,6 +199,12 @@
     }
 
     function renderDetails(view, item) {
+
+        if (item.Type == "Season") {
+            view.querySelector('.mainSection').classList.add('miniMainSection');
+        } else {
+            view.querySelector('.mainSection').classList.remove('miniMainSection');
+        }
 
         var genresElem = view.querySelector('.genres')
         if (item.Genres && item.Genres.length) {
