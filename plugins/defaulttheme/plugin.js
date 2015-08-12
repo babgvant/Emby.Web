@@ -122,6 +122,33 @@ define([], function () {
                 ]
             });
 
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'movies/movies.html'),
+                id: 'defaulttheme-movies',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'movies/movies.js')
+                ]
+            });
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'livetv/livetv.html'),
+                id: 'defaulttheme-livetv',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'livetv/livetv.js')
+                ]
+            });
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'tv/tv.html'),
+                id: 'defaulttheme-tv',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'tv/tv.js')
+                ]
+            });
+
             return routes;
         };
 
