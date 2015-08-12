@@ -129,7 +129,7 @@ paper-dialog {
     background: #38c;
 }
 
-.allGenericCard .cardImageContainer {
+.allGenericCard .cardImageContainer, .artistsCard .cardImageContainer {
     background: #4CAF50;
 }
 
@@ -147,4 +147,5 @@ paper-dialog {
 
 .userViewNames paper-button[focused] {
     color: #2ad !important;
+    opacity: 1;
 }

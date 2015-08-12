@@ -1,17 +1,3 @@
-.userViewNames {
-    margin-bottom: 14px;
-}
-
-    .userViewNames paper-button {
-        min-width: initial;
-        text-transform: none !important;
-    }
-
-    .userViewNames .scrollSlider {
-        padding-left: 70px;
-        padding-right: 70px;
-    }
-
 .homeSection {
     float: left;
     margin-right: 40px;
@@ -46,28 +32,15 @@
         padding-bottom: 50%;
     }
 
-.homeBody {
-    height: 458px;
-}
-
-
 @media all and (max-height: 1070px) {
 
     .homePageContainer {
         bottom: 40px;
         top: 100px;
     }
-
-    .userViewNames h2 {
-        margin-top: 0;
-    }
 }
 
 @media all and (min-height: 1000px) {
-
-    .homeBody {
-        height: 618px;
-    }
 
     .homeSquareCard {
         width: 194px;

@@ -64,5 +64,6 @@
     "RecommendationBecauseYouWatched": "Because you watched {0}",
     "RecommendationDirectedBy": "Directed by {0}",
     "RecommendationStarring": "Starring {0}",
-    "SimilarTo":  "Similar to {0}"
+    "SimilarTo":  "Similar to {0}",
+    "AlbumArtists":  "Album Artists"
 }

@@ -48,6 +48,7 @@ define([], function () {
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),
                 Emby.PluginManager.mapRequire(self, 'cards/cardbuilder.js'),
+                Emby.PluginManager.mapRequire(self, 'cards/tabbedpage.js'),
                 'html!bower_components/iron-icon/iron-icon.html',
                 'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
                 'html!' + Emby.PluginManager.mapRequire(self, 'icons.html'),
@@ -109,6 +110,15 @@ define([], function () {
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'list/list.js'),
                     'css!' + Emby.PluginManager.mapRequire(self, 'list/list.css')
+                ]
+            });
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'music/music.html'),
+                id: 'defaulttheme-music',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'music/music.js')
                 ]
             });
 
