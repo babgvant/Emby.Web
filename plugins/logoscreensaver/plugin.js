@@ -133,6 +133,14 @@ define([], function () {
 
         }
 
+        function fadeOut(elem, iterations) {
+            var keyframes = [
+              { opacity: '1', offset: 0 },
+              { opacity: '0', offset: 1 }];
+            var timing = { duration: 900, iterations: iterations };
+            return elem.animate(keyframes, timing);
+        }
+
         function stopInterval() {
             if (interval) {
                 clearInterval(interval);
@@ -161,13 +169,18 @@ define([], function () {
 
         self.hide = function () {
 
+            stopInterval();
+
             var elem = document.querySelector('.logoScreenSaver');
 
             if (elem) {
-                elem.parentNode.removeChild(elem);
-            }
 
-            stopInterval();
+                var animation = fadeOut(elem, 1);
+
+                animation.onfinish = function() {
+                    elem.parentNode.removeChild(elem);
+                };
+            }
         };
     }
 });
