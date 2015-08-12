@@ -226,7 +226,7 @@ define([], function () {
 
             document.querySelector('.logo').classList.add('hide');
 
-            document.querySelector('.searchButtonContainer').classList.remove('invisible');
+            document.querySelector('.searchButtonContainer').classList.remove('hide');
 
             var headerUserButton = document.querySelector('.headerUserButton');
 
@@ -244,7 +244,7 @@ define([], function () {
                 headerUserButton.icon = 'person';
             }
 
-            document.querySelector('.userButtonContainer').classList.remove('invisible');
+            document.querySelector('.userButtonContainer').classList.remove('hide');
         }
 
         function onLocalUserSignedOut(e) {
@@ -252,8 +252,8 @@ define([], function () {
             // Put the logo back in the page title
             document.querySelector('.logo').classList.remove('hide');
 
-            document.querySelector('.searchButtonContainer').classList.add('invisible');
-            document.querySelector('.userButtonContainer').classList.add('invisible');
+            document.querySelector('.searchButtonContainer').classList.add('hide');
+            document.querySelector('.userButtonContainer').classList.add('hide');
         }
 
         function onViewShow(e) {
