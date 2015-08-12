@@ -10,6 +10,8 @@
 
         path = path.replace(baseRoute, '');
 
+        Logger.log('Defining route: ' + path);
+
         page(path, Emby.Page.getHandler(newRoute));
     }
 
@@ -24,6 +26,8 @@
     }
 
     function defineCoreRoutes() {
+
+        Logger.log('Defining core routes');
 
         var baseRoute = window.location.pathname.replace('/index.html', '');
         if (baseRoute.lastIndexOf('/') == baseRoute.length - 1) {
@@ -95,6 +99,8 @@
 
     function definePluginRoutes() {
 
+        Logger.log('Defining plugin routes');
+
         var plugins = Emby.PluginManager.plugins();
 
         for (var i = 0, length = plugins.length; i < length; i++) {
@@ -154,6 +160,8 @@
     }
 
     function initRequire() {
+
+        console.log('Initializing requirejs');
 
         var componentType = enableWebComponents() ? 'polymer' : 'default';
 
@@ -246,7 +254,7 @@
     }
 
     function loadApiClientDependencies(callback) {
-        
+
         var list = [
            'bower_components/bean/bean.min',
            'apiclient/logger',
@@ -276,8 +284,10 @@
 
     function loadCoreDependencies(callback) {
 
-        loadApiClientDependencies(function() {
-            
+        console.log('Loading core dependencies');
+
+        loadApiClientDependencies(function () {
+
             var list = [
              'bower_components/page.js/page.js',
              'js/pluginmanager',
@@ -329,6 +339,8 @@
 
     function loadPlugins() {
 
+        console.log('Loading installed plugins');
+
         // Load installed plugins
 
         var list = [
@@ -345,6 +357,8 @@
     }
 
     function loadPlugin(url) {
+
+        console.log('Loading plugin: ' + url);
 
         return new Promise(function (resolve, reject) {
 
@@ -388,6 +402,8 @@
     }
 
     function loadPresentation() {
+
+        Logger.log('Loading presentation');
 
         // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
         loadDefaultTheme(function () {
