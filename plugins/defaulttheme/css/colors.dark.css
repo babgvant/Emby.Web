@@ -90,7 +90,7 @@ paper-material[elevation="2"] {
     background-color: #444;
 }
 
-.backButtonContainer .backButton {
+.headerBackButton {
     color: #aaa;
 }
 

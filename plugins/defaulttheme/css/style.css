@@ -2,8 +2,12 @@
     display: none !important;
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 .header {
-    padding: 36px 36px 36px 26px;
+    height: 132px;
     position: relative;
 }
 
@@ -33,6 +37,40 @@
     }
 }
 
+.pageTitle {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    height: 50px;
+}
+
+.pageTitleWithLogo {
+    background-position: left center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 300px;
+}
+
+@media all and (min-width: 2000px) {
+
+    .pageTitle {
+        height: 60px;
+    }
+
+    .pageTitleWithLogo {
+        width: 400px;
+    }
+}
+
+.headerBackButton {
+    margin-left: -25px;
+    padding: 0 4px;
+}
+
+.mouseIdle .headerBackButton {
+    visibility: hidden;
+}
+
 .header .headerButtonContainer {
     display: inline-block;
     vertical-align: middle;
@@ -46,10 +84,6 @@
 .userButtonContainer iron-icon {
     width: 44px;
     height: 44px;
-}
-
-.backButtonContainer {
-    margin-right: .5em;
 }
 
 .searchButtonContainer {
@@ -67,9 +101,15 @@
     right: 35px;
 }
 
-.header .headerRight {
+.header .headerLeft {
     position: fixed;
     top: 40px;
+    left: 45px;
+}
+
+.header .headerRight {
+    position: fixed;
+    top: 34px;
     right: 45px;
     text-align: right;
 }

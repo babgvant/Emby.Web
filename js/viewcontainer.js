@@ -1,6 +1,6 @@
 define([], function () {
 
-    var pageContainerCount = 3;
+    var pageContainerCount = 4;
 
     function loadView(options) {
 

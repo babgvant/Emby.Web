@@ -86,7 +86,11 @@
 
         require(['httpclient'], function (httpclient) {
 
-            var url = baseUrl() + '/' + route.path;
+            var url = route.path;
+
+            if (url.toLowerCase().indexOf('http') != 0) {
+                url = baseUrl() + '/' + url;
+            }
 
             httpclient.request({
 
@@ -364,6 +368,10 @@
         return history.length > 1;
     }
     function show(path, options) {
+
+        var baseRoute = Emby.Page.baseUrl();
+        path = path.replace(baseRoute, '');
+
         page.show(path, options);
     }
 
@@ -384,6 +392,10 @@
         Emby.ThemeManager.getCurrentTheme().showItem(item);
     }
 
+    function setTitle(title) {
+        Emby.ThemeManager.getCurrentTheme().setTitle(title);
+    }
+
     globalScope.Emby.Page = {
         getHandler: getHandler,
         param: param,
@@ -395,7 +407,8 @@
         current: current,
         redirectToLogin: redirectToLogin,
         goHome: goHome,
-        showItem: showItem
+        showItem: showItem,
+        setTitle: setTitle
     };
 
     // Add some shortcuts

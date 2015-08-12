@@ -60,8 +60,8 @@ button.card {
 }
 
 .card[focused] paper-material, .card:focus .cardBox {
-    -moz-box-shadow: #2ad 0px 0px 0 5px;
-    box-shadow: #2ad 0px 0px 0 5px;
+    -moz-box-shadow: #2ad 0px 0px 0 4px;
+    box-shadow: #2ad 0px 0px 0 4px;
 }
 
 .cardImageContainer {
