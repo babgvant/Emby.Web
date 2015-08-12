@@ -6,6 +6,8 @@
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
 
+        Emby.Page.setTitle(null);
+
         require(['loading'], function (loading) {
             loading.hide();
         });
@@ -30,6 +32,8 @@
         var element = e.detail.element;
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
+
+        Emby.Page.setTitle(null);
 
         element.querySelector('.txtUserName').value = params.user || '';
         element.querySelector('.txtPassword').value = '';
@@ -84,6 +88,8 @@
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
 
+        Emby.Page.setTitle(null);
+
         element.querySelector('.txtServerHost').value = '';
         element.querySelector('.txtServerPort').value = '8096';
 
@@ -137,6 +143,8 @@
         var element = e.detail.element;
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
+
+        Emby.Page.setTitle(null);
 
         if (!isRestored) {
             element.querySelector('form').addEventListener('submit', function (e) {
@@ -271,6 +279,8 @@
         var isRestored = e.detail.isRestored;
 
         var serverId = params.serverid;
+
+        Emby.Page.setTitle(null);
 
         require(['connectionManager', 'loading'], function (connectionManager, loading) {
 
@@ -469,6 +479,8 @@
         var element = e.detail.element;
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
+
+        Emby.Page.setTitle(null);
 
         require(['connectionManager', 'loading'], function (connectionManager, loading) {
 

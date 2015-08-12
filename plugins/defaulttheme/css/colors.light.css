@@ -78,6 +78,6 @@ paper-button {
     background-color: #444;
 }
 
-.backButtonContainer .backButton {
+.headerBackButton {
     color: #bbb;
 }

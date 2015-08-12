@@ -131,6 +131,13 @@
     }
 }
 
+@media all and (min-height: 1440px) {
+
+    .detailImage {
+        max-height: 900px;
+    }
+}
+
 .nameContainer {
     text-align: center;
 }

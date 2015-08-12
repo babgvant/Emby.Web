@@ -6,6 +6,8 @@
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
 
+        Emby.Page.setTitle(null);
+
         if (!isRestored) {
             Emby.Backdrop.clear();
 
@@ -47,7 +49,7 @@
 
             var options = {
                 horizontal: 1,
-                itemNav: 'basic',
+                itemNav: 'centered',
                 mouseDragging: 1,
                 touchDragging: 1,
                 slidee: view.querySelector('.scrollSlider'),

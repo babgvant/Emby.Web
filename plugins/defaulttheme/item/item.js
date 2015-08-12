@@ -17,6 +17,7 @@
                 // If it's a person, leave the backdrop image from wherever we came from
                 if (item.Type != 'Person') {
                     Emby.Backdrop.setBackdrops([item]);
+                    setTitle(item);
                 }
 
                 if (!isRestored) {
@@ -37,6 +38,41 @@
             });
         });
     });
+
+    function setTitle(item) {
+
+        require(['connectionManager'], function (connectionManager) {
+
+            var apiClient = connectionManager.getApiClient(item.ServerId);
+
+            var imageTags = item.ImageTags || {};
+            var url;
+
+            if (imageTags.Logo) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Logo",
+                    tag: item.ImageTags.Logo
+                });
+            }
+            else if (item.ParentLogoImageTag) {
+                
+                url = apiClient.getScaledImageUrl(item.ParentLogoItemId, {
+                    type: "Logo",
+                    tag: item.ParentLogoImageTag
+                });
+            }
+
+            if (url) {
+
+                var pageTitle = document.querySelector('.pageTitle');
+                pageTitle.style.backgroundImage = "url('" + url + "')";
+                pageTitle.classList.add('pageTitleWithLogo');
+            } else {
+                Emby.Page.setTitle('');
+            }
+        });
+    }
 
     function createVerticalScroller(view) {
 
@@ -86,31 +122,6 @@
 
         var nameContainer = view.querySelector('.nameContainer');
         nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
-    }
-
-    function renderLogo(view, item) {
-
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.getApiClient(item.ServerId);
-            var nameContainer = view.querySelector('.nameContainer');
-
-            var imageTags = item.ImageTags || {};
-
-            if (imageTags.Logo) {
-
-                var url = apiClient.getScaledImageUrl(item.Id, {
-                    type: "Logo",
-                    width: 200,
-                    tag: item.ImageTags.Logo
-                });
-
-                nameContainer.innerHTML = '<img class="itemLogo" src="' + url + '" />';
-                return;
-            }
-
-            nameContainer.innerHTML = '<h2>' + DefaultTheme.CardBuilder.getDisplayName(item) + '</h2>';
-        });
     }
 
     function renderImage(view, item) {

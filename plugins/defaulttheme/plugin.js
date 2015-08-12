@@ -156,6 +156,16 @@ define([], function () {
             }
         };
 
+        self.setTitle = function(title) {
+
+            title = title || '&nbsp;';
+
+            var pageTitle = document.querySelector('.pageTitle');
+            pageTitle.classList.remove('pageTitleWithLogo');
+            pageTitle.style.backgroundImage = null;
+            pageTitle.innerHTML = title;
+        };
+
         function loadControlBox() {
 
             require(['apphost'], function (apphost) {
@@ -216,7 +226,7 @@ define([], function () {
 
             document.querySelector('.logo').classList.add('hide');
 
-            document.querySelector('.searchButtonContainer').classList.remove('hide');
+            document.querySelector('.searchButtonContainer').classList.remove('invisible');
 
             var headerUserButton = document.querySelector('.headerUserButton');
 
@@ -234,7 +244,7 @@ define([], function () {
                 headerUserButton.icon = 'person';
             }
 
-            document.querySelector('.userButtonContainer').classList.remove('hide');
+            document.querySelector('.userButtonContainer').classList.remove('invisible');
         }
 
         function onLocalUserSignedOut(e) {
@@ -242,16 +252,16 @@ define([], function () {
             // Put the logo back in the page title
             document.querySelector('.logo').classList.remove('hide');
 
-            document.querySelector('.searchButtonContainer').classList.add('hide');
-            document.querySelector('.userButtonContainer').classList.add('hide');
+            document.querySelector('.searchButtonContainer').classList.add('invisible');
+            document.querySelector('.userButtonContainer').classList.add('invisible');
         }
 
         function onViewShow(e) {
 
             if (Emby.Page.canGoBack()) {
-                document.querySelector('.backButtonContainer').classList.remove('hide');
+                document.querySelector('.headerBackButton').classList.remove('hide');
             } else {
-                document.querySelector('.backButtonContainer').classList.add('hide');
+                document.querySelector('.headerBackButton').classList.add('hide');
             }
         }
     }
