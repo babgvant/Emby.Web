@@ -30,7 +30,7 @@
         });
     }
 
-    function loadViewContent(page, slyFrame, id, type) {
+    function loadViewContent(page, id, type) {
 
         type = (type || '').toLowerCase();
 
@@ -69,14 +69,13 @@
 
             }).then(function (html) {
 
-                loadViewHtml(page, slyFrame, id, html, viewName);
+                loadViewHtml(page, id, html, viewName);
             });
         });
     }
 
-    function loadViewHtml(page, slyFrame, parentId, html, viewName) {
+    function loadViewHtml(page, parentId, html, viewName) {
 
-        slyFrame.slideTo(0, true);
         var homeScrollContent = page.querySelector('.scrollContent');
 
         html = '<div class="homePanel">' + html + '</div>';

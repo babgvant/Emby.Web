@@ -58,7 +58,7 @@
         tabbedPage.renderTabs(tabs);
     }
 
-    function loadViewContent(page, slyFrame, id, type) {
+    function loadViewContent(page, id, type) {
 
     }
 
