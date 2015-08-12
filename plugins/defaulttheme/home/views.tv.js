@@ -106,6 +106,11 @@
         });
     }
 
+    function gotoTvView(tab, parentId) {
+
+        Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'tv/tv.html?tab=' + tab + "&parentid=" + parentId));
+    }
+
     function view(element, parentId) {
 
         var self = this;
@@ -114,6 +119,14 @@
         loadResume(element, parentId);
         loadNextUp(element, parentId);
         loadLatest(element, parentId);
+
+        element.querySelector('.allSeriesCard').addEventListener('click', function () {
+            gotoTvView('series', parentId);
+        });
+
+        element.querySelector('.genresCard').addEventListener('click', function () {
+            gotoTvView('genres', parentId);
+        });
 
         self.destroy = function () {
 

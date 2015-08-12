@@ -1,6 +1,6 @@
 (function (globalScope) {
 
-    function createHeaderScroller(view) {
+    function createHeaderScroller(view, initialTabId) {
 
         require(['slyScroller', 'loading'], function (slyScroller, loading) {
 
@@ -33,7 +33,13 @@
             slyScroller.create(scrollFrame, options).then(function (slyFrame) {
                 slyFrame.init();
                 loading.hide();
-                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
+
+                var initialTab = initialTabId ? view.querySelector('.btnUserViewHeader[data-id=\'' + initialTabId + '\']') : null;
+
+                if (!initialTab) {
+                    initialTab = view.querySelector('.btnUserViewHeader');
+                }
+                Emby.FocusManager.focus(initialTab);
             });
         });
     }
@@ -122,7 +128,7 @@
 
         var self = this;
 
-        self.renderTabs = function (tabs) {
+        self.renderTabs = function (tabs, initialTabId) {
 
             page.querySelector('.viewsScrollSlider').innerHTML = tabs.map(function (i) {
 
@@ -130,7 +136,7 @@
 
             }).join('');
 
-            createHeaderScroller(page);
+            createHeaderScroller(page, initialTabId);
             initEvents(page, self);
             createHorizontalScroller(page.querySelector('.homeBody'), self);
         };

@@ -97,6 +97,10 @@
     right: 35px;
 }
 
+.mouseIdle .controlBox {
+    display: none;
+}
+
 .header .headerLeft {
     position: fixed;
     top: 40px;

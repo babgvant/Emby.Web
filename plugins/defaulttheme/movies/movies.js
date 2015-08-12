@@ -18,14 +18,14 @@
                 Emby.Backdrop.setBackdrops([item]);
 
                 if (!isRestored) {
-                    renderTabs(element, params.tab);
+                    renderTabs(element);
                 }
             });
         });
 
     });
 
-    function renderTabs(page, initialTabId) {
+    function renderTabs(page) {
 
         var tabs = [
         {
@@ -55,7 +55,7 @@
 
         var tabbedPage = new DefaultTheme.TabbedPage(page);
         tabbedPage.loadViewContent = loadViewContent;
-        tabbedPage.renderTabs(tabs, initialTabId);
+        tabbedPage.renderTabs(tabs);
     }
 
     function loadViewContent(page, id, type) {

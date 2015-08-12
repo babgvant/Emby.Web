@@ -1,6 +1,6 @@
 (function () {
 
-    document.addEventListener("viewshow-defaulttheme-music", function (e) {
+    document.addEventListener("viewshow-defaulttheme-tv", function (e) {
 
         var element = e.detail.element;
         var params = e.detail.params;
@@ -29,28 +29,24 @@
 
         var tabs = [
         {
-            Name: Globalize.translate('Albums'),
-            Id: "albums"
+            Name: Globalize.translate('Suggested'),
+            Id: "suggested"
         },
         {
-            Name: Globalize.translate('AlbumArtists'),
-            Id: "albumartists"
+            Name: Globalize.translate('Latest'),
+            Id: "latest"
         },
         {
-            Name: Globalize.translate('Artists'),
-            Id: "artists"
+            Name: Globalize.translate('Series'),
+            Id: "series"
         },
         {
-            Name: Globalize.translate('Playlists'),
-            Id: "playlists"
+            Name: Globalize.translate('Upcoming'),
+            Id: "upcoming"
         },
         {
             Name: Globalize.translate('Genres'),
             Id: "genres"
-        },
-        {
-            Name: Globalize.translate('Songs'),
-            Id: "songs"
         }];
 
         var tabbedPage = new DefaultTheme.TabbedPage(page);
