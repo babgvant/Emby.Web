@@ -65,7 +65,9 @@
 
         var btn = page.querySelector(".btnUserViewHeader[data-id='" + id + "']");
 
-        self.loadViewContent(page, self.bodySlyFrame, id, btn.getAttribute('data-type'));
+        self.bodySlyFrame.slideTo(0, true);
+
+        self.loadViewContent(page, id, btn.getAttribute('data-type'));
     }
 
     function createHorizontalScroller(view, instance) {
