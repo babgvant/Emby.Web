@@ -47,7 +47,11 @@
 
     function focusMainSection() {
 
-        Emby.FocusManager.focus(Emby.FocusManager.getFocusableElements(this)[0]);
+        var elems = Emby.FocusManager.getFocusableElements(this);
+
+        if (elems.length) {
+            Emby.FocusManager.focus(elems[0]);
+        }
     }
 
     function setTitle(item) {
