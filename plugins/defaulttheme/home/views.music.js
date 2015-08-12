@@ -110,6 +110,11 @@
         });
     }
 
+    function gotoMusicView(tab, parentId) {
+
+        Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'music/music.html?tab=' + tab + "&parentid=" + parentId));
+    }
+
     function view(element, parentId) {
         var self = this;
 
@@ -121,6 +126,18 @@
             loadPlaylists(element, parentId, apiClient);
             loadRecentlyPlayed(element, parentId, apiClient);
             loadFrequentlyPlayed(element, parentId, apiClient);
+        });
+
+        element.querySelector('.artistsCard').addEventListener('click', function () {
+            gotoMusicView('albumartists', parentId);
+        });
+
+        element.querySelector('.albumsCard').addEventListener('click', function () {
+            gotoMusicView('albums', parentId);
+        });
+
+        element.querySelector('.genresCard').addEventListener('click', function () {
+            gotoMusicView('genres', parentId);
         });
 
         self.destroy = function () {

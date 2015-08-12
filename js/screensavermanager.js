@@ -2,7 +2,7 @@ define([], function () {
 
     function getMinIdleTime() {
         // Returns the minimum amount of idle time required before the screen saver can be displayed
-        return 30000;
+        return 60000;
     }
 
     function ScreenSaverManager() {

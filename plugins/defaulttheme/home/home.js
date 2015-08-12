@@ -16,10 +16,7 @@
                 loading.show();
 
                 renderUserViews(element);
-                createHorizontalScroller(element.querySelector('.homeBody'));
             });
-
-            initEvents(element);
         }
     });
 
@@ -27,112 +24,13 @@
 
         Emby.Models.userViews().then(function (result) {
 
-            page.querySelector('.viewsScrollSlider').innerHTML = result.Items.map(function (i) {
-
-                return '<paper-button class="flat btnUserViewHeader" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h2>' + i.Name + '</h2></paper-button>';
-
-            }).join('');
-
-            createHeaderScroller(page);
+            var tabbedPage = new DefaultTheme.TabbedPage(page);
+            tabbedPage.loadViewContent = loadViewContent;
+            tabbedPage.renderTabs(result.Items);
         });
     }
 
-    function createHeaderScroller(view) {
-
-        require(['slyScroller', 'loading'], function (slyScroller, loading) {
-
-            view = view.querySelector('.userViewNames');
-
-            var scrollFrame = view.querySelector('.scrollFrame');
-
-            scrollFrame.style.display = 'block';
-
-            var options = {
-                horizontal: 1,
-                itemNav: 'centered',
-                mouseDragging: 1,
-                touchDragging: 1,
-                slidee: view.querySelector('.scrollSlider'),
-                itemSelector: '.btnUserViewHeader',
-                activateOn: 'focus',
-                smart: true,
-                easing: 'swing',
-                releaseSwing: true,
-                scrollBar: view.querySelector('.scrollbar'),
-                scrollBy: 200,
-                speed: 200,
-                elasticBounds: 1,
-                dragHandle: 1,
-                dynamicHandle: 1,
-                clickBar: 1
-            };
-
-            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
-                slyFrame.init();
-                loading.hide();
-                Emby.FocusManager.focus(view.querySelector('.btnUserViewHeader'));
-            });
-        });
-    }
-
-    function initEvents(view) {
-
-        // Catch events on the view headers
-        var userViewNames = view.querySelector('.userViewNames');
-        userViewNames.addEventListener('mousedown', function (e) {
-
-            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                elem.focus();
-            }
-        });
-
-        userViewNames.addEventListener('focusin', function (e) {
-
-            var elem = Emby.Dom.parentWithClass(e.target, 'btnUserViewHeader');
-
-            if (elem) {
-                setFocusDelay(view, elem);
-            }
-        });
-    }
-
-    var focusTimeout;
-    function setFocusDelay(view, elem) {
-
-        var viewId = elem.getAttribute('data-id');
-
-        var btn = view.querySelector('.btnUserViewHeader.selected');
-
-        if (btn) {
-
-            if (viewId == btn.getAttribute('data-id')) {
-                return;
-            }
-            btn.classList.remove('selected');
-        }
-
-        elem.classList.add('selected');
-
-        if (focusTimeout) {
-            clearTimeout(focusTimeout);
-        }
-        focusTimeout = setTimeout(function () {
-
-            selectUserView(view, viewId);
-
-        }, 350);
-    }
-
-    function selectUserView(page, id) {
-
-        var btn = page.querySelector(".btnUserViewHeader[data-id='" + id + "']");
-
-        loadViewContent(page, id, btn.getAttribute('data-type'));
-    }
-
-    function loadViewContent(page, id, type) {
+    function loadViewContent(page, slyFrame, id, type) {
 
         type = (type || '').toLowerCase();
 
@@ -171,16 +69,14 @@
 
             }).then(function (html) {
 
-                loadViewHtml(page, id, html, viewName);
+                loadViewHtml(page, slyFrame, id, html, viewName);
             });
         });
     }
 
-    function loadViewHtml(page, parentId, html, viewName) {
+    function loadViewHtml(page, slyFrame, parentId, html, viewName) {
 
-        if (bodySlyFrame) {
-            bodySlyFrame.slideTo(0, true);
-        }
+        slyFrame.slideTo(0, true);
         var homeScrollContent = page.querySelector('.scrollContent');
 
         html = '<div class="homePanel">' + html + '</div>';
@@ -195,55 +91,6 @@
 
             var homePanel = homeScrollContent.querySelector('.homePanel');
             new DefaultTheme[viewName + 'View'](homePanel, parentId);
-        });
-    }
-
-    var bodySlyFrame;
-    function createHorizontalScroller(view) {
-
-        require(["slyScroller", 'loading'], function (slyScroller, loading) {
-
-            var scrollFrame = view.querySelector('.scrollFrame');
-
-            scrollFrame.style.display = 'block';
-
-            var options = {
-                horizontal: 1,
-                itemNav: 0,
-                mouseDragging: 1,
-                touchDragging: 1,
-                slidee: view.querySelector('.scrollSlider'),
-                itemSelector: '.card',
-                smart: true,
-                easing: 'swing',
-                releaseSwing: true,
-                scrollBar: view.querySelector('.scrollbar'),
-                scrollBy: 200,
-                speed: 200,
-                elasticBounds: 1,
-                dragHandle: 1,
-                dynamicHandle: 1,
-                clickBar: 1
-            };
-
-            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
-                bodySlyFrame = slyFrame;
-                bodySlyFrame.init();
-                initFocusHandler(view, bodySlyFrame);
-            });
-        });
-    }
-
-    function initFocusHandler(view, slyFrame) {
-
-        var scrollSlider = view.querySelector('.scrollSlider');
-        scrollSlider.addEventListener('focusin', function (e) {
-
-            var focused = Emby.FocusManager.focusableParent(e.target);
-
-            if (focused) {
-                slyFrame.toCenter(focused);
-            }
         });
     }
 

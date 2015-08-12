@@ -137,7 +137,7 @@ define([], function () {
             var keyframes = [
               { opacity: '1', offset: 0 },
               { opacity: '0', offset: 1 }];
-            var timing = { duration: 900, iterations: iterations };
+            var timing = { duration: 400, iterations: iterations };
             return elem.animate(keyframes, timing);
         }
 
