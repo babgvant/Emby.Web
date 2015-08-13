@@ -141,6 +141,11 @@
 
 .itemScrollFrame.scrollFrameX {
     padding-left: 70px;
+    padding-bottom: 40px;
+}
+
+.topPadded.itemScrollFrame {
+    padding-top: 40px;
 }
 
 @media all and (min-height: 1000px) {
