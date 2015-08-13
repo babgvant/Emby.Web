@@ -121,7 +121,7 @@ paper-dialog {
             color: #fff !important;
         }
 
-.allSeriesCard .cardImageContainer {
+.allSeriesCard .cardImageContainer, .allMoviesCard .cardImageContainer {
     background: #4CAF50;
 }
 
@@ -133,7 +133,7 @@ paper-dialog {
     background: #4CAF50;
 }
 
-.genresCard .cardImageContainer {
+.genresCard .cardImageContainer, .scheduledLiveTvCard .cardImageContainer {
     background: #F44336;
 }
 

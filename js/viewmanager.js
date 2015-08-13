@@ -2,12 +2,17 @@ define([], function () {
 
     var currentView;
 
-    function onViewChange(view, url, isRestore) {
+    function onViewChange(view, viewId, url, isRestore) {
 
         currentView = view;
 
-        // TODO: Is there a better way to determine that the view has loaded as opposed to a delay?
-        setTimeout(function () {
+        var eventDetail = getViewEventDetail(view, url, isRestore);
+
+        if (!isRestore) {
+            view.dispatchEvent(new CustomEvent("viewinit-" + viewId, eventDetail));
+        }
+
+        require(['bower_components/query-string/index'], function () {
 
             if (!isRestore) {
                 Emby.FocusManager.autoFocus(view);
@@ -16,33 +21,26 @@ define([], function () {
                 view.activeElement.focus();
             }
 
-            onShow(view, url, isRestore);
-
-        }, 500);
+            view.dispatchEvent(new CustomEvent("viewshow-" + viewId, eventDetail));
+            view.dispatchEvent(new CustomEvent("viewshow", eventDetail));
+        });
     }
 
-    function onShow(view, url, isRestore) {
+    function getViewEventDetail(view, url, isRestore) {
 
-        require(['bower_components/query-string/index'], function () {
+        var index = url.indexOf('?');
+        var params = index == -1 ? {} : queryString.parse(url.substring(index + 1));
 
-            var index = url.indexOf('?');
-            var params = index == -1 ? {} : queryString.parse(url.substring(index + 1));
-
-            var eventDetail = {
-                detail: {
-                    element: view,
-                    id: view.getAttribute('data-id'),
-                    params: params,
-                    isRestored: isRestore
-                },
-                bubbles: true,
-                cancelable: false
-            };
-
-            document.dispatchEvent(new CustomEvent("viewshow-" + view.getAttribute('data-id'), eventDetail));
-            document.dispatchEvent(new CustomEvent("viewshow", eventDetail));
-
-        });
+        return {
+            detail: {
+                element: view,
+                id: view.getAttribute('data-id'),
+                params: params,
+                isRestored: isRestore
+            },
+            bubbles: true,
+            cancelable: false
+        };
     }
 
     function resetCachedViews() {
@@ -60,7 +58,7 @@ define([], function () {
 
         viewcontainer.tryRestoreView(options).then(function (view) {
 
-            onViewChange(view, options.url, true);
+            onViewChange(view, options.id, options.url, true);
             resolve();
 
         }, reject);
@@ -79,7 +77,7 @@ define([], function () {
 
             require(['viewcontainer'], function (viewcontainer) {
                 viewcontainer.loadView(options).then(function (view) {
-                    onViewChange(view, options.url);
+                    onViewChange(view, options.id, options.url);
                 });
             });
         };

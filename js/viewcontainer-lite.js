@@ -10,11 +10,21 @@ define([], function () {
             html += options.view;
             html += '</div>';
 
+            var currentPage = mainAnimatedPages.querySelector('.page-view');
+
+            if (currentPage) {
+                triggerDestroy(currentPage);
+            }
+
             var mainAnimatedPages = document.querySelector('.mainAnimatedPages');
             mainAnimatedPages.innerHTML = html;
 
             resolve(mainAnimatedPages.querySelector('.page-view'));
         });
+    }
+
+    function triggerDestroy(view) {
+        view.dispatchEvent(new CustomEvent("viewdestroy", {}));
     }
 
     function replaceAnimatedPages() {
@@ -35,7 +45,7 @@ define([], function () {
     }
 
     function reset() {
-        
+
     }
 
     replaceAnimatedPages();

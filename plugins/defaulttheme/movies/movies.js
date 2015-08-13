@@ -1,61 +1,70 @@
 (function () {
 
-    document.addEventListener("viewshow-defaulttheme-music", function (e) {
+    document.addEventListener("viewinit-defaulttheme-movies", function (e) {
 
-        var element = e.detail.element;
-        var params = e.detail.params;
-        var isRestored = e.detail.isRestored;
+        new musicPage(e.detail.element, e.detail.params);
+    });
 
-        require(['loading'], function (loading) {
+    function musicPage(view, params) {
 
-            if (!isRestored) {
-                loading.show();
-            }
+        var self = this;
+        var itemPromise;
 
-            Emby.Models.item(params.parentid).then(function (item) {
+        view.addEventListener('viewshow', function (e) {
 
-                Emby.Page.setTitle(item.Name);
-                Emby.Backdrop.setBackdrops([item]);
+            require(['loading'], function (loading) {
 
-                if (!isRestored) {
-                    renderTabs(element);
+                if (!self.tabbedPage) {
+                    loading.show();
+                    renderTabs(view, params.tab, self);
                 }
+
+                itemPromise = itemPromise || Emby.Models.item(params.parentid);
+
+                itemPromise.then(function (item) {
+
+                    Emby.Page.setTitle(item.Name);
+                    Emby.Backdrop.setBackdrops([item]);
+                });
             });
         });
 
-    });
+        view.addEventListener('viewdestroy', function () {
 
-    function renderTabs(page) {
+            if (self.tabbedPage) {
+                self.tabbedPage.destroy();
+            }
+        });
+    }
+
+    function renderTabs(view, initialTabId, pageInstance) {
 
         var tabs = [
         {
-            Name: Globalize.translate('Albums'),
-            Id: "albums"
+            Name: Globalize.translate('Suggested'),
+            Id: "suggested"
         },
         {
-            Name: Globalize.translate('AlbumArtists'),
-            Id: "albumartists"
-        },
-        {
-            Name: Globalize.translate('Artists'),
-            Id: "artists"
-        },
-        {
-            Name: Globalize.translate('Playlists'),
-            Id: "playlists"
+            Name: Globalize.translate('Movies'),
+            Id: "movies"
         },
         {
             Name: Globalize.translate('Genres'),
             Id: "genres"
         },
         {
-            Name: Globalize.translate('Songs'),
-            Id: "songs"
+            Name: Globalize.translate('Collections'),
+            Id: "collections"
+        },
+        {
+            Name: Globalize.translate('Favorites'),
+            Id: "favorites"
         }];
 
-        var tabbedPage = new DefaultTheme.TabbedPage(page);
+        var tabbedPage = new DefaultTheme.TabbedPage(view);
         tabbedPage.loadViewContent = loadViewContent;
-        tabbedPage.renderTabs(tabs);
+        tabbedPage.renderTabs(tabs, initialTabId);
+        pageInstance.tabbedPage = tabbedPage;
     }
 
     function loadViewContent(page, id, type) {

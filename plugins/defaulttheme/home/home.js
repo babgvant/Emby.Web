@@ -1,32 +1,48 @@
 (function () {
 
-    document.addEventListener("viewshow-defaulttheme-home", function (e) {
+    document.addEventListener("viewinit-defaulttheme-home", function (e) {
 
-        var element = e.detail.element;
-        var params = e.detail.params;
-        var isRestored = e.detail.isRestored;
-
-        Emby.Page.setTitle(null);
-
-        if (!isRestored) {
-            Emby.Backdrop.clear();
-
-            require(['loading'], function (loading) {
-
-                loading.show();
-
-                renderUserViews(element);
-            });
-        }
+        new homePage(e.detail.element, e.detail.params);
     });
 
-    function renderUserViews(page) {
+    function homePage(view, params) {
+
+        var self = this;
+
+        view.addEventListener('viewshow', function (e) {
+
+            var isRestored = e.detail.isRestored;
+
+            Emby.Page.setTitle(null);
+
+            if (!isRestored) {
+                Emby.Backdrop.clear();
+
+                require(['loading'], function (loading) {
+
+                    loading.show();
+
+                    renderTabs(view, self);
+                });
+            }
+        });
+
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.tabbedPage) {
+                self.tabbedPage.destroy();
+            }
+        });
+    }
+
+    function renderTabs(view, pageInstance) {
 
         Emby.Models.userViews().then(function (result) {
 
-            var tabbedPage = new DefaultTheme.TabbedPage(page);
+            var tabbedPage = new DefaultTheme.TabbedPage(view);
             tabbedPage.loadViewContent = loadViewContent;
             tabbedPage.renderTabs(result.Items);
+            pageInstance.tabbedPage = tabbedPage;
         });
     }
 
