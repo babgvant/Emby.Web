@@ -126,7 +126,7 @@
                 html += '<div>';
             }
 
-            html += buildCard(item, apiClient, options, className);
+            html += buildCard(i, item, apiClient, options, className);
 
             if (options.block || options.rows) {
                 html += '</div>';
@@ -330,7 +330,7 @@
         return '';
     }
 
-    function buildCard(item, apiClient, options, className) {
+    function buildCard(index, item, apiClient, options, className) {
 
         className += " itemLink";
 
@@ -384,7 +384,7 @@
         }
 
         var html = '\
-<paper-button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<paper-button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
@@ -398,22 +398,22 @@
 </paper-button>'
         ;
 
-//        var html = '\
-//<button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
-//<div class="cardBox">\
-//<div class="cardScalable">\
-//<div class="cardPadder"></div>\
-//<div class="cardContent">\
-//' + cardImageContainer + '\
-//</div>\
-//<div class="innerCardFooter">\
-//' + nameHtml + '\
-//</div>\
-//</div>\
-//</div>' + data + '\
-//</div>\
-//</button>'
-//        ;
+        //        var html = '\
+        //<button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+        //<div class="cardBox">\
+        //<div class="cardScalable">\
+        //<div class="cardPadder"></div>\
+        //<div class="cardContent">\
+        //' + cardImageContainer + '\
+        //</div>\
+        //<div class="innerCardFooter">\
+        //' + nameHtml + '\
+        //</div>\
+        //</div>\
+        //</div>' + data + '\
+        //</div>\
+        //</button>'
+        //        ;
 
         return html;
     }
@@ -421,7 +421,7 @@
     function buildCards(items, options) {
 
         // Abort if the container has been disposed
-        if (!Emby.Dom.isInDocument(options.parentContainer)) {
+        if (!Emby.Dom.isInDocument(options.itemsContainer)) {
             return;
         }
 
