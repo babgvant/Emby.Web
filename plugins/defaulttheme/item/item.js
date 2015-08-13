@@ -1,49 +1,64 @@
 (function () {
 
-    document.addEventListener("viewshow-defaulttheme-item", function (e) {
+    document.addEventListener("viewinit-defaulttheme-item", function (e) {
 
-        var element = e.detail.element;
-        var params = e.detail.params;
-        var isRestored = e.detail.isRestored;
+        new itemPage(e.detail.element, e.detail.params);
+    });
 
-        require(['loading'], function (loading) {
+    function itemPage(view, params) {
 
-            if (!isRestored) {
-                loading.show();
-            }
+        var self = this;
 
-            Emby.Models.item(params.id).then(function (item) {
+        view.addEventListener('viewshow', function (e) {
 
-                // If it's a person, leave the backdrop image from wherever we came from
-                if (item.Type != 'Person') {
-                    Emby.Backdrop.setBackdrops([item]);
-                    setTitle(item);
-                }
+            var isRestored = e.detail.isRestored;
+
+            require(['loading'], function (loading) {
 
                 if (!isRestored) {
-                    renderName(element, item);
-                    renderImage(element, item);
-                    renderChildren(element, item);
-                    renderDetails(element, item);
-                    renderPeople(element, item);
-                    renderScenes(element, item);
-                    renderSimilar(element, item);
-                    createVerticalScroller(element);
-
-                    focusMainSection.call(element.querySelector('.mainSection'));
+                    loading.show();
                 }
 
-                // Always refresh this
-                renderNextUp(element, item);
+                Emby.Models.item(params.id).then(function (item) {
 
-                loading.hide();
+                    // If it's a person, leave the backdrop image from wherever we came from
+                    if (item.Type != 'Person') {
+                        Emby.Backdrop.setBackdrops([item]);
+                        setTitle(item);
+                    }
+
+                    if (!isRestored) {
+                        renderName(view, item);
+                        renderImage(view, item);
+                        renderChildren(view, item);
+                        renderDetails(view, item);
+                        renderPeople(view, item);
+                        renderScenes(view, item);
+                        renderSimilar(view, item);
+                        createVerticalScroller(view, self);
+
+                        focusMainSection.call(view.querySelector('.mainSection'));
+                    }
+
+                    // Always refresh this
+                    renderNextUp(view, item);
+
+                    loading.hide();
+                });
             });
+
+            if (!isRestored) {
+                view.querySelector('.mainSection').focus = focusMainSection;
+            }
         });
 
-        if (!isRestored) {
-            element.querySelector('.mainSection').focus = focusMainSection;
-        }
-    });
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.slyFrame) {
+                self.slyFrame.destroy();
+            }
+        });
+    }
 
     function focusMainSection() {
 
@@ -89,7 +104,7 @@
         });
     }
 
-    function createVerticalScroller(view) {
+    function createVerticalScroller(view, pageInstance) {
 
         require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
@@ -114,6 +129,7 @@
             };
 
             slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                pageInstance.slyFrame = slyFrame;
                 slyFrame.init();
                 initFocusHandler(view, slyFrame);
             });

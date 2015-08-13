@@ -2,10 +2,10 @@
 
     document.addEventListener("viewinit-defaulttheme-livetv", function (e) {
 
-        new musicPage(e.detail.element, e.detail.params);
+        new liveTVPage(e.detail.element, e.detail.params);
     });
 
-    function musicPage(view, params) {
+    function liveTVPage(view, params) {
 
         var self = this;
 

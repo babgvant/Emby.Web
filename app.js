@@ -188,6 +188,7 @@
 
         var config = {
 
+            waitSeconds: 30,
             urlArgs: urlArgs,
 
             paths: paths,
