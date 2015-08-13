@@ -40,7 +40,8 @@
     }
 }
 
-@media all and (min-height: 1000px) {
+/* 1080p */
+@media all and (min-height: 1080px) {
 
     .homeSquareCard {
         width: 194px;
@@ -60,5 +61,29 @@
 
     .miniSpotlightCard {
         width: 380px;
+    }
+}
+
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .homeSquareCard {
+        width: 260px;
+    }
+
+    .homebackdropCard {
+        width: 450px;
+    }
+
+    .homePortraitCard {
+        width: 260px;
+    }
+
+    .wideSpotlightCard {
+        width: 1020px;
+    }
+
+    .miniSpotlightCard {
+        width: 505px;
     }
 }
