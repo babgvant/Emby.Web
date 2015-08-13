@@ -113,8 +113,42 @@
 
             if (focused) {
                 slyFrame.toCenter(focused, true);
+                zoomIn(focused);
             }
         });
+        scrollSlider.addEventListener('focusout', function (e) {
+
+            var focused = Emby.FocusManager.focusableParent(e.target);
+
+            if (focused) {
+                var elem = focused.querySelector('.focusedTransform');
+                if (elem) {
+                    elem.classList.remove('focusedTransform');
+                }
+            }
+        });
+    }
+
+    function zoomIn(elem) {
+
+        if (elem.classList.contains('noScale')) {
+            return;
+        }
+
+        var keyframes = [
+            { transform: 'scale(1)  ', offset: 0 },
+          { transform: 'scale(1.12)', offset: 1 }
+        ];
+
+        var card = elem;
+        elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
+
+        var timing = { duration: 200, iterations: 1 };
+        elem.animate(keyframes, timing).onfinish = function () {
+            if (document.activeElement == card) {
+                elem.classList.add('focusedTransform');
+            }
+        };
     }
 
 })();
