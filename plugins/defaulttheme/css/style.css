@@ -17,22 +17,6 @@
         display: inline-block;
     }
 
-@media all and (min-width: 1400px) {
-
-    .header .logo {
-        width: 198px;
-        height: 60px;
-    }
-}
-
-@media all and (min-width: 2000px) {
-
-    .header .logo {
-        width: 264px;
-        height: 80px;
-    }
-}
-
 .pageTitle {
     display: inline-block;
     vertical-align: middle;
@@ -47,7 +31,13 @@
     width: 300px;
 }
 
-@media all and (min-width: 2000px) {
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .header .logo {
+        width: 264px;
+        height: 80px;
+    }
 
     .pageTitle {
         height: 60px;
@@ -148,6 +138,8 @@
     padding-top: 40px;
 }
 
+
+/* 1080p */
 @media all and (min-height: 1000px) {
 
     .centeredPageContent {
@@ -156,12 +148,19 @@
     }
 }
 
-@media all and (min-width: 2000px) {
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
 
-    .pageContainer {
-        top: 182px;
-        bottom: 182px;
+    .itemScrollFrame.scrollFrameX {
+        padding-bottom: 60px;
     }
+
+    .topPadded.itemScrollFrame {
+        padding-top: 60px;
+    }
+}
+
+@media all and (min-width: 2000px) {
 
     .centeredPageContent {
         max-width: 1000px;
@@ -250,20 +249,6 @@
     width: 280px;
 }
 
-@media all and (min-width: 1300px) {
-
-    .loginSquareCard {
-        width: 340px;
-    }
-}
-
-@media all and (min-width: 2000px) {
-
-    .loginSquareCard {
-        width: 400px;
-    }
-}
-
 .cardColumn {
     display: inline-block;
 }
@@ -271,6 +256,10 @@
 .userViewNames {
     margin-bottom: 14px;
 }
+
+    .userViewNames h2 {
+        margin-top: 0;
+    }
 
     .userViewNames paper-button {
         min-width: initial;
@@ -282,21 +271,30 @@
         padding-right: 70px;
     }
 
-
-@media all and (max-height: 1070px) {
-
-    .userViewNames h2 {
-        margin-top: 0;
-    }
-}
-
 .homeBody {
     height: 458px;
 }
 
-@media all and (min-height: 1000px) {
+/* 1080p */
+@media all and (min-height: 1080px) {
 
     .homeBody {
-        height: 618px;
+        height: 640px;
+    }
+
+    .loginSquareCard {
+        width: 340px;
+    }
+}
+
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .homeBody {
+        height: 900px;
+    }
+
+    .loginSquareCard {
+        width: 400px;
     }
 }
