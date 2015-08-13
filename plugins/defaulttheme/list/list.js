@@ -1,38 +1,54 @@
 (function () {
 
-    document.addEventListener("viewshow-defaulttheme-list", function (e) {
+    document.addEventListener("viewinit-defaulttheme-list", function (e) {
 
-        var element = e.detail.element;
-        var params = e.detail.params;
-        var isRestored = e.detail.isRestored;
+        new listPage(e.detail.element, e.detail.params);
+    });
 
-        require(['loading'], function (loading) {
+    function listPage(view, params) {
 
-            if (!isRestored) {
-                loading.show();
-            }
+        var self = this;
+        var itemPromise;
 
-            Emby.Models.item(params.parentid).then(function (item) {
+        view.addEventListener('viewshow', function (e) {
 
-                Emby.Page.setTitle(item.Name);
-                Emby.Backdrop.setBackdrops([item]);
+            var isRestored = e.detail.isRestored;
+
+            require(['loading'], function (loading) {
 
                 if (!isRestored) {
-                    loadChildren(element, item, loading);
-                    createHorizontalScroller(element.querySelector('.horizontalPageContent'));
+                    loading.show();
                 }
 
+                Emby.Models.item(params.parentid).then(function (item) {
+
+                    Emby.Page.setTitle(item.Name);
+                    Emby.Backdrop.setBackdrops([item]);
+
+                    if (!isRestored) {
+                        loadChildren(view, item, loading);
+                        createHorizontalScroller(view.querySelector('.horizontalPageContent'), self);
+                    }
+
+                });
             });
         });
-    });
+
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.slyFrame) {
+                self.slyFrame.destroy();
+            }
+        });
+    }
 
     function loadChildren(view, item, loading) {
 
         Emby.Models.children(item, {
-            
+
             Limit: 500
 
-        }).then(function(result) {
+        }).then(function (result) {
 
             DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: view.querySelector('.scrollSlider'),
@@ -45,7 +61,7 @@
         });
     }
 
-    function createHorizontalScroller(view) {
+    function createHorizontalScroller(view, instance) {
 
         require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
@@ -74,6 +90,7 @@
 
             slyScroller.create(scrollFrame, options).then(function (slyFrame) {
                 slyFrame.init();
+                instance.slyFrame = slyFrame;
                 initFocusHandler(view, slyFrame);
 
                 setTimeout(function () {
