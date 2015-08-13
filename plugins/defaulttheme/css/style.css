@@ -275,6 +275,16 @@
     height: 458px;
 }
 
+.listNumbers {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+
+    .listNumbers .selectedIndex {
+        color: #4CAF50;
+    }
+
 /* 1080p */
 @media all and (min-height: 1080px) {
 

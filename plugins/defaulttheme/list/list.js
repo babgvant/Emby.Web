@@ -28,8 +28,8 @@
                     Emby.Backdrop.setBackdrops([item]);
 
                     if (!isRestored) {
-                        loadChildren(view, item, loading);
                         createHorizontalScroller(view.querySelector('.horizontalPageContent'), self);
+                        loadChildren(view, item, loading, self);
                     }
 
                 });
@@ -40,6 +40,9 @@
 
             if (self.slyFrame) {
                 self.slyFrame.destroy();
+            }
+            if (self.listController) {
+                self.listController.destroy();
             }
         });
 
@@ -82,12 +85,20 @@
         function initFocusHandler(view, slyFrame) {
 
             var scrollSlider = view.querySelector('.scrollSlider');
+            var selectedIndexElement = view.querySelector('.selectedIndex');
+
             scrollSlider.addEventListener('focusin', function (e) {
 
                 var focused = Emby.FocusManager.focusableParent(e.target);
                 focusedElement = focused;
 
                 if (focused) {
+
+                    var index = focused.getAttribute('data-index');
+                    if (index) {
+                        selectedIndexElement.innerHTML = 1 + parseInt(index);
+                    }
+
                     slyFrame.toCenter(focused);
 
                     startZoomTimer();
@@ -155,30 +166,23 @@
         }
     }
 
-    function loadChildren(view, item, loading) {
+    function loadChildren(view, item, loading, instance) {
 
-        Emby.Models.children(item, {
+        var limit = 150;
 
-            Limit: 150
+        self.listController = new DefaultTheme.HorizontalList({
 
-        }).then(function (result) {
-
-            DefaultTheme.CardBuilder.buildCards(result.Items, {
-                parentContainer: view.querySelector('.scrollSlider'),
-                itemsContainer: view.querySelector('.scrollSlider'),
-                shape: 'auto',
-                rows: 2
-            });
-
-            loading.hide();
-
-            setTimeout(function () {
-                var firstCard = view.querySelector('.card');
-                if (firstCard) {
-                    Emby.FocusManager.focus(firstCard);
-                }
-            }, 400);
+            itemsContainer: view.querySelector('.scrollSlider'),
+            getItemsMethod: function () {
+                return Emby.Models.children(item, {
+                    Limit: limit
+                });
+            },
+            listCountElement: view.querySelector('.listCount'),
+            listNumbersElement: view.querySelector('.listNumbers')
         });
+
+        self.listController.render();
     }
 
 })();
