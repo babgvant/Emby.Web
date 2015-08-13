@@ -142,7 +142,7 @@
                     releaseSwing: true,
                     scrollBar: view.querySelector('.scrollbar'),
                     scrollBy: 200,
-                    speed: 200,
+                    speed: 300,
                     elasticBounds: 1,
                     dragHandle: 1,
                     dynamicHandle: 1,
