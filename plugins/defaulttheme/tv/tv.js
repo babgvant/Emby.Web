@@ -2,10 +2,10 @@
 
     document.addEventListener("viewinit-defaulttheme-tv", function (e) {
 
-        new musicPage(e.detail.element, e.detail.params);
+        new tvPage(e.detail.element, e.detail.params);
     });
 
-    function musicPage(view, params) {
+    function tvPage(view, params) {
 
         var self = this;
         var itemPromise;

@@ -6,13 +6,13 @@ define([], function () {
 
         currentView = view;
 
-        var eventDetail = getViewEventDetail(view, url, isRestore);
-
-        if (!isRestore) {
-            view.dispatchEvent(new CustomEvent("viewinit-" + viewId, eventDetail));
-        }
-
         require(['bower_components/query-string/index'], function () {
+
+            var eventDetail = getViewEventDetail(view, url, isRestore);
+
+            if (!isRestore) {
+                view.dispatchEvent(new CustomEvent("viewinit-" + viewId, eventDetail));
+            }
 
             if (!isRestore) {
                 Emby.FocusManager.autoFocus(view);
