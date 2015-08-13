@@ -1,6 +1,7 @@
 define([], function () {
 
     var pageContainerCount = 4;
+    var animationDuration = 500;
 
     function loadView(options) {
 
@@ -25,13 +26,30 @@ define([], function () {
 
                 var animatable = animatedPages.querySelectorAll('.mainAnimatedPage')[pageIndex];
 
+                var currentPage = animatable.querySelector('.page-view');
+
+                if (currentPage) {
+                    triggerDestroy(currentPage);
+                }
+
                 animatable.innerHTML = html;
 
                 animatedPages.selected = pageIndex;
                 var view = animatable.querySelector('.page-view');
-                resolve(view);
+
+                sendResolve(resolve, view);
             });
         });
+    }
+
+    function sendResolve(resolve, view) {
+
+        // Don't report completion until the animation has finished, otherwise rendering may not perform well
+        setTimeout(function () {
+
+            resolve(view);
+
+        }, animationDuration);
     }
 
     function setAnimationStyle(animatedPages, transition, isBack) {
@@ -103,12 +121,20 @@ define([], function () {
         });
     }
 
+    function triggerDestroy(view) {
+        view.dispatchEvent(new CustomEvent("viewdestroy", {}));
+    }
+
     function reset() {
 
         var views = document.querySelectorAll(".page-view");
 
         for (var i = 0, length = views.length; i < length; i++) {
-            views[i].removeAttribute('data-url');
+
+            var view = views[i];
+
+            triggerDestroy(view);
+            view.parentNode.removeChild(view);
         }
     }
 
@@ -134,7 +160,7 @@ define([], function () {
 
                     setAnimationStyle(animatedPages, options.transition, options.isBack).then(function () {
                         animatedPages.selected = index;
-                        resolve(view);
+                        sendResolve(resolve, view);
                     });
                     return;
                 }

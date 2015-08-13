@@ -140,6 +140,11 @@
         });
     }
 
+    function gotoMoviesView(tab, parentId) {
+
+        Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'movies/movies.html?tab=' + tab + "&parentid=" + parentId));
+    }
+
     function view(element, parentId) {
 
         var self = this;
@@ -148,6 +153,14 @@
         loadLatest(element, parentId);
         loadSpotlight(element, parentId);
         loadRecommendations(element, parentId);
+
+        element.querySelector('.allMoviesCard').addEventListener('click', function () {
+            gotoMoviesView('movies', parentId);
+        });
+
+        element.querySelector('.genresCard').addEventListener('click', function () {
+            gotoMoviesView('genres', parentId);
+        });
 
         self.destroy = function () {
 

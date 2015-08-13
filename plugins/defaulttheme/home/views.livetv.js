@@ -56,6 +56,11 @@
         });
     }
 
+    function gotoTvView(tab, parentId) {
+
+        Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'livetv/livetv.html?tab=' + tab));
+    }
+
     function view(element, parentId) {
         var self = this;
 
@@ -99,6 +104,18 @@
             limit: 6,
             IsSports: false,
             IsKids: true
+        });
+
+        element.querySelector('.guideCard').addEventListener('click', function () {
+            gotoTvView('guide', parentId);
+        });
+
+        element.querySelector('.recordingsCard').addEventListener('click', function () {
+            gotoTvView('recordings', parentId);
+        });
+
+        element.querySelector('.scheduledLiveTvCard').addEventListener('click', function () {
+            gotoTvView('scheduled', parentId);
         });
 
         self.destroy = function () {

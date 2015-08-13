@@ -167,6 +167,9 @@
 
             }, 350);
         };
+
+        self.destroy = function () {
+        };
     }
 
     if (!globalScope.DefaultTheme) {
