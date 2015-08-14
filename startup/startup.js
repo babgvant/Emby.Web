@@ -68,17 +68,21 @@
                 Emby.Page.back();
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 
@@ -124,17 +128,21 @@
                 Emby.Page.back();
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 
@@ -173,17 +181,21 @@
                 });
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 

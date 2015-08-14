@@ -104,7 +104,7 @@
             setShapeHome(items, options);
         }
         else if (options.shape == 'auto') {
-            setShape(items, options);
+            setShapeHome(items, options);
         }
 
         if (options.shape) {
@@ -383,7 +383,9 @@
             data += '<input type="hidden" class="primaryImageTag" value="' + primaryImageTag + '" />';
         }
 
-        var html = '\
+        if (enableWebComponents) {
+
+            return '\
 <paper-button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
@@ -395,27 +397,35 @@
 </div>\
 </div>\
 </div>' + data + '\
-</paper-button>'
-        ;
+</paper-button>';
 
-        //        var html = '\
-        //<button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
-        //<div class="cardBox">\
-        //<div class="cardScalable">\
-        //<div class="cardPadder"></div>\
-        //<div class="cardContent">\
-        //' + cardImageContainer + '\
-        //</div>\
-        //<div class="innerCardFooter">\
-        //' + nameHtml + '\
-        //</div>\
-        //</div>\
-        //</div>' + data + '\
-        //</div>\
-        //</button>'
-        //        ;
+        }
 
-        return html;
+        return '\
+<button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<div class="cardBox">\
+<div class="cardScalable">\
+<div class="cardPadder"></div>\
+<div class="cardContent">\
+' + cardImageContainer + '\
+</div>\
+<div class="innerCardFooter">\
+' + nameHtml + '\
+</div>\
+</div>\
+</div>' + data + '\
+</div>\
+</button>';
+    }
+
+    var enableWebComponents;
+    function supportsWebComponents() {
+
+        if (!('registerElement' in document && 'content' in document.createElement('template'))) {
+            return false;
+        }
+
+        return true;
     }
 
     function buildCards(items, options) {
@@ -445,6 +455,8 @@
             Emby.ImageLoader.lazyChildren(options.itemsContainer);
         });
     }
+
+    enableWebComponents = supportsWebComponents();
 
     if (!globalScope.DefaultTheme) {
         globalScope.DefaultTheme = {};

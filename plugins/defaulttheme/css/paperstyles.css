@@ -20,6 +20,44 @@
     font-size: inherit;
 }
 
+/* A button designed to look like a paper button */
+.paperRaised {
+    background: transparent;
+    border: 0 !important;
+    padding: 10px 20px !important;
+    cursor: pointer;
+    outline: none !important;
+    color: inherit;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 3px;
+}
+
+    .paperRaised.block {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+input.paperLike {
+    background: transparent !important;
+    border: 1px solid #ddd;
+    border-width: 0 0 1px 0;
+    display: block;
+    width: 100%;
+    margin: 10px 0 0 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    outline: none !important;
+    color: inherit !important;
+}
+
+    input.paperLike:focus {
+        border-color: #52B54B !important;
+    }
+
 paper-button {
     font-weight: 500;
     vertical-align: middle;

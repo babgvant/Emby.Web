@@ -36,12 +36,20 @@ paper-input .focused-line {
     background-color: #52B54B !important;
 }
 
+.paperRaised {
+    background: #404040!important;
+}
+
 paper-button[raised] {
     background: #404040;
 }
 
 paper-button iron-icon {
     color: #fff;
+}
+
+.paperRaised:focus {
+    background: #52B54B!important;
 }
 
 paper-button[raised][focused] {
