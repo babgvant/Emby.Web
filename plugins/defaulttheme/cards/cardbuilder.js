@@ -103,6 +103,9 @@
         if (options.shape == 'autoHome') {
             setShapeHome(items, options);
         }
+        else if (options.shape == 'autoVertical') {
+            setShape(items, options);
+        }
         else if (options.shape == 'auto') {
             setShapeHome(items, options);
         }
