@@ -383,7 +383,7 @@
             data += '<input type="hidden" class="primaryImageTag" value="' + primaryImageTag + '" />';
         }
 
-        if (enableWebComponents) {
+        if (Emby.Dom.supportsWebComponents()) {
 
             return '\
 <paper-button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
@@ -418,16 +418,6 @@
 </button>';
     }
 
-    var enableWebComponents;
-    function supportsWebComponents() {
-
-        if (!('registerElement' in document && 'content' in document.createElement('template'))) {
-            return false;
-        }
-
-        return true;
-    }
-
     function buildCards(items, options) {
 
         // Abort if the container has been disposed
@@ -455,8 +445,6 @@
             Emby.ImageLoader.lazyChildren(options.itemsContainer);
         });
     }
-
-    enableWebComponents = supportsWebComponents();
 
     if (!globalScope.DefaultTheme) {
         globalScope.DefaultTheme = {};

@@ -41,7 +41,7 @@ define([], function () {
 
         self.getDependencies = function () {
 
-            var files = [
+            var list = [
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/style'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/fonts'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'cards/card'),
@@ -49,21 +49,22 @@ define([], function () {
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),
                 Emby.PluginManager.mapRequire(self, 'cards/cardbuilder.js'),
                 Emby.PluginManager.mapRequire(self, 'cards/tabbedpage.js'),
-                Emby.PluginManager.mapRequire(self, 'cards/horizontallist.js'),
-                'html!bower_components/iron-icon/iron-icon.html',
-                'html!bower_components/iron-iconset-svg/iron-iconset-svg.html',
-                'html!' + Emby.PluginManager.mapRequire(self, 'icons.html'),
-                'html!bower_components/paper-button/paper-button.html',
-                'html!bower_components/paper-icon-button/paper-icon-button.html',
-                'html!bower_components/paper-input/paper-input.html',
-                'html!bower_components/paper-material/paper-material.html',
-                'html!bower_components/paper-progress/paper-progress.html',
-                'html!bower_components/paper-fab/paper-fab.html',
-                'fade-in-animation',
-                'fade-out-animation'
+                Emby.PluginManager.mapRequire(self, 'cards/horizontallist.js')
             ];
 
-            return files;
+            if (Emby.Dom.supportsWebComponents()) {
+                list.push('html!bower_components/iron-icon/iron-icon.html');
+                list.push('html!bower_components/iron-iconset-svg/iron-iconset-svg.html');
+                list.push('html!' + Emby.PluginManager.mapRequire(self, 'icons.html'));
+                list.push('html!bower_components/paper-button/paper-button.html');
+                list.push('html!bower_components/paper-icon-button/paper-icon-button.html');
+                list.push('html!bower_components/paper-input/paper-input.html');
+                list.push('html!bower_components/paper-material/paper-material.html');
+                list.push('html!bower_components/paper-progress/paper-progress.html');
+                list.push('html!bower_components/paper-fab/paper-fab.html');
+            }
+
+            return list;
         };
 
         self.getTranslations = function () {
@@ -89,8 +90,7 @@ define([], function () {
                 transition: 'slide',
                 type: 'home',
                 dependencies: [
-                    Emby.PluginManager.mapRequire(self, 'home/home.js'),
-                    'css!' + Emby.PluginManager.mapRequire(self, 'home/home.css')
+                    Emby.PluginManager.mapRequire(self, 'home/home.js')
                 ]
             });
 
@@ -109,8 +109,7 @@ define([], function () {
                 id: 'defaulttheme-list',
                 transition: 'slide',
                 dependencies: [
-                    Emby.PluginManager.mapRequire(self, 'list/list.js'),
-                    'css!' + Emby.PluginManager.mapRequire(self, 'list/list.css')
+                    Emby.PluginManager.mapRequire(self, 'list/list.js')
                 ]
             });
 
@@ -156,6 +155,10 @@ define([], function () {
         var clockInterval;
         self.load = function () {
 
+            if (window.navigator.msPointerEnabled) {
+                document.documentElement.classList.add('noflex');
+            }
+
             updateClock();
             setInterval(updateClock, 50000);
             bindEvents();
@@ -164,6 +167,7 @@ define([], function () {
 
         self.unload = function () {
 
+            document.documentElement.classList.remove('noflex');
             unbindEvents();
 
             if (clockInterval) {

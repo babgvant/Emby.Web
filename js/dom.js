@@ -48,6 +48,19 @@
         return document.body.contains(card);
     }
 
+    var enableWebComponents;
+    function supportsWebComponents() {
+
+        if (enableWebComponents == null) {
+            enableWebComponents = ('registerElement' in document && 'content' in document.createElement('template'));
+        }
+        return enableWebComponents;
+    }
+
+    document.addEventListener('WebComponentsReady', function () {
+        enableWebComponents = true;
+    });
+
     if (!globalScope.Emby) {
         globalScope.Emby = {};
     }
@@ -55,7 +68,8 @@
     globalScope.Emby.Dom = {
         isInDocument: isInDocument,
         visibleInViewport: visibleInViewport,
-        parentWithClass: parentWithClass
+        parentWithClass: parentWithClass,
+        supportsWebComponents: supportsWebComponents
     };
 
 })(this);
