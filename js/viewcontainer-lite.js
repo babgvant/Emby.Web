@@ -10,13 +10,14 @@ define([], function () {
             html += options.view;
             html += '</div>';
 
+            var mainAnimatedPages = document.querySelector('.mainAnimatedPages');
+
             var currentPage = mainAnimatedPages.querySelector('.page-view');
 
             if (currentPage) {
                 triggerDestroy(currentPage);
             }
 
-            var mainAnimatedPages = document.querySelector('.mainAnimatedPages');
             mainAnimatedPages.innerHTML = html;
 
             resolve(mainAnimatedPages.querySelector('.page-view'));
@@ -33,6 +34,7 @@ define([], function () {
         if (elem) {
             var div = document.createElement('div');
             div.classList.add('mainAnimatedPages');
+            div.classList.add('themeContainer');
             elem.parentNode.replaceChild(div, elem);
         }
     }

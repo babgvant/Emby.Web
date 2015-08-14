@@ -68,17 +68,21 @@
                 Emby.Page.back();
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 
@@ -124,17 +128,21 @@
                 Emby.Page.back();
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 
@@ -173,17 +181,21 @@
                 });
             });
 
-            element.querySelector('.paperSubmit').addEventListener('click', function (e) {
+            var paperSubmit = element.querySelector('.paperSubmit');
+            if (paperSubmit) {
+                // This element won't be here in the lite version
+                paperSubmit.addEventListener('click', function (e) {
 
-                // Do a fake form submit this the button isn't a real submit button
-                var fakeSubmit = document.createElement('input');
-                fakeSubmit.setAttribute('type', 'submit');
-                fakeSubmit.style.display = 'none';
-                var form = element.querySelector('form');
-                form.appendChild(fakeSubmit);
-                fakeSubmit.click();
-                form.removeChild(fakeSubmit);
-            });
+                    // Do a fake form submit this the button isn't a real submit button
+                    var fakeSubmit = document.createElement('input');
+                    fakeSubmit.setAttribute('type', 'submit');
+                    fakeSubmit.style.display = 'none';
+                    var form = element.querySelector('form');
+                    form.appendChild(fakeSubmit);
+                    fakeSubmit.click();
+                    form.removeChild(fakeSubmit);
+                });
+            }
         }
     });
 
@@ -383,11 +395,35 @@
 
             var secondaryText = item.defaultText ? '&nbsp;' : (item.lastActive || '');
 
-            var cardImageContainer = item.showIcon ? ('<iron-icon class="cardImageIcon" icon="' + item.icon + '"></iron-icon>') : ('<div class="cardImage" style="' + item.cardImageStyle + '"></div>');
+            var cardImageContainer;
+
+            if (item.showIcon) {
+                if (Emby.Dom.supportsWebComponents()) {
+                    cardImageContainer = '<iron-icon class="cardImageIcon" icon="' + item.icon + '"></iron-icon>';
+                } else {
+                    cardImageContainer = '';
+                }
+            } else {
+                cardImageContainer = '<div class="cardImage" style="' + item.cardImageStyle + '"></div>';
+            }
+
+            var tagName;
+            var innerOpening;
+            var innerClosing;
+
+            if (Emby.Dom.supportsWebComponents()) {
+                tagName = 'paper-button';
+                innerOpening = '';
+                innerClosing = '';
+            } else {
+                tagName = 'button';
+                innerOpening = '<div class="cardBox">';
+                innerClosing = '</div>';
+            }
 
             return '\
-<paper-button raised class="card squareCard loginSquareCard" data-cardtype="' + item.cardType + '" data-url="' + item.url + '" data-name="' + item.name + '" data-serverid="' + item.serverId + '">\
-<div class="cardScalable">\
+<' + tagName + ' raised class="card squareCard loginSquareCard" data-cardtype="' + item.cardType + '" data-url="' + item.url + '" data-name="' + item.name + '" data-serverid="' + item.serverId + '">\
+'+ innerOpening + '<div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
 <div class="cardImageContainer">\
@@ -397,8 +433,8 @@
 <div class="cardFooter">\
 <div class="cardText">'+ item.name + '</div>\
 <div class="cardText dim">' + secondaryText + '</div>\
-</div>\
-</paper-button>';
+</div>'+ innerClosing + '\
+</'+ tagName + '>';
 
         }).join('');
 
@@ -479,6 +515,7 @@
         var element = e.detail.element;
         var params = e.detail.params;
         var isRestored = e.detail.isRestored;
+        var servers = [];
 
         Emby.Page.setTitle(null);
 
@@ -488,11 +525,13 @@
 
             connectionManager.getAvailableServers().done(function (result) {
 
+                servers = result;
                 renderSelectServerItems(element, result, !isRestored);
                 element.querySelector('.pageHeader').classList.remove('hide');
 
             }).fail(function (result) {
 
+                servers = [];
                 renderSelectServerItems(element, [], !isRestored);
                 element.querySelector('.pageHeader').classList.remove('hide');
             });
@@ -513,7 +552,12 @@
 
                             loading.show();
 
-                            connectionManager.connectToServer(model.server).done(function (result) {
+                            var id = card.getAttribute('data-id');
+                            var server = servers.filter(function (s) {
+                                return s.Id == id;
+                            })[0];
+
+                            connectionManager.connectToServer(server).done(function (result) {
 
                                 loading.hide();
 
@@ -557,25 +601,15 @@
         };
         var frame = new Sly(scrollFrame, options).init();
 
-        var keyframes = [
-         { opacity: '0', transform: 'translate3d(100%, 0, 0)', offset: 0 },
-         { opacity: '1', transform: 'none', offset: 1 }];
-
-        scrollFrame.animate(keyframes, {
-            duration: 600,
-            iterations: 1
-
-        }).onfinish = function () {
-
-            Logger.log('Horizontal animation finished');
-
+        // TODO: Not exactly sure yet why this can't be focused immediately
+        setTimeout(function () {
             var firstCard = scrollFrame.querySelector('.card');
 
             if (firstCard) {
                 Logger.log('focusing first card');
                 Emby.FocusManager.focus(firstCard);
             }
-        };
+        }, 200);
     }
 
     function renderSelectServerItems(view, servers, initScroller) {
@@ -599,25 +633,64 @@
             showImage: false,
             icon: 'add',
             cardImageStyle: '',
+            id: 'changeserver',
             cardType: 'changeserver',
-            defaultText: true,
             url: '/startup/manualserver.html'
         });
 
-        view.querySelector('.itemTemplate').items = items;
+        var html = items.map(function (item) {
 
-        // TODO: Is there a better way to figure out the polymer elements have loaded besides a timeout?
-        setTimeout(function () {
+            var cardImageContainer;
 
-            require(["Sly", 'loading'], function (Sly, loading) {
-                loading.hide();
-
-                if (!initScroller) {
-                    createHorizontalScroller(view, Sly);
+            if (item.showIcon) {
+                if (Emby.Dom.supportsWebComponents()) {
+                    cardImageContainer = '<iron-icon class="cardImageIcon" icon="' + item.icon + '"></iron-icon>';
+                } else {
+                    cardImageContainer = '';
                 }
-            });
+            } else {
+                cardImageContainer = '<div class="cardImage" style="' + item.cardImageStyle + '"></div>';
+            }
 
-        }, 500);
+            var tagName;
+            var innerOpening;
+            var innerClosing;
+
+            if (Emby.Dom.supportsWebComponents()) {
+                tagName = 'paper-button';
+                innerOpening = '';
+                innerClosing = '';
+            } else {
+                tagName = 'button';
+                innerOpening = '<div class="cardBox">';
+                innerClosing = '</div>';
+            }
+
+            return '\
+<' + tagName + ' raised class="card squareCard loginSquareCard" data-id="' + item.id + '" data-url="' + (item.url || '') + '" data-cardtype="' + item.cardType + '">\
+'+ innerOpening + '<div class="cardScalable">\
+<div class="cardPadder"></div>\
+<div class="cardContent">\
+<div class="cardImageContainer">\
+'+ cardImageContainer + '</div>\
+</div>\
+</div>\
+<div class="cardFooter">\
+<div class="cardText">'+ item.name + '</div>\
+</div>'+ innerClosing + '\
+</'+ tagName + '>';
+
+        }).join('');
+
+        view.querySelector('.scrollSlider').innerHTML = html;
+
+        require(["Sly", 'loading'], function (Sly, loading) {
+            loading.hide();
+
+            if (initScroller) {
+                createHorizontalScroller(view, Sly);
+            }
+        });
     }
 
     function getLastActiveText(user) {

@@ -3,11 +3,13 @@
     background-color: transparent !important;
     background: none !important;
     margin: 0;
+    display: inline-block;
 }
 
 button.card {
-    border: 0;
-    padding: 0;
+    margin: 0 !important;
+    border: 0 !important;
+    padding: 0 !important;
     outline: none !important;
     font-size: inherit !important;
     font-family: inherit !important;
@@ -50,7 +52,6 @@ button.card {
 .card paper-ripple {
     /* Just give it a value to ensure it will be visible over the content */
     z-index: 1;
-    display: none !important;
 }
 
 .card paper-material, .card .cardBox {
@@ -70,15 +71,17 @@ button.card {
         box-shadow: #2ad 0px 0px 0 5px;
     }
 
-    .focusedTransform {
-        -webkit-transform: scale(1.12);
-        transform: scale(1.12);
-    }
+.focusedTransform {
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+}
 
 .cardImageContainer {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    display: -ms-flex;
+    display: -webkit-flex;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,6 +148,8 @@ button.card {
     border-radius: 500px;
     width: 36px;
     height: 36px;
+    display: -ms-flex;
+    display: -webkit-flex;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,6 +163,8 @@ button.card {
     border-radius: 500px;
     width: 32px;
     height: 32px;
+    display: -ms-flex;
+    display: -webkit-flex;
     display: flex;
     align-items: center;
     justify-content: center;

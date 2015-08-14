@@ -41,6 +41,8 @@
         var deps = ['startup/startup'];
         var startupRoot = '/startup/';
 
+        var suffix = enableWebComponents() ? "" : "-lite";
+
         defineRoute({
             path: startupRoot + 'login.html',
             id: 'login',
@@ -50,6 +52,7 @@
 
         defineRoute({
             path: startupRoot + 'manuallogin.html',
+            contentPath: startupRoot + 'manuallogin' + suffix + '.html',
             id: 'manuallogin',
             transition: 'slide',
             dependencies: deps
@@ -57,6 +60,7 @@
 
         defineRoute({
             path: startupRoot + 'welcome.html',
+            contentPath: startupRoot + 'welcome' + suffix + '.html',
             id: 'welcome',
             transition: 'slide',
             dependencies: deps
@@ -64,6 +68,7 @@
 
         defineRoute({
             path: startupRoot + 'connectlogin.html',
+            contentPath: startupRoot + 'connectlogin' + suffix + '.html',
             id: 'connectlogin',
             transition: 'slide',
             dependencies: deps
@@ -71,6 +76,7 @@
 
         defineRoute({
             path: startupRoot + 'manualserver.html',
+            contentPath: startupRoot + 'manualserver' + suffix + '.html',
             id: 'manualserver',
             transition: 'slide',
             dependencies: deps
@@ -311,7 +317,7 @@
                 list.push('webcomponentsjs');
             } else {
                 // If not using webcomponents then we'll at least need the web animations polyfill
-                list.push('bower_components/web-animations-js/web-animations-next.min');
+                list.push('bower_components/web-animations-js/web-animations.min');
             }
 
             if (!globalScope.Promise) {

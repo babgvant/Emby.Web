@@ -26,7 +26,6 @@
                 });
             }
         });
-
         view.addEventListener('viewdestroy', function () {
 
             if (self.tabbedPage) {

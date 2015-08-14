@@ -118,9 +118,15 @@
     right: 0;
     bottom: 132px;
     overflow: hidden;
+    display: -ms-flex;
+    display: -webkit-flex;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.noflex .pageContainer {
+    display: block;
 }
 
 .centeredPageContent {
@@ -138,6 +144,13 @@
     padding-top: 40px;
 }
 
+/* Let smaller resolutions have more space */
+@media all and (max-height: 900px) {
+
+    .pageContainer {
+        bottom: 30px;
+    }
+}
 
 /* 1080p */
 @media all and (min-height: 1000px) {
@@ -251,6 +264,7 @@
 
 .cardColumn {
     display: inline-block;
+    vertical-align: top;
 }
 
 .userViewNames {
@@ -306,5 +320,95 @@
 
     .loginSquareCard {
         width: 400px;
+    }
+}
+
+.homeSection {
+    float: left;
+    margin-right: 40px;
+}
+
+.homeSquareCard {
+    width: 138px;
+}
+
+.homebackdropCard {
+    width: 242px;
+}
+
+.homePortraitCard {
+    width: 144px;
+}
+
+.sectionTitle {
+    text-transform: uppercase;
+    padding-left: .25em;
+}
+
+.wideSpotlightCard {
+    width: 540px;
+}
+
+.miniSpotlightCard {
+    width: 267px;
+}
+
+    .wideSpotlightCard .cardPadder, .miniSpotlightCard .cardPadder {
+        padding-bottom: 50%;
+    }
+
+@media all and (max-height: 1070px) {
+
+    .homePageContainer {
+        bottom: 40px;
+        top: 100px;
+    }
+}
+
+/* 1080p */
+@media all and (min-height: 1080px) {
+
+    .homeSquareCard {
+        width: 194px;
+    }
+
+    .homebackdropCard {
+        width: 338px;
+    }
+
+    .homePortraitCard {
+        width: 197.5px;
+    }
+
+    .wideSpotlightCard {
+        width: 738px;
+    }
+
+    .miniSpotlightCard {
+        width: 365px;
+    }
+}
+
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .homeSquareCard {
+        width: 260px;
+    }
+
+    .homebackdropCard {
+        width: 449.5px;
+    }
+
+    .homePortraitCard {
+        width: 260px;
+    }
+
+    .wideSpotlightCard {
+        width: 979px;
+    }
+
+    .miniSpotlightCard {
+        width: 484.5px;
     }
 }

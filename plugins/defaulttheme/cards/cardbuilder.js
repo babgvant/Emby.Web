@@ -103,8 +103,11 @@
         if (options.shape == 'autoHome') {
             setShapeHome(items, options);
         }
-        else if (options.shape == 'auto') {
+        else if (options.shape == 'autoVertical') {
             setShape(items, options);
+        }
+        else if (options.shape == 'auto') {
+            setShapeHome(items, options);
         }
 
         if (options.shape) {
@@ -383,7 +386,9 @@
             data += '<input type="hidden" class="primaryImageTag" value="' + primaryImageTag + '" />';
         }
 
-        var html = '\
+        if (Emby.Dom.supportsWebComponents()) {
+
+            return '\
 <paper-button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
@@ -395,27 +400,25 @@
 </div>\
 </div>\
 </div>' + data + '\
-</paper-button>'
-        ;
+</paper-button>';
 
-        //        var html = '\
-        //<button elevated="1" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
-        //<div class="cardBox">\
-        //<div class="cardScalable">\
-        //<div class="cardPadder"></div>\
-        //<div class="cardContent">\
-        //' + cardImageContainer + '\
-        //</div>\
-        //<div class="innerCardFooter">\
-        //' + nameHtml + '\
-        //</div>\
-        //</div>\
-        //</div>' + data + '\
-        //</div>\
-        //</button>'
-        //        ;
+        }
 
-        return html;
+        return '\
+<button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<div class="cardBox">\
+<div class="cardScalable">\
+<div class="cardPadder"></div>\
+<div class="cardContent">\
+' + cardImageContainer + '\
+</div>\
+<div class="innerCardFooter">\
+' + nameHtml + '\
+</div>\
+</div>\
+</div>' + data + '\
+</div>\
+</button>';
     }
 
     function buildCards(items, options) {
