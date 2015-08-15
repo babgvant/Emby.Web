@@ -38,7 +38,9 @@
 
         Emby.Models.userViews().then(function (result) {
 
-            var tabbedPage = new DefaultTheme.TabbedPage(view);
+            var tabbedPage = new DefaultTheme.TabbedPage(view, {
+                animateFocus: true
+            });
             tabbedPage.loadViewContent = loadViewContent;
             tabbedPage.renderTabs(result.Items);
             pageInstance.tabbedPage = tabbedPage;

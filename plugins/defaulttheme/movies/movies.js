@@ -100,7 +100,8 @@
                 return Emby.Models.genres({
                     StartIndex: startIndex,
                     Limit: limit,
-                    ParentId: pageParams.parentid
+                    ParentId: pageParams.parentid,
+                    SortBy: "SortName"
                 });
             },
             listCountElement: page.querySelector('.listCount'),
@@ -122,7 +123,8 @@
                     ParentId: pageParams.parentid,
                     IncludeItemTypes: "Movie",
                     Recursive: true,
-                    Filters: "IsFavorite"
+                    Filters: "IsFavorite",
+                    SortBy: "SortName"
                 });
             },
             listCountElement: page.querySelector('.listCount'),
@@ -143,7 +145,8 @@
                     Limit: limit,
                     ParentId: pageParams.parentid,
                     IncludeItemTypes: "Movie",
-                    Recursive: true
+                    Recursive: true,
+                    SortBy: "SortName"
                 });
             },
             listCountElement: page.querySelector('.listCount'),
@@ -161,7 +164,8 @@
             getItemsMethod: function (startIndex, limit) {
                 return Emby.Models.collections({
                     StartIndex: startIndex,
-                    Limit: limit
+                    Limit: limit,
+                    SortBy: "SortName"
                 });
             },
             listCountElement: page.querySelector('.listCount'),

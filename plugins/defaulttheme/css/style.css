@@ -289,6 +289,18 @@
     height: 400px;
 }
 
+.selectedMediaInfo {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+}
+
+.selectedMediaInfoInner {
+    margin: auto;
+    width: 200px;
+}
+
 .listNumbers {
     position: fixed;
     bottom: 30px;
@@ -381,11 +393,11 @@
     }
 
     .wideSpotlightCard {
-        width: 737px;
+        width: 736px;
     }
 
     .miniSpotlightCard {
-        width: 365px;
+        width: 364.5px;
     }
 }
 

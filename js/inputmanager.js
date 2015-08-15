@@ -105,13 +105,36 @@
         }
     }
 
+    function getOffset(elem, doc) {
+
+        var box = { top: 0, left: 0 };
+
+        if (!doc) {
+            return box;
+        }
+
+        var docElem = doc.documentElement;
+
+        // Support: BlackBerry 5, iOS 3 (original iPhone)
+        // If we don't have gBCR, just use 0,0 rather than error
+        if (elem.getBoundingClientRect) {
+            box = elem.getBoundingClientRect();
+        }
+        var win = doc.defaultView;
+        return {
+            top: box.top + win.pageYOffset - docElem.clientTop,
+            left: box.left + win.pageXOffset - docElem.clientLeft
+        };
+    }
+
     function getViewportBoundingClientRect(elem) {
 
-        var offset = jQuery(elem).offset();
-        var win = jQuery(window);
+        var doc = elem.ownerDocument;
+        var offset = getOffset(elem, doc);
+        var win = doc.defaultView;
 
-        var posY = offset.top - win.scrollTop();
-        var posX = offset.left - win.scrollLeft();
+        var posY = offset.top - win.pageXOffset;
+        var posX = offset.left - win.pageYOffset;
 
         var width = elem.offsetWidth;
         var height = elem.offsetHeight;
