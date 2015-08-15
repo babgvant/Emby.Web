@@ -225,6 +225,12 @@
 
     function flipElementWithDuration(elem, duration, callback) {
 
+        if (!elem.animate) {
+
+            callback();
+            return;
+        }
+
         elem.style.transform = 'perspective(400px) rotate3d(1, 0, 0, -180deg)';
 
         // Switch to SequenceEffect once that api is a little more mature

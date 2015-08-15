@@ -137,11 +137,11 @@
 
 .itemScrollFrame.scrollFrameX {
     padding-left: 70px;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
 }
 
 .topPadded.itemScrollFrame {
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 /* Let smaller resolutions have more space */
@@ -381,7 +381,7 @@
     }
 
     .wideSpotlightCard {
-        width: 738px;
+        width: 737px;
     }
 
     .miniSpotlightCard {

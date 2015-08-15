@@ -73,7 +73,7 @@
 
         self.bodySlyFrame.slideTo(0, true);
 
-        self.loadViewContent(page, id, btn.getAttribute('data-type'));
+        self.loadViewContent.call(self, page, id, btn.getAttribute('data-type'));
     }
 
     function tabbedPage(page) {
@@ -157,6 +157,7 @@
             });
         }
 
+        var lastFocus = 0;
         function initFocusHandler(view, slyFrame) {
 
             var scrollSlider = view.querySelector('.scrollSlider');
@@ -166,8 +167,12 @@
                 focusedElement = focused;
 
                 if (focused) {
-                    slyFrame.toCenter(focused);
+                    var now = new Date().getTime();
 
+                    var animate = (now - lastFocus) > 100;
+
+                    slyFrame.toCenter(focused, !animate);
+                    lastFocus = now;
                     startZoomTimer();
                 }
             });
@@ -220,16 +225,22 @@
             var card = elem;
             elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
 
-            var timing = { duration: 200, iterations: 1 };
-            var animation = elem.animate(keyframes, timing);
-
-            animation.onfinish = function () {
+            var onAnimationFinished = function() {
                 if (document.activeElement == card) {
                     elem.classList.add('focusedTransform');
                 }
                 currentAnimation = null;
             };
-            currentAnimation = animation;
+
+            if (elem.animate) {
+                var timing = { duration: 200, iterations: 1 };
+                var animation = elem.animate(keyframes, timing);
+
+                animation.onfinish = onAnimationFinished;
+                currentAnimation = animation;
+            } else {
+                onAnimationFinished();
+            }
         }
 
         self.destroy = function () {

@@ -13,7 +13,7 @@
 
                 loading.show();
 
-                getItemsMethod().then(function (result) {
+                getItemsMethod(0, 300).then(function (result) {
 
                     if (options.listCountElement) {
                         options.listCountElement.innerHTML = result.TotalRecordCount;

@@ -27,17 +27,23 @@
 
         cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
-        var keyframes = [
-                { opacity: '0', offset: 0 },
-                { opacity: '1', offset: 1 }];
-        var timing = { duration: 900, iterations: 1 };
-        newCardImageContainer.animate(keyframes, timing).onfinish = function () {
+        var onAnimationFinished = function() {
 
             var parentNode = cardImageContainer.parentNode;
             if (parentNode) {
                 parentNode.removeChild(cardImageContainer);
             }
         };
+
+        if (newCardImageContainer.animate) {
+            var keyframes = [
+                    { opacity: '0', offset: 0 },
+                    { opacity: '1', offset: 1 }];
+            var timing = { duration: 900, iterations: 1 };
+            newCardImageContainer.animate(keyframes, timing).onfinish = onAnimationFinished;
+        } else {
+            onAnimationFinished();
+        }
     }
 
     function startSpotlight(self, card, items, width, apiClient) {

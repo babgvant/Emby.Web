@@ -153,7 +153,10 @@
             require(['apphost'], function (apphost) {
 
                 var credentialProvider = new MediaBrowser.CredentialProvider();
-                //credentialProvider.clear();
+
+                if (window.location.href.indexOf('clear=1') != -1) {
+                    credentialProvider.clear();
+                }
                 connectionManager = new MediaBrowser.ConnectionManager(Logger, credentialProvider, apphost.appName(), apphost.appVersion(), apphost.deviceName(), apphost.deviceId(), getCapabilities(apphost));
 
                 define('connectionManager', [], function () {
@@ -257,6 +260,10 @@
 
     function enableWebComponents() {
 
+        if (window.WebComponents) {
+            return true;
+        }
+
         return navigator.userAgent.toLowerCase().indexOf('chrome/') != -1;
     }
 
@@ -315,9 +322,6 @@
 
             if (enableWebComponents()) {
                 list.push('webcomponentsjs');
-            } else {
-                // If not using webcomponents then we'll at least need the web animations polyfill
-                list.push('bower_components/web-animations-js/web-animations.min');
             }
 
             if (!globalScope.Promise) {

@@ -16,7 +16,7 @@
 
                 if (!self.tabbedPage) {
                     loading.show();
-                    renderTabs(view, params.tab, self);
+                    renderTabs(view, params.tab, self, params);
                 }
 
                 itemPromise = itemPromise || Emby.Models.item(params.parentid);
@@ -37,7 +37,7 @@
         });
     }
 
-    function renderTabs(view, initialTabId, pageInstance) {
+    function renderTabs(view, initialTabId, pageInstance, params) {
 
         var tabs = [
         {
@@ -63,12 +63,44 @@
 
         var tabbedPage = new DefaultTheme.TabbedPage(view);
         tabbedPage.loadViewContent = loadViewContent;
+        tabbedPage.params = params;
         tabbedPage.renderTabs(tabs, initialTabId);
         pageInstance.tabbedPage = tabbedPage;
     }
 
-    function loadViewContent(page, id, type) {
+    function loadViewContent(page, id) {
 
+        var pageParams = this.params;
+
+        switch (id) {
+
+            case 'movies':
+                renderMovies(page, pageParams);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function renderMovies(page, pageParams) {
+
+        self.listController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.items({
+                    StartIndex: startIndex,
+                    Limit: limit,
+                    ParentId: pageParams.parentid,
+                    IncludeItemTypes: "Movie",
+                    Recursive: true
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.listController.render();
     }
 
 })();

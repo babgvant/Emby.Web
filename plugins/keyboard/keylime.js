@@ -236,14 +236,16 @@ function showIME () {
         document.body.appendChild(imeCtr);
         visible = true;
 
-        imeCtr.animate([
-            { bottom: '-100%' },
-            { bottom: '0' }
-        ], {
-            direction: 'alternate',
-            duration: 600,
-            iterations: 1
-        });
+        if (imeCtr.animate) {
+            imeCtr.animate([
+                { bottom: '-100%' },
+                { bottom: '0' }
+            ], {
+                direction: 'alternate',
+                duration: 600,
+                iterations: 1
+            });
+        }
     }
 }
 
@@ -260,29 +262,34 @@ function hideIME () {
 
         imeCtr.classList.add('hidingIme');
 
-        imeCtr.animate([
-            { bottom: '0' },
-            { bottom: '-100%' }
-        ], {
-            direction: 'alternate',
-            duration: 600,
-            iterations: 1
+        if (imeCtr.animate) {
+            imeCtr.animate([
+                { bottom: '0' },
+                { bottom: '-100%' }
+            ], {
+                direction: 'alternate',
+                duration: 600,
+                iterations: 1
 
-        }).onfinish = function () {
-
-            imeCtr.classList.remove('hidingIme');
-            document.body.removeChild(imeCtr);
-            imeCtr.style.display = 'block';
-            visible = false;
-
-            if (focused) {
-                focused.classList.remove('lime-focus');
-                focused = null;
-            }
-        };
-
+            }).onfinish = onHideAnimationFinished;
+        } else {
+            onHideAnimationFinished();
+        }
     });
 }
+
+function onHideAnimationFinished() {
+    imeCtr.classList.remove('hidingIme');
+    document.body.removeChild(imeCtr);
+    imeCtr.style.display = 'block';
+    visible = false;
+
+    if (focused) {
+        focused.classList.remove('lime-focus');
+        focused = null;
+    }
+}
+
 
 /**
  * Sets up the keyboard
