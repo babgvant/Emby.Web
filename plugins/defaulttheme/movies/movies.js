@@ -77,14 +77,64 @@
             case 'movies':
                 renderMovies(page, pageParams);
                 break;
+            case 'collections':
+                renderCollections(page, pageParams);
+                break;
+            case 'favorites':
+                renderFavorites(page, pageParams);
+                break;
+            case 'genres':
+                renderGenres(page, pageParams);
+                break;
             default:
                 break;
         }
     }
 
+    function renderGenres(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.genres({
+                    StartIndex: startIndex,
+                    Limit: limit,
+                    ParentId: pageParams.parentid
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.tabController.render();
+    }
+
+    function renderFavorites(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.items({
+                    StartIndex: startIndex,
+                    Limit: limit,
+                    ParentId: pageParams.parentid,
+                    IncludeItemTypes: "Movie",
+                    Recursive: true,
+                    Filters: "IsFavorite"
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.tabController.render();
+    }
+
     function renderMovies(page, pageParams) {
 
-        self.listController = new DefaultTheme.HorizontalList({
+        self.tabController = new DefaultTheme.HorizontalList({
 
             itemsContainer: page.querySelector('.contentScrollSlider'),
             getItemsMethod: function (startIndex, limit) {
@@ -100,7 +150,25 @@
             listNumbersElement: page.querySelector('.listNumbers')
         });
 
-        self.listController.render();
+        self.tabController.render();
+    }
+
+    function renderCollections(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.collections({
+                    StartIndex: startIndex,
+                    Limit: limit
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.tabController.render();
     }
 
 })();

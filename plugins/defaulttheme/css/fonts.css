@@ -30,7 +30,7 @@ paper-dialog h2 {
     font-size: 36px !important;
 }
 
-@media all and (min-width: 1400px) {
+@media all and (min-height: 1080px) {
 
     html {
         font-size: 26px;
@@ -45,7 +45,7 @@ paper-dialog h2 {
     }
 }
 
-@media all and (min-width: 2000px) {
+@media all and (min-height: 1440px) {
 
     html {
         font-size: 34px;
