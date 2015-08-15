@@ -96,11 +96,14 @@
         html = '<div class="homePanel">' + html + '</div>';
         homeScrollContent.innerHTML = Globalize.translateHtml(html);
 
-        var keyframes = [
-                { opacity: '0', offset: 0 },
-                { opacity: '1', offset: 1 }];
-        var timing = { duration: 900, iterations: 1 };
-        homeScrollContent.animate(keyframes, timing);
+        if (homeScrollContent.animate) {
+            var keyframes = [
+                    { opacity: '0', offset: 0 },
+                    { opacity: '1', offset: 1 }];
+            var timing = { duration: 900, iterations: 1 };
+            homeScrollContent.animate(keyframes, timing);
+        }
+
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName + '.js')], function () {
 
             var homePanel = homeScrollContent.querySelector('.homePanel');

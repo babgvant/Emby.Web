@@ -479,9 +479,12 @@
                  { transform: 'perspective(400px) scale3d(.95, .95, .95)', offset: 0.8 },
                  { transform: 'perspective(400px)', offset: 1 }];
         var timing = { duration: duration, iterations: 1, easing: 'ease-in' };
-        elem.animate(keyframes, timing).onfinish = function () {
+
+        if (elem.animate) {
+            elem.animate(keyframes, timing).onfinish = callback;
+        } else {
             callback();
-        };
+        }
     }
 
     function authenticateUser(serverId, username, password) {

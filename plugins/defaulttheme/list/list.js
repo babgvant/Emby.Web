@@ -82,6 +82,7 @@
             });
         }
 
+        var lastFocus = 0;
         function initFocusHandler(view, slyFrame) {
 
             var scrollSlider = view.querySelector('.scrollSlider');
@@ -99,7 +100,10 @@
                         selectedIndexElement.innerHTML = 1 + parseInt(index);
                     }
 
-                    slyFrame.toCenter(focused);
+                    var now = new Date().getTime();
+                    var animate = (now - lastFocus) > 100;
+                    slyFrame.toCenter(focused, !animate);
+                    lastFocus = now;
 
                     startZoomTimer();
                 }
@@ -153,28 +157,33 @@
             var card = elem;
             elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
 
-            var timing = { duration: 200, iterations: 1 };
-            var animation = elem.animate(keyframes, timing);
-
-            animation.onfinish = function () {
+            var onAnimationFinished = function () {
                 if (document.activeElement == card) {
                     elem.classList.add('focusedTransform');
                 }
                 currentAnimation = null;
             };
-            currentAnimation = animation;
+
+            if (elem.animate) {
+                var timing = { duration: 200, iterations: 1 };
+                var animation = elem.animate(keyframes, timing);
+
+                animation.onfinish = onAnimationFinished;
+                currentAnimation = animation;
+            } else {
+                onAnimationFinished();
+            }
         }
     }
 
     function loadChildren(view, item, loading, instance) {
 
-        var limit = 150;
-
         self.listController = new DefaultTheme.HorizontalList({
 
             itemsContainer: view.querySelector('.scrollSlider'),
-            getItemsMethod: function () {
+            getItemsMethod: function (startIndex, limit) {
                 return Emby.Models.children(item, {
+                    StartIndex: startIndex,
                     Limit: limit
                 });
             },

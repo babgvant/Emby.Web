@@ -26,7 +26,7 @@ define([], function () {
 
             var elem = document.querySelector('.logoScreenSaverImage');
 
-            if (elem) {
+            if (elem && elem.animate) {
                 var random = getRandomInt(0, animations.length - 1);
 
                 animations[random](elem, 1);
@@ -175,11 +175,16 @@ define([], function () {
 
             if (elem) {
 
-                var animation = fadeOut(elem, 1);
-
-                animation.onfinish = function() {
+                var onAnimationFinish = function () {
                     elem.parentNode.removeChild(elem);
                 };
+
+                if (elem.animate) {
+                    var animation = fadeOut(elem, 1);
+                    animation.onfinish = onAnimationFinish;
+                } else {
+                    onAnimationFinish();
+                }
             }
         };
     }
