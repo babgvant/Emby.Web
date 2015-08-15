@@ -96,7 +96,7 @@
                 if (focused) {
 
                     var index = focused.getAttribute('data-index');
-                    if (index) {
+                    if (index && selectedIndexElement) {
                         selectedIndexElement.innerHTML = 1 + parseInt(index);
                     }
 

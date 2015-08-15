@@ -286,7 +286,7 @@
     }
 
 .homeBody {
-    height: 458px;
+    height: 400px;
 }
 
 .listNumbers {
@@ -329,15 +329,15 @@
 }
 
 .homeSquareCard {
-    width: 138px;
+    width: 132px;
 }
 
 .homebackdropCard {
-    width: 242px;
+    width: 220px;
 }
 
 .homePortraitCard {
-    width: 144px;
+    width: 132px;
 }
 
 .sectionTitle {
@@ -346,11 +346,11 @@
 }
 
 .wideSpotlightCard {
-    width: 540px;
+    width: 482px;
 }
 
 .miniSpotlightCard {
-    width: 267px;
+    width: 238px;
 }
 
     .wideSpotlightCard .cardPadder, .miniSpotlightCard .cardPadder {
@@ -360,8 +360,8 @@
 @media all and (max-height: 1070px) {
 
     .homePageContainer {
-        bottom: 40px;
-        top: 100px;
+        bottom: 10px;
+        top: 70px;
     }
 }
 

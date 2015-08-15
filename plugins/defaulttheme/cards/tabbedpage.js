@@ -92,7 +92,7 @@
 
             createHeaderScroller(page, initialTabId);
             initEvents(page, self);
-            createHorizontalScroller(page.querySelector('.homeBody'));
+            createHorizontalScroller(page);
         };
 
         var focusTimeout;
@@ -126,7 +126,7 @@
 
             require(["slyScroller", 'loading'], function (slyScroller, loading) {
 
-                var scrollFrame = view.querySelector('.scrollFrame');
+                var scrollFrame = view.querySelector('.itemScrollFrame');
 
                 scrollFrame.style.display = 'block';
 
@@ -135,12 +135,12 @@
                     itemNav: 0,
                     mouseDragging: 1,
                     touchDragging: 1,
-                    slidee: view.querySelector('.scrollSlider'),
+                    slidee: view.querySelector('.contentScrollSlider'),
                     itemSelector: '.card',
                     smart: true,
                     easing: 'swing',
                     releaseSwing: true,
-                    scrollBar: view.querySelector('.scrollbar'),
+                    scrollBar: view.querySelector('.contentScrollbar'),
                     scrollBy: 200,
                     speed: 300,
                     elasticBounds: 1,
@@ -160,13 +160,23 @@
         var lastFocus = 0;
         function initFocusHandler(view, slyFrame) {
 
-            var scrollSlider = view.querySelector('.scrollSlider');
+            var selectedIndexElement = view.querySelector('.selectedIndex');
+
+            var scrollSlider = view.querySelector('.contentScrollSlider');
             scrollSlider.addEventListener('focusin', function (e) {
 
                 var focused = Emby.FocusManager.focusableParent(e.target);
                 focusedElement = focused;
 
                 if (focused) {
+
+                    if (selectedIndexElement) {
+                        var index = focused.getAttribute('data-index');
+                        if (index) {
+                            selectedIndexElement.innerHTML = 1 + parseInt(index);
+                        }
+                    }
+
                     var now = new Date().getTime();
 
                     var animate = (now - lastFocus) > 100;

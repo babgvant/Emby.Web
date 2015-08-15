@@ -354,6 +354,44 @@
         });
     }
 
+    function collections(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+                options.ParentId = null;
+                options.IncludeItemTypes = "BoxSet";
+                options.Recursive = true;
+
+                normalizeOptions(options);
+
+                apiClient.getItems(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
+    function genres(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+                options.Recursive = true;
+
+                normalizeOptions(options);
+
+                apiClient.getGenres(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
     function userViews(options) {
 
         return new Promise(function (resolve, reject) {
@@ -371,7 +409,7 @@
     }
 
     function movieRecommendations(options) {
-        
+
         return new Promise(function (resolve, reject) {
 
             require(['connectionManager'], function (connectionManager) {
@@ -402,6 +440,8 @@
         itemPeople: itemPeople,
         children: children,
         items: items,
+        collections: collections,
+        genres: genres,
         userViews: userViews,
         movieRecommendations: movieRecommendations
     };
