@@ -120,19 +120,7 @@
         require(['viewManager'], function (viewManager) {
             var url = window.location.href;
 
-            viewManager.tryRestoreView({
-
-                id: route.id,
-                url: url,
-                transition: route.transition,
-                isBack: isBack()
-
-            }).then(function () {
-
-                // done
-                currentRoute = route;
-
-            }, function () {
+            var onNewViewNeeded = function () {
                 if (typeof route.path === 'string') {
 
                     loadContentUrl(ctx, next, route);
@@ -141,7 +129,27 @@
                     // ? TODO
                     next();
                 }
-            });
+            };
+
+            var isBackNav = isBack();
+
+            if (!isBackNav) {
+                onNewViewNeeded();
+                return;
+            }
+            viewManager.tryRestoreView({
+
+                id: route.id,
+                url: url,
+                transition: route.transition,
+                isBack: isBackNav
+
+            }).then(function () {
+
+                // done
+                currentRoute = route;
+
+            }, onNewViewNeeded);
         });
     }
 

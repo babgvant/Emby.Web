@@ -76,11 +76,13 @@
         self.loadViewContent.call(self, page, id, btn.getAttribute('data-type'));
     }
 
-    function tabbedPage(page) {
+    function tabbedPage(page, pageOptions) {
 
         var self = this;
+        pageOptions = pageOptions || {};
         var focusedElement;
         var currentAnimation;
+        var selectedMediaInfo = page.querySelector('.selectedMediaInfo');
 
         self.renderTabs = function (tabs, initialTabId) {
 
@@ -142,7 +144,7 @@
                     releaseSwing: true,
                     scrollBar: view.querySelector('.contentScrollbar'),
                     scrollBy: 200,
-                    speed: 300,
+                    speed: 500,
                     elasticBounds: 1,
                     dragHandle: 1,
                     dynamicHandle: 1,
@@ -179,7 +181,7 @@
 
                     var now = new Date().getTime();
 
-                    var animate = (now - lastFocus) > 100;
+                    var animate = pageOptions.animateFocus || (now - lastFocus) > 100;
 
                     slyFrame.toCenter(focused, !animate);
                     lastFocus = now;
@@ -223,6 +225,10 @@
 
         function zoomIn(elem) {
 
+            setTimeout(function() {
+                fillMediaInfo(elem);
+            }, 100);
+
             if (elem.classList.contains('noScale')) {
                 return;
             }
@@ -235,7 +241,7 @@
             var card = elem;
             elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
 
-            var onAnimationFinished = function() {
+            var onAnimationFinished = function () {
                 if (document.activeElement == card) {
                     elem.classList.add('focusedTransform');
                 }
@@ -251,6 +257,10 @@
             } else {
                 onAnimationFinished();
             }
+        }
+
+        function fillMediaInfo(elem) {
+
         }
 
         self.destroy = function () {

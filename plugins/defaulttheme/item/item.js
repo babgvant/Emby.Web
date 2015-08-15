@@ -98,6 +98,7 @@
                 var pageTitle = document.querySelector('.pageTitle');
                 pageTitle.style.backgroundImage = "url('" + url + "')";
                 pageTitle.classList.add('pageTitleWithLogo');
+                pageTitle.innerHTML = '';
             } else {
                 Emby.Page.setTitle('');
             }
