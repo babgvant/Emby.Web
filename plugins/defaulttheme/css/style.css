@@ -166,7 +166,7 @@
 }
 
 /* 1080p */
-@media all and (min-height: 1000px) {
+@media all and (min-height: 1080px) {
 
     .centeredPageContent {
         /* If the content is small, try to prevent it from getting shoved too far down the screen*/
@@ -385,7 +385,7 @@
         width: 132px;
     }
 
-   .horizontalPageContent  .loginSquareCard {
+    .horizontalPageContent .loginSquareCard {
         width: 280px;
     }
 
@@ -425,7 +425,7 @@
         width: 391px;
     }
 
-    .loginSquareCard {
+    .horizontalPageContent .loginSquareCard {
         width: 340px;
     }
 }
@@ -457,7 +457,7 @@
         width: 503px;
     }
 
-    .loginSquareCard {
+    .horizontalPageContent .loginSquareCard {
         width: 400px;
     }
 }

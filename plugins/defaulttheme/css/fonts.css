@@ -15,13 +15,18 @@ h1, h2 {
     font-family: Open Sans, Helvetica Neue, Open Sans, Source Sans Pro, Montserrat, Varela Round;
 }
 
+h1 {
+    font-size: 32px;
+    font-weight: 300;
+}
+
 h2 {
     font-weight: normal;
     font-size: 26px;
     font-weight: 300;
 }
 
-h1, paper-dialog h2 {
+paper-dialog h2 {
     font-size: 32px !important;
     font-weight: 300;
 }
@@ -33,12 +38,16 @@ h1, paper-dialog h2 {
         font-size: 20px;
     }
 
+    h1 {
+        font-size: 36px;
+    }
+
     h2 {
         font-size: 30px;
     }
 
-    h1, paper-dialog h2 {
-        font-size: 36px;
+    paper-dialog h2 {
+        font-size: 36px !important;
     }
 }
 
@@ -49,12 +58,16 @@ h1, paper-dialog h2 {
         font-size: 26px;
     }
 
+    h1 {
+        font-size: 44px;
+    }
+
     h2 {
         font-size: 36px;
     }
 
-    h1, paper-dialog h2 {
-        font-size: 44px;
+    paper-dialog h2 {
+        font-size: 44px !important;
     }
 }
 
@@ -65,11 +78,15 @@ h1, paper-dialog h2 {
         font-size: 34px;
     }
 
+    h1 {
+        font-size: 54px;
+    }
+
     h2 {
         font-size: 46px;
     }
 
-    h1, paper-dialog h2 {
-        font-size: 54px;
+    paper-dialog h2 {
+        font-size: 54px !important;
     }
 }
