@@ -11,8 +11,8 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
-        width: 165px;
-        height: 50px;
+        width: 132px;
+        height: 40px;
         vertical-align: middle;
         display: inline-block;
     }
@@ -21,7 +21,7 @@
     display: inline-block;
     vertical-align: middle;
     margin: 0;
-    height: 50px;
+    height: 40px;
 }
 
 .pageTitleWithLogo {
@@ -29,6 +29,19 @@
     background-size: contain;
     background-repeat: no-repeat;
     width: 300px;
+}
+
+/* 720p */
+@media all and (min-height: 720px) {
+
+    .header .logo {
+        width: 165px;
+        height: 50px;
+    }
+
+    .pageTitle {
+        height: 50px;
+    }
 }
 
 /* 2560 * 1440 */
@@ -93,7 +106,7 @@
 
 .header .headerLeft {
     position: fixed;
-    top: 40px;
+    top: 35px;
     left: 45px;
 }
 
@@ -113,10 +126,10 @@
 
 .pageContainer {
     position: absolute;
-    top: 132px;
+    top: 100px;
     left: 0;
     right: 0;
-    bottom: 132px;
+    bottom: 30px;
     overflow: hidden;
     display: -ms-flex;
     display: -webkit-flex;
@@ -144,11 +157,11 @@
     padding-top: 20px;
 }
 
-/* Let smaller resolutions have more space */
-@media all and (max-height: 900px) {
+@media all and (min-height: 720px) {
 
     .pageContainer {
-        bottom: 30px;
+        top: 132px;
+        bottom: 132px;
     }
 }
 
@@ -258,10 +271,6 @@
         height: 100%;
     }
 
-.loginSquareCard {
-    width: 280px;
-}
-
 .cardColumn {
     display: inline-block;
     vertical-align: top;
@@ -284,10 +293,6 @@
         padding-left: 70px;
         padding-right: 70px;
     }
-
-.homeBody {
-    height: 400px;
-}
 
 .selectedMediaInfo {
     position: fixed;
@@ -316,6 +321,15 @@
     margin-right: 40px;
 }
 
+.sectionTitle {
+    text-transform: uppercase;
+    padding-left: .25em;
+}
+
+.homeBody {
+    height: 400px;
+}
+
 .horizontalPageContent .squareCard {
     width: 132px;
 }
@@ -328,9 +342,8 @@
     width: 132px;
 }
 
-.sectionTitle {
-    text-transform: uppercase;
-    padding-left: .25em;
+.horizontalPageContent .loginSquareCard {
+    width: 230px;
 }
 
 .wideSpotlightCard {
@@ -350,6 +363,38 @@
     .homePageContainer {
         bottom: 10px;
         top: 70px;
+    }
+}
+
+/* 720p */
+@media all and (min-height: 720px) {
+
+    .homeBody {
+        height: 400px;
+    }
+
+    .horizontalPageContent .squareCard {
+        width: 132px;
+    }
+
+    .horizontalPageContent .backdropCard {
+        width: 220px;
+    }
+
+    .horizontalPageContent .portraitCard {
+        width: 132px;
+    }
+
+   .horizontalPageContent  .loginSquareCard {
+        width: 280px;
+    }
+
+    .wideSpotlightCard {
+        width: 482px;
+    }
+
+    .miniSpotlightCard {
+        width: 238px;
     }
 }
 
