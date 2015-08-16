@@ -17,7 +17,7 @@
             DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'backdropCard homebackdropCard',
+                shape: 'backdropCard',
                 rows: 3,
                 width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true,
@@ -43,7 +43,7 @@
             DefaultTheme.CardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'backdropCard homebackdropCard',
+                shape: 'backdropCard',
                 rows: 3,
                 width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true,
@@ -73,7 +73,7 @@
             DefaultTheme.CardBuilder.buildCards(result, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'backdropCard homebackdropCard',
+                shape: 'backdropCard',
                 rows: 3,
                 width: DefaultTheme.CardBuilder.homeThumbWidth,
                 preferThumb: true,

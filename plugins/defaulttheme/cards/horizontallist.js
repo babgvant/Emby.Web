@@ -15,16 +15,26 @@
 
                 getItemsMethod(0, 400).then(function (result) {
 
+                    // Normalize between the different response types
+                    if (result.Items == null && result.TotalRecordCount == null) {
+
+                        result = {
+                            Items: result,
+                            TotalRecordCount: result.length
+                        };
+                    }
+
                     if (options.listCountElement) {
                         options.listCountElement.innerHTML = result.TotalRecordCount;
                         options.listNumbersElement.classList.remove('hide');
                     }
 
-                    DefaultTheme.CardBuilder.buildCards(result.Items, {
-                        itemsContainer: itemsContainer,
-                        shape: 'auto',
-                        rows: 2
-                    });
+                    var cardOptions = options.cardOptions || {};
+                    cardOptions.itemsContainer = itemsContainer;
+                    cardOptions.shape = cardOptions.shape || 'auto';
+                    cardOptions.rows = cardOptions.rows || 1;
+
+                    DefaultTheme.CardBuilder.buildCards(result.Items, cardOptions);
 
                     loading.hide();
 

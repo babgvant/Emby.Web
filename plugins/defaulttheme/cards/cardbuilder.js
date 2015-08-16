@@ -47,17 +47,17 @@
         var primaryImageAspectRatio = Emby.ImageLoader.getPrimaryImageAspectRatio(items) || 0;
 
         if (primaryImageAspectRatio && primaryImageAspectRatio < .85) {
-            options.shape = 'portraitCard homePortraitCard';
+            options.shape = 'portraitCard';
             options.rows = 2;
             options.width = DefaultTheme.CardBuilder.homePortraitWidth;
         }
         else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.34) {
-            options.shape = 'backdropCard homebackdropCard';
+            options.shape = 'backdropCard';
             options.rows = 3;
             options.width = DefaultTheme.CardBuilder.homeThumbWidth;
         }
         else {
-            options.shape = 'squareCard homeSquareCard';
+            options.shape = 'squareCard';
             options.rows = 3;
             options.width = DefaultTheme.CardBuilder.homeSquareWidth;
         }
