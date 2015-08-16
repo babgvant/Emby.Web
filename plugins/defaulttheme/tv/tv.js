@@ -72,23 +72,30 @@
 
         var pageParams = this.params;
 
+        var autoFocus = false;
+
+        if (!this.hasLoaded) {
+            autoFocus = true;
+            this.hasLoaded = true;
+        }
+
         switch (id) {
 
             case 'series':
-                renderSeries(page, pageParams);
+                renderSeries(page, pageParams, autoFocus);
                 break;
             case 'latest':
-                renderLatest(page, pageParams);
+                renderLatest(page, pageParams, autoFocus);
                 break;
             case 'genres':
-                renderGenres(page, pageParams);
+                renderGenres(page, pageParams, autoFocus);
                 break;
             default:
                 break;
         }
     }
 
-    function renderLatest(page, pageParams) {
+    function renderLatest(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -107,6 +114,7 @@
             },
             listCountElement: page.querySelector('.listCount'),
             listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus,
             cardOptions: {
                 shape: 'backdropCard',
                 rows: 3,
@@ -118,7 +126,7 @@
         self.tabController.render();
     }
 
-    function renderSeries(page, pageParams) {
+    function renderSeries(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -134,16 +142,16 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();
     }
 
-    function renderGenres(page, pageParams) {
+    function renderGenres(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
-
             itemsContainer: page.querySelector('.contentScrollSlider'),
             getItemsMethod: function (startIndex, limit) {
                 return Emby.Models.genres({
@@ -154,7 +162,8 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();

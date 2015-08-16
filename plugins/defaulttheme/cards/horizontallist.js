@@ -38,12 +38,14 @@
 
                     loading.hide();
 
-                    setTimeout(function () {
-                        var firstCard = itemsContainer.querySelector('.card');
-                        if (firstCard) {
-                            Emby.FocusManager.focus(firstCard);
-                        }
-                    }, 400);
+                    if (options.autoFocus !== false) {
+                        setTimeout(function () {
+                            var firstCard = itemsContainer.querySelector('.card');
+                            if (firstCard) {
+                                Emby.FocusManager.focus(firstCard);
+                            }
+                        }, 400);
+                    }
                 });
             });
         };

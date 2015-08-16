@@ -52,7 +52,28 @@
     document.addEventListener('keydown', function (evt) {
         lastInputTime = new Date().getTime();
 
-        if (evt.keyCode == 13) {
+        onKeyDown(evt);
+
+    });
+
+    function hasBuiltInKeyboard() {
+
+        // This is going to be really difficult to get right
+        var userAgent = navigator.userAgent.toLowerCase();
+
+        if (userAgent.indexOf('xbox') != -1) {
+            return true;
+        }
+
+        if (userAgent.indexOf('tv') != -1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    if (!hasBuiltInKeyboard()) {
+        document.addEventListener('focusin', function (evt) {
 
             var tag = evt.target.tagName;
 
@@ -68,11 +89,8 @@
                     return false;
                 }
             }
-        }
-
-        onKeyDown(evt);
-
-    });
+        });
+    }
 
     function onKeyDown(evt) {
 
