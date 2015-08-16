@@ -16,7 +16,7 @@
 
                 if (!self.tabbedPage) {
                     loading.show();
-                    renderTabs(view, params.tab, self);
+                    renderTabs(view, params.tab, self, params);
                 }
 
                 itemPromise = itemPromise || Emby.Models.item(params.parentid);
@@ -37,7 +37,7 @@
         });
     }
 
-    function renderTabs(view, initialTabId, pageInstance) {
+    function renderTabs(view, initialTabId, pageInstance, params) {
 
         var tabs = [
         {
@@ -63,12 +63,101 @@
 
         var tabbedPage = new DefaultTheme.TabbedPage(view);
         tabbedPage.loadViewContent = loadViewContent;
+        tabbedPage.params = params;
         tabbedPage.renderTabs(tabs, initialTabId);
         pageInstance.tabbedPage = tabbedPage;
     }
 
     function loadViewContent(page, id, type) {
 
+        var pageParams = this.params;
+
+        switch (id) {
+
+            case 'series':
+                renderSeries(page, pageParams);
+                break;
+            case 'latest':
+                renderLatest(page, pageParams);
+                break;
+            case 'genres':
+                renderGenres(page, pageParams);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function renderLatest(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.latestItems({
+                    IncludeItemTypes: "Episode",
+                    ImageTypeLimit: 1,
+                    EnableImageTypes: "Primary,Backdrop,Thumb",
+                    StartIndex: startIndex,
+                    Limit: Math.min(limit, 32),
+                    ParentId: pageParams.parentid,
+                    Recursive: true,
+                    SortBy: "SortName"
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers'),
+            cardOptions: {
+                shape: 'backdropCard',
+                rows: 3,
+                preferThumb: true,
+                width: DefaultTheme.CardBuilder.homeThumbWidth
+            }
+        });
+
+        self.tabController.render();
+    }
+
+    function renderSeries(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.items({
+                    StartIndex: startIndex,
+                    Limit: limit,
+                    ParentId: pageParams.parentid,
+                    IncludeItemTypes: "Series",
+                    Recursive: true,
+                    SortBy: "SortName"
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.tabController.render();
+    }
+
+    function renderGenres(page, pageParams) {
+
+        self.tabController = new DefaultTheme.HorizontalList({
+
+            itemsContainer: page.querySelector('.contentScrollSlider'),
+            getItemsMethod: function (startIndex, limit) {
+                return Emby.Models.genres({
+                    StartIndex: startIndex,
+                    Limit: limit,
+                    ParentId: pageParams.parentid,
+                    SortBy: "SortName"
+                });
+            },
+            listCountElement: page.querySelector('.listCount'),
+            listNumbersElement: page.querySelector('.listNumbers')
+        });
+
+        self.tabController.render();
     }
 
 })();
