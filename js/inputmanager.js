@@ -65,6 +65,10 @@
             return true;
         }
 
+        if (userAgent.indexOf('mobile') != -1) {
+            return true;
+        }
+
         if (userAgent.indexOf('tv') != -1) {
             return true;
         }
