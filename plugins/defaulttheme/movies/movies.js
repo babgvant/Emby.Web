@@ -72,26 +72,33 @@
 
         var pageParams = this.params;
 
+        var autoFocus = false;
+
+        if (!this.hasLoaded) {
+            autoFocus = true;
+            this.hasLoaded = true;
+        }
+
         switch (id) {
 
             case 'movies':
-                renderMovies(page, pageParams);
+                renderMovies(page, pageParams, autoFocus);
                 break;
             case 'collections':
-                renderCollections(page, pageParams);
+                renderCollections(page, pageParams, autoFocus);
                 break;
             case 'favorites':
-                renderFavorites(page, pageParams);
+                renderFavorites(page, pageParams, autoFocus);
                 break;
             case 'genres':
-                renderGenres(page, pageParams);
+                renderGenres(page, pageParams, autoFocus);
                 break;
             default:
                 break;
         }
     }
 
-    function renderGenres(page, pageParams) {
+    function renderGenres(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -105,13 +112,14 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();
     }
 
-    function renderFavorites(page, pageParams) {
+    function renderFavorites(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -128,13 +136,14 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();
     }
 
-    function renderMovies(page, pageParams) {
+    function renderMovies(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -150,13 +159,14 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();
     }
 
-    function renderCollections(page, pageParams) {
+    function renderCollections(page, pageParams, autoFocus) {
 
         self.tabController = new DefaultTheme.HorizontalList({
 
@@ -169,7 +179,8 @@
                 });
             },
             listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers')
+            listNumbersElement: page.querySelector('.listNumbers'),
+            autoFocus: autoFocus
         });
 
         self.tabController.render();

@@ -12,16 +12,11 @@
 
     var unveilId = 0;
 
-    function getThreshold() {
-
-        // This helps eliminate the draw-in effect as you scroll
-        return Math.max(screen.availHeight * 2, 1000);
-    }
-
-    var threshold = getThreshold();
+    var thresholdX = Math.max(screen.availWidth * 2, 1000);
+    var thresholdY = Math.max(screen.availHeight * 2, 1000);
 
     function isVisible(elem) {
-        return Emby.Dom.visibleInViewport(elem, true, threshold);
+        return Emby.Dom.visibleInViewport(elem, true, thresholdX, thresholdY);
     }
 
     function fillImage(elem) {

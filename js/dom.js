@@ -23,17 +23,20 @@
    *       the user visible viewport of a web browser.
    *       only accounts for vertical position, not horizontal.
    */
-    function visibleInViewport(elem, partial, threshold) {
+    function visibleInViewport(elem, partial, thresholdX, thresholdY) {
+
+        thresholdX = thresholdX || 0;
+        thresholdY = thresholdY || 0;
 
         var vpWidth = window.innerWidth,
             vpHeight = window.innerHeight;
 
         // Use this native browser method, if available.
         var rec = elem.getBoundingClientRect(),
-            tViz = rec.top >= 0 && rec.top < vpHeight + threshold,
-            bViz = rec.bottom > 0 && rec.bottom <= vpHeight + threshold,
-            lViz = rec.left >= 0 && rec.left < vpWidth + threshold,
-            rViz = rec.right > 0 && rec.right <= vpWidth + threshold,
+            tViz = rec.top >= 0 && rec.top < vpHeight + thresholdY,
+            bViz = rec.bottom > 0 && rec.bottom <= vpHeight + thresholdY,
+            lViz = rec.left >= 0 && rec.left < vpWidth + thresholdX,
+            rViz = rec.right > 0 && rec.right <= vpWidth + thresholdX,
             vVisible = partial ? tViz || bViz : tViz && bViz,
             hVisible = partial ? lViz || rViz : lViz && rViz;
 
