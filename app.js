@@ -260,11 +260,13 @@
 
     function enableWebComponents() {
 
-        if (window.WebComponents) {
-            return true;
+        var userAgent = navigator.userAgent.toLowerCase();
+
+        if (userAgent.indexOf('maxthon') != -1) {
+            return false;
         }
 
-        return navigator.userAgent.toLowerCase().indexOf('chrome/') != -1;
+        return userAgent.indexOf('chrome') != -1;
     }
 
     function loadApiClientDependencies(callback) {

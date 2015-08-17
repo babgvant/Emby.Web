@@ -345,6 +345,10 @@
             cardImageContainerClass += ' coveredImage';
         }
 
+        if (!imgUrl) {
+            cardImageContainerClass += ' emptyCardImageContainer';
+        }
+
         var cardImageContainer = imgUrl ? ('<div class="' + cardImageContainerClass + ' lazy" data-src="' + imgUrl + '">') : ('<div class="' + cardImageContainerClass + '">');
 
         if (options.showGroupCount) {

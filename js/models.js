@@ -425,6 +425,36 @@
         });
     }
 
+    function artists(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                normalizeOptions(options);
+
+                apiClient.getArtists(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
+    function albumArtists(options) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                normalizeOptions(options);
+
+                apiClient.getAlbumArtists(apiClient.getCurrentUserId(), options).done(resolve, reject);
+            });
+        });
+    }
+
     globalScope.Emby.Models = {
         resumable: resumable,
         nextUp: nextUp,
@@ -443,7 +473,9 @@
         collections: collections,
         genres: genres,
         userViews: userViews,
-        movieRecommendations: movieRecommendations
+        movieRecommendations: movieRecommendations,
+        artists: artists,
+        albumArtists: albumArtists
     };
 
 })(this, document);

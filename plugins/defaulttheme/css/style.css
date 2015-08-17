@@ -284,7 +284,7 @@
         margin-top: 0;
     }
 
-    .userViewNames paper-button {
+    .userViewNames .btnUserViewHeader {
         min-width: initial;
         text-transform: none !important;
     }
