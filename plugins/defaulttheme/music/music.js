@@ -59,11 +59,12 @@
         {
             Name: Globalize.translate('Genres'),
             Id: "genres"
-        },
-        {
-            Name: Globalize.translate('Songs'),
-            Id: "songs"
         }];
+
+        //tabs.push({
+        //    Name: Globalize.translate('Songs'),
+        //    Id: "songs"
+        //});
 
         var tabbedPage = new DefaultTheme.TabbedPage(view);
         tabbedPage.loadViewContent = loadViewContent;
