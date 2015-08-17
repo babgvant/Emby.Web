@@ -73,6 +73,10 @@
             return true;
         }
 
+        if (userAgent.indexOf('samsung') != -1) {
+            return true;
+        }
+
         return false;
     }
 

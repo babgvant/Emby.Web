@@ -37,7 +37,7 @@ paper-input .focused-line {
 }
 
 .paperRaised {
-    background: #404040!important;
+    background: #404040 !important;
 }
 
 paper-button[raised] {
@@ -49,7 +49,7 @@ paper-button iron-icon {
 }
 
 .paperRaised:focus {
-    background: #52B54B!important;
+    background: #52B54B !important;
 }
 
 paper-button[raised][focused] {
@@ -156,4 +156,8 @@ paper-dialog {
 .userViewNames paper-button[focused] {
     color: #2ad !important;
     opacity: 1;
+}
+
+.emptyCardImageContainer {
+    background: #333;
 }

@@ -1,4 +1,4 @@
-.clearButton {
+.clearButton, button.flat {
     background: transparent;
     border: 0 !important;
     padding: 0 !important;
@@ -58,7 +58,7 @@ input.paperLike {
         border-color: #52B54B !important;
     }
 
-paper-button {
+button.flat, paper-button {
     font-weight: 500;
     vertical-align: middle;
     margin-top: 5px;
@@ -90,40 +90,6 @@ paper-button {
         right: 10px;
         top: 18px;
     }
-
-    paper-button .material-icons {
-        font-size: 150%;
-        vertical-align: middle;
-    }
-
-    paper-button .fa {
-        vertical-align: middle;
-    }
-
-    paper-button.mini {
-        min-width: initial;
-    }
-
-        paper-button.mini .content {
-            padding: 0.3em 0.7em;
-        }
-
-        paper-button.mini.noIcon .content {
-            padding: 0.5em 0.7em;
-        }
-
-    paper-button.notext {
-        min-width: 2.8em;
-    }
-
-        paper-button.notext .content {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-
-        paper-button.notext iron-icon {
-            margin-right: 0;
-        }
 
 #docspinner {
     display: block;

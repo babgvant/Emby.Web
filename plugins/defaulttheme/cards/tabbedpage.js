@@ -84,11 +84,13 @@
         var currentAnimation;
         var selectedMediaInfo = page.querySelector('.selectedMediaInfo');
 
+        var tagName = Emby.Dom.supportsWebComponents() ? 'paper-button' : 'button';
+
         self.renderTabs = function (tabs, initialTabId) {
 
             page.querySelector('.viewsScrollSlider').innerHTML = tabs.map(function (i) {
 
-                return '<paper-button class="flat btnUserViewHeader" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h2>' + i.Name + '</h2></paper-button>';
+                return '<' + tagName + ' class="flat btnUserViewHeader" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h2>' + i.Name + '</h2></' + tagName + '>';
 
             }).join('');
 
