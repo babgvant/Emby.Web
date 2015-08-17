@@ -15,7 +15,7 @@
 
                 if (!self.tabbedPage) {
                     loading.show();
-                    renderTabs(view, params.tab, self);
+                    renderTabs(view, params.tab, self, params);
                 }
 
                 Emby.Page.setTitle(Globalize.translate('LiveTV'));
@@ -31,7 +31,7 @@
         });
     }
 
-    function renderTabs(view, initialTabId, pageInstance) {
+    function renderTabs(view, initialTabId, pageInstance, params) {
 
         var tabs = [
         {
@@ -57,6 +57,7 @@
 
         var tabbedPage = new DefaultTheme.TabbedPage(view);
         tabbedPage.loadViewContent = loadViewContent;
+        tabbedPage.params = params;
         tabbedPage.renderTabs(tabs, initialTabId);
         pageInstance.tabbedPage = tabbedPage;
     }
