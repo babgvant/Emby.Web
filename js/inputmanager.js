@@ -77,6 +77,10 @@
             return true;
         }
 
+        if (userAgent.indexOf('nintendo') != -1) {
+            return true;
+        }
+
         return false;
     }
 

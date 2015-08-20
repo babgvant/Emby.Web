@@ -12,8 +12,8 @@
 
     var unveilId = 0;
 
-    var thresholdX = Math.max(screen.availWidth * 2, 1000);
-    var thresholdY = Math.max(screen.availHeight * 2, 1000);
+    var thresholdX = screen.availWidth;
+    var thresholdY = screen.availHeight;
 
     function isVisible(elem) {
         return Emby.Dom.visibleInViewport(elem, true, thresholdX, thresholdY);
