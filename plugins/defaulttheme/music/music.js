@@ -53,12 +53,12 @@
             Id: "artists"
         },
         {
-            Name: Globalize.translate('Playlists'),
-            Id: "playlists"
-        },
-        {
             Name: Globalize.translate('Genres'),
             Id: "genres"
+        },
+        {
+            Name: Globalize.translate('Playlists'),
+            Id: "playlists"
         }];
 
         //tabs.push({
