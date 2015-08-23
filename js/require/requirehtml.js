@@ -17,7 +17,7 @@ define(function () {
 
         var url = cssId + '.html';
 
-        if (url.indexOf('http') != 0) {
+        if (url.indexOf('http') != 0 && url.indexOf('file:') != 0) {
             url = config.baseUrl + url;
         }
 
