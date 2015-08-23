@@ -88,7 +88,7 @@
 
             var url = route.contentPath || route.path;
 
-            if (url.toLowerCase().indexOf('http') != 0) {
+            if (url.toLowerCase().indexOf('http') != 0 && url.indexOf('file:') != 0) {
                 url = baseUrl() + '/' + url;
             }
 
