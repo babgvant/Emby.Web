@@ -178,6 +178,7 @@
 			frameSize = parallax ? 0 : $frame[o.horizontal ? 'width' : 'height']();
 			sbSize = $sb[o.horizontal ? 'width' : 'height']();
 			slideeSize = parallax ? frame : $slidee[o.horizontal ? 'outerWidth' : 'outerHeight']();
+
 			pages.length = 0;
 
 			// Set position limits & relatives
@@ -190,7 +191,7 @@
 				lastItemsCount = items.length;
 
 				// Reset itemNav related variables
-				$items = $slidee.children(o.itemSelector);
+				$items = $(o.itemSelector, $slidee);
 				items.length = 0;
 
 				// Needed variables
@@ -204,6 +205,8 @@
 
 				// Reset slideeSize
 				slideeSize = 0;
+
+				var lastItemEnd;
 
 				// Iterate through items
 				$items.each(function (i, element) {
@@ -228,8 +231,12 @@
 						slideeSize += paddingStart;
 					}
 
-					// Increment slidee size for size of the active element
-					slideeSize += itemSizeFull;
+					if (!lastItemEnd || lastItemEnd != item.end) {
+					    // Increment slidee size for size of the active element
+					    slideeSize += itemSizeFull;
+					}
+
+					lastItemEnd = item.end;
 
 					// Try to account for vertical margin collapsing in vertical mode
 					// It's not bulletproof, but should work in 99% of cases
@@ -1508,6 +1515,7 @@
 		 * @return {Boolean}
 		 */
 		function isInteractive(element) {
+		    return false;
 			return ~$.inArray(element.nodeName, interactiveElements) || $(element).is(o.interactive);
 		}
 
@@ -1675,7 +1683,7 @@
 			// Ignore events that:
 			// - are not originating from direct SLIDEE children
 			// - originated from interactive elements
-			if (this.parentNode !== $slidee[0] || event.originalEvent[namespace + 'ignore']) return;
+			//if (this.parentNode !== $slidee[0] || event.originalEvent[namespace + 'ignore']) return;
 
 			self.activate(this);
 		}
