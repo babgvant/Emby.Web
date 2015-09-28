@@ -303,7 +303,29 @@
 
 .selectedItemInfoInner {
     margin: auto;
-    width: 25%;
+    max-width: 30%;
+}
+
+.selectedItemInfoInnerWithLogo {
+    padding-left: 200px;
+    position: relative;
+}
+
+.selectedItemInfoLogo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 160px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: contain;
+}
+
+.selectedItemInfoInner div {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .listNumbers {
@@ -377,11 +399,12 @@
 
 .starRatingContainer {
     display: inline-block;
-    margin-right: 1.5em;
+    margin-right: 1.25em;
+    vertical-align: middle;
 }
 
     .starRatingContainer iron-icon {
-        width: 34px;
+        width: 38px;
         height: 38px;
         color: #CB272A;
     }

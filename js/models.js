@@ -435,6 +435,30 @@
         });
     }
 
+    function logoImageUrl(item, options) {
+
+        if (item.ImageTags && item.ImageTags.Logo) {
+
+            options = options || {};
+            options.type = "Logo";
+
+            options.tag = item.ImageTags.Logo;
+
+            return getConnectionManager().currentApiClient().getScaledImageUrl(item.Id, options);
+        }
+
+        return null;
+    }
+
+    var myConnectionManager;
+    function getConnectionManager() {
+        return myConnectionManager;
+    }
+
+    require(['connectionManager'], function (connectionManager) {
+        myConnectionManager = connectionManager;
+    });
+
     globalScope.Emby.Models = {
         resumable: resumable,
         nextUp: nextUp,
@@ -455,7 +479,8 @@
         userViews: userViews,
         movieRecommendations: movieRecommendations,
         artists: artists,
-        albumArtists: albumArtists
+        albumArtists: albumArtists,
+        logoImageUrl: logoImageUrl
     };
 
 })(this, document);

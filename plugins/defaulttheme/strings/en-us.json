@@ -64,7 +64,8 @@
     "RecommendationBecauseYouWatched": "Because you watched {0}",
     "RecommendationDirectedBy": "Directed by {0}",
     "RecommendationStarring": "Starring {0}",
-    "SimilarTo":  "Similar to {0}",
-    "AlbumArtists":  "Album Artists",
-    "LiveTV":  "Live TV"
+    "SimilarTo": "Similar to {0}",
+    "AlbumArtists": "Album Artists",
+    "LiveTV": "Live TV",
+    "TrackCount": "{0} tracks"
 }

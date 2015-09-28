@@ -9,8 +9,6 @@
 
         var self = this;
         var itemPromise;
-        var focusedElement;
-        var currentAnimation;
 
         view.addEventListener('viewshow', function (e) {
 
@@ -28,10 +26,8 @@
                     Emby.Backdrop.setBackdrops([item]);
 
                     if (!isRestored) {
-                        createHorizontalScroller(view.querySelector('.horizontalPageContent'), self);
-                        loadChildren(view, item, loading, self);
+                        createHorizontalScroller(self, view, item, loading);
                     }
-
                 });
             });
         });
@@ -45,159 +41,45 @@
                 self.listController.destroy();
             }
         });
-
-
-        function createHorizontalScroller(view) {
-
-            require(["slyScroller", 'loading'], function (slyScroller, loading) {
-
-                var scrollFrame = view.querySelector('.scrollFrame');
-
-                scrollFrame.style.display = 'block';
-
-                var options = {
-                    horizontal: 1,
-                    itemNav: 0,
-                    mouseDragging: 1,
-                    touchDragging: 1,
-                    slidee: view.querySelector('.scrollSlider'),
-                    itemSelector: '.card',
-                    smart: true,
-                    easing: 'swing',
-                    releaseSwing: true,
-                    scrollBar: view.querySelector('.scrollbar'),
-                    scrollBy: 200,
-                    speed: 400,
-                    elasticBounds: 1,
-                    dragHandle: 1,
-                    dynamicHandle: 1,
-                    clickBar: 1
-                };
-
-                slyScroller.create(scrollFrame, options).then(function (slyFrame) {
-                    slyFrame.init();
-                    self.slyFrame = slyFrame;
-                    initFocusHandler(view, slyFrame);
-                });
-            });
-        }
-
-        var lastFocus = 0;
-        function initFocusHandler(view, slyFrame) {
-
-            var scrollSlider = view.querySelector('.scrollSlider');
-            var selectedIndexElement = view.querySelector('.selectedIndex');
-
-            scrollSlider.addEventListener('focusin', function (e) {
-
-                var focused = Emby.FocusManager.focusableParent(e.target);
-                focusedElement = focused;
-
-                if (focused) {
-
-                    var index = focused.getAttribute('data-index');
-                    if (index && selectedIndexElement) {
-                        selectedIndexElement.innerHTML = 1 + parseInt(index);
-                    }
-
-                    var now = new Date().getTime();
-                    var animate = (now - lastFocus) > 100;
-                    slyFrame.toCenter(focused, !animate);
-                    lastFocus = now;
-
-                    startZoomTimer();
-                }
-            });
-            scrollSlider.addEventListener('focusout', function (e) {
-
-                var focused = focusedElement;
-                focusedElement = null;
-
-                if (focused) {
-                    var elem = focused.querySelector('.focusedTransform');
-                    if (elem) {
-                        elem.classList.remove('focusedTransform');
-                    }
-                }
-
-                if (currentAnimation) {
-                    currentAnimation.cancel();
-                    currentAnimation = null;
-                }
-            });
-        }
-
-        var zoomTimeout;
-        function startZoomTimer() {
-
-            if (onZoomTimeout) {
-                clearTimeout(zoomTimeout);
-            }
-            zoomTimeout = setTimeout(onZoomTimeout, 50);
-        }
-
-        function onZoomTimeout() {
-            var focused = focusedElement
-            if (focused && document.activeElement == focused) {
-                zoomIn(focused);
-                setSelectedItemInfo(focused);
-            }
-        }
-
-        function zoomIn(elem) {
-
-            if (elem.classList.contains('noScale')) {
-                return;
-            }
-
-            var keyframes = [
-                { transform: 'scale(1)  ', offset: 0 },
-              { transform: 'scale(1.12)', offset: 1 }
-            ];
-
-            var card = elem;
-            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('.content') : elem.querySelector('.cardBox');
-
-            var onAnimationFinished = function () {
-                if (document.activeElement == card) {
-                    elem.classList.add('focusedTransform');
-                }
-                currentAnimation = null;
-            };
-
-            if (elem.animate) {
-                var timing = { duration: 200, iterations: 1 };
-                var animation = elem.animate(keyframes, timing);
-
-                animation.onfinish = onAnimationFinished;
-                currentAnimation = animation;
-            } else {
-                onAnimationFinished();
-            }
-        }
-
-        function setSelectedItemInfo(card) {
-            var index = parseInt(card.getAttribute('data-index'));
-            var item = self.listController.items[index];
-
-            var html = '';
-            html += '<div>';
-            html += item.Name;
-            html += '</div>';
-
-            var mediaInfo = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
-
-            if (mediaInfo) {
-                html += '<div>';
-                html += mediaInfo;
-                html += '</div>';
-            }
-
-            view.querySelector('.selectedItemInfoInner').innerHTML = html;
-        }
     }
 
-    function loadChildren(view, item, loading, instance) {
+    function createHorizontalScroller(instance, view, item, loading) {
+
+        require(["slyScroller", 'loading'], function (slyScroller, loading) {
+
+            var horizontalPageContent = view.querySelector('.horizontalPageContent');
+            var scrollFrame = horizontalPageContent.querySelector('.scrollFrame');
+
+            scrollFrame.style.display = 'block';
+
+            var options = {
+                horizontal: 1,
+                itemNav: 0,
+                mouseDragging: 1,
+                touchDragging: 1,
+                slidee: horizontalPageContent.querySelector('.scrollSlider'),
+                itemSelector: '.card',
+                smart: true,
+                easing: 'swing',
+                releaseSwing: true,
+                scrollBar: horizontalPageContent.querySelector('.scrollbar'),
+                scrollBy: 200,
+                speed: 400,
+                elasticBounds: 1,
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1
+            };
+
+            slyScroller.create(scrollFrame, options).then(function (slyFrame) {
+                slyFrame.init();
+                instance.slyFrame = slyFrame;
+                loadChildren(instance, view, item, loading);
+            });
+        });
+    }
+
+    function loadChildren(instance, view, item, loading) {
 
         instance.listController = new DefaultTheme.HorizontalList({
 
@@ -209,7 +91,10 @@
                 });
             },
             listCountElement: view.querySelector('.listCount'),
-            listNumbersElement: view.querySelector('.listNumbers')
+            listNumbersElement: view.querySelector('.listNumbers'),
+            selectedItemInfoElement: view.querySelector('.selectedItemInfoInner'),
+            selectedIndexElement: view.querySelector('.selectedIndex'),
+            slyFrame: instance.slyFrame
         });
 
         instance.listController.render();

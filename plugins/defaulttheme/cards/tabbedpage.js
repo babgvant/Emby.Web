@@ -222,7 +222,8 @@
             var focused = focusedElement
             if (focused && document.activeElement == focused) {
                 zoomIn(focused);
-                //setSelectedItemInfo(focused);
+
+                setSelectedItemInfo(focused);
             }
         }
 
@@ -259,6 +260,11 @@
         }
 
         function setSelectedItemInfo(card) {
+
+            if (!self.listController) {
+                return;
+            }
+
             var index = parseInt(card.getAttribute('data-index'));
             var item = self.listController.items[index];
 
