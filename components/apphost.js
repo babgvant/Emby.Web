@@ -1,4 +1,4 @@
-define([], function () {
+define(['cryptojs-sha1'], function () {
 
     function getDeviceProfile() {
 

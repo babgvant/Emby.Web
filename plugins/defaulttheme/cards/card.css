@@ -3,6 +3,7 @@
     background-color: transparent !important;
     background: none !important;
     margin: 0;
+    padding: 0;
     display: inline-block;
 }
 
@@ -54,7 +55,7 @@ button.card {
     z-index: 1;
 }
 
-.card paper-material, .card .cardBox {
+.card .content, .card .cardBox, .card paper-material {
     padding: 0 !important;
     margin: 5px;
     transition: none !important;
@@ -66,10 +67,10 @@ button.card {
     z-index: 100000 !important;
 }
 
-    .card[focused] paper-material, .card:focus .cardBox {
-        -moz-box-shadow: #2ad 0px 0px 0 5px;
-        box-shadow: #2ad 0px 0px 0 5px;
-    }
+.card[focused] .content, .card:focus .cardBox {
+    -moz-box-shadow: #52B54B 0px 0px 0 5px;
+    box-shadow: #52B54B 0px 0px 0 5px;
+}
 
 .focusedTransform {
     -webkit-transform: scale(1.12);

@@ -140,6 +140,7 @@
             var focused = focusedElement
             if (focused && document.activeElement == focused) {
                 zoomIn(focused);
+                setSelectedItemInfo(focused);
             }
         }
 
@@ -155,7 +156,7 @@
             ];
 
             var card = elem;
-            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
+            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('.content') : elem.querySelector('.cardBox');
 
             var onAnimationFinished = function () {
                 if (document.activeElement == card) {
@@ -174,11 +175,31 @@
                 onAnimationFinished();
             }
         }
+
+        function setSelectedItemInfo(card) {
+            var index = parseInt(card.getAttribute('data-index'));
+            var item = self.listController.items[index];
+
+            var html = '';
+            html += '<div>';
+            html += item.Name;
+            html += '</div>';
+
+            var mediaInfo = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
+
+            if (mediaInfo) {
+                html += '<div>';
+                html += mediaInfo;
+                html += '</div>';
+            }
+
+            view.querySelector('.selectedItemInfoInner').innerHTML = html;
+        }
     }
 
     function loadChildren(view, item, loading, instance) {
 
-        self.listController = new DefaultTheme.HorizontalList({
+        instance.listController = new DefaultTheme.HorizontalList({
 
             itemsContainer: view.querySelector('.scrollSlider'),
             getItemsMethod: function (startIndex, limit) {
@@ -191,7 +212,7 @@
             listNumbersElement: view.querySelector('.listNumbers')
         });
 
-        self.listController.render();
+        instance.listController.render();
     }
 
 })();

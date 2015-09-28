@@ -24,6 +24,8 @@
                         };
                     }
 
+                    self.items = result.Items;
+
                     if (options.listCountElement) {
                         options.listCountElement.innerHTML = result.TotalRecordCount;
                         options.listNumbersElement.classList.remove('hide');

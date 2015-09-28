@@ -79,24 +79,9 @@
     margin: 1em 0;
 }
 
-.mediaInfoItem {
-    border-radius: 5px;
-    display: inline-block;
-    padding: 4px 12px;
-    margin-right: .5em;
-    text-transform: uppercase;
-    vertical-align: middle;
-}
-
-.starRatingContainer {
-    display: inline-block;
-    margin-right: 1em;
-}
-
-    .starRatingContainer iron-icon {
+    .mediaInfo .starRatingContainer iron-icon {
         width: 44px;
         height: 48px;
-        color: #CB272A;
     }
 
 .itemPageButtons paper-fab iron-icon {

@@ -126,6 +126,17 @@
             return credentialProvider.credentials().ConnectAccessToken;
         };
 
+        self.getServerInfo = function (id) {
+
+            var servers = credentialProvider.credentials().Servers;
+
+            return servers.filter(function (s) {
+
+                return s.Id == id;
+
+            })[0];
+        };
+
         self.getLastUsedServer = function () {
 
             var servers = credentialProvider.credentials().Servers;
@@ -242,26 +253,11 @@
                 Events.trigger(self, 'apiclientcreated', [apiClient]);
             }
 
-            if (server.AccessToken && server.UserId) {
-
-                apiClient.setAuthenticationInfo(server.AccessToken, server.UserId);
-            }
-            else {
-
-                apiClient.clearAuthenticationInfo();
-            }
-
             logger.log('returning instance from getOrAddApiClient');
             return apiClient;
         }
 
         self.getOrCreateApiClient = function (serverId) {
-
-            var apiClient = self.getApiClient(serverId);
-
-            if (apiClient) {
-                return apiClient;
-            }
 
             var credentials = credentialProvider.credentials();
             var servers = credentials.Servers.filter(function (s) {
@@ -287,7 +283,9 @@
 
             var server = servers.length ? servers[0] : apiClient.serverInfo();
 
-            server.DateLastAccessed = new Date().getTime();
+            if (options.updateDateLastAccessed !== false) {
+                server.DateLastAccessed = new Date().getTime();
+            }
             server.Id = result.ServerId;
 
             if (saveCredentials) {
@@ -309,12 +307,12 @@
 
         function saveUserInfoIntoCredentials(server, user) {
 
-            //ServerUserInfo info = new ServerUserInfo();
-            //info.setIsSignedInOffline(true);
-            //info.setId(user.getId());
+            var info = {
+                Id: user.Id,
+                IsSignedInOffline: true
+            }
 
-            //// Record user info here
-            //server.AddOrUpdate(info);
+            credentialProvider.addOrUpdateUser(server, info);
         }
 
         function afterConnected(apiClient, options) {
@@ -376,7 +374,7 @@
                 throw new Error("null accessToken");
             }
 
-            var url = "https://connect.mediabrowser.tv/service/user?id=" + userId;
+            var url = "https://connect.emby.media/service/user?id=" + userId;
 
             return HttpClient.send({
                 type: "GET",
@@ -632,7 +630,7 @@
                 return deferred.promise();
             }
 
-            var url = "https://connect.mediabrowser.tv/service/servers?userId=" + credentials.ConnectUserId;
+            var url = "https://connect.emby.media/service/servers?userId=" + credentials.ConnectUserId;
 
             HttpClient.send({
                 type: "GET",
@@ -666,6 +664,19 @@
 
             return deferred.promise();
         }
+
+        self.getSavedServers = function () {
+
+            var credentials = credentialProvider.credentials();
+
+            var servers = credentials.Servers.slice(0);
+
+            servers.sort(function (a, b) {
+                return (b.DateLastAccessed || 0) - (a.DateLastAccessed || 0);
+            });
+
+            return servers;
+        };
 
         self.getAvailableServers = function () {
 
@@ -726,7 +737,7 @@
             var deferred = DeferredBuilder.Deferred();
 
             require(['serverdiscovery'], function () {
-                ServerDiscovery.findServers(2500).done(function (foundServers) {
+                ServerDiscovery.findServers(1000).done(function (foundServers) {
 
                     var servers = foundServers.map(function (foundServer) {
 
@@ -879,6 +890,7 @@
 
             var wakeOnLanSendTime = new Date().getTime();
 
+            options = options || {};
             testNextConnectionMode(tests, 0, server, wakeOnLanSendTime, options, deferred);
 
             return deferred.promise();
@@ -987,7 +999,9 @@
 
             updateServerInfo(server, systemInfo);
 
-            server.DateLastAccessed = new Date().getTime();
+            if (options.updateDateLastAccessed !== false) {
+                server.DateLastAccessed = new Date().getTime();
+            }
             server.LastConnectionMode = connectionMode;
             credentialProvider.addOrUpdateServer(credentials.Servers, server);
             credentialProvider.credentials(credentials);
@@ -1085,7 +1099,7 @@
 
                 HttpClient.send({
                     type: "POST",
-                    url: "https://connect.mediabrowser.tv/service/user/authenticate",
+                    url: "https://connect.emby.media/service/user/authenticate",
                     data: {
                         nameOrEmail: username,
                         password: md5
@@ -1148,7 +1162,7 @@
 
                 HttpClient.send({
                     type: "POST",
-                    url: "https://connect.mediabrowser.tv/service/register",
+                    url: "https://connect.emby.media/service/register",
                     data: {
                         email: email,
                         userName: username,
@@ -1216,7 +1230,7 @@
                 throw new Error("null connectUserId");
             }
 
-            var url = "https://connect.mediabrowser.tv/service/servers?userId=" + self.connectUserId() + "&status=Waiting";
+            var url = "https://connect.emby.media/service/servers?userId=" + self.connectUserId() + "&status=Waiting";
 
             return HttpClient.send({
                 type: "GET",
@@ -1232,56 +1246,54 @@
 
         self.deleteServer = function (serverId) {
 
-            var credentials = credentialProvider.credentials();
+            if (!serverId) {
+                throw new Error("null serverId");
+            }
 
-            var serverInfo = credentials.Servers = credentials.Servers.filter(function (s) {
-                return s.ConnectServerId == serverId;
+            var server = credentialProvider.credentials().Servers.filter(function (s) {
+                return s.Id == serverId;
             });
+            server = server.length ? server[0] : null;
+
+            var deferred = DeferredBuilder.Deferred();
 
             function onDone() {
-
-                credentials = credentialProvider.credentials();
+                var credentials = credentialProvider.credentials();
 
                 credentials.Servers = credentials.Servers.filter(function (s) {
-                    return s.ConnectServerId != serverId;
+                    return s.Id != serverId;
                 });
 
                 credentialProvider.credentials(credentials);
+                deferred.resolve();
             }
 
-            if (serverInfo.ExchangeToken) {
-
-                var connectToken = self.connectToken();
-
-                if (!serverId) {
-                    throw new Error("null serverId");
-                }
-                if (!connectToken) {
-                    throw new Error("null connectToken");
-                }
-                if (!self.connectUserId()) {
-                    throw new Error("null connectUserId");
-                }
-
-                var url = "https://connect.mediabrowser.tv/service/serverAuthorizations?serverId=" + serverId + "&userId=" + self.connectUserId();
-
-                return HttpClient.send({
-                    type: "DELETE",
-                    url: url,
-                    headers: {
-                        "X-Connect-UserToken": connectToken,
-                        "X-Application": appName + "/" + appVersion
-                    }
-
-                }).always(onDone);
-
-            } else {
-
+            if (!server.ConnectServerId) {
                 onDone();
-                var deferred = DeferredBuilder.Deferred();
-                deferred.resolve();
                 return deferred.promise();
             }
+
+            var connectToken = self.connectToken();
+            var connectUserId = self.connectUserId();
+
+            if (!connectToken || !connectUserId) {
+                onDone();
+                return deferred.promise();
+            }
+
+            var url = "https://connect.emby.media/service/serverAuthorizations?serverId=" + server.ConnectServerId + "&userId=" + connectUserId;
+
+            HttpClient.send({
+                type: "DELETE",
+                url: url,
+                headers: {
+                    "X-Connect-UserToken": connectToken,
+                    "X-Application": appName + "/" + appVersion
+                }
+
+            }).always(onDone);
+
+            return deferred.promise();
         };
 
         self.rejectServer = function (serverId) {
@@ -1298,7 +1310,7 @@
                 throw new Error("null connectUserId");
             }
 
-            var url = "https://connect.mediabrowser.tv/service/serverAuthorizations?serverId=" + serverId + "&userId=" + self.connectUserId();
+            var url = "https://connect.emby.media/service/serverAuthorizations?serverId=" + serverId + "&userId=" + self.connectUserId();
 
             return HttpClient.send({
                 type: "DELETE",
@@ -1325,7 +1337,7 @@
                 throw new Error("null connectUserId");
             }
 
-            var url = "https://connect.mediabrowser.tv/service/ServerAuthorizations/accept?serverId=" + serverId + "&userId=" + self.connectUserId();
+            var url = "https://connect.emby.media/service/ServerAuthorizations/accept?serverId=" + serverId + "&userId=" + self.connectUserId();
 
             return HttpClient.send({
                 type: "GET",

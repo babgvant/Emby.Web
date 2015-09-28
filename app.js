@@ -235,6 +235,7 @@
 
         requirejs.config(config);
 
+        define("cryptojs-sha1", ["apiclient/sha1"]);
         define("connectservice", ["apiclient/connectservice"]);
         define("serverdiscovery", ["apiclient/serverdiscovery"]);
         define("wakeonlan", ["apiclient/wakeonlan"]);
@@ -274,7 +275,6 @@
         var list = [
            'bower_components/bean/bean.min',
            'apiclient/logger',
-           'apiclient/sha1',
            'apiclient/md5',
            'apiclient/credentials',
            'apiclient/device',
