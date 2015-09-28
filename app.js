@@ -314,7 +314,6 @@
              'js/inputmanager',
              'js/playbackmanager',
              'js/imageloader',
-             'js/models',
              'js/backdrops',
              'js/dom',
              'js/datetime'
@@ -416,14 +415,21 @@
 
     function loadPresentation() {
 
-        Logger.log('Loading presentation');
+        var presentationDependencies = [];
 
-        // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
-        loadDefaultTheme(function () {
+        presentationDependencies.push('js/models');
 
-            document.documentElement.classList.remove('preload');
+        require(presentationDependencies, function () {
 
-            Emby.Page.start();
+            Logger.log('Loading presentation');
+
+            // Start by loading the default theme. Once a user is logged in we can change the theme based on settings
+            loadDefaultTheme(function () {
+
+                document.documentElement.classList.remove('preload');
+
+                Emby.Page.start();
+            });
         });
     }
 

@@ -35,220 +35,243 @@
                 self.tabbedPage.destroy();
             }
         });
-    }
 
-    function renderTabs(view, initialTabId, pageInstance, params) {
+        function renderTabs(view, initialTabId, pageInstance, params) {
 
-        var tabs = [
-        {
-            Name: Globalize.translate('Albums'),
-            Id: "albums"
-        },
-        {
-            Name: Globalize.translate('AlbumArtists'),
-            Id: "albumartists"
-        },
-        {
-            Name: Globalize.translate('Artists'),
-            Id: "artists"
-        },
-        {
-            Name: Globalize.translate('Genres'),
-            Id: "genres"
-        },
-        {
-            Name: Globalize.translate('Playlists'),
-            Id: "playlists"
-        }];
+            var tabs = [
+            {
+                Name: Globalize.translate('Albums'),
+                Id: "albums"
+            },
+            {
+                Name: Globalize.translate('AlbumArtists'),
+                Id: "albumartists"
+            },
+            {
+                Name: Globalize.translate('Artists'),
+                Id: "artists"
+            },
+            {
+                Name: Globalize.translate('Genres'),
+                Id: "genres"
+            },
+            {
+                Name: Globalize.translate('Playlists'),
+                Id: "playlists"
+            }];
 
-        //tabs.push({
-        //    Name: Globalize.translate('Songs'),
-        //    Id: "songs"
-        //});
+            //tabs.push({
+            //    Name: Globalize.translate('Songs'),
+            //    Id: "songs"
+            //});
 
-        var tabbedPage = new DefaultTheme.TabbedPage(view);
-        tabbedPage.loadViewContent = loadViewContent;
-        tabbedPage.params = params;
-        tabbedPage.renderTabs(tabs, initialTabId);
-        pageInstance.tabbedPage = tabbedPage;
-    }
-
-    function loadViewContent(page, id) {
-
-        var pageParams = this.params;
-
-        var autoFocus = false;
-
-        if (!this.hasLoaded) {
-            autoFocus = true;
-            this.hasLoaded = true;
+            var tabbedPage = new DefaultTheme.TabbedPage(view);
+            tabbedPage.loadViewContent = loadViewContent;
+            tabbedPage.params = params;
+            tabbedPage.renderTabs(tabs, initialTabId);
+            pageInstance.tabbedPage = tabbedPage;
         }
 
-        switch (id) {
+        function loadViewContent(page, id) {
 
-            case 'albumartists':
-                renderAlbumArtists(page, pageParams, autoFocus);
-                break;
-            case 'artists':
-                renderArtists(page, pageParams, autoFocus);
-                break;
-            case 'albums':
-                renderAlbums(page, pageParams, autoFocus);
-                break;
-            case 'playlists':
-                renderPlaylists(page, pageParams, autoFocus);
-                break;
-            case 'songs':
-                renderSongs(page, pageParams, autoFocus);
-                break;
-            case 'genres':
-                renderGenres(page, pageParams, autoFocus);
-                break;
-            default:
-                break;
+            var pageParams = this.params;
+
+            var autoFocus = false;
+
+            if (!this.hasLoaded) {
+                autoFocus = true;
+                this.hasLoaded = true;
+            }
+
+            switch (id) {
+
+                case 'albumartists':
+                    renderAlbumArtists(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                case 'artists':
+                    renderArtists(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                case 'albums':
+                    renderAlbums(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                case 'playlists':
+                    renderPlaylists(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                case 'songs':
+                    renderSongs(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                case 'genres':
+                    renderGenres(page, pageParams, autoFocus, this.bodySlyFrame);
+                    break;
+                default:
+                    break;
+            }
         }
-    }
 
-    function renderGenres(page, pageParams, autoFocus) {
+        function renderGenres(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.genres({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.genres({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
-    }
+            self.listController.render();
+        }
 
-    function renderPlaylists(page, pageParams, autoFocus) {
+        function renderPlaylists(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.playlists({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.playlists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
-    }
+            self.listController.render();
+        }
 
-    function renderAlbums(page, pageParams, autoFocus) {
+        function renderAlbums(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.items({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    IncludeItemTypes: "MusicAlbum",
-                    Recursive: true,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus,
-            cardOptions: {
-                coverImage: true
-            }
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "MusicAlbum",
+                        Recursive: true,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
-    }
+            self.listController.render();
+        }
 
-    function renderSongs(page, pageParams, autoFocus) {
+        function renderSongs(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.items({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    IncludeItemTypes: "Audio",
-                    Recursive: true,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus,
-            cardOptions: {
-                coverImage: true
-            }
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Audio",
+                        Recursive: true,
+                        SortBy: "SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
-    }
+            self.listController.render();
+        }
 
-    function renderArtists(page, pageParams, autoFocus) {
+        function renderArtists(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.artists({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus,
-            cardOptions: {
-                coverImage: true
-            }
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.artists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
-    }
+            self.listController.render();
+        }
 
-    function renderAlbumArtists(page, pageParams, autoFocus) {
+        function renderAlbumArtists(page, pageParams, autoFocus, slyFrame) {
 
-        self.tabController = new DefaultTheme.HorizontalList({
+            self.listController = new DefaultTheme.HorizontalList({
 
-            itemsContainer: page.querySelector('.contentScrollSlider'),
-            getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.albumArtists({
-                    StartIndex: startIndex,
-                    Limit: limit,
-                    ParentId: pageParams.parentid,
-                    SortBy: "SortName"
-                });
-            },
-            listCountElement: page.querySelector('.listCount'),
-            listNumbersElement: page.querySelector('.listNumbers'),
-            autoFocus: autoFocus,
-            cardOptions: {
-                coverImage: true
-            }
-        });
+                itemsContainer: page.querySelector('.contentScrollSlider'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.albumArtists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                slyFrame: slyFrame
+            });
 
-        self.tabController.render();
+            self.listController.render();
+        }
     }
 
 })();
