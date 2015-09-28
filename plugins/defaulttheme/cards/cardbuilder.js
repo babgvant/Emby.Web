@@ -453,6 +453,165 @@
         });
     }
 
+    function getMediaInfoHtml(item)
+    {
+        var html = '';
+
+        html += getStarIconsHtml(item);
+
+        var miscInfo = [];
+
+        var text, date;
+
+        if (item.Type == "Episode" || item.MediaType == 'Photo') {
+
+            if (item.PremiereDate) {
+
+                try {
+                    date = Emby.DateTime.parseISO8601Date(item.PremiereDate);
+
+                    text = date.toLocaleDateString();
+                    miscInfo.push(text);
+                }
+                catch (e) {
+                    Logger.log("Error parsing date: " + item.PremiereDate);
+                }
+            }
+        }
+
+        if (item.StartDate) {
+
+            try {
+                date = Emby.DateTime.parseISO8601Date(item.StartDate);
+
+                text = date.toLocaleDateString();
+                miscInfo.push(text);
+
+                if (item.Type != "Recording") {
+                    text = getDisplayTime(date);
+                    miscInfo.push(text);
+                }
+            }
+            catch (e) {
+                Logger.log("Error parsing date: " + item.PremiereDate);
+            }
+        }
+
+        if (item.ProductionYear && item.Type == "Series") {
+
+            if (item.Status == "Continuing") {
+                miscInfo.push(Globalize.translate('ValueSeriesYearToPresent', item.ProductionYear));
+
+            }
+            else if (item.ProductionYear) {
+
+                text = item.ProductionYear;
+
+                if (item.EndDate) {
+
+                    try {
+
+                        var endYear = Emby.DateTime.parseISO8601Date(item.EndDate).getFullYear();
+
+                        if (endYear != item.ProductionYear) {
+                            text += "-" + Emby.DateTime.parseISO8601Date(item.EndDate).getFullYear();
+                        }
+
+                    }
+                    catch (e) {
+                        Logger.log("Error parsing date: " + item.EndDate);
+                    }
+                }
+
+                miscInfo.push(text);
+            }
+        }
+
+        if (item.Type != "Series" && item.Type != "Episode" && item.MediaType != 'Photo') {
+
+            if (item.ProductionYear) {
+
+                miscInfo.push(item.ProductionYear);
+            }
+            else if (item.PremiereDate) {
+
+                try {
+                    text = Emby.DateTime.parseISO8601Date(item.PremiereDate).getFullYear();
+                    miscInfo.push(text);
+                }
+                catch (e) {
+                    Logger.log("Error parsing date: " + item.PremiereDate);
+                }
+            }
+        }
+
+        var minutes;
+
+        if (item.RunTimeTicks && item.Type != "Series") {
+
+            if (item.Type == "Audio") {
+
+                miscInfo.push(getDisplayRuntime(item.RunTimeTicks));
+
+            } else {
+                minutes = item.RunTimeTicks / 600000000;
+
+                minutes = minutes || 1;
+
+                miscInfo.push(Math.round(minutes) + " mins");
+            }
+        }
+
+        if (item.OfficialRating && item.Type !== "Season" && item.Type !== "Episode") {
+            miscInfo.push(item.OfficialRating);
+        }
+
+        if (item.Video3DFormat) {
+            miscInfo.push("3D");
+        }
+
+        if (item.MediaType == 'Photo' && item.Width && item.Height) {
+            miscInfo.push(item.Width + "x" + item.Height);
+        }
+
+        html += miscInfo.map(function (m) {
+
+            return '<div class="mediaInfoItem">' + m + '</div>';
+
+        }).join('');
+
+        return html;
+    }
+
+    function getStarIconsHtml(item) {
+
+        var html = '';
+
+        var rating = item.CommunityRating;
+
+        if (rating) {
+            html += '<div class="starRatingContainer">';
+
+            for (var i = 0; i < 5; i++) {
+                var starValue = (i + 1) * 2;
+
+                if (rating < starValue - 2) {
+                    html += '<iron-icon icon="star" class="emptyStar"></iron-icon>';
+                }
+                else if (rating < starValue) {
+                    html += '<iron-icon icon="star-half"></iron-icon>';
+                }
+                else {
+                    html += '<iron-icon icon="star"></iron-icon>';
+                }
+            }
+
+            html += '</div>';
+        }
+
+        return html;
+    }
+
     if (!globalScope.DefaultTheme) {
         globalScope.DefaultTheme = {};
     }
@@ -463,7 +622,8 @@
         homeThumbWidth: 320,
         homePortraitWidth: 189,
         homeSquareWidth: 180,
-        getDisplayName: getDisplayName
+        getDisplayName: getDisplayName,
+        getMediaInfoHtml: getMediaInfoHtml
     };
 
 })(this);

@@ -222,14 +222,11 @@
             var focused = focusedElement
             if (focused && document.activeElement == focused) {
                 zoomIn(focused);
+                //setSelectedItemInfo(focused);
             }
         }
 
         function zoomIn(elem) {
-
-            setTimeout(function() {
-                fillMediaInfo(elem);
-            }, 100);
 
             if (elem.classList.contains('noScale')) {
                 return;
@@ -261,8 +258,16 @@
             }
         }
 
-        function fillMediaInfo(elem) {
+        function setSelectedItemInfo(card) {
+            var index = parseInt(card.getAttribute('data-index'));
+            var item = self.listController.items[index];
 
+            var html = '';
+            html += '<div>';
+            html += item.Name;
+            html += '</div>';
+
+            view.querySelector('.selectedItemInfoInner').innerHTML = html;
         }
 
         self.destroy = function () {

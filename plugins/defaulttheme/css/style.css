@@ -294,16 +294,16 @@
         padding-right: 70px;
     }
 
-.selectedMediaInfo {
+.selectedItemInfo {
     position: fixed;
     bottom: 30px;
     left: 0;
     right: 0;
 }
 
-.selectedMediaInfoInner {
+.selectedItemInfoInner {
     margin: auto;
-    width: 200px;
+    width: 25%;
 }
 
 .listNumbers {
@@ -365,6 +365,26 @@
         top: 70px;
     }
 }
+
+.mediaInfoItem {
+    border-radius: 5px;
+    display: inline-block;
+    padding: 4px 24px 4px 0;
+    margin-right: .5em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.starRatingContainer {
+    display: inline-block;
+    margin-right: 1.5em;
+}
+
+    .starRatingContainer iron-icon {
+        width: 34px;
+        height: 38px;
+        color: #CB272A;
+    }
 
 /* 720p */
 @media all and (min-height: 720px) {
