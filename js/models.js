@@ -255,27 +255,7 @@
 
                 var promise;
 
-                if (item.Type == "Movie") {
-                    promise = apiClient.getSimilarMovies(item.Id, options);
-                }
-                else if (item.Type == "Trailer" || (item.Type == "ChannelVideoItem" && item.ExtraType == "Trailer")) {
-                    promise = apiClient.getSimilarTrailers(item.Id, options);
-                }
-                else if (item.Type == "MusicAlbum") {
-                    promise = apiClient.getSimilarAlbums(item.Id, options);
-                }
-                else if (item.Type == "Series") {
-                    promise = apiClient.getSimilarShows(item.Id, options);
-                }
-                else if (item.MediaType == "Game") {
-                    promise = apiClient.getSimilarGames(item.Id, options);
-                } else {
-                    resolve({
-                        Items: [],
-                        TotalRecordCount: 0
-                    });
-                    return;
-                }
+                promise = apiClient.getSimilarItems(item.Id, options);
 
                 promise.done(resolve, reject);
             });

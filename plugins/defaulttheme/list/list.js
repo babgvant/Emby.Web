@@ -155,7 +155,7 @@
             ];
 
             var card = elem;
-            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('paper-material') : elem.querySelector('.cardBox');
+            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('.content') : elem.querySelector('.cardBox');
 
             var onAnimationFinished = function () {
                 if (document.activeElement == card) {
