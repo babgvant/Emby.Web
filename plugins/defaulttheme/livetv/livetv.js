@@ -39,10 +39,6 @@
             Id: "suggested"
         },
         {
-            Name: Globalize.translate('Guide'),
-            Id: "guide"
-        },
-        {
             Name: Globalize.translate('Channels'),
             Id: "channels"
         },
