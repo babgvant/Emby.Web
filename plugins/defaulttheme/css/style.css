@@ -303,7 +303,7 @@
 
 .selectedItemInfoInner {
     margin: auto;
-    max-width: 30%;
+    max-width: 25%;
 }
 
 .selectedItemInfoInnerWithLogo {
@@ -445,27 +445,27 @@
 @media all and (min-height: 1080px) {
 
     .homeBody {
-        height: 661px;
+        height: 680px;
     }
 
     .horizontalPageContent .squareCard {
-        width: 199px;
+        width: 207px;
     }
 
     .horizontalPageContent .backdropCard {
-        width: 348px;
+        width: 359px;
     }
 
     .horizontalPageContent .portraitCard {
-        width: 203px;
+        width: 209px;
     }
 
     .wideSpotlightCard {
-        width: 789px;
+        width: 812px;
     }
 
     .miniSpotlightCard {
-        width: 391px;
+        width: 402px;
     }
 
     .horizontalPageContent .loginSquareCard {

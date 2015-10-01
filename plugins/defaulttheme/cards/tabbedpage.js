@@ -162,12 +162,16 @@
         }
 
         var lastFocus = 0;
-        function initFocusHandler(view, slyFrame) {
+        function initFocusHandler(view, slyFrame, self) {
 
             var selectedIndexElement = view.querySelector('.selectedIndex');
 
             var scrollSlider = view.querySelector('.contentScrollSlider');
             scrollSlider.addEventListener('focusin', function (e) {
+
+                if (self.listController) {
+                    return;
+                }
 
                 var focused = Emby.FocusManager.focusableParent(e.target);
                 focusedElement = focused;
@@ -191,6 +195,13 @@
                 }
             });
             scrollSlider.addEventListener('focusout', function (e) {
+
+                if (self.listController) {
+                    return;
+                }
+
+                var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
+                selectedItemInfoInner.innerHTML = '';
 
                 var focused = focusedElement;
                 focusedElement = null;
@@ -261,19 +272,47 @@
 
         function setSelectedItemInfo(card) {
 
-            if (!self.listController) {
+            var id = card.getAttribute('data-id');
+
+            if (!id) {
                 return;
             }
 
-            var index = parseInt(card.getAttribute('data-index'));
-            var item = self.listController.items[index];
+            Emby.Models.item(id).then(function (item) {
+                setSelectedInfo(card, item);
+            });
+        }
+
+        function setSelectedInfo(card, item) {
 
             var html = '';
+
             html += '<div>';
             html += item.Name;
             html += '</div>';
 
-            view.querySelector('.selectedItemInfoInner').innerHTML = html;
+            var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
+            var mediaInfo = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
+
+            if (mediaInfo) {
+                html += '<div>';
+                html += mediaInfo;
+                html += '</div>';
+            }
+
+            var logoImageUrl = Emby.Models.logoImageUrl(item, {
+            });
+
+            if (logoImageUrl) {
+                selectedItemInfoInner.classList.add('selectedItemInfoInnerWithLogo');
+
+                html += '<div class="selectedItemInfoLogo" style="background-image:url(\'' + logoImageUrl + '\');"></div>';
+
+            } else {
+                selectedItemInfoInner.classList.remove('selectedItemInfoInnerWithLogo');
+            }
+
+            selectedItemInfoInner.innerHTML = html;
         }
 
         self.destroy = function () {
