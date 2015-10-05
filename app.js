@@ -360,7 +360,8 @@
         'plugins/defaulttheme/plugin.js',
         'plugins/logoscreensaver/plugin.js',
         'plugins/keyboard/plugin.js',
-        'plugins/htmlvideoplayer/plugin.js'
+        'plugins/htmlvideoplayer/plugin.js',
+        'plugins/htmlaudioplayer/plugin.js'
         ];
 
         if (enableWebComponents()) {

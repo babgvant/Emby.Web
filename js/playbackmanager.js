@@ -7,6 +7,8 @@
         var currentPlayer;
         var currentItem;
         var currentMediaSource;
+        self.playlist = [];
+        var currentPlaylistIndex;
 
         self.isPlayingVideo = function () {
             return false;
@@ -245,15 +247,29 @@
 
             if (options.startPositionTicks || firstItem.MediaType !== 'Video') {
 
-                playInternal(firstItem, options.startPositionTicks, function () { });
+                playInternal(firstItem, options.startPositionTicks, function () {
+                    setPlaylistState(0, items);
+                });
                 return;
             }
 
             Emby.Models.intros(firstItem.Id).then(function (intros) {
 
                 items = intros.Items.concat(items);
-                playInternal(items[0], options.startPositionTicks, function () { });
+                playInternal(items[0], options.startPositionTicks, function () {
+                    setPlaylistState(0, items);
+                });
             });
+        }
+
+        // Set currentPlaylistIndex and playlist. Using a method allows for overloading in derived player implementations
+        function setPlaylistState(i, items) {
+            if (!isNaN(i)) {
+                currentPlaylistIndex = i;
+            }
+            if (items) {
+                self.playlist = items;
+            }
         }
 
         function playInternal(item, startPosition, callback) {
@@ -302,10 +318,132 @@
 
             tryStartPlayback(apiClient, deviceProfile, item, startPosition, function (mediaSource) {
 
-                currentItem = item;
-                currentMediaSource = mediaSource;
+                createStreamInfo(apiClient, item.MediaType, item, mediaSource, startPosition).then(function (streamInfo) {
 
-                player.play(item, mediaSource, startPosition, callback);
+                    currentItem = item;
+                    currentMediaSource = mediaSource;
+
+                    streamInfo.item = item;
+                    streamInfo.mediaSource = mediaSource;
+
+                    player.play(streamInfo, callback);
+                });
+            });
+        }
+
+        function createStreamInfo(apiClient, type, item, mediaSource, startPosition) {
+
+            return new Promise(function (resolve, reject) {
+
+                var mediaUrl;
+                var contentType;
+                var transcodingOffsetTicks = 0;
+                var playerStartPositionTicks = startPosition;
+
+                var playMethod = 'Transcode';
+
+                if (type == 'Video') {
+
+                    contentType = 'video/' + mediaSource.Container;
+
+                    if (mediaSource.enableDirectPlay) {
+                        mediaUrl = mediaSource.Path;
+
+                        playMethod = 'DirectPlay';
+
+                    } else {
+
+                        if (mediaSource.SupportsDirectStream) {
+
+                            var directOptions = {
+                                Static: true,
+                                mediaSourceId: mediaSource.Id,
+                                deviceId: apiClient.deviceId(),
+                                api_key: apiClient.accessToken()
+                            };
+
+                            if (mediaSource.LiveStreamId) {
+                                directOptions.LiveStreamId = mediaSource.LiveStreamId;
+                            }
+
+                            mediaUrl = apiClient.getUrl('Videos/' + item.Id + '/stream.' + mediaSource.Container, directOptions);
+
+                            playMethod = 'DirectStream';
+                        } else if (mediaSource.SupportsTranscoding) {
+
+                            mediaUrl = apiClient.getUrl(mediaSource.TranscodingUrl);
+
+                            if (mediaSource.TranscodingSubProtocol == 'hls') {
+
+                                contentType = 'application/x-mpegURL';
+                            } else {
+
+                                transcodingOffsetTicks = startPosition || 0;
+                                playerStartPositionTicks = null;
+                                contentType = 'video/' + mediaSource.TranscodingContainer;
+                            }
+                        }
+                    }
+
+                } else {
+
+                    contentType = 'audio/' + mediaSource.Container;
+
+                    if (mediaSource.enableDirectPlay) {
+
+                        mediaUrl = mediaSource.Path;
+
+                        playMethod = 'DirectPlay';
+
+                    } else {
+
+                        var isDirectStream = mediaSource.SupportsDirectStream;
+
+                        if (isDirectStream) {
+
+                            var outputContainer = (mediaSource.Container || '').toLowerCase();
+
+                            var directOptions = {
+                                Static: true,
+                                mediaSourceId: mediaSource.Id,
+                                deviceId: apiClient.deviceId(),
+                                api_key: apiClient.accessToken()
+                            };
+
+                            if (mediaSource.LiveStreamId) {
+                                directOptions.LiveStreamId = mediaSource.LiveStreamId;
+                            }
+
+                            mediaUrl = apiClient.getUrl('Audio/' + item.Id + '/stream.' + outputContainer, directOptions);
+
+                            playMethod = 'DirectStream';
+
+                        } else if (mediaSource.SupportsTranscoding) {
+
+                            mediaUrl = apiClient.getUrl(mediaSource.TranscodingUrl);
+
+                            if (mediaSource.TranscodingSubProtocol == 'hls') {
+
+                                contentType = 'application/x-mpegURL';
+                            } else {
+
+                                transcodingOffsetTicks = startPosition || 0;
+                                playerStartPositionTicks = null;
+                                contentType = 'audio/' + mediaSource.TranscodingContainer;
+                            }
+                        }
+                    }
+                }
+
+                var resultInfo = {
+                    url: mediaUrl,
+                    mimeType: contentType,
+                    transcodingOffsetTicks: transcodingOffsetTicks,
+                    playMethod: playMethod,
+                    playerStartPositionTicks: playerStartPositionTicks
+                };
+
+                resolve(resultInfo);
             });
         }
 
@@ -528,12 +666,71 @@
                 else {
 
                     query.Limit = query.Limit || 100;
-                    query.Fields = getItemFields;
+                    query.Fields = "MediaSources,Chapters";
                     query.ExcludeLocationTypes = "Virtual";
 
                     Emby.Models.items(query).then(resolve, reject);
                 }
             });
+        };
+
+        // Gets or sets the current playlist index
+        self.currentPlaylistIndex = function (i) {
+
+            if (i == null) {
+                return currentPlaylistIndex;
+            }
+
+            var newItem = self.playlist[i];
+
+            playInternal(newItem, 0, function () {
+                self.setPlaylistState(i);
+            });
+        };
+
+        self.nextTrack = function () {
+
+            var newIndex;
+
+            switch (self.getRepeatMode()) {
+
+                case 'RepeatOne':
+                    newIndex = currentPlaylistIndex;
+                    break;
+                case 'RepeatAll':
+                    newIndex = currentPlaylistIndex + 1;
+                    if (newIndex >= self.playlist.length) {
+                        newIndex = 0;
+                    }
+                    break;
+                default:
+                    newIndex = currentPlaylistIndex + 1;
+                    break;
+            }
+
+            var newItem = self.playlist[newIndex];
+
+            if (newItem) {
+
+                Logger.log('playing next track');
+
+                playInternal(newItem, 0, function () {
+                    setPlaylistState(newIndex);
+                });
+            }
+        };
+
+        self.previousTrack = function () {
+            var newIndex = currentPlaylistIndex - 1;
+            if (newIndex >= 0) {
+                var newItem = self.playlist[newIndex];
+
+                if (newItem) {
+                    playInternal(newItem, 0, function () {
+                        setPlaylistState(newIndex);
+                    });
+                }
+            }
         };
 
         self.queue = function (options) {
