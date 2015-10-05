@@ -184,7 +184,8 @@
             audioManager: "js/audiomanager",
             screensaverManager: "js/screensavermanager",
             viewManager: "js/viewmanager",
-            slyScroller: "components/slyscroller"
+            slyScroller: "components/slyscroller",
+            appsettings: "components/appsettings"
         };
 
         if (enableWebComponents()) {

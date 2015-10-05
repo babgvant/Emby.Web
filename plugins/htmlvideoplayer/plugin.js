@@ -12,5 +12,11 @@ define([], function () {
 
             return (mediaType || '').toLowerCase() == 'video';
         };
+
+        self.getDeviceProfile = function () {
+
+
+
+        };
     }
 });

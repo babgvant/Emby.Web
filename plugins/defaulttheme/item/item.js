@@ -70,7 +70,9 @@
         }
 
         function play() {
-            Emby.PlaybackManager.play(currentItem);
+            Emby.PlaybackManager.play({
+                items: [currentItem]
+            });
         }
     }
 
