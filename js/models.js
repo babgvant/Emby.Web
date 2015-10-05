@@ -420,6 +420,19 @@
         });
     }
 
+    function intros(itemId) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/' + itemId + '/Intros')).done(resolve, reject);
+            });
+        });
+    }
+
     function albumArtists(options) {
 
         return new Promise(function (resolve, reject) {
@@ -480,7 +493,8 @@
         movieRecommendations: movieRecommendations,
         artists: artists,
         albumArtists: albumArtists,
-        logoImageUrl: logoImageUrl
+        logoImageUrl: logoImageUrl,
+        intros: intros
     };
 
 })(this, document);

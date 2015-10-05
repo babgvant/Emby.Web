@@ -8,6 +8,7 @@
     function itemPage(view, params) {
 
         var self = this;
+        var currentItem;
 
         view.addEventListener('viewshow', function (e) {
 
@@ -20,6 +21,8 @@
                 }
 
                 Emby.Models.item(params.id).then(function (item) {
+
+                    currentItem = item;
 
                     // If it's a person, leave the backdrop image from wherever we came from
                     if (item.Type != 'Person') {
@@ -49,6 +52,9 @@
 
             if (!isRestored) {
                 view.querySelector('.mainSection').focus = focusMainSection;
+
+                view.querySelector('.btnPlay').addEventListener('click', play);
+                view.querySelector('.btnTrailer').addEventListener('click', playTrailer);
             }
         });
 
@@ -58,6 +64,16 @@
                 self.slyFrame.destroy();
             }
         });
+
+        function playTrailer() {
+            Emby.PlaybackManager.playTrailer(currentItem);
+        }
+
+        function play() {
+            Emby.PlaybackManager.play({
+                items: [currentItem]
+            });
+        }
     }
 
     function focusMainSection() {
@@ -245,6 +261,18 @@
             overviewElem.innerHTML = item.Overview;
         } else {
             overviewElem.classList.add('hide');
+        }
+
+        if (item.LocalTrailerCount) {
+            view.querySelector('.btnTrailer').classList.remove('hide');
+        } else {
+            view.querySelector('.btnTrailer').classList.add('hide');
+        }
+
+        if (Emby.PlaybackManager.canPlay(item)) {
+            view.querySelector('.btnPlay').classList.remove('hide');
+        } else {
+            view.querySelector('.btnPlay').classList.add('hide');
         }
 
         renderMediaInfo(view, item);

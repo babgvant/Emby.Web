@@ -184,7 +184,8 @@
             audioManager: "js/audiomanager",
             screensaverManager: "js/screensavermanager",
             viewManager: "js/viewmanager",
-            slyScroller: "components/slyscroller"
+            slyScroller: "components/slyscroller",
+            appsettings: "components/appsettings"
         };
 
         if (enableWebComponents()) {
@@ -358,7 +359,9 @@
         var list = [
         'plugins/defaulttheme/plugin.js',
         'plugins/logoscreensaver/plugin.js',
-        'plugins/keyboard/plugin.js'
+        'plugins/keyboard/plugin.js',
+        'plugins/htmlvideoplayer/plugin.js',
+        'plugins/htmlaudioplayer/plugin.js'
         ];
 
         if (enableWebComponents()) {
