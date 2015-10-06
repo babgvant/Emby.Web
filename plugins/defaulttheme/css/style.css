@@ -505,30 +505,26 @@
     }
 }
 
-
-.nowPlayingCardContainer .card {
-    width: 240px;
+.nowPlayingCardContainer {
+    width: 25%;
     margin-right: 1em;
+}
+
+    .nowPlayingCardContainer .card {
+        width: 100%;
+    }
+
+.nowPlayingInfoContainer {
+    width: 40%;
 }
 
 .nowPlayingButtonsContainer paper-icon-button iron-icon {
     width: 40px;
     height: 40px;
 }
-/* 720p */
-@media all and (min-height: 720px) {
-
-    .nowPlayingCardContainer .card {
-        width: 300px;
-    }
-}
 
 /* 1080p */
 @media all and (min-height: 1080px) {
-
-    .nowPlayingCardContainer .card {
-        width: 480px;
-    }
 
     .nowPlayingButtonsContainer paper-icon-button iron-icon {
         width: 80px;
@@ -538,10 +534,6 @@
 
 /* 2560 * 1440 */
 @media all and (min-height: 1440px) {
-
-    .nowPlayingCardContainer .card {
-        width: 640px;
-    }
 
     .nowPlayingButtonsContainer paper-icon-button iron-icon {
         width: 110px;
