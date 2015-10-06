@@ -1,0 +1,28 @@
+<div class="pageContainer" style="text-align: center; display: flex; align-items: center; justify-content: center;">
+
+    <div class="nowPlayingCardContainer" style="display: inline-block; vertical-align: top;">
+
+    </div>
+    <div class="nowPlayingInfoContainer" style="display: inline-block; vertical-align: top; text-align: left;">
+        <h1 class="nowPlayingMetadata"></h1>
+        <div class="nowPlayingProgressContainer">
+            <paper-slider step="1" min="0" max="100" value="0" class="nowPlayingPositionSlider"></paper-slider>
+            <div class="nowPlayingTime"></div>
+        </div>
+        <div class="nowPlayingButtonsContainer">
+            <div>
+                <paper-icon-button class="btnPreviousTrack" icon="skip-previous"></paper-icon-button>
+                <paper-icon-button class="btnUnpause" icon="play-arrow"></paper-icon-button>
+                <paper-icon-button class="btnPause" icon="pause"></paper-icon-button>
+                <paper-icon-button class="btnStop" icon="stop"></paper-icon-button>
+                <paper-icon-button class="btnNextTrack" icon="skip-next"></paper-icon-button>
+                <paper-icon-button class="btnPlaylist" icon="menu"></paper-icon-button>
+            </div>
+            <div>
+                <paper-icon-button class="buttonMute" icon="volume-up"></paper-icon-button>
+                <paper-icon-button class="buttonUnmute" icon="volume-off"></paper-icon-button>
+                <paper-slider step="1" min="0" max="100" value="0" class="nowPlayingVolumeSlider"></paper-slider>
+            </div>
+        </div>
+    </div>
+</div>

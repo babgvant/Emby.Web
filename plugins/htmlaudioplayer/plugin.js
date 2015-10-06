@@ -330,12 +330,28 @@ define([], function () {
         self.volume = function (val) {
             if (mediaElement) {
                 if (val != null) {
-                    mediaElement.volume = val;
+                    mediaElement.volume = val / 100;
                     return;
                 }
 
-                return mediaElement.volume;
+                return mediaElement.volume * 100;
             }
+        };
+
+        self.setMute = function(mute) {
+
+            if (mute) {
+                self.volume(0);
+            } else {
+
+                if (self.isMuted()) {
+                    self.volume(50);
+                }
+            }
+        };
+
+        self.isMuted = function() {
+            return self.volume() == 0;
         };
 
         function onEnded() {

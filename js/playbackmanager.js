@@ -14,6 +14,10 @@
             return currentItem;
         };
 
+        self.currentPlayer = function () {
+            return currentPlayer;
+        };
+
         self.isPlayingVideo = function () {
             return false;
         };
@@ -64,19 +68,10 @@
             }
         };
 
-        self.getVolume = function () {
+        self.volume = function (val) {
 
             if (currentPlayer) {
-                return currentPlayer.getVolume();
-            }
-
-            return 0;
-        };
-
-        self.setVolume = function (volume) {
-
-            if (currentPlayer) {
-                currentPlayer.setVolume(volume);
+                return currentPlayer.volume(val);
             }
         };
 
@@ -89,8 +84,8 @@
 
         self.volumeDown = function () {
 
-            if (activePlayer) {
-                activePlayer.volumeDown();
+            if (currentPlayer) {
+                currentPlayer.volumeDown();
             }
         };
 
@@ -108,7 +103,35 @@
             }
         };
 
-        self.stopAll = function () {
+        self.stop = function () {
+            if (currentPlayer) {
+                currentPlayer.stop();
+            }
+        };
+
+        self.pause = function () {
+            if (currentPlayer) {
+                currentPlayer.pause();
+            }
+        };
+
+        self.unpause = function () {
+            if (currentPlayer) {
+                currentPlayer.unpause();
+            }
+        };
+
+        self.nextTrack = function () {
+        };
+
+        self.previousTrack = function () {
+        };
+
+        self.seek = function() {
+
+        };
+
+        self.seekPercent = function (percent) {
 
         };
 
@@ -769,11 +792,11 @@
         };
 
         function onPlaybackStart() {
-            Events.trigger(self, 'playbackstart');
+            Events.trigger(self, 'playbackstart', [this]);
         }
 
         function onPlaybackStop() {
-            Events.trigger(self, 'playbackstop');
+            Events.trigger(self, 'playbackstop', [this]);
         }
 
         Events.on(Emby.PluginManager, 'registered', function (e, plugin) {

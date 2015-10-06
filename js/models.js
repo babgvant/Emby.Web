@@ -450,14 +450,18 @@
 
     function logoImageUrl(item, options) {
 
+        options = options || {};
+        options.type = "Logo";
+
         if (item.ImageTags && item.ImageTags.Logo) {
 
-            options = options || {};
-            options.type = "Logo";
-
             options.tag = item.ImageTags.Logo;
+            return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.Id, options);
+        }
 
-            return getConnectionManager().currentApiClient().getScaledImageUrl(item.Id, options);
+        if (item.ParentLogoImageTag) {
+            options.tag = item.ParentLogoImageTag;
+            return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.ParentLogoItemId, options);
         }
 
         return null;

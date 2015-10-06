@@ -62,6 +62,7 @@ define([], function () {
                 list.push('html!bower_components/paper-material/paper-material.html');
                 list.push('html!bower_components/paper-progress/paper-progress.html');
                 list.push('html!bower_components/paper-fab/paper-fab.html');
+                list.push('html!bower_components/paper-slider/paper-slider.html');
             }
 
             return list;
@@ -158,6 +159,24 @@ define([], function () {
                 ]
             });
 
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'nowplaying/nowplaying.html'),
+                id: 'defaulttheme-nowplaying',
+                transition: 'fade',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'nowplaying/nowplaying.js')
+                ]
+            });
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'nowplaying/playlist.html'),
+                id: 'defaulttheme-nowplayingplaylist',
+                transition: 'fade',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'nowplaying/playlist.js')
+                ]
+            });
+
             return routes;
         };
 
@@ -222,6 +241,10 @@ define([], function () {
             Emby.Page.show(Emby.PluginManager.mapPath(self, 'search/search.html'));
         };
 
+        self.showNowPlaying = function () {
+            Emby.Page.show(Emby.PluginManager.mapPath(self, 'nowplaying/nowplaying.html'));
+        };
+
         self.showUserMenu = function () {
 
         };
@@ -255,6 +278,10 @@ define([], function () {
 
             document.querySelector('.headerSearchButton').addEventListener('click', function () {
                 self.search();
+            });
+
+            document.querySelector('.headerAudioPlayerButton').addEventListener('click', function () {
+                self.showNowPlaying();
             });
 
             document.querySelector('.headerUserButton').addEventListener('click', function () {

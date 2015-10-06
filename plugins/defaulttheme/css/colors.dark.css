@@ -161,3 +161,7 @@ paper-dialog {
 .emptyCardImageContainer {
     background: #333;
 }
+
+.nowPlayingInfoContainer #progressContainer {
+    background-color: #666 !important;
+}

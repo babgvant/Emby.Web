@@ -69,6 +69,9 @@
             case 'playlists':
                 viewName = 'playlists';
                 break;
+            case 'boxsets':
+                viewName = 'collections';
+                break;
             case 'livetv':
                 viewName = 'livetv';
                 break;
