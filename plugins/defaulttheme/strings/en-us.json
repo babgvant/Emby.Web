@@ -67,5 +67,6 @@
     "SimilarTo": "Similar to {0}",
     "AlbumArtists": "Album Artists",
     "LiveTV": "Live TV",
-    "TrackCount": "{0} tracks"
+    "TrackCount": "{0} tracks",
+    "Search": "Search"
 }

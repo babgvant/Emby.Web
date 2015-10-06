@@ -106,6 +106,21 @@ define([], function () {
 
             deps.push('hero-animation');
         }
+        else if (transition == 'fade') {
+
+            if (isBack) {
+                entryAnimation = 'fade-in-animation';
+                exitAnimation = 'fade-out-animation';
+
+            } else {
+
+                entryAnimation = 'fade-in-animation';
+                exitAnimation = 'fade-out-animation';
+            }
+
+            deps.push('fade-in-animation');
+            deps.push('fade-out-animation');
+        }
         else {
             entryAnimation = '';
             exitAnimation = '';

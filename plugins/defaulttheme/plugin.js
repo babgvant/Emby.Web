@@ -149,6 +149,15 @@ define([], function () {
                 ]
             });
 
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'search/search.html'),
+                id: 'defaulttheme-search',
+                transition: 'fade',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'search/search.js')
+                ]
+            });
+
             return routes;
         };
 
@@ -192,13 +201,13 @@ define([], function () {
             }
 
             if (showList) {
-                Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'list/list.html') + '?parentid=' + item.Id);
+                Emby.Page.show(Emby.PluginManager.mapPath(self, 'list/list.html') + '?parentid=' + item.Id);
             } else {
-                Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'item/item.html') + '?id=' + item.Id);
+                Emby.Page.show(Emby.PluginManager.mapPath(self, 'item/item.html') + '?id=' + item.Id);
             }
         };
 
-        self.setTitle = function(title) {
+        self.setTitle = function (title) {
 
             title = title || '&nbsp;';
 
@@ -206,6 +215,15 @@ define([], function () {
             pageTitle.classList.remove('pageTitleWithLogo');
             pageTitle.style.backgroundImage = null;
             pageTitle.innerHTML = title;
+        };
+
+        self.search = function () {
+
+            Emby.Page.show(Emby.PluginManager.mapPath(self, 'search/search.html'));
+        };
+
+        self.showUserMenu = function () {
+
         };
 
         function loadControlBox() {
@@ -235,9 +253,20 @@ define([], function () {
                 });
             });
 
+            document.querySelector('.headerSearchButton').addEventListener('click', function () {
+                self.search();
+            });
+
+            document.querySelector('.headerUserButton').addEventListener('click', function () {
+                self.showUserMenu();
+            });
+
             document.addEventListener('usersignedin', onLocalUserSignedIn);
             document.addEventListener('usersignedout', onLocalUserSignedOut);
             document.addEventListener('viewshow', onViewShow);
+
+            Events.on(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
+            Events.on(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
         }
 
         function unbindEvents() {
@@ -246,6 +275,22 @@ define([], function () {
             document.removeEventListener('usersignedin', onLocalUserSignedIn);
             document.removeEventListener('usersignedout', onLocalUserSignedOut);
             document.removeEventListener('viewshow', onViewShow);
+
+            Events.off(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
+            Events.off(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
+        }
+
+        function onPlaybackStart(e) {
+
+            if (Emby.PlaybackManager.currentItem().MediaType == 'Audio') {
+                document.querySelector('.audioPlayerButtonContainer').classList.remove('hide');
+            } else {
+                document.querySelector('.audioPlayerButtonContainer').classList.add('hide');
+            }
+        }
+
+        function onPlaybackStop() {
+            document.querySelector('.audioPlayerButtonContainer').classList.add('hide');
         }
 
         function onWindowStateChanged(e) {

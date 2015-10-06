@@ -10,6 +10,10 @@
         self.playlist = [];
         var currentPlaylistIndex;
 
+        self.currentItem = function () {
+            return currentItem;
+        };
+
         self.isPlayingVideo = function () {
             return false;
         };
@@ -245,20 +249,23 @@
                 //Dashboard.showModalLoadingMsg();
             }
 
+            var afterPlayInternal = function () {
+                setPlaylistState(0, items);
+                require(['loading'], function (loading) {
+                    loading.hide();
+                });
+            };
+
             if (options.startPositionTicks || firstItem.MediaType !== 'Video') {
 
-                playInternal(firstItem, options.startPositionTicks, function () {
-                    setPlaylistState(0, items);
-                });
+                playInternal(firstItem, options.startPositionTicks, afterPlayInternal);
                 return;
             }
 
             Emby.Models.intros(firstItem.Id).then(function (intros) {
 
                 items = intros.Items.concat(items);
-                playInternal(items[0], options.startPositionTicks, function () {
-                    setPlaylistState(0, items);
-                });
+                playInternal(items[0], options.startPositionTicks, afterPlayInternal);
             });
         }
 
@@ -326,7 +333,9 @@
                     streamInfo.item = item;
                     streamInfo.mediaSource = mediaSource;
 
-                    player.play(streamInfo, callback);
+                    player.play(streamInfo).then(callback);
+                    currentPlayer = player;
+
                 });
             });
         }
@@ -758,6 +767,22 @@
                 self.play(options);
             }
         };
+
+        function onPlaybackStart() {
+            Events.trigger(self, 'playbackstart');
+        }
+
+        function onPlaybackStop() {
+            Events.trigger(self, 'playbackstop');
+        }
+
+        Events.on(Emby.PluginManager, 'registered', function (e, plugin) {
+
+            if (plugin.type == 'mediaplayer') {
+                Events.on(plugin, 'playbackstart', onPlaybackStart);
+                Events.on(plugin, 'playbackstop', onPlaybackStop);
+            }
+        });
     }
 
     if (!globalScope.Emby) {
