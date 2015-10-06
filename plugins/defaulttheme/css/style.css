@@ -504,3 +504,85 @@
         width: 400px;
     }
 }
+
+
+.nowPlayingCardContainer .card {
+    width: 240px;
+    margin-right: 1em;
+}
+
+.nowPlayingButtonsContainer paper-icon-button iron-icon {
+    width: 40px;
+    height: 40px;
+}
+/* 720p */
+@media all and (min-height: 720px) {
+
+    .nowPlayingCardContainer .card {
+        width: 300px;
+    }
+}
+
+/* 1080p */
+@media all and (min-height: 1080px) {
+
+    .nowPlayingCardContainer .card {
+        width: 480px;
+    }
+
+    .nowPlayingButtonsContainer paper-icon-button iron-icon {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .nowPlayingCardContainer .card {
+        width: 640px;
+    }
+
+    .nowPlayingButtonsContainer paper-icon-button iron-icon {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+.nowPlayingInfoContainer paper-progress {
+    height: 12px !important;
+    top: 12px !important;
+}
+
+.nowPlayingInfoContainer #progressContainer {
+    height: 12px !important;
+}
+
+.nowPlayingInfoContainer paper-slider #sliderKnob {
+    width: 54px;
+    height: 54px;
+    top: -11px;
+}
+
+.nowPlayingInfoContainer paper-slider #sliderKnobInner {
+    width: 34px;
+    height: 34px;
+}
+
+.nowPlayingMetadata {
+    padding-left: 12px;
+    margin: 0 0 .5em;
+}
+
+.nowPlayingTime {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.nowPlayingPositionSlider {
+    width: 80%;
+}
+
+.nowPlayingProgressContainer {
+    margin: 1em 0;
+}

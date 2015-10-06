@@ -10,6 +10,14 @@
         self.playlist = [];
         var currentPlaylistIndex;
 
+        self.currentItem = function () {
+            return currentItem;
+        };
+
+        self.currentPlayer = function () {
+            return currentPlayer;
+        };
+
         self.isPlayingVideo = function () {
             return false;
         };
@@ -60,19 +68,10 @@
             }
         };
 
-        self.getVolume = function () {
+        self.volume = function (val) {
 
             if (currentPlayer) {
-                return currentPlayer.getVolume();
-            }
-
-            return 0;
-        };
-
-        self.setVolume = function (volume) {
-
-            if (currentPlayer) {
-                currentPlayer.setVolume(volume);
+                return currentPlayer.volume(val);
             }
         };
 
@@ -85,8 +84,8 @@
 
         self.volumeDown = function () {
 
-            if (activePlayer) {
-                activePlayer.volumeDown();
+            if (currentPlayer) {
+                currentPlayer.volumeDown();
             }
         };
 
@@ -104,7 +103,35 @@
             }
         };
 
-        self.stopAll = function () {
+        self.stop = function () {
+            if (currentPlayer) {
+                currentPlayer.stop();
+            }
+        };
+
+        self.pause = function () {
+            if (currentPlayer) {
+                currentPlayer.pause();
+            }
+        };
+
+        self.unpause = function () {
+            if (currentPlayer) {
+                currentPlayer.unpause();
+            }
+        };
+
+        self.nextTrack = function () {
+        };
+
+        self.previousTrack = function () {
+        };
+
+        self.seek = function() {
+
+        };
+
+        self.seekPercent = function (percent) {
 
         };
 
@@ -245,20 +272,23 @@
                 //Dashboard.showModalLoadingMsg();
             }
 
+            var afterPlayInternal = function () {
+                setPlaylistState(0, items);
+                require(['loading'], function (loading) {
+                    loading.hide();
+                });
+            };
+
             if (options.startPositionTicks || firstItem.MediaType !== 'Video') {
 
-                playInternal(firstItem, options.startPositionTicks, function () {
-                    setPlaylistState(0, items);
-                });
+                playInternal(firstItem, options.startPositionTicks, afterPlayInternal);
                 return;
             }
 
             Emby.Models.intros(firstItem.Id).then(function (intros) {
 
                 items = intros.Items.concat(items);
-                playInternal(items[0], options.startPositionTicks, function () {
-                    setPlaylistState(0, items);
-                });
+                playInternal(items[0], options.startPositionTicks, afterPlayInternal);
             });
         }
 
@@ -326,7 +356,9 @@
                     streamInfo.item = item;
                     streamInfo.mediaSource = mediaSource;
 
-                    player.play(streamInfo, callback);
+                    player.play(streamInfo).then(callback);
+                    currentPlayer = player;
+
                 });
             });
         }
@@ -758,6 +790,22 @@
                 self.play(options);
             }
         };
+
+        function onPlaybackStart() {
+            Events.trigger(self, 'playbackstart', [this]);
+        }
+
+        function onPlaybackStop() {
+            Events.trigger(self, 'playbackstop', [this]);
+        }
+
+        Events.on(Emby.PluginManager, 'registered', function (e, plugin) {
+
+            if (plugin.type == 'mediaplayer') {
+                Events.on(plugin, 'playbackstart', onPlaybackStart);
+                Events.on(plugin, 'playbackstop', onPlaybackStop);
+            }
+        });
     }
 
     if (!globalScope.Emby) {

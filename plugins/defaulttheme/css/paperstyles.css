@@ -136,10 +136,30 @@ paper-progress {
         width: 100%;
     }
 
-    paper-progress #progressContainer {
-        background: transparent !important;
-    }
+.card paper-progress #progressContainer {
+    background: transparent !important;
+}
 
 paper-toast {
     font-size: inherit !important;
+}
+
+paper-slider {
+    vertical-align: middle;
+}
+
+.paper-slider-0 #sliderKnobInner.paper-slider {
+    background-color: #52B54B;
+}
+
+.paper-slider-0 paper-ripple.paper-slider {
+    color: #52B54B;
+}
+
+.paper-progress-0 #primaryProgress.paper-progress {
+    background-color: #52B54B;
+}
+
+.paper-progress-0 #secondaryProgress.paper-progress {
+    background-color: #92B54B;
 }

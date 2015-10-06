@@ -313,7 +313,6 @@
              'js/thememanager',
              'js/focusmanager',
              'js/inputmanager',
-             'js/playbackmanager',
              'js/imageloader',
              'js/backdrops',
              'js/dom',
@@ -339,6 +338,9 @@
                 });
 
                 var secondLevelDeps = [];
+
+                // needs to be after the plugin manager
+                secondLevelDeps.push('js/playbackmanager');
 
                 if (enableWebComponents()) {
                     secondLevelDeps.push('html!bower_components/neon-animation/neon-animated-pages.html');

@@ -12,6 +12,7 @@
         self.register = function (obj) {
 
             plugins.push(obj);
+            Events.trigger(self, 'registered', [obj]);
         };
 
         self.ofType = function (type) {

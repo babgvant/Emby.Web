@@ -8,7 +8,9 @@ define([], function () {
         self.type = 'mediaplayer';
         self.packageName = 'htmlaudioplayer';
 
+        var mediaElement;
         var currentSrc;
+        var started = false;
 
         self.canPlayMediaType = function (mediaType) {
 
@@ -267,16 +269,98 @@ define([], function () {
                 elem.src = val;
                 currentSrc = val;
                 elem.play();
+                resolve();
             });
         };
 
+        // Save this for when playback stops, because querying the time at that point might return 0
+        var _currentTime;
+        self.currentTime = function (val) {
+
+            if (mediaElement) {
+                if (val != null) {
+                    mediaElement.currentTime = val / 1000;
+                    return;
+                }
+
+                if (_currentTime) {
+                    return _currentTime * 1000;
+                }
+
+                return (mediaElement.currentTime || 0) * 1000;
+            }
+        };
+
+        self.duration = function (val) {
+
+            if (mediaElement) {
+                return mediaElement.duration;
+            }
+
+            return null;
+        };
+
+        self.stop = function () {
+            if (mediaElement) {
+                mediaElement.pause();
+            }
+        };
+
+        self.pause = function () {
+            if (mediaElement) {
+                mediaElement.pause();
+            }
+        };
+
+        self.unpause = function () {
+            if (mediaElement) {
+                mediaElement.play();
+            }
+        };
+
+        self.paused = function () {
+
+            if (mediaElement) {
+                return mediaElement.paused;
+            }
+
+            return false;
+        };
+
+        self.volume = function (val) {
+            if (mediaElement) {
+                if (val != null) {
+                    mediaElement.volume = val / 100;
+                    return;
+                }
+
+                return mediaElement.volume * 100;
+            }
+        };
+
+        self.setMute = function(mute) {
+
+            if (mute) {
+                self.volume(0);
+            } else {
+
+                if (self.isMuted()) {
+                    self.volume(50);
+                }
+            }
+        };
+
+        self.isMuted = function() {
+            return self.volume() == 0;
+        };
+
         function onEnded() {
-            Events.trigger(self, 'ended');
+            Events.trigger(self, 'playbackstop');
         }
 
         function onTimeUpdate() {
 
-            Events.trigger(self, 'timeupdate');
+            Events.trigger(self, 'playbackprogress');
         }
 
         function onVolumeChange() {
@@ -284,7 +368,13 @@ define([], function () {
         }
 
         function onPlaying() {
-            Events.trigger(self, 'playing');
+
+            if (!started) {
+                started = true;
+                Events.trigger(self, 'playbackstart');
+            } else {
+                Events.trigger(self, 'playing');
+            }
         }
 
         function onPause() {
@@ -318,6 +408,8 @@ define([], function () {
                 elem.addEventListener('playing', onPlaying);
                 elem.addEventListener('error', onError);
             }
+
+            mediaElement = elem;
 
             return elem;
         }
