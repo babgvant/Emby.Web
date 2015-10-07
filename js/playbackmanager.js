@@ -774,7 +774,7 @@
                 };
 
                 var query = {
-                    UserId: Dashboard.getCurrentUserId(),
+                    UserId: apiClient.getCurrentUserId(),
                     StartTimeTicks: startPosition || 0,
                     ItemId: itemId,
                     PlaySessionId: playSessionId
