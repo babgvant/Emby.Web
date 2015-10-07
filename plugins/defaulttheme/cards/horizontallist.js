@@ -99,18 +99,29 @@
         }
 
         var zoomTimeout;
+        var selectedMediaInfoTimeout;
         function startZoomTimer() {
 
             if (onZoomTimeout) {
                 clearTimeout(zoomTimeout);
             }
             zoomTimeout = setTimeout(onZoomTimeout, 50);
+            if (selectedMediaInfoTimeout) {
+                clearTimeout(selectedMediaInfoTimeout);
+            }
+            selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, 400);
         }
 
         function onZoomTimeout() {
             var focused = focusedElement
             if (focused && document.activeElement == focused) {
                 zoomIn(focused);
+            }
+        }
+
+        function onSelectedMediaInfoTimeout() {
+            var focused = focusedElement
+            if (focused && document.activeElement == focused) {
                 setSelectedItemInfo(focused);
             }
         }
