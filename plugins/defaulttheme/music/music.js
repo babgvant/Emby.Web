@@ -122,6 +122,12 @@
                         Fields: "CumulativeRunTimeTicks"
                     });
                 },
+                cardOptions: {
+                    shape: 'backdropCard',
+                    rows: 3,
+                    preferThumb: true,
+                    width: DefaultTheme.CardBuilder.homeThumbWidth
+                },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
                 autoFocus: autoFocus,

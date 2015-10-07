@@ -101,6 +101,7 @@
 .detailImage {
     max-width: 100%;
     max-height: 400px;
+    margin-bottom: 1em;
 }
 
 @media all and (min-height: 800px) {

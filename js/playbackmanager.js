@@ -68,6 +68,13 @@
             }
         };
 
+        self.toggleMute = function (mute) {
+
+            if (currentPlayer) {
+                self.setMute(!self.isMuted());
+            }
+        };
+
         self.volume = function (val) {
 
             if (currentPlayer) {
@@ -106,6 +113,17 @@
         self.stop = function () {
             if (currentPlayer) {
                 currentPlayer.stop();
+            }
+        };
+
+        self.playPause = function () {
+            if (currentPlayer) {
+
+                if (currentPlayer.paused()) {
+                    self.unpause();
+                } else {
+                    self.pause();
+                }
             }
         };
 
@@ -316,7 +334,7 @@
                 return;
             }
 
-            if (currentPlayer && currentPlayer.isPlaying()) {
+            if (currentPlayer) {
                 currentPlayer.stop(false);
             }
 
@@ -722,6 +740,10 @@
             playInternal(newItem, 0, function () {
                 self.setPlaylistState(i);
             });
+        };
+
+        self.getRepeatMode = function () {
+            return 'RepeatNone';
         };
 
         self.nextTrack = function () {

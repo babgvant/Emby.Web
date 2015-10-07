@@ -336,9 +336,11 @@
 
         var section = view.querySelector('.childrenSection');
 
-        if (!item.ChildCount || item.Type == 'MusicAlbum') {
-            section.classList.add('hide');
-            return;
+        if (item.Type != 'MusicArtist') {
+            if (!item.ChildCount || item.Type == 'MusicAlbum') {
+                section.classList.add('hide');
+                return;
+            }
         }
 
         var headerText = section.querySelector('h2');
@@ -353,6 +355,10 @@
             headerText.classList.remove('hide');
             showTitle = true;
 
+        } else if (item.Type == "MusicArtist") {
+            headerText.innerHTML = Globalize.translate('Albums');
+            headerText.classList.remove('hide');
+
         } else if (item.Type == "MusicAlbum") {
             headerText.classList.add('hide');
 
@@ -361,9 +367,15 @@
             return;
         }
 
-        Emby.Models.children(item, {
+        var promise = item.Type == 'MusicArtist' ?
+            Emby.Models.items({
+                IncludeItemTypes: 'MusicAlbum',
+                Recursive: true,
+                ArtistIds: item.Id
+            }) :
+            Emby.Models.children(item, {});
 
-        }).then(function (result) {
+        promise.then(function (result) {
 
             if (!result.Items.length) {
                 section.classList.add('hide');

@@ -260,6 +260,8 @@ define([], function () {
 
         self.play = function (streamInfo) {
 
+            started = false;
+
             return new Promise(function (resolve, reject) {
 
                 var elem = createAudioElement();

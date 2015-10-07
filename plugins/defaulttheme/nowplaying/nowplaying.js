@@ -63,6 +63,15 @@
         }
 
         function bindToPlayer(player) {
+
+            if (player == currentPlayer) {
+                return;
+            }
+
+            if (currentPlayer) {
+                releasePlayer(currentPlayer);
+            }
+
             currentPlayer = player;
             updateVolume(player);
             updateTime(player);
@@ -95,11 +104,9 @@
         function updatePlaystate(player) {
 
             if (player.paused()) {
-                view.querySelector('.btnUnpause').classList.remove('hide');
-                view.querySelector('.btnPause').classList.add('hide');
+                view.querySelector('.btnPause').icon = 'play-arrow';
             } else {
-                view.querySelector('.btnUnpause').classList.add('hide');
-                view.querySelector('.btnPause').classList.remove('hide');
+                view.querySelector('.btnPause').icon = 'pause';
             }
         }
 
@@ -110,11 +117,9 @@
             }
 
             if (player.isMuted()) {
-                view.querySelector('.buttonMute').classList.add('hide');
-                view.querySelector('.buttonUnmute').classList.remove('hide');
+                view.querySelector('.buttonMute').icon = 'volume-off';
             } else {
-                view.querySelector('.buttonMute').classList.remove('hide');
-                view.querySelector('.buttonUnmute').classList.add('hide');
+                view.querySelector('.buttonMute').icon = 'volume-up';
             }
         }
 
@@ -164,12 +169,7 @@
 
         view.querySelector('.buttonMute').addEventListener('click', function () {
 
-            Emby.PlaybackManager.setMute(true);
-        });
-
-        view.querySelector('.buttonUnmute').addEventListener('click', function () {
-
-            Emby.PlaybackManager.setMute(false);
+            Emby.PlaybackManager.toggleMute();
         });
 
         nowPlayingVolumeSlider.addEventListener('change', function () {
@@ -187,14 +187,9 @@
             Emby.PlaybackManager.previousTrack();
         });
 
-        view.querySelector('.btnUnpause').addEventListener('click', function () {
-
-            Emby.PlaybackManager.unpause();
-        });
-
         view.querySelector('.btnPause').addEventListener('click', function () {
 
-            Emby.PlaybackManager.pause();
+            Emby.PlaybackManager.playPause();
         });
 
         view.querySelector('.btnStop').addEventListener('click', function () {
