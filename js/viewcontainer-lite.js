@@ -15,17 +15,13 @@ define([], function () {
             var currentPage = mainAnimatedPages.querySelector('.page-view');
 
             if (currentPage) {
-                triggerDestroy(currentPage);
+                view.dispatchEvent(new CustomEvent("viewdestroy", {}));
             }
 
             mainAnimatedPages.innerHTML = html;
 
             resolve(mainAnimatedPages.querySelector('.page-view'));
         });
-    }
-
-    function triggerDestroy(view) {
-        view.dispatchEvent(new CustomEvent("viewdestroy", {}));
     }
 
     function replaceAnimatedPages() {

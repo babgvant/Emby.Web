@@ -145,12 +145,21 @@
         self.previousTrack = function () {
         };
 
-        self.seek = function () {
-
+        self.seek = function (ticks) {
+            if (currentPlayer) {
+                currentPlayer.currentTime(ticks / 10000);
+            }
         };
 
         self.seekPercent = function (percent) {
 
+            if (currentMediaSource) {
+                var ticks = currentMediaSource.RunTimeTicks || 0;
+
+                percent /= 100;
+                ticks *= percent;
+                self.seek(ticks);
+            }
         };
 
         self.playTrailer = function (item) {
@@ -188,6 +197,143 @@
                 });
             });
         };
+
+        self.getPlayerState = function () {
+            return getPlayerStateInternal(currentPlayer, currentItem, currentMediaSource);
+        };
+
+        function getPlayerStateInternal(mediaRenderer, item, mediaSource) {
+
+            var state = {
+                PlayState: {}
+            };
+
+            if (mediaRenderer) {
+
+                state.PlayState.VolumeLevel = mediaRenderer.volume();
+                state.PlayState.IsMuted = mediaRenderer.isMuted();
+                state.PlayState.IsPaused = mediaRenderer.paused();
+                state.PlayState.PositionTicks = getCurrentTicks(mediaRenderer);
+                state.PlayState.RepeatMode = self.getRepeatMode();
+
+                //var currentSrc = mediaRenderer.currentSrc();
+
+                //if (currentSrc) {
+
+                //    var audioStreamIndex = getParameterByName('AudioStreamIndex', currentSrc);
+
+                //    if (audioStreamIndex) {
+                //        state.PlayState.AudioStreamIndex = parseInt(audioStreamIndex);
+                //    }
+                //    state.PlayState.SubtitleStreamIndex = self.currentSubtitleStreamIndex;
+
+                //    state.PlayState.PlayMethod = self.streamInfo.playMethod;
+
+                //    state.PlayState.LiveStreamId = mediaSource.LiveStreamId;
+                //    state.PlayState.PlaySessionId = getParameterByName('PlaySessionId', currentSrc);
+                //}
+            }
+
+            if (mediaSource) {
+
+                state.PlayState.MediaSourceId = mediaSource.Id;
+
+                state.NowPlayingItem = {
+                    RunTimeTicks: mediaSource.RunTimeTicks
+                };
+
+                state.PlayState.CanSeek = (mediaSource.RunTimeTicks || 0) > 0 /*|| canPlayerSeek()*/;
+            }
+
+            if (item) {
+
+                state.NowPlayingItem = getNowPlayingItemForReporting(item, mediaSource);
+            }
+
+            return state;
+        }
+
+        function getCurrentTicks(player) {
+
+            var playerTime = Math.floor(10000 * (player || currentPlayer).currentTime());
+
+            //playerTime += self.startTimeTicksOffset;
+
+            return playerTime;
+        };
+
+        function getNowPlayingItemForReporting(item, mediaSource) {
+
+            var nowPlayingItem = {};
+
+            nowPlayingItem.RunTimeTicks = mediaSource.RunTimeTicks;
+
+            nowPlayingItem.Id = item.Id;
+            nowPlayingItem.MediaType = item.MediaType;
+            nowPlayingItem.Type = item.Type;
+            nowPlayingItem.Name = item.Name;
+
+            nowPlayingItem.IndexNumber = item.IndexNumber;
+            nowPlayingItem.IndexNumberEnd = item.IndexNumberEnd;
+            nowPlayingItem.ParentIndexNumber = item.ParentIndexNumber;
+            nowPlayingItem.ProductionYear = item.ProductionYear;
+            nowPlayingItem.PremiereDate = item.PremiereDate;
+            nowPlayingItem.SeriesName = item.SeriesName;
+            nowPlayingItem.Album = item.Album;
+            nowPlayingItem.Artists = item.Artists;
+
+            var imageTags = item.ImageTags || {};
+
+            if (item.SeriesPrimaryImageTag) {
+
+                nowPlayingItem.PrimaryImageItemId = item.SeriesId;
+                nowPlayingItem.PrimaryImageTag = item.SeriesPrimaryImageTag;
+            }
+            else if (imageTags.Primary) {
+
+                nowPlayingItem.PrimaryImageItemId = item.Id;
+                nowPlayingItem.PrimaryImageTag = imageTags.Primary;
+            }
+            else if (item.AlbumPrimaryImageTag) {
+
+                nowPlayingItem.PrimaryImageItemId = item.AlbumId;
+                nowPlayingItem.PrimaryImageTag = item.AlbumPrimaryImageTag;
+            }
+            else if (item.SeriesPrimaryImageTag) {
+
+                nowPlayingItem.PrimaryImageItemId = item.SeriesId;
+                nowPlayingItem.PrimaryImageTag = item.SeriesPrimaryImageTag;
+            }
+
+            if (item.BackdropImageTags && item.BackdropImageTags.length) {
+
+                nowPlayingItem.BackdropItemId = item.Id;
+                nowPlayingItem.BackdropImageTag = item.BackdropImageTags[0];
+            }
+            else if (item.ParentBackdropImageTags && item.ParentBackdropImageTags.length) {
+                nowPlayingItem.BackdropItemId = item.ParentBackdropItemId;
+                nowPlayingItem.BackdropImageTag = item.ParentBackdropImageTags[0];
+            }
+
+            if (imageTags.Thumb) {
+
+                nowPlayingItem.ThumbItemId = item.Id;
+                nowPlayingItem.ThumbImageTag = imageTags.Thumb;
+            }
+
+            if (imageTags.Logo) {
+
+                nowPlayingItem.LogoItemId = item.Id;
+                nowPlayingItem.LogoImageTag = imageTags.Logo;
+            }
+            else if (item.ParentLogoImageTag) {
+
+                nowPlayingItem.LogoItemId = item.ParentLogoItemId;
+                nowPlayingItem.LogoImageTag = item.ParentLogoImageTag;
+            }
+
+            return nowPlayingItem;
+        }
 
         function validatePlayback(fn) {
 
