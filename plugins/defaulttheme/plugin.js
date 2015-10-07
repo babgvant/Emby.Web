@@ -48,6 +48,7 @@ define([], function () {
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/colors.dark'),
                 'css!' + Emby.PluginManager.mapRequire(self, 'css/paperstyles'),
                 Emby.PluginManager.mapRequire(self, 'cards/cardbuilder.js'),
+                Emby.PluginManager.mapRequire(self, 'cards/userdata.js'),
                 Emby.PluginManager.mapRequire(self, 'cards/tabbedpage.js'),
                 Emby.PluginManager.mapRequire(self, 'cards/horizontallist.js')
             ];

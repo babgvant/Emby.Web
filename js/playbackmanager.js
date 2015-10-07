@@ -7,6 +7,7 @@
         var currentPlayer;
         var currentItem;
         var currentMediaSource;
+        var repeatMode = 'RepeatNone';
         self.playlist = [];
         var currentPlaylistIndex;
 
@@ -124,6 +125,13 @@
                 } else {
                     self.pause();
                 }
+            }
+        };
+
+        self.paused = function () {
+
+            if (currentPlayer) {
+                return currentPlayer.paused();
             }
         };
 
@@ -888,8 +896,13 @@
             });
         };
 
+        self.setRepeatMode = function (value) {
+            repeatMode = value;
+            Events.trigger(self, 'repeatmodechange');
+        };
+
         self.getRepeatMode = function () {
-            return 'RepeatNone';
+            return repeatMode;
         };
 
         self.nextTrack = function () {

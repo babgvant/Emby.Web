@@ -532,6 +532,43 @@
         return null;
     }
 
+    function likes(id, isLiked) {
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                apiClient.updateUserItemRating(apiClient.getCurrentUserId(), id, isLiked).done(resolve, reject);
+            });
+        });
+    }
+
+    function favorite(id, isFavorite) {
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                apiClient.updateFavoriteStatus(apiClient.getCurrentUserId(), id, isFavorite).done(resolve, reject);
+            });
+        });
+    }
+
+    function clearLike(id) {
+
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                apiClient.clearUserItemRating(apiClient.getCurrentUserId(), id).done(resolve, reject);
+            });
+        });
+    }
+
     var myConnectionManager;
     function getConnectionManager() {
         return myConnectionManager;
@@ -567,7 +604,10 @@
         imageUrl: imageUrl,
         userImageUrl: userImageUrl,
         backdropImageUrl: backdropImageUrl,
-        instantMix: instantMix
+        instantMix: instantMix,
+        likes: likes,
+        favorite: favorite,
+        clearLike: clearLike
     };
 
 })(this, document);
