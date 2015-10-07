@@ -12,6 +12,7 @@
 
         var nowPlayingVolumeSlider = view.querySelector('.nowPlayingVolumeSlider');
         var nowPlayingPositionSlider = view.querySelector('.nowPlayingPositionSlider');
+        var btnRepeat = view.querySelector('.btnRepeat');
 
         function setCurrentItem(item) {
 
@@ -40,12 +41,14 @@
                 }
 
                 view.querySelector('.nowPlayingMetadata').innerHTML = names.join('<br/>');
+                view.querySelector('.userDataIcons').innerHTML = DefaultTheme.UserData.getIconsHtml(item, false);
 
             } else {
                 view.querySelector('.nowPlayingProgressContainer').classList.add('hide');
                 view.querySelector('.nowPlayingButtonsContainer').classList.add('hide');
                 view.querySelector('.nowPlayingCardContainer').innerHTML = '';
                 view.querySelector('.nowPlayingMetadata').innerHTML = '';
+                view.querySelector('.userDataIcons').innerHTML = '';
 
                 Emby.Backdrop.clear();
             }
@@ -64,22 +67,22 @@
 
         function bindToPlayer(player) {
 
-            if (player == currentPlayer) {
-                return;
-            }
+            if (player != currentPlayer) {
 
-            if (currentPlayer) {
-                releasePlayer(currentPlayer);
+                if (currentPlayer) {
+                    releasePlayer(currentPlayer);
+                }
+
+                Events.on(player, 'volumechange', onVolumeChange);
+                Events.on(player, 'playbackprogress', onTimeUpdate);
+                Events.on(player, 'pause', onPlaystateChange);
+                Events.on(player, 'playing', onPlaystateChange);
             }
 
             currentPlayer = player;
             updateVolume(player);
             updateTime(player);
             updatePlaystate(player);
-            Events.on(player, 'volumechange', onVolumeChange);
-            Events.on(player, 'playbackprogress', onTimeUpdate);
-            Events.on(player, 'pause', onPlaystateChange);
-            Events.on(player, 'playing', onPlaystateChange);
         }
 
         function releasePlayer(player) {
@@ -103,20 +106,38 @@
 
         function updatePlaystate(player) {
 
-            if (player.paused()) {
+            if (Emby.PlaybackManager.paused()) {
                 view.querySelector('.btnPause').icon = 'play-arrow';
             } else {
                 view.querySelector('.btnPause').icon = 'pause';
             }
+
+            var repeatMode = Emby.PlaybackManager.getRepeatMode();
+
+            if (repeatMode == 'RepeatAll') {
+                btnRepeat.icon = "repeat";
+                btnRepeat.classList.add('repeatActive');
+            }
+            else if (repeatMode == 'RepeatOne') {
+                btnRepeat.icon = "repeat-one";
+                btnRepeat.classList.add('repeatActive');
+            } else {
+                btnRepeat.icon = "repeat";
+                btnRepeat.classList.remove('repeatActive');
+            }
+        }
+
+        function onRepeatModeChanged() {
+            updatePlaystate(currentPlayer);
         }
 
         function updateVolume(player) {
 
             if (!nowPlayingVolumeSlider.dragging) {
-                nowPlayingVolumeSlider.value = player.volume();
+                nowPlayingVolumeSlider.value = Emby.PlaybackManager.volume();
             }
 
-            if (player.isMuted()) {
+            if (Emby.PlaybackManager.isMuted()) {
                 view.querySelector('.buttonMute').icon = 'volume-off';
             } else {
                 view.querySelector('.buttonMute').icon = 'volume-up';
@@ -152,6 +173,7 @@
             Emby.Page.setTitle('');
             Events.on(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
             Events.on(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
+            Events.on(Emby.PlaybackManager, 'repeatmodechange', onRepeatModeChanged);
 
             onPlaybackStart(e, Emby.PlaybackManager.currentPlayer());
         });
@@ -164,6 +186,7 @@
 
             Events.off(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
             Events.off(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
+            Events.off(Emby.PlaybackManager, 'repeatmodechange', onRepeatModeChanged);
         });
 
         view.querySelector('.buttonMute').addEventListener('click', function () {
@@ -204,6 +227,21 @@
         view.querySelector('.btnPlaylist').addEventListener('click', function () {
 
             Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'nowplaying/playlist.html'));
+        });
+
+        btnRepeat.addEventListener('click', function () {
+
+            switch (Emby.PlaybackManager.getRepeatMode()) {
+                case 'RepeatAll':
+                    Emby.PlaybackManager.setRepeatMode('RepeatOne');
+                    break;
+                case 'RepeatOne':
+                    Emby.PlaybackManager.setRepeatMode('RepeatNone');
+                    break;
+                default:
+                    Emby.PlaybackManager.setRepeatMode('RepeatAll');
+                    break;
+            }
         });
     }
 
