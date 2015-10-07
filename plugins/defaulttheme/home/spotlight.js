@@ -1,15 +1,13 @@
 (function (globalScope) {
 
-    function loadItemIntoSpotlight(card, item, width, apiClient) {
+    function loadItemIntoSpotlight(card, item, width) {
 
         if (!item.BackdropImageTags || !item.BackdropImageTags.length) {
             return;
         }
 
-        var imgUrl = apiClient.getScaledImageUrl(item.Id, {
-            type: "Backdrop",
-            maxWidth: width,
-            tag: item.BackdropImageTags[0]
+        var imgUrl = Emby.Models.backdropImageUrl(item, {
+            maxWidth: width
         });
 
         var cardImageContainer = card.querySelector('.cardImageContainer');
@@ -23,11 +21,12 @@
         card.setAttribute('data-id', item.Id);
         card.setAttribute('data-type', item.Type);
         card.setAttribute('data-isfolder', item.IsFolder.toString());
-        card.classList.add('itemLink');
+        card.setAttribute('data-action', 'link');
+        card.classList.add('itemAction');
 
         cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
-        var onAnimationFinished = function() {
+        var onAnimationFinished = function () {
 
             var parentNode = cardImageContainer.parentNode;
             if (parentNode) {
@@ -46,13 +45,13 @@
         }
     }
 
-    function startSpotlight(self, card, items, width, apiClient) {
+    function startSpotlight(self, card, items, width) {
 
         if (!items.length) {
             return;
         }
 
-        loadItemIntoSpotlight(card, items[0], width, apiClient);
+        loadItemIntoSpotlight(card, items[0], width);
 
         if (items.length == 1) {
             return;
@@ -76,7 +75,7 @@
                 index = 0;
             }
 
-            loadItemIntoSpotlight(card, items[index], width, apiClient);
+            loadItemIntoSpotlight(card, items[index], width);
             index++;
 
         }, 10000);
@@ -86,12 +85,7 @@
 
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            startSpotlight(self, card, items, width, apiClient);
-        });
+        startSpotlight(self, card, items, width);
     }
 
     if (!globalScope.DefaultTheme) {

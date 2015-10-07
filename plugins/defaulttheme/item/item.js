@@ -237,26 +237,14 @@
 
     function renderDetails(view, item) {
 
-        if (item.Type == "Season") {
+        if (item.Type == "Season" || item.Type == "MusicAlbum" || item.Type == "MusicArtist" || item.Type == "Playlist") {
             view.querySelector('.mainSection').classList.add('miniMainSection');
         } else {
             view.querySelector('.mainSection').classList.remove('miniMainSection');
         }
 
-        var genresElem = view.querySelector('.genres')
-        if (item.Genres && item.Genres.length) {
-            genresElem.classList.remove('hide');
-            genresElem.innerHTML = item.Genres.map(function (i) {
-
-                return i;
-
-            }).join('<span class="bulletSeparator"> &bull; </span>');
-        } else {
-            genresElem.classList.add('hide');
-        }
-
         var overviewElem = view.querySelector('.overview')
-        if (item.Overview) {
+        if (item.Overview && item.Type != 'MusicArtist' && item.Type != 'MusicAlbum') {
             overviewElem.classList.remove('hide');
             overviewElem.innerHTML = item.Overview;
         } else {
@@ -275,12 +263,46 @@
             view.querySelector('.btnPlay').classList.add('hide');
         }
 
-        renderMediaInfo(view, item);
-    }
+        var mediaInfoHtml = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
+        var mediaInfoElem = view.querySelector('.mediaInfo');
+        var sideMediaInfoElem = view.querySelector('.sideMediaInfo');
 
-    function renderMediaInfo(view, item) {
+        if (!mediaInfoHtml) {
+            mediaInfoElem.classList.add('hide');
+            sideMediaInfoElem.classList.add('hide');
+        }
+        else if (item.Type == 'MusicAlbum' || item.Type == 'Playlist') {
+            mediaInfoElem.classList.add('hide');
+            sideMediaInfoElem.innerHTML = mediaInfoHtml;
+            sideMediaInfoElem.classList.remove('hide');
+        } else {
+            mediaInfoElem.classList.remove('hide');
+            mediaInfoElem.innerHTML = mediaInfoHtml;
+            sideMediaInfoElem.classList.add('hide');
+        }
 
-        view.querySelector('.mediaInfo').innerHTML = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
+        var genresHtml = (item.Genres || []).map(function (i) {
+
+            return i;
+
+        }).join('<span class="bulletSeparator"> &bull; </span>');
+
+        var genresElem = view.querySelector('.genres')
+        var sideGenresElem = view.querySelector('.sideGenres');
+
+        if (!genresHtml) {
+            genresElem.classList.add('hide');
+            sideGenresElem.classList.add('hide');
+        }
+        else if (item.Type == 'MusicAlbum' || item.Type == 'Playlist') {
+            genresElem.classList.add('hide');
+            sideGenresElem.innerHTML = genresHtml;
+            sideGenresElem.classList.remove('hide');
+        } else {
+            genresElem.classList.remove('hide');
+            genresElem.innerHTML = genresHtml;
+            sideGenresElem.classList.add('hide');
+        }
     }
 
     function renderNextUp(view, item) {
@@ -314,7 +336,7 @@
 
         var section = view.querySelector('.childrenSection');
 
-        if (!item.ChildCount) {
+        if (!item.ChildCount || item.Type == 'MusicAlbum') {
             section.classList.add('hide');
             return;
         }

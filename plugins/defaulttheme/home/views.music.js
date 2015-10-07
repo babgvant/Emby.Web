@@ -76,7 +76,8 @@
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
-                width: DefaultTheme.CardBuilder.homePortraitWidth
+                width: DefaultTheme.CardBuilder.homePortraitWidth,
+                action: 'instantmix'
             });
         });
     }
@@ -105,7 +106,8 @@
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'autoHome',
-                width: DefaultTheme.CardBuilder.homePortraitWidth
+                width: DefaultTheme.CardBuilder.homePortraitWidth,
+                action: 'instantmix'
             });
         });
     }

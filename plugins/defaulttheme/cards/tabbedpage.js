@@ -231,7 +231,7 @@
             if (selectedMediaInfoTimeout) {
                 clearTimeout(selectedMediaInfoTimeout);
             }
-            selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, 400);
+            selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, 500);
         }
 
         function onZoomTimeout() {

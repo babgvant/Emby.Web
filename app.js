@@ -316,7 +316,8 @@
              'js/imageloader',
              'js/backdrops',
              'js/dom',
-             'js/datetime'
+             'js/datetime',
+             'js/shortcuts'
             ];
 
             list.push('screensaverManager');

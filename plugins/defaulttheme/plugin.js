@@ -336,7 +336,6 @@ define([], function () {
         function onLocalUserSignedIn(e) {
 
             var user = e.detail.user;
-            var apiClient = e.detail.apiClient;
 
             document.querySelector('.logo').classList.add('hide');
 
@@ -347,9 +346,7 @@ define([], function () {
             if (user.PrimaryImageTag) {
 
                 headerUserButton.icon = null;
-                headerUserButton.src = apiClient.getUserImageUrl(user.Id, {
-                    tag: user.PrimaryImageTag,
-                    type: 'Primary',
+                headerUserButton.src = Emby.Models.userImageUrl(user, {
                     height: 44
                 });
 

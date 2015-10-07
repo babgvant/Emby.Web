@@ -127,7 +127,7 @@
         self.previousTrack = function () {
         };
 
-        self.seek = function() {
+        self.seek = function () {
 
         };
 
@@ -160,10 +160,14 @@
         };
 
         self.instantMix = function (id) {
-            validatePlayback(function () {
-                playItems({
-                    ids: id
-                }, 'InstantMix');
+
+            Emby.Models.instantMix(id).then(function (result) {
+
+                validatePlayback(function () {
+                    playItems({
+                        items: result.Items
+                    });
+                });
             });
         };
 

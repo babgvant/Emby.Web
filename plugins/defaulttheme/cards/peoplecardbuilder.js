@@ -37,7 +37,7 @@
 
     function buildPersonCard(person, options, className) {
 
-        className += " itemLink";
+        className += " itemAction";
 
         var imgUrl = person.images ? person.images.primary : '';
 
@@ -60,7 +60,7 @@
         }
 
         var html = '\
-<paper-button data-isfolder="'+ person.IsFolder + '" data-type="' + person.Type + '" data-id="' + person.Id + '" raised class="' + className + '"> \
+<paper-button data-isfolder="'+ person.IsFolder + '" data-type="' + person.Type + '" data-action="link" data-id="' + person.Id + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\

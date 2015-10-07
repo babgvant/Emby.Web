@@ -35,7 +35,8 @@
         allGenericCard.setAttribute('data-id', parentId);
         allGenericCard.setAttribute('data-type', 'Folder');
         allGenericCard.setAttribute('data-isfolder', 'true');
-        allGenericCard.classList.add('itemLink');
+        allGenericCard.setAttribute('data-action', 'link');
+        allGenericCard.classList.add('itemAction');
 
         self.destroy = function () {
 

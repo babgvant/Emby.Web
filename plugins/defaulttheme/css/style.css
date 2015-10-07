@@ -314,7 +314,7 @@
 }
 
 .selectedItemInfoInnerWithLogo {
-    padding-left: 200px;
+    padding-left: 220px;
     position: relative;
 }
 
@@ -323,7 +323,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 160px;
+    width: 200px;
     background-repeat: no-repeat;
     background-position: right center;
     background-size: contain;
@@ -452,7 +452,7 @@
 @media all and (min-height: 1080px) {
 
     .homeBody {
-        height: 680px;
+        height: 690px;
     }
 
     .horizontalPageContent .squareCard {

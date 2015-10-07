@@ -335,7 +335,7 @@
 
     function buildCard(index, item, apiClient, options, className) {
 
-        className += " itemLink";
+        className += " itemAction";
 
         var imgInfo = getCardImageUrl(item, apiClient, options);
         var imgUrl = imgInfo.imgUrl;
@@ -390,10 +390,12 @@
             data += '<input type="hidden" class="primaryImageTag" value="' + primaryImageTag + '" />';
         }
 
+        var action = options.action || 'link';
+
         if (Emby.Dom.supportsWebComponents()) {
 
             return '\
-<paper-button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<paper-button elevated="1" data-index="'+ index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
@@ -409,7 +411,7 @@
         }
 
         return '\
-<button elevated="1" data-index="'+ index + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<button elevated="1" data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
@@ -453,8 +455,7 @@
         });
     }
 
-    function getMediaInfoHtml(item)
-    {
+    function getMediaInfoHtml(item) {
         var html = '';
 
         html += getStarIconsHtml(item);
@@ -468,7 +469,7 @@
             var count = item.SongCount || item.ChildCount;
 
             if (count) {
-                
+
                 miscInfo.push(Globalize.translate('TrackCount', count));
             }
 
