@@ -156,10 +156,10 @@ paper-slider {
     color: #52B54B;
 }
 
-.paper-progress-0 #primaryProgress.paper-progress {
-    background-color: #52B54B;
+paper-progress #primaryProgress {
+    background-color: #52B54B !important;
 }
 
-.paper-progress-0 #secondaryProgress.paper-progress {
-    background-color: #92B54B;
+paper-progress #secondaryProgress {
+    background-color: #92B54B !important;
 }

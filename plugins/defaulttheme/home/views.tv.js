@@ -182,44 +182,39 @@
             return;
         }
 
-        require(['connectionManager'], function (connectionManager) {
+        // Also cancel if not in document
 
-            var apiClient = connectionManager.currentApiClient();
+        var cardImageContainer = card.querySelector('.cardImageContainer');
 
-            // Also cancel if not in document
+        var newCardImageContainer = document.createElement('div');
+        newCardImageContainer.className = cardImageContainer.className;
+        newCardImageContainer.classList.add('cardRevealContent');
 
-            var cardImageContainer = card.querySelector('.cardImageContainer');
+        var imgUrl = Emby.Models.imageUrl(card.getAttribute('data-id'), {
+            tag: card.querySelector('.primaryImageTag').value,
+            type: 'Primary',
+            width: 400
+        });
 
-            var newCardImageContainer = document.createElement('div');
-            newCardImageContainer.className = cardImageContainer.className;
-            newCardImageContainer.classList.add('cardRevealContent');
+        newCardImageContainer.style.backgroundImage = "url('" + imgUrl + "')";
+        newCardImageContainer.classList.add('hide');
+        cardImageContainer.parentNode.appendChild(newCardImageContainer);
 
-            var imgUrl = apiClient.getScaledImageUrl(card.getAttribute('data-id'), {
-                tag: card.querySelector('.primaryImageTag').value,
-                type: 'Primary',
-                width: 400
-            });
+        flipElementWithDuration(card, 600, function () {
+            newCardImageContainer.classList.remove('hide');
 
-            newCardImageContainer.style.backgroundImage = "url('" + imgUrl + "')";
-            newCardImageContainer.classList.add('hide');
-            cardImageContainer.parentNode.appendChild(newCardImageContainer);
+            var hiddenTitle = card.querySelector('.hiddenTitle');
+            if (hiddenTitle) {
+                hiddenTitle.classList.remove('hide');
+            }
 
-            flipElementWithDuration(card, 600, function () {
-                newCardImageContainer.classList.remove('hide');
+            setTimeout(function () {
+                newCardImageContainer.parentNode.removeChild(newCardImageContainer);
 
-                var hiddenTitle = card.querySelector('.hiddenTitle');
                 if (hiddenTitle) {
-                    hiddenTitle.classList.remove('hide');
+                    hiddenTitle.classList.add('hide');
                 }
-
-                setTimeout(function () {
-                    newCardImageContainer.parentNode.removeChild(newCardImageContainer);
-
-                    if (hiddenTitle) {
-                        hiddenTitle.classList.add('hide');
-                    }
-                }, 4000);
-            });
+            }, 4000);
         });
     }
 

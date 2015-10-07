@@ -448,6 +448,24 @@
         });
     }
 
+    function instantMix(id, options) {
+        return new Promise(function (resolve, reject) {
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.currentApiClient();
+
+                options = options || {};
+                normalizeOptions(options);
+                options.UserId = apiClient.getCurrentUserId();
+
+                options.Fields = options.Fields ? (options.Fields + ',MediaSources') : 'MediaSources';
+
+                apiClient.getInstantMixFromItem(id, options).done(resolve, reject);
+            });
+        });
+    }
+
     function logoImageUrl(item, options) {
 
         options = options || {};
@@ -462,6 +480,52 @@
         if (item.ParentLogoImageTag) {
             options.tag = item.ParentLogoImageTag;
             return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.ParentLogoItemId, options);
+        }
+
+        return null;
+    }
+
+    function imageUrl(item, options) {
+
+        options = options || {};
+        options.type = options.type || "Primary";
+
+        if (typeof (item) === 'string') {
+            return getConnectionManager().currentApiClient().getScaledImageUrl(item, options);
+        }
+
+        if (item.ImageTags && item.ImageTags[options.type]) {
+
+            options.tag = item.ImageTags[options.type];
+            return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.Id, options);
+        }
+
+        return null;
+    }
+
+    function backdropImageUrl(item, options) {
+
+        options = options || {};
+        options.type = options.type || "Backdrop";
+
+        if (item.BackdropImageTags && item.BackdropImageTags.length) {
+
+            options.tag = item.BackdropImageTags[0];
+            return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.Id, options);
+        }
+
+        return null;
+    }
+
+    function userImageUrl(item, options) {
+
+        options = options || {};
+        options.type = "Primary";
+
+        if (item.PrimaryImageTag) {
+
+            options.tag = item.PrimaryImageTag;
+            return getConnectionManager().getApiClient(item.ServerId).getUserImageUrl(item.Id, options);
         }
 
         return null;
@@ -498,7 +562,11 @@
         artists: artists,
         albumArtists: albumArtists,
         logoImageUrl: logoImageUrl,
-        intros: intros
+        intros: intros,
+        imageUrl: imageUrl,
+        userImageUrl: userImageUrl,
+        backdropImageUrl: backdropImageUrl,
+        instantMix: instantMix
     };
 
 })(this, document);

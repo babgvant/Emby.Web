@@ -31,6 +31,10 @@
     width: 300px;
 }
 
+.headerAudioPlayerButton {
+    color: #52B54B;
+}
+
 /* 720p */
 @media all and (min-height: 720px) {
 
@@ -299,15 +303,18 @@
     bottom: 30px;
     left: 0;
     right: 0;
+    text-align: center;
 }
 
 .selectedItemInfoInner {
     margin: auto;
-    max-width: 25%;
+    max-width: 40%;
+    display: inline-block;
+    text-align: left;
 }
 
 .selectedItemInfoInnerWithLogo {
-    padding-left: 200px;
+    padding-left: 220px;
     position: relative;
 }
 
@@ -316,9 +323,9 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 160px;
+    width: 200px;
     background-repeat: no-repeat;
-    background-position: left center;
+    background-position: right center;
     background-size: contain;
 }
 
@@ -445,7 +452,7 @@
 @media all and (min-height: 1080px) {
 
     .homeBody {
-        height: 680px;
+        height: 690px;
     }
 
     .horizontalPageContent .squareCard {

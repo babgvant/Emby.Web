@@ -68,8 +68,8 @@ button.card {
 }
 
 .card[focused] .content, .card:focus .cardBox {
-    -moz-box-shadow: #52B54B 0px 0px 1px 4px;
-    box-shadow: #52B54B 0px 0px 1px 4px;
+    -moz-box-shadow: #fff 0px 0px 1px 4px;
+    box-shadow: #fff 0px 0px 1px 4px;
 }
 
 .focusedTransform {

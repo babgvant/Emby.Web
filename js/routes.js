@@ -419,23 +419,4 @@
         setTitle: setTitle
     };
 
-    // Add some shortcuts
-    document.addEventListener('click', function (e) {
-
-        var card = Emby.Dom.parentWithClass(e.target, 'itemLink');
-
-        if (card) {
-            var id = card.getAttribute('data-id');
-
-            if (id) {
-                var type = card.getAttribute('data-type');
-                Emby.Page.showItem({
-                    Id: id,
-                    Type: type,
-                    IsFolder: card.getAttribute('data-isfolder') == 'true'
-                });
-            }
-        }
-    });
-
 })(this);
