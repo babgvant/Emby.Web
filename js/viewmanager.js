@@ -4,6 +4,12 @@ define([], function () {
 
     function onViewChange(view, viewId, url, isRestore) {
 
+        var lastView = currentView;
+
+        if (lastView) {
+            lastView.dispatchEvent(new CustomEvent("viewhide", {}));
+        }
+
         currentView = view;
 
         require(['bower_components/query-string/index'], function () {
@@ -70,13 +76,16 @@ define([], function () {
 
         self.loadView = function (options) {
 
+            var lastView = currentView;
+
             // Record the element that has focus
-            if (currentView) {
-                currentView.activeElement = document.activeElement;
+            if (lastView) {
+                lastView.activeElement = document.activeElement;
             }
 
             require(['viewcontainer'], function (viewcontainer) {
                 viewcontainer.loadView(options).then(function (view) {
+
                     onViewChange(view, options.id, options.url);
                 });
             });

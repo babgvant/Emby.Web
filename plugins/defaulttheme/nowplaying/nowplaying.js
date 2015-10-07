@@ -77,14 +77,14 @@
             updateTime(player);
             updatePlaystate(player);
             Events.on(player, 'volumechange', onVolumeChange);
-            Events.on(player, 'timeupdate', onTimeUpdate);
+            Events.on(player, 'playbackprogress', onTimeUpdate);
             Events.on(player, 'pause', onPlaystateChange);
             Events.on(player, 'playing', onPlaystateChange);
         }
 
         function releasePlayer(player) {
             Events.off(player, 'volumechange', onVolumeChange);
-            Events.off(player, 'timeupdate', onTimeUpdate);
+            Events.off(player, 'playbackprogress', onTimeUpdate);
             Events.off(player, 'pause', onPlaystateChange);
             Events.off(player, 'playing', onPlaystateChange);
         }
@@ -127,7 +127,7 @@
 
             if (!nowPlayingPositionSlider.dragging) {
 
-                return;
+                var state = Emby.PlaybackManager.getPlayerState();
                 var playState = state.PlayState || {};
                 var nowPlayingItem = state.NowPlayingItem || {};
 
@@ -156,7 +156,7 @@
             onPlaybackStart(e, Emby.PlaybackManager.currentPlayer());
         });
 
-        view.addEventListener('viewdestroy', function () {
+        view.addEventListener('viewhide', function () {
 
             if (currentPlayer) {
                 releasePlayer(currentPlayer);
@@ -164,7 +164,6 @@
 
             Events.off(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
             Events.off(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
-            nowPlayingVolumeSlider = null;
         });
 
         view.querySelector('.buttonMute').addEventListener('click', function () {
