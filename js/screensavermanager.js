@@ -51,24 +51,36 @@ define([], function () {
 
                 var server = connectionManager.currentLoggedInServer();
 
-                screensavers = screensavers.filter(function (screensaver) {
-
-                    if (!server) {
-                        return screensaver.supportsAnonymous;
-                    }
-
-                    return true;
-                });
-
-                // Perform some other filter here to get the configured screensaver
-
-                var current = screensavers.length ? screensavers[0] : null;
-                if (current) {
-                    showScreenSaver(current);
-                }
-
+                show(screensavers, server);
             });
         };
+
+        function show(screensavers, currentServer) {
+
+            if (currentServer) {
+
+                var loggedInScreenSavers = screensavers.filter(function (screensaver) {
+                    return !screensaver.supportsAnonymous;
+                });
+
+                if (loggedInScreenSavers.length) {
+                    screensavers = loggedInScreenSavers;
+                }
+
+            } else {
+
+                screensavers = screensavers.filter(function (screensaver) {
+                    return screensaver.supportsAnonymous;
+                });
+            }
+
+            // Perform some other filter here to get the configured screensaver
+
+            var current = screensavers.length ? screensavers[0] : null;
+            if (current) {
+                showScreenSaver(current);
+            }
+        }
 
         self.hide = function () {
             hide();

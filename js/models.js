@@ -247,6 +247,7 @@
 
             require(['connectionManager'], function (connectionManager) {
 
+                options = options || {};
                 normalizeOptions(options);
 
                 var apiClient = connectionManager.currentApiClient();

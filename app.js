@@ -362,6 +362,7 @@
         var list = [
         'plugins/defaulttheme/plugin.js',
         'plugins/logoscreensaver/plugin.js',
+        'plugins/backdropscreensaver/plugin.js',
         'plugins/keyboard/plugin.js',
         'plugins/htmlvideoplayer/plugin.js',
         'plugins/htmlaudioplayer/plugin.js'
