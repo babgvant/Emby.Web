@@ -64,6 +64,8 @@ define([], function () {
                 list.push('html!bower_components/paper-progress/paper-progress.html');
                 list.push('html!bower_components/paper-fab/paper-fab.html');
                 list.push('html!bower_components/paper-slider/paper-slider.html');
+                list.push('html!bower_components/paper-item/paper-icon-item.html');
+                list.push('html!bower_components/paper-item/paper-item-body.html');
             }
 
             return list;
@@ -139,6 +141,15 @@ define([], function () {
                 transition: 'slide',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'livetv/livetv.js')
+                ]
+            });
+
+            routes.push({
+                path: Emby.PluginManager.mapPath(self, 'livetv/guide.html'),
+                id: 'defaulttheme-guide',
+                transition: 'slide',
+                dependencies: [
+                    Emby.PluginManager.mapRequire(self, 'livetv/guide.js')
                 ]
             });
 

@@ -332,12 +332,46 @@
         });
     }
 
+    function renderTrackList(view, item) {
+
+        var section = view.querySelector('.trackList');
+
+        if (item.Type != 'Playlist' && item.Type != 'MusicAlbum') {
+            section.classList.add('hide');
+            return;
+        }
+
+        if (!item.ChildCount) {
+            section.classList.add('hide');
+            return;
+        }
+
+        Emby.Models.children(item, {}).then(function (result) {
+
+            if (!result.Items.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            section.innerHTML = DefaultTheme.CardBuilder.getListViewHtml(result.Items, {
+                showIndexNumber: true,
+                action: 'playallfromhere'
+            });
+
+            Emby.ImageLoader.lazyChildren(section);
+        });
+    }
+
     function renderChildren(view, item) {
+
+        renderTrackList(view, item);
 
         var section = view.querySelector('.childrenSection');
 
         if (item.Type != 'MusicArtist') {
-            if (!item.ChildCount || item.Type == 'MusicAlbum') {
+            if (!item.ChildCount || item.Type == 'Playlist' || item.Type == 'MusicAlbum') {
                 section.classList.add('hide');
                 return;
             }

@@ -664,6 +664,91 @@
         return html;
     }
 
+    function getListViewHtml(items, options) {
+
+        var outerHtml = "";
+
+        var index = 0;
+        var groupTitle = '';
+        var action = options.action || 'link';
+
+        outerHtml += items.map(function (item) {
+
+            var html = '';
+
+            html += '<paper-icon-item class="itemAction" data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '">';
+
+            var downloadWidth = 80;
+            // Scaling 400w episode images to 80 doesn't turn out very well
+            var minScale = item.Type == 'Episode' || item.Type == 'Game' ? 2 : 1.5;
+
+            var imgUrl = Emby.Models.imageUrl(item, {
+                width: downloadWidth,
+                type: "Primary",
+                minScale: minScale
+            });
+
+            if (imgUrl) {
+                html += '<div class="paperIconItemImage lazy" data-src="' + imgUrl + '" item-icon></div>';
+            } else {
+                html += '<div class="paperIconItemImage" item-icon></div>';
+            }
+
+            var textlines = [];
+
+            if (item.Type == 'Episode') {
+                textlines.push(item.SeriesName || '&nbsp;');
+            } else if (item.Type == 'MusicAlbum') {
+                textlines.push(item.AlbumArtist || '&nbsp;');
+            }
+
+            var displayName = getDisplayName(item);
+
+            if (options.showIndexNumber && item.IndexNumber != null) {
+                displayName = item.IndexNumber + ". " + displayName;
+            }
+            textlines.push(displayName);
+
+            if (item.Type == 'Audio') {
+                textlines.push(item.ArtistItems.map(function (a) {
+                    return a.Name;
+
+                }).join(', ') || '&nbsp;');
+            }
+
+            if (textlines.length > 2) {
+                html += '<paper-item-body three-line>';
+            } else if (textlines.length > 1) {
+                html += '<paper-item-body two-line>';
+            } else {
+                html += '<paper-item-body>';
+            }
+
+            for (var i = 0, textLinesLength = textlines.length; i < textLinesLength; i++) {
+
+                if (i == 0) {
+                    html += '<div>';
+                } else {
+                    html += '<div secondary>';
+                }
+                html += textlines[i] || '&nbsp;';
+                html += '</div>';
+            }
+
+            html += '</paper-item-body>';
+
+            html += '<div class="paperIconItemMediaInfo">' + getMediaInfoHtml(item) + '</div>';
+
+            html += '</paper-icon-item>';
+
+            index++;
+            return html;
+
+        }).join('');
+
+        return outerHtml;
+    }
+
     if (!globalScope.DefaultTheme) {
         globalScope.DefaultTheme = {};
     }
@@ -675,7 +760,8 @@
         homePortraitWidth: 189,
         homeSquareWidth: 180,
         getDisplayName: getDisplayName,
-        getMediaInfoHtml: getMediaInfoHtml
+        getMediaInfoHtml: getMediaInfoHtml,
+        getListViewHtml: getListViewHtml
     };
 
 })(this);

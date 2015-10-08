@@ -534,13 +534,13 @@
 @media all and (min-height: 1080px) {
 
     .nowPlayingButtonsContainer paper-icon-button iron-icon {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
     }
 
     .nowPlayingButtonsContainer .userDataIcons iron-icon {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
 }
 
@@ -548,13 +548,13 @@
 @media all and (min-height: 1440px) {
 
     .nowPlayingButtonsContainer paper-icon-button iron-icon {
-        width: 110px;
-        height: 110px;
+        width: 100px;
+        height: 100px;
     }
 
     .nowPlayingButtonsContainer .userDataIcons iron-icon {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
     }
 }
 

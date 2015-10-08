@@ -61,7 +61,7 @@
         }
 
         function onPlaybackStop(e, player) {
-            releasePlayer(player);
+            releasePlayer();
             setCurrentItem(null);
         }
 
@@ -69,9 +69,7 @@
 
             if (player != currentPlayer) {
 
-                if (currentPlayer) {
-                    releasePlayer(currentPlayer);
-                }
+                releasePlayer();
 
                 Events.on(player, 'volumechange', onVolumeChange);
                 Events.on(player, 'playbackprogress', onTimeUpdate);
@@ -85,11 +83,17 @@
             updatePlaystate(player);
         }
 
-        function releasePlayer(player) {
-            Events.off(player, 'volumechange', onVolumeChange);
-            Events.off(player, 'playbackprogress', onTimeUpdate);
-            Events.off(player, 'pause', onPlaystateChange);
-            Events.off(player, 'playing', onPlaystateChange);
+        function releasePlayer() {
+
+            var player = currentPlayer;
+
+            if (player) {
+                Events.off(player, 'volumechange', onVolumeChange);
+                Events.off(player, 'playbackprogress', onTimeUpdate);
+                Events.off(player, 'pause', onPlaystateChange);
+                Events.off(player, 'playing', onPlaystateChange);
+                currentPlayer = null;
+            }
         }
 
         function onTimeUpdate(e) {
@@ -180,10 +184,7 @@
 
         view.addEventListener('viewhide', function () {
 
-            if (currentPlayer) {
-                releasePlayer(currentPlayer);
-            }
-
+            releasePlayer();
             Events.off(Emby.PlaybackManager, 'playbackstart', onPlaybackStart);
             Events.off(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
             Events.off(Emby.PlaybackManager, 'repeatmodechange', onRepeatModeChanged);

@@ -25,6 +25,22 @@
                 else if (action == 'instantmix') {
                     Emby.PlaybackManager.instantMix(id);
                 }
+
+                else if (action == 'play') {
+                    Emby.PlaybackManager.play({
+                        ids: [id]
+                    });
+                }
+
+                else if (action == 'playallfromhere') {
+                    Emby.PlaybackManager.play({
+                        ids: [id]
+                    });
+                }
+
+                else if (action == 'setplaylistindex') {
+
+                }
             }
         }
     });
