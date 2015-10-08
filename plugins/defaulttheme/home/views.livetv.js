@@ -107,7 +107,7 @@
         });
 
         element.querySelector('.guideCard').addEventListener('click', function () {
-            gotoTvView('guide', parentId);
+            Emby.Page.show(Emby.PluginManager.mapPath('defaulttheme', 'livetv/guide.html'));
         });
 
         element.querySelector('.recordingsCard').addEventListener('click', function () {

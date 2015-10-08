@@ -163,3 +163,49 @@ paper-progress #primaryProgress {
 paper-progress #secondaryProgress {
     background-color: #92B54B !important;
 }
+
+paper-icon-item {
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-family: inherit !important;
+    line-height: inherit !important;
+    cursor: pointer;
+}
+
+    paper-icon-item paper-item-body {
+        padding-top: .35em;
+        padding-bottom: .35em;
+    }
+
+paper-item-body.paper-item-body-0 [secondary] {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+.paperIconItemImage {
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+}
+
+paper-icon-item #contentIcon {
+    width: 95px;
+}
+
+
+/* 2560 * 1440 */
+@media all and (min-height: 1440px) {
+
+    .paperIconItemImage {
+        width: 120px;
+        height: 120px;
+    }
+
+    paper-icon-item #contentIcon {
+        width: 135px;
+    }
+}

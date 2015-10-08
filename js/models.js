@@ -501,6 +501,34 @@
             return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.Id, options);
         }
 
+        if (options.type == 'Primary') {
+            if (item.AlbumId && item.AlbumPrimaryImageTag) {
+
+                options.tag = item.AlbumPrimaryImageTag;
+                return getConnectionManager().getApiClient(item.ServerId).getScaledImageUrl(item.AlbumId, options);
+            }
+
+            //else if (item.AlbumId && item.SeriesPrimaryImageTag) {
+
+            //    imgUrl = ApiClient.getScaledImageUrl(item.SeriesId, {
+            //        type: "Primary",
+            //        width: downloadWidth,
+            //        tag: item.SeriesPrimaryImageTag,
+            //        minScale: minScale
+            //    });
+
+            //}
+            //else if (item.ParentPrimaryImageTag) {
+
+            //    imgUrl = ApiClient.getImageUrl(item.ParentPrimaryImageItemId, {
+            //        type: "Primary",
+            //        width: downloadWidth,
+            //        tag: item.ParentPrimaryImageTag,
+            //        minScale: minScale
+            //    });
+            //}
+        }
+
         return null;
     }
 

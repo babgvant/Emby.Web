@@ -15,6 +15,10 @@
             return currentItem;
         };
 
+        self.playlist = function () {
+            return playlist;
+        };
+
         self.currentPlayer = function () {
             return currentPlayer;
         };
@@ -474,7 +478,7 @@
                 currentPlaylistIndex = i;
             }
             if (items) {
-                self.playlist = items;
+                playlist = items;
             }
         }
 
@@ -889,7 +893,7 @@
                 return currentPlaylistIndex;
             }
 
-            var newItem = self.playlist[i];
+            var newItem = playlist[i];
 
             playInternal(newItem, 0, function () {
                 self.setPlaylistState(i);
@@ -916,7 +920,7 @@
                     break;
                 case 'RepeatAll':
                     newIndex = currentPlaylistIndex + 1;
-                    if (newIndex >= self.playlist.length) {
+                    if (newIndex >= playlist.length) {
                         newIndex = 0;
                     }
                     break;
@@ -925,7 +929,7 @@
                     break;
             }
 
-            var newItem = self.playlist[newIndex];
+            var newItem = playlist[newIndex];
 
             if (newItem) {
 
@@ -940,7 +944,7 @@
         self.previousTrack = function () {
             var newIndex = currentPlaylistIndex - 1;
             if (newIndex >= 0) {
-                var newItem = self.playlist[newIndex];
+                var newItem = playlist[newIndex];
 
                 if (newItem) {
                     playInternal(newItem, 0, function () {
