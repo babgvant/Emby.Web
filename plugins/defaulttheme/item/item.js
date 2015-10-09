@@ -172,14 +172,6 @@
                     tag: item.ImageTags.Primary
                 });
             }
-            else if (item.BackdropImageTags && item.BackdropImageTags.length) {
-
-                url = apiClient.getScaledImageUrl(item.Id, {
-                    type: "Backdrop",
-                    width: imageWidth,
-                    tag: item.BackdropImageTags[0]
-                });
-            }
             else if (imageTags.Thumb) {
 
                 url = apiClient.getScaledImageUrl(item.Id, {
@@ -202,6 +194,14 @@
                     type: "Primary",
                     width: imageWidth,
                     tag: item.AlbumPrimaryImageTag
+                });
+            }
+            else if (item.BackdropImageTags && item.BackdropImageTags.length) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Backdrop",
+                    width: imageWidth,
+                    tag: item.BackdropImageTags[0]
                 });
             }
 

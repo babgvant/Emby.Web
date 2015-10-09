@@ -320,9 +320,9 @@ define([], function () {
             Events.off(Emby.PlaybackManager, 'playbackstop', onPlaybackStop);
         }
 
-        function onPlaybackStart(e) {
+        function onPlaybackStart(e, player) {
 
-            if (Emby.PlaybackManager.currentItem().MediaType == 'Audio') {
+            if (Emby.PlaybackManager.currentItem(player).MediaType == 'Audio') {
                 document.querySelector('.audioPlayerButtonContainer').classList.remove('hide');
             } else {
                 document.querySelector('.audioPlayerButtonContainer').classList.add('hide');

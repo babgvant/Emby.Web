@@ -57,7 +57,7 @@
         function onPlaybackStart(e, player) {
 
             bindToPlayer(player);
-            setCurrentItem(Emby.PlaybackManager.currentItem());
+            setCurrentItem(Emby.PlaybackManager.currentItem(player));
         }
 
         function onPlaybackStop(e, player) {
@@ -72,7 +72,7 @@
                 releasePlayer();
 
                 Events.on(player, 'volumechange', onVolumeChange);
-                Events.on(player, 'playbackprogress', onTimeUpdate);
+                Events.on(player, 'timeupdate', onTimeUpdate);
                 Events.on(player, 'pause', onPlaystateChange);
                 Events.on(player, 'playing', onPlaystateChange);
             }
@@ -89,7 +89,7 @@
 
             if (player) {
                 Events.off(player, 'volumechange', onVolumeChange);
-                Events.off(player, 'playbackprogress', onTimeUpdate);
+                Events.off(player, 'timeupdate', onTimeUpdate);
                 Events.off(player, 'pause', onPlaystateChange);
                 Events.off(player, 'playing', onPlaystateChange);
                 currentPlayer = null;
@@ -202,7 +202,7 @@
 
         nowPlayingPositionSlider.addEventListener('change', function () {
 
-            Emby.PlaybackManager.seekPercent(parseFloat(this.value));
+            Emby.PlaybackManager.seekPercent(parseFloat(this.value), currentPlayer);
         });
 
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {

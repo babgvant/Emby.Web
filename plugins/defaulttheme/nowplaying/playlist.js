@@ -22,7 +22,7 @@
 
         function onPlaybackStart(e, player) {
 
-            setCurrentItem(Emby.PlaybackManager.currentItem());
+            setCurrentItem(Emby.PlaybackManager.currentItem(player));
         }
 
         function onPlaybackStop(e, player) {
