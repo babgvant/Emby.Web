@@ -7,15 +7,15 @@
         var lastBitrateDetect = 0;
         var currentPlayer;
         var currentItem;
-        var currentMediaSource;
         var repeatMode = 'RepeatNone';
         var playlist = [];
         var currentPlaylistIndex;
-        var currentStreamInfo;
-        var currentSubtitleStreamIndex = null;
+        var playNextAfterEnded = true;
+        var playerStates = {};
 
-        self.currentItem = function () {
-            return currentItem;
+        self.currentItem = function (player) {
+            var data = getPlayerState(player);
+            return data.streamInfo ? data.streamInfo.item : null;
         };
 
         self.playlist = function () {
@@ -120,6 +120,7 @@
 
         self.stop = function () {
             if (currentPlayer) {
+                playNextAfterEnded = false;
                 currentPlayer.stop();
             }
         };
@@ -209,6 +210,9 @@
 
             require(['connectionManager'], function (connectionManager) {
 
+                var playerData = getPlayerState(mediaRenderer);
+                var currentItem = playerData.streamInfo.item;
+                var currentMediaSource = playerData.streamInfo.mediaSource;
                 var apiClient = connectionManager.getApiClient(currentItem.ServerId);
 
                 getPlaybackInfo(apiClient, currentItem.Id, deviceProfile, ticks, currentMediaSource, audioStreamIndex, subtitleStreamIndex, liveStreamId).then(function (result) {
@@ -220,11 +224,11 @@
 
                             if (!streamInfo.url) {
                                 showPlaybackInfoErrorMessage('NoCompatibleStream');
-                                self.stop();
+                                self.nextTrack();
                                 return;
                             }
 
-                            currentSubtitleStreamIndex = subtitleStreamIndex;
+                            getPlayerState(mediaRenderer).currentSubtitleStreamIndex = subtitleStreamIndex;
 
                             changeStreamToUrl(apiClient, mediaRenderer, playSessionId, streamInfo);
                         });
@@ -236,38 +240,27 @@
 
         function changeStreamToUrl(apiClient, mediaRenderer, playSessionId, streamInfo, newPositionTicks) {
 
-            // TODO
-            //clearProgressInterval();
+            clearProgressInterval(mediaRenderer);
 
-            //Events.off(mediaRenderer, 'ended', self.onPlaybackStopped);
-            //Events.off(mediaRenderer, 'ended', self.playNextAfterEnded);
-
-            //$(mediaRenderer).one("play", function () {
-
-            //    Events.on(this, 'ended', self.onPlaybackStopped);
-
-            //    $(this).one('ended', self.playNextAfterEnded);
-
-            //    self.startProgressInterval();
-            //    sendProgressUpdate();
-
-            //});
+            getPlayerState(mediaRenderer).isChangingStream = true;
 
             if (currentItem.MediaType == "Video") {
                 apiClient.stopActiveEncodings(playSessionId).done(function () {
 
-                    setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, currentItem, currentMediaSource);
+                    setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo);
 
                 });
 
                 self.updateTextStreamUrls(newPositionTicks || 0);
             } else {
 
-                setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, currentItem, currentMediaSource);
+                setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo);
             }
         }
 
-        function setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, item, mediaSource) {
+        function setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo) {
+
+            var mediaSource = streamInfo.mediaSource;
 
             var subtitleStreams = mediaSource.MediaStreams.filter(function (s) {
                 return s.Type == 'Subtitle';
@@ -291,18 +284,18 @@
                 });
             }
 
-            streamInfo.item = item;
-            streamInfo.mediaSource = mediaSource;
-
             mediaRenderer.play(streamInfo);
 
-            currentStreamInfo = streamInfo;
+            getPlayerState(mediaRenderer).streamInfo = streamInfo;
         };
 
-        self.seekPercent = function (percent) {
+        self.seekPercent = function (percent, player) {
 
-            if (currentMediaSource) {
-                var ticks = currentMediaSource.RunTimeTicks || 0;
+            var data = getPlayerState(player).streamInfo;
+            var mediaSource = data.mediaSource;
+
+            if (mediaSource) {
+                var ticks = mediaSource.RunTimeTicks || 0;
 
                 percent /= 100;
                 ticks *= percent;
@@ -346,11 +339,26 @@
             });
         };
 
+        function getPlayerState(player) {
+            var state = playerStates[player.name];
+
+            if (!state) {
+                playerStates[player.name] = {};
+                state = playerStates[player.name];
+            }
+
+            return player;
+        }
+
         self.getPlayerState = function () {
-            return getPlayerStateInternal(currentPlayer, currentItem, currentMediaSource);
+            return getPlayerStateInternal(currentPlayer);
         };
 
-        function getPlayerStateInternal(mediaRenderer, item, mediaSource) {
+        function getPlayerStateInternal(mediaRenderer) {
+
+            var playerData = getPlayerState(mediaRenderer);
+            var item = playerData.streamInfo.item;
+            var mediaSource = playerData.streamInfo.mediaSource;
 
             var state = {
                 PlayState: {}
@@ -374,9 +382,9 @@
                         state.PlayState.AudioStreamIndex = parseInt(audioStreamIndex);
                     }
 
-                    state.PlayState.SubtitleStreamIndex = currentSubtitleStreamIndex;
+                    state.PlayState.SubtitleStreamIndex = playerData.currentSubtitleStreamIndex;
 
-                    state.PlayState.PlayMethod = currentStreamInfo.playMethod;
+                    state.PlayState.PlayMethod = playerData.streamInfo.playMethod;
 
                     state.PlayState.LiveStreamId = mediaSource.LiveStreamId;
                     state.PlayState.PlaySessionId = Emby.Page.param('PlaySessionId', currentSrc);
@@ -410,7 +418,7 @@
 
             var playerTime = Math.floor(10000 * (player || currentPlayer).currentTime());
 
-            playerTime += currentStreamInfo.transcodingOffsetTicks;
+            playerTime += getPlayerState(player).streamInfo.transcodingOffsetTicks;
 
             return playerTime;
         }
@@ -634,6 +642,7 @@
             }
 
             if (currentPlayer) {
+                playNextAfterEnded = false;
                 currentPlayer.stop(false);
             }
 
@@ -672,14 +681,15 @@
                 createStreamInfo(apiClient, item.MediaType, item, mediaSource, startPosition).then(function (streamInfo) {
 
                     currentItem = item;
-                    currentMediaSource = mediaSource;
 
                     streamInfo.item = item;
                     streamInfo.mediaSource = mediaSource;
 
+                    getPlayerState(player).isChangingStream = false;
+
                     player.play(streamInfo).then(callback);
                     currentPlayer = player;
-                    currentStreamInfo = streamInfo;
+                    getPlayerState(player).streamInfo = streamInfo;
                 });
             });
         }
@@ -793,7 +803,9 @@
                     mimeType: contentType,
                     transcodingOffsetTicks: transcodingOffsetTicks,
                     playMethod: playMethod,
-                    playerStartPositionTicks: playerStartPositionTicks
+                    playerStartPositionTicks: playerStartPositionTicks,
+                    item: item,
+                    mediaSource: mediaSource
                 };
 
                 resolve(resultInfo);
@@ -1111,6 +1123,7 @@
             }
 
             if (currentPlayer) {
+                // TODO
                 //currentPlayer.queue(options);
             } else {
                 self.play(options);
@@ -1124,6 +1137,7 @@
             }
 
             if (currentPlayer) {
+                // TODO
                 //currentPlayer.queueNext(options);
             } else {
                 self.play(options);
@@ -1131,20 +1145,110 @@
         };
 
         function onPlaybackStart() {
-            Events.trigger(self, 'playbackstart', [this]);
+
+            var player = this;
+
+            if (getPlayerState(player).isChangingStream) {
+
+                getPlayerState(player).isChangingStream = false;
+
+                startProgressInterval(player);
+                sendProgressUpdate(player);
+                return;
+            }
+
+            playNextAfterEnded = true;
+
+            var state = getPlayerStateInternal(player);
+
+            reportPlayback(state, currentItem.ServerId, 'reportPlaybackStart');
+
+            startProgressInterval(player);
+
+            Events.trigger(self, 'playbackstart', [player]);
         }
 
         function onPlaybackStop() {
-            Events.trigger(self, 'playbackstop', [this]);
+
+            var player = this;
+
+            if (getPlayerState(player).isChangingStream) {
+                return;
+            }
+
+            var state = getPlayerStateInternal(player);
+            reportPlayback(state, currentItem.ServerId, 'reportPlaybackProgress');
+
+            clearProgressInterval(player);
+
+            Events.trigger(self, 'playbackstop', [player]);
+
+            if (playNextAfterEnded) {
+                self.nextTrack();
+            }
         }
 
         Events.on(Emby.PluginManager, 'registered', function (e, plugin) {
 
             if (plugin.type == 'mediaplayer') {
-                Events.on(plugin, 'playbackstart', onPlaybackStart);
-                Events.on(plugin, 'playbackstop', onPlaybackStop);
+
+                plugin.currentState = {};
+
+                Events.on(plugin, 'started', onPlaybackStart);
+                Events.on(plugin, 'stopped', onPlaybackStop);
             }
         });
+
+        function startProgressInterval(player) {
+
+            clearProgressInterval(player);
+
+            var intervalTime = 1200;
+            player.lastProgressReport = 0;
+
+            getPlayerState(player).currentProgressInterval = setInterval(function () {
+
+                if ((new Date().getTime() - player.lastProgressReport) > intervalTime) {
+
+                    sendProgressUpdate(player);
+                }
+
+            }, 250);
+        }
+
+        function sendProgressUpdate(player) {
+
+            player.lastProgressReport = new Date().getTime();
+
+            var state = getPlayerStateInternal(player);
+            reportPlayback(state, currentItem.ServerId, 'reportPlaybackProgress');
+        }
+
+        function reportPlayback(state, serverId, method) {
+
+            var info = {
+                QueueableMediaTypes: state.NowPlayingItem.MediaType,
+                ItemId: state.NowPlayingItem.Id,
+                NowPlayingItem: state.NowPlayingItem
+            };
+
+            for (var i in state.PlayState) {
+                info[i] = state.PlayState[i];
+            }
+
+            require(['connectionManager'], function (connectionManager) {
+                var apiClient = connectionManager.getApiClient(serverId);
+                apiClient[method](info);
+            });
+        }
+
+        function clearProgressInterval(player) {
+
+            if (getPlayerState(player).currentProgressInterval) {
+                clearTimeout(getPlayerState(player).currentProgressInterval);
+                getPlayerState(player).currentProgressInterval = null;
+            }
+        }
     }
 
     if (!globalScope.Emby) {

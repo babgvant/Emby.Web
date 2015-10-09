@@ -90,38 +90,17 @@
 
     function setTitle(item) {
 
-        require(['connectionManager'], function (connectionManager) {
+        var url = Emby.Models.logoImageUrl(item, {});
 
-            var apiClient = connectionManager.getApiClient(item.ServerId);
+        if (url) {
 
-            var imageTags = item.ImageTags || {};
-            var url;
-
-            if (imageTags.Logo) {
-
-                url = apiClient.getScaledImageUrl(item.Id, {
-                    type: "Logo",
-                    tag: item.ImageTags.Logo
-                });
-            }
-            else if (item.ParentLogoImageTag) {
-
-                url = apiClient.getScaledImageUrl(item.ParentLogoItemId, {
-                    type: "Logo",
-                    tag: item.ParentLogoImageTag
-                });
-            }
-
-            if (url) {
-
-                var pageTitle = document.querySelector('.pageTitle');
-                pageTitle.style.backgroundImage = "url('" + url + "')";
-                pageTitle.classList.add('pageTitleWithLogo');
-                pageTitle.innerHTML = '';
-            } else {
-                Emby.Page.setTitle('');
-            }
-        });
+            var pageTitle = document.querySelector('.pageTitle');
+            pageTitle.style.backgroundImage = "url('" + url + "')";
+            pageTitle.classList.add('pageTitleWithLogo');
+            pageTitle.innerHTML = '';
+        } else {
+            Emby.Page.setTitle('');
+        }
     }
 
     function createVerticalScroller(view, pageInstance) {
@@ -193,14 +172,6 @@
                     tag: item.ImageTags.Primary
                 });
             }
-            else if (item.BackdropImageTags && item.BackdropImageTags.length) {
-
-                url = apiClient.getScaledImageUrl(item.Id, {
-                    type: "Backdrop",
-                    width: imageWidth,
-                    tag: item.BackdropImageTags[0]
-                });
-            }
             else if (imageTags.Thumb) {
 
                 url = apiClient.getScaledImageUrl(item.Id, {
@@ -223,6 +194,14 @@
                     type: "Primary",
                     width: imageWidth,
                     tag: item.AlbumPrimaryImageTag
+                });
+            }
+            else if (item.BackdropImageTags && item.BackdropImageTags.length) {
+
+                url = apiClient.getScaledImageUrl(item.Id, {
+                    type: "Backdrop",
+                    width: imageWidth,
+                    tag: item.BackdropImageTags[0]
                 });
             }
 

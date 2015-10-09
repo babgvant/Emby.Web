@@ -304,6 +304,7 @@ define([], function () {
         self.stop = function () {
             if (mediaElement) {
                 mediaElement.pause();
+                onEnded();
             }
         };
 
@@ -356,12 +357,12 @@ define([], function () {
         };
 
         function onEnded() {
-            Events.trigger(self, 'playbackstop');
+            Events.trigger(self, 'stopped');
         }
 
         function onTimeUpdate() {
 
-            Events.trigger(self, 'playbackprogress');
+            Events.trigger(self, 'timeupdate');
         }
 
         function onVolumeChange() {
@@ -372,10 +373,9 @@ define([], function () {
 
             if (!started) {
                 started = true;
-                Events.trigger(self, 'playbackstart');
-            } else {
-                Events.trigger(self, 'playing');
+                Events.trigger(self, 'started');
             }
+            Events.trigger(self, 'playing');
         }
 
         function onPause() {
