@@ -290,16 +290,18 @@
 
                 options = options || {};
 
-                if (item.Type == "Series") {
+                if (!options.SortBy) {
+                    if (item.Type == "Series") {
 
-                }
-                else if (item.Type == "Season") {
+                    }
+                    else if (item.Type == "Season") {
 
-                }
-                else if (item.Type == "MusicAlbum") {
+                    }
+                    else if (item.Type == "MusicAlbum") {
 
+                    }
+                    options.SortBy = "SortName";
                 }
-                options.SortBy = "DatePlayed";
 
                 normalizeOptions(options);
 

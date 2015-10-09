@@ -170,6 +170,10 @@ paper-item-body [secondary] {
     color: #999 !important;
 }
 
+.selectedItemSecondaryInfo {
+    color: #ccc !important;
+}
+
 .paperIconItemMediaInfo {
     color: #bbb !important;
 }

@@ -185,7 +185,8 @@ define([], function () {
                 id: 'defaulttheme-nowplayingplaylist',
                 transition: 'fade',
                 dependencies: [
-                    Emby.PluginManager.mapRequire(self, 'nowplaying/playlist.js')
+                    Emby.PluginManager.mapRequire(self, 'nowplaying/playlist.js'),
+                    'css!' + Emby.PluginManager.mapRequire(self, 'item/item.css')
                 ]
             });
 

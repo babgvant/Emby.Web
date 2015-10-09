@@ -174,10 +174,16 @@
                 html += item.Name;
                 html += '</div>';
 
+                if (item.AlbumArtist) {
+                    html += '<div class="selectedItemSecondaryInfo">';
+                    html += item.AlbumArtist;
+                    html += '</div>';
+                }
+
                 var mediaInfo = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
 
                 if (mediaInfo) {
-                    html += '<div>';
+                    html += '<div class="selectedItemSecondaryInfo">';
                     html += mediaInfo;
                     html += '</div>';
                 }

@@ -1,10 +1,16 @@
 (function (globalScope, document) {
 
-    function autoFocus(view) {
+    function autoFocus(view, defaultToFirst) {
 
         var element = view.querySelector('*[autofocus]');
         if (element) {
             focus(element);
+        } else if (defaultToFirst) {
+            element = getFocusableElements(view)[0];
+
+            if (element) {
+                focus(element);
+            }
         }
     }
 

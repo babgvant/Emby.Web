@@ -601,6 +601,18 @@
     margin: 1em 0;
 }
 
+.playlistPageContainer {
+    display: block;
+    width: 80%;
+    margin: 1em auto 0;
+    bottom: 0;
+}
+
+.playlistIndexIndicatorImage {
+    background-size: initial !important;
+    background-image: url(images/equalizer_white.gif) !important;
+}
+
 .repeatActive {
     color: #52B54B;
 }
