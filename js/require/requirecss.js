@@ -52,7 +52,7 @@ define(function () {
 
             link.setAttribute('rel', 'stylesheet');
             link.setAttribute('type', 'text/css');
-            link.setAttribute('href', url);
+            link.setAttribute('href', url + "?" + config.urlArgs);
             document.head.appendChild(link);
         }
 
