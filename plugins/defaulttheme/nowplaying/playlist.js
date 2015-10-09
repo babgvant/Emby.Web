@@ -17,6 +17,7 @@
             } else {
                 Emby.Backdrop.clear();
             }
+            updateCurrentPlaylistItem();
         }
 
         function onPlaybackStart(e, player) {
@@ -39,6 +40,29 @@
             });
 
             Emby.ImageLoader.lazyChildren(section);
+
+            Emby.FocusManager.autoFocus(section, true);
+            updateCurrentPlaylistItem();
+        }
+
+        function updateCurrentPlaylistItem() {
+
+            var index = Emby.PlaybackManager.currentPlaylistIndex();
+
+            var current = view.querySelector('.playlistIndexIndicatorImage');
+            if (current) {
+                current.classList.remove('playlistIndexIndicatorImage');
+            }
+
+            if (index != -1) {
+
+                var item = view.querySelectorAll('.trackList .itemAction')[index];
+                if (item) {
+                    var img = item.querySelector('.paperIconItemImage');
+
+                    img.classList.add('playlistIndexIndicatorImage');
+                }
+            }
         }
 
         view.addEventListener('viewshow', function (e) {

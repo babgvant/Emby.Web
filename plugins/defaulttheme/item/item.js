@@ -40,7 +40,14 @@
                         renderSimilar(view, item);
                         createVerticalScroller(view, self);
 
-                        focusMainSection.call(view.querySelector('.mainSection'));
+                        var mainSection = view.querySelector('.mainSection');
+
+                        if (enableTrackList(item)) {
+                            mainSection.classList.remove('focusable');
+                        } else {
+                            mainSection.classList.add('focusable');
+                        }
+                        focusMainSection.call(mainSection);
                     }
 
                     // Always refresh this
@@ -78,11 +85,7 @@
 
     function focusMainSection() {
 
-        var elems = Emby.FocusManager.getFocusableElements(this);
-
-        if (elems.length) {
-            Emby.FocusManager.focus(elems[0]);
-        }
+        Emby.FocusManager.autoFocus(this, true);
     }
 
     function setTitle(item) {
@@ -235,9 +238,13 @@
         });
     }
 
+    function enableTrackList(item) {
+        return item.Type == "MusicAlbum" || item.Type == "Playlist";
+    }
+
     function renderDetails(view, item) {
 
-        if (item.Type == "Season" || item.Type == "MusicAlbum" || item.Type == "MusicArtist" || item.Type == "Playlist") {
+        if (item.Type == "Season" || item.Type == "MusicArtist" || enableTrackList(item)) {
             view.querySelector('.mainSection').classList.add('miniMainSection');
         } else {
             view.querySelector('.mainSection').classList.remove('miniMainSection');
@@ -271,7 +278,7 @@
             mediaInfoElem.classList.add('hide');
             sideMediaInfoElem.classList.add('hide');
         }
-        else if (item.Type == 'MusicAlbum' || item.Type == 'Playlist') {
+        else if (enableTrackList(item)) {
             mediaInfoElem.classList.add('hide');
             sideMediaInfoElem.innerHTML = mediaInfoHtml;
             sideMediaInfoElem.classList.remove('hide');
@@ -294,7 +301,7 @@
             genresElem.classList.add('hide');
             sideGenresElem.classList.add('hide');
         }
-        else if (item.Type == 'MusicAlbum' || item.Type == 'Playlist') {
+        else if (enableTrackList(item)) {
             genresElem.classList.add('hide');
             sideGenresElem.innerHTML = genresHtml;
             sideGenresElem.classList.remove('hide');
@@ -336,7 +343,7 @@
 
         var section = view.querySelector('.trackList');
 
-        if (item.Type != 'Playlist' && item.Type != 'MusicAlbum') {
+        if (!enableTrackList(item)) {
             section.classList.add('hide');
             return;
         }
@@ -346,7 +353,11 @@
             return;
         }
 
-        Emby.Models.children(item, {}).then(function (result) {
+        Emby.Models.children(item, {
+
+            SortBy: 'SortName'
+
+        }).then(function (result) {
 
             if (!result.Items.length) {
                 section.classList.add('hide');
@@ -371,7 +382,7 @@
         var section = view.querySelector('.childrenSection');
 
         if (item.Type != 'MusicArtist') {
-            if (!item.ChildCount || item.Type == 'Playlist' || item.Type == 'MusicAlbum') {
+            if (!item.ChildCount || enableTrackList(item)) {
                 section.classList.add('hide');
                 return;
             }
