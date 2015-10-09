@@ -1,6 +1,6 @@
 (function (globalScope) {
 
-    function loadLatest(element, parentId, apiClient) {
+    function loadLatest(element, parentId) {
 
         var options = {
 
@@ -12,7 +12,7 @@
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getJSON(apiClient.getUrl('Users/' + apiClient.getCurrentUserId() + '/Items/Latest', options)).done(function (result) {
+        Emby.Models.latestItems(options).then(function (result) {
 
             var section = element.querySelector('.latestSection');
 
@@ -25,7 +25,7 @@
         });
     }
 
-    function loadPlaylists(element, parentId, apiClient) {
+    function loadPlaylists(element, parentId) {
 
         var options = {
 
@@ -39,7 +39,7 @@
             Limit: 9
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.playlists(options).then(function (result) {
 
             var section = element.querySelector('.playlistsSection');
 
@@ -68,7 +68,7 @@
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.items(options).then(function (result) {
 
             var section = element.querySelector('.recentlyPlayedSection');
 
@@ -82,7 +82,7 @@
         });
     }
 
-    function loadFrequentlyPlayed(element, parentId, apiClient) {
+    function loadFrequentlyPlayed(element, parentId) {
 
         var options = {
 
@@ -98,7 +98,7 @@
             EnableImageTypes: "Primary,Backdrop,Thumb"
         };
 
-        apiClient.getItems(apiClient.getCurrentUserId(), options).done(function (result) {
+        Emby.Models.items(options).then(function (result) {
 
             var section = element.querySelector('.frequentlyPlayedSection');
 
@@ -120,15 +120,10 @@
     function view(element, parentId) {
         var self = this;
 
-        require(['connectionManager'], function (connectionManager) {
-
-            var apiClient = connectionManager.currentApiClient();
-
-            loadLatest(element, parentId, apiClient);
-            loadPlaylists(element, parentId, apiClient);
-            loadRecentlyPlayed(element, parentId, apiClient);
-            loadFrequentlyPlayed(element, parentId, apiClient);
-        });
+        loadLatest(element, parentId);
+        loadPlaylists(element, parentId);
+        loadRecentlyPlayed(element, parentId);
+        loadFrequentlyPlayed(element, parentId);
 
         element.querySelector('.artistsCard').addEventListener('click', function () {
             gotoMusicView('albumartists', parentId);
