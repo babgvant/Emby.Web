@@ -52,7 +52,7 @@
         });
     }
 
-    function loadRecentlyPlayed(element, parentId, apiClient) {
+    function loadRecentlyPlayed(element, parentId) {
 
         var options = {
 
