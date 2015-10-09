@@ -258,6 +258,10 @@ define([], function () {
 
         };
 
+        self.currentSrc = function () {
+            return currentSrc;
+        };
+
         self.play = function (streamInfo) {
 
             started = false;
@@ -335,7 +339,7 @@ define([], function () {
             }
         };
 
-        self.setMute = function(mute) {
+        self.setMute = function (mute) {
 
             if (mute) {
                 self.volume(0);
@@ -347,7 +351,7 @@ define([], function () {
             }
         };
 
-        self.isMuted = function() {
+        self.isMuted = function () {
             return self.volume() == 0;
         };
 

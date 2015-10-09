@@ -367,7 +367,7 @@
             section.classList.remove('hide');
 
             section.innerHTML = DefaultTheme.CardBuilder.getListViewHtml(result.Items, {
-                showIndexNumber: true,
+                showIndexNumber: item.Type == 'MusicAlbum',
                 action: 'playallfromhere'
             });
 

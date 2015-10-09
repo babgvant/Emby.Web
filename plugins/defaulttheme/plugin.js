@@ -165,7 +165,7 @@ define([], function () {
             routes.push({
                 path: Emby.PluginManager.mapPath(self, 'search/search.html'),
                 id: 'defaulttheme-search',
-                transition: 'fade',
+                transition: 'slide',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'search/search.js')
                 ]
@@ -174,7 +174,7 @@ define([], function () {
             routes.push({
                 path: Emby.PluginManager.mapPath(self, 'nowplaying/nowplaying.html'),
                 id: 'defaulttheme-nowplaying',
-                transition: 'fade',
+                transition: 'slide',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'nowplaying/nowplaying.js')
                 ]
@@ -183,7 +183,7 @@ define([], function () {
             routes.push({
                 path: Emby.PluginManager.mapPath(self, 'nowplaying/playlist.html'),
                 id: 'defaulttheme-nowplayingplaylist',
-                transition: 'fade',
+                transition: 'slide',
                 dependencies: [
                     Emby.PluginManager.mapRequire(self, 'nowplaying/playlist.js'),
                     'css!' + Emby.PluginManager.mapRequire(self, 'item/item.css')

@@ -3,13 +3,16 @@
     function playbackManager() {
 
         var self = this;
+
         var lastBitrateDetect = 0;
         var currentPlayer;
         var currentItem;
         var currentMediaSource;
         var repeatMode = 'RepeatNone';
-        self.playlist = [];
+        var playlist = [];
         var currentPlaylistIndex;
+        var currentStreamInfo;
+        var currentSubtitleStreamIndex = null;
 
         self.currentItem = function () {
             return currentItem;
@@ -158,9 +161,142 @@
         };
 
         self.seek = function (ticks) {
-            if (currentPlayer) {
-                currentPlayer.currentTime(ticks / 10000);
+            changeStream(ticks);
+        };
+
+        // Returns true if the player can seek using native client-side seeking functions
+        function canPlayerSeek() {
+
+            var mediaRenderer = self.currentPlayer();
+            var currentSrc = mediaRenderer.currentSrc();
+
+            if ((currentSrc || '').indexOf('.m3u8') != -1) {
+                return true;
+            } else {
+                var duration = mediaRenderer.duration();
+                return duration && !isNaN(duration) && duration != Number.POSITIVE_INFINITY && duration != Number.NEGATIVE_INFINITY;
             }
+        }
+
+        function changeStream(ticks, params) {
+
+            var mediaRenderer = self.currentPlayer();
+
+            if (canPlayerSeek() && params == null) {
+
+                mediaRenderer.currentTime(ticks / 10000);
+                return;
+            }
+
+            params = params || {};
+
+            var currentSrc = mediaRenderer.currentSrc();
+
+            var playSessionId = Emby.Page.param('PlaySessionId', currentSrc);
+            var liveStreamId = Emby.Page.param('LiveStreamId', currentSrc);
+
+            var deviceProfile = mediaRenderer.getDeviceProfile();
+
+            var audioStreamIndex = params.AudioStreamIndex == null ? (Emby.Page.param('AudioStreamIndex', currentSrc) || null) : params.AudioStreamIndex;
+            if (typeof (audioStreamIndex) == 'string') {
+                audioStreamIndex = parseInt(audioStreamIndex);
+            }
+
+            var subtitleStreamIndex = params.SubtitleStreamIndex == null ? (Emby.Page.param('SubtitleStreamIndex', currentSrc) || null) : params.SubtitleStreamIndex;
+            if (typeof (subtitleStreamIndex) == 'string') {
+                subtitleStreamIndex = parseInt(subtitleStreamIndex);
+            }
+
+            require(['connectionManager'], function (connectionManager) {
+
+                var apiClient = connectionManager.getApiClient(currentItem.ServerId);
+
+                getPlaybackInfo(apiClient, currentItem.Id, deviceProfile, ticks, currentMediaSource, audioStreamIndex, subtitleStreamIndex, liveStreamId).then(function (result) {
+
+                    if (validatePlaybackInfoResult(result)) {
+
+                        currentMediaSource = result.MediaSources[0];
+                        createStreamInfo(apiClient, currentItem.MediaType, currentItem, currentMediaSource, ticks).then(function (streamInfo) {
+
+                            if (!streamInfo.url) {
+                                showPlaybackInfoErrorMessage('NoCompatibleStream');
+                                self.stop();
+                                return;
+                            }
+
+                            currentSubtitleStreamIndex = subtitleStreamIndex;
+
+                            changeStreamToUrl(apiClient, mediaRenderer, playSessionId, streamInfo);
+                        });
+                    }
+                });
+
+            });
+        };
+
+        function changeStreamToUrl(apiClient, mediaRenderer, playSessionId, streamInfo, newPositionTicks) {
+
+            // TODO
+            //clearProgressInterval();
+
+            //Events.off(mediaRenderer, 'ended', self.onPlaybackStopped);
+            //Events.off(mediaRenderer, 'ended', self.playNextAfterEnded);
+
+            //$(mediaRenderer).one("play", function () {
+
+            //    Events.on(this, 'ended', self.onPlaybackStopped);
+
+            //    $(this).one('ended', self.playNextAfterEnded);
+
+            //    self.startProgressInterval();
+            //    sendProgressUpdate();
+
+            //});
+
+            if (currentItem.MediaType == "Video") {
+                apiClient.stopActiveEncodings(playSessionId).done(function () {
+
+                    setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, currentItem, currentMediaSource);
+
+                });
+
+                self.updateTextStreamUrls(newPositionTicks || 0);
+            } else {
+
+                setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, currentItem, currentMediaSource);
+            }
+        }
+
+        function setSrcIntoRenderer(apiClient, mediaRenderer, streamInfo, item, mediaSource) {
+
+            var subtitleStreams = mediaSource.MediaStreams.filter(function (s) {
+                return s.Type == 'Subtitle';
+            });
+
+            var textStreams = subtitleStreams.filter(function (s) {
+                return s.DeliveryMethod == 'External';
+            });
+
+            var tracks = [];
+
+            for (var i = 0, length = textStreams.length; i < length; i++) {
+
+                var textStream = textStreams[i];
+                var textStreamUrl = !textStream.IsExternalUrl ? apiClient.getUrl(textStream.DeliveryUrl) : textStream.DeliveryUrl;
+
+                tracks.push({
+                    url: textStreamUrl,
+                    language: (textStream.Language || 'und'),
+                    isDefault: textStream.Index == mediaSource.DefaultSubtitleStreamIndex
+                });
+            }
+
+            streamInfo.item = item;
+            streamInfo.mediaSource = mediaSource;
+
+            mediaRenderer.play(streamInfo);
+
+            currentStreamInfo = streamInfo;
         };
 
         self.seekPercent = function (percent) {
@@ -228,22 +364,23 @@
                 state.PlayState.PositionTicks = getCurrentTicks(mediaRenderer);
                 state.PlayState.RepeatMode = self.getRepeatMode();
 
-                //var currentSrc = mediaRenderer.currentSrc();
+                var currentSrc = mediaRenderer.currentSrc();
 
-                //if (currentSrc) {
+                if (currentSrc) {
 
-                //    var audioStreamIndex = getParameterByName('AudioStreamIndex', currentSrc);
+                    var audioStreamIndex = Emby.Page.param('AudioStreamIndex', currentSrc);
 
-                //    if (audioStreamIndex) {
-                //        state.PlayState.AudioStreamIndex = parseInt(audioStreamIndex);
-                //    }
-                //    state.PlayState.SubtitleStreamIndex = self.currentSubtitleStreamIndex;
+                    if (audioStreamIndex) {
+                        state.PlayState.AudioStreamIndex = parseInt(audioStreamIndex);
+                    }
 
-                //    state.PlayState.PlayMethod = self.streamInfo.playMethod;
+                    state.PlayState.SubtitleStreamIndex = currentSubtitleStreamIndex;
 
-                //    state.PlayState.LiveStreamId = mediaSource.LiveStreamId;
-                //    state.PlayState.PlaySessionId = getParameterByName('PlaySessionId', currentSrc);
-                //}
+                    state.PlayState.PlayMethod = currentStreamInfo.playMethod;
+
+                    state.PlayState.LiveStreamId = mediaSource.LiveStreamId;
+                    state.PlayState.PlaySessionId = Emby.Page.param('PlaySessionId', currentSrc);
+                }
             }
 
             if (mediaSource) {
@@ -254,7 +391,7 @@
                     RunTimeTicks: mediaSource.RunTimeTicks
                 };
 
-                state.PlayState.CanSeek = (mediaSource.RunTimeTicks || 0) > 0 /*|| canPlayerSeek()*/;
+                state.PlayState.CanSeek = (mediaSource.RunTimeTicks || 0) > 0 || canPlayerSeek();
             }
 
             if (item) {
@@ -265,14 +402,18 @@
             return state;
         }
 
+        self.currentTime = function (player) {
+            return getCurrentTicks(player);
+        };
+
         function getCurrentTicks(player) {
 
             var playerTime = Math.floor(10000 * (player || currentPlayer).currentTime());
 
-            //playerTime += self.startTimeTicksOffset;
+            playerTime += currentStreamInfo.transcodingOffsetTicks;
 
             return playerTime;
-        };
+        }
 
         function getNowPlayingItemForReporting(item, mediaSource) {
 
@@ -292,7 +433,7 @@
             nowPlayingItem.PremiereDate = item.PremiereDate;
             nowPlayingItem.SeriesName = item.SeriesName;
             nowPlayingItem.Album = item.Album;
-            nowPlayingItem.Artists = item.Artists;
+            nowPlayingItem.Artists = item.ArtistItems;
 
             var imageTags = item.ImageTags || {};
 
@@ -538,7 +679,7 @@
 
                     player.play(streamInfo).then(callback);
                     currentPlayer = player;
-
+                    currentStreamInfo = streamInfo;
                 });
             });
         }
@@ -849,6 +990,15 @@
             }
 
             return true;
+        }
+
+        function showPlaybackInfoErrorMessage(errorCode) {
+
+            Dashboard.alert({
+                text: Globalize.translate('MessagePlaybackError' + errorCode),
+                title: Globalize.translate('HeaderPlaybackError')
+            });
+
         }
 
         function getPlayer(item) {
