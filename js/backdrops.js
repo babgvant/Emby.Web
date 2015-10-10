@@ -45,7 +45,7 @@
         setTimeout(function () {
 
             backdropImage.classList.remove('hide');
-            if (existingBackdropImage) {
+            if (existingBackdropImage && existingBackdropImage.parentNode) {
                 existingBackdropImage.parentNode.removeChild(existingBackdropImage);
             }
             fadeIn(backdropImage, 1);
@@ -59,7 +59,7 @@
         var keyframes = [
           { opacity: '0', offset: 0 },
           { opacity: '1', offset: 1 }];
-        var timing = { duration: 600, iterations: iterations };
+        var timing = { duration: 500, iterations: iterations };
         return elem.animate(keyframes, timing);
     }
 
