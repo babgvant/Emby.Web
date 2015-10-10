@@ -24,7 +24,6 @@
                 itemPromise.then(function (item) {
 
                     Emby.Page.setTitle(item.Name);
-                    Emby.Backdrop.setBackdrops([item]);
                 });
             });
         });
@@ -38,6 +37,7 @@
                 self.tabbedPage.destroy();
             }
         });
+
         function renderTabs(view, initialTabId, pageInstance, params) {
 
             var tabs = [

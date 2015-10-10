@@ -170,6 +170,9 @@
             var html = '';
 
             if (item) {
+
+                Emby.Backdrop.setBackdrops([item]);
+
                 html += '<div>';
                 html += item.Name;
                 html += '</div>';

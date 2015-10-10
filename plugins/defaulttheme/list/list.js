@@ -23,7 +23,6 @@
                 Emby.Models.item(params.parentid).then(function (item) {
 
                     Emby.Page.setTitle(item.Name);
-                    Emby.Backdrop.setBackdrops([item]);
 
                     if (!isRestored) {
                         createHorizontalScroller(self, view, item, loading);

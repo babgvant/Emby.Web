@@ -2,6 +2,8 @@
 
     function clearBackdrop() {
 
+        removeBackdropImage();
+
         var elem = document.querySelector('.backdropContainer');
         elem.classList.add('hide');
         elem.style.backgroundImage = '';
@@ -12,13 +14,53 @@
         return Math.floor(Math.random() * (max - min) + min);
     }
 
+    function removeBackdropImage() {
+
+        var elem = document.querySelector('.backdropImage');
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+    }
+
     function setBackdropImage(url) {
+
+        var existingBackdropImage = document.querySelector('.backdropImage');
+
+        if (existingBackdropImage && existingBackdropImage.getAttribute('data-url') == url) {
+            return;
+        }
 
         var elem = document.querySelector('.backdropContainer');
         elem.classList.remove('hide');
-        elem.style.backgroundImage = "url('" + url + "')";
+
+        var backdropImage = document.createElement('div');
+        backdropImage.classList.add('backdropImage');
+        backdropImage.style.backgroundImage = "url('" + url + "')";
+        backdropImage.setAttribute('data-url', url);
+
+        backdropImage.classList.add('hide');
+
+        elem.appendChild(backdropImage);
+
+        setTimeout(function () {
+
+            backdropImage.classList.remove('hide');
+            if (existingBackdropImage) {
+                existingBackdropImage.parentNode.removeChild(existingBackdropImage);
+            }
+            fadeIn(backdropImage, 1);
+
+        }, 100);
 
         document.querySelector('.themeContainer').classList.add('withBackdrop');
+    }
+
+    function fadeIn(elem, iterations) {
+        var keyframes = [
+          { opacity: '0', offset: 0 },
+          { opacity: '1', offset: 1 }];
+        var timing = { duration: 600, iterations: iterations };
+        return elem.animate(keyframes, timing);
     }
 
     function setBackdrops(items) {
@@ -58,8 +100,9 @@
                 var imgUrl = apiClient.getScaledImageUrl(item.id, {
                     type: "Backdrop",
                     tag: item.tag,
-                    maxWidth: screenWidth,
-                    quality: 90
+                    //maxWidth: screenWidth,
+                    quality: 100,
+                    format: 'jpg'
                 });
 
                 setBackdropImage(imgUrl);
