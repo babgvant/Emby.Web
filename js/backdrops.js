@@ -1,12 +1,18 @@
 ﻿(function (globalScope) {
 
+    var backdropContainer;
+    function getBackdropContainer() {
+
+        if (!backdropContainer) {
+            backdropContainer = document.querySelector('.backdropContainer');
+        }
+        return backdropContainer;
+    }
+
     function clearBackdrop() {
 
-        removeBackdropImage();
-
-        var elem = document.querySelector('.backdropContainer');
-        elem.classList.add('hide');
-        elem.style.backgroundImage = '';
+        var elem = getBackdropContainer();
+        elem.innerHTML = '';
         document.querySelector('.themeContainer').classList.remove('withBackdrop');
     }
 
@@ -14,27 +20,21 @@
         return Math.floor(Math.random() * (max - min) + min);
     }
 
-    function removeBackdropImage() {
-
-        var elem = document.querySelector('.backdropImage');
-        if (elem) {
-            elem.parentNode.removeChild(elem);
-        }
-    }
-
     function setBackdropImage(url) {
 
-        var existingBackdropImage = document.querySelector('.backdropImage');
+        var elem = getBackdropContainer();
+        var existingBackdropImage = elem.querySelector('.displayingBackdropImage');
 
         if (existingBackdropImage && existingBackdropImage.getAttribute('data-url') == url) {
-            return;
+            if (existingBackdropImage.getAttribute('data-url') == url) {
+                return;
+            }
+            existingBackdropImage.classList.remove('displayingBackdropImage');
         }
-
-        var elem = document.querySelector('.backdropContainer');
-        elem.classList.remove('hide');
 
         var backdropImage = document.createElement('div');
         backdropImage.classList.add('backdropImage');
+        backdropImage.classList.add('displayingBackdropImage');
         backdropImage.style.backgroundImage = "url('" + url + "')";
         backdropImage.setAttribute('data-url', url);
 
