@@ -75,6 +75,11 @@
     height: 44px;
 }
 
+.tagline {
+    color: #FFEB3B;
+    font-style: italic;
+}
+
 .mediaInfo {
     margin: 1em 0;
 }
@@ -96,6 +101,14 @@
 
     .itemPageButtons paper-fab[focused], .itemPageButtons paper-fab .keyboard-focus {
         background: #52B54B !important;
+    }
+
+.itemPageButtons paper-button {
+    padding: 0;
+}
+
+    .itemPageButtons paper-button .content {
+        padding: .3em .6em .45em;
     }
 
 .detailImage {
@@ -139,3 +152,7 @@
     .nameContainer h2 {
         margin-top: 0;
     }
+
+.trackList {
+    margin: 1.25em 0 0 -.35em;
+}
