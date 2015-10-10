@@ -102,11 +102,7 @@
         homeScrollContent.innerHTML = Globalize.translateHtml(html);
 
         if (homeScrollContent.animate) {
-            var keyframes = [
-                    { opacity: '0', offset: 0 },
-                    { opacity: '1', offset: 1 }];
-            var timing = { duration: 900, iterations: 1 };
-            homeScrollContent.animate(keyframes, timing);
+            fadeIn(homeScrollContent, 1);
         }
 
         require([Emby.PluginManager.mapRequire('defaulttheme', 'home/views.' + viewName + '.js')], function () {
@@ -114,6 +110,24 @@
             var homePanel = homeScrollContent.querySelector('.homePanel');
             new DefaultTheme[viewName + 'View'](homePanel, parentId);
         });
+    }
+
+    function fadeInRight(elem, iterations) {
+        var keyframes = [
+          { opacity: '0', transform: 'translate3d(1%, 0, 0)', offset: 0 },
+          { opacity: '1', transform: 'none', offset: 1 }];
+        var timing = { duration: 200, iterations: iterations };
+         elem.animate(keyframes, timing).onfinish = function() {
+             //document.dispatchEvent(new CustomEvent("scroll", {}));
+         };
+    }
+
+    function fadeIn(elem, iterations) {
+        var keyframes = [
+          { opacity: '0', offset: 0 },
+          { opacity: '1', offset: 1 }];
+        var timing = { duration: 300, iterations: iterations };
+        return elem.animate(keyframes, timing);
     }
 
 })();
