@@ -205,6 +205,15 @@
             }
 
             options.selectedItemInfoElement.innerHTML = html;
+            fadeIn(options.selectedItemInfoElement, 1);
+        }
+
+        function fadeIn(elem, iterations) {
+            var keyframes = [
+              { opacity: '0', offset: 0 },
+              { opacity: '1', offset: 1 }];
+            var timing = { duration: 300, iterations: iterations };
+            return elem.animate(keyframes, timing);
         }
 
         self.destroy = function () {
