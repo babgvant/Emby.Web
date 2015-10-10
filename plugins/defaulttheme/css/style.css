@@ -401,14 +401,20 @@
     border-radius: 5px;
     display: inline-block;
     padding: 4px 24px 4px 0;
-    margin-right: .5em;
     text-transform: uppercase;
     vertical-align: middle;
 }
 
+    .mediaInfoItem + .mediaInfoItem {
+        margin-left: .5em;
+    }
+
+.starRatingContainer + .mediaInfoItem {
+    margin-left: 1.25em;
+}
+
 .starRatingContainer {
     display: inline-block;
-    margin-right: 1.25em;
     vertical-align: middle;
 }
 
