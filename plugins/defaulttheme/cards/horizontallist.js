@@ -6,6 +6,7 @@
         var getItemsMethod = options.getItemsMethod;
         var lastFocus = 0;
         var focusedElement;
+        var zoomElement;
         var currentAnimation;
 
         self.render = function () {
@@ -59,8 +60,10 @@
         };
 
         function onFocusIn(e) {
+
             var focused = Emby.FocusManager.focusableParent(e.target);
             focusedElement = focused;
+            zoomElement = focused ? (focused.tagName == 'PAPER-BUTTON' ? focused.querySelector('.content') : focused.querySelector('.cardBox')) : null;
 
             if (focused) {
 
@@ -73,7 +76,7 @@
                 }
 
                 var now = new Date().getTime();
-                var animate = (now - lastFocus) > 100;
+                var animate = (now - lastFocus) > 50;
                 options.slyFrame.toCenter(focused, !animate);
                 lastFocus = now;
 
@@ -82,14 +85,17 @@
         }
 
         function onFocusOut(e) {
-            var focused = focusedElement;
-            focusedElement = null;
 
-            if (focused) {
-                var elem = focused.querySelector('.focusedTransform');
-                if (elem) {
-                    elem.classList.remove('focusedTransform');
-                }
+            if (options.selectedItemInfoElement) {
+                options.selectedItemInfoElement.innerHTML = '';
+            }
+
+            var zoomed = zoomElement;
+            focusedElement = null;
+            zoomElement = null;
+
+            if (zoomed) {
+                zoomed.classList.remove('focusedTransform');
             }
 
             if (currentAnimation) {
@@ -138,7 +144,7 @@
             ];
 
             var card = elem;
-            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('.content') : elem.querySelector('.cardBox');
+            elem = zoomElement;
 
             var onAnimationFinished = function () {
                 if (document.activeElement == card) {
@@ -205,7 +211,10 @@
             }
 
             options.selectedItemInfoElement.innerHTML = html;
-            fadeIn(options.selectedItemInfoElement, 1);
+
+            if (html) {
+                fadeIn(options.selectedItemInfoElement, 1);
+            }
         }
 
         function fadeIn(elem, iterations) {

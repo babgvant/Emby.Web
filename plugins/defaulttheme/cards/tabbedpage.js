@@ -81,8 +81,11 @@
         var self = this;
         pageOptions = pageOptions || {};
         var focusedElement;
+        var zoomElement;
         var currentAnimation;
-        var selectedMediaInfo = page.querySelector('.selectedMediaInfo');
+
+        var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
+        var selectedIndexElement = page.querySelector('.selectedIndex');
 
         var tagName = Emby.Dom.supportsWebComponents() ? 'paper-button' : 'button';
 
@@ -156,68 +159,62 @@
                 slyScroller.create(scrollFrame, options).then(function (slyFrame) {
                     self.bodySlyFrame = slyFrame;
                     self.bodySlyFrame.init();
-                    initFocusHandler(view, self.bodySlyFrame, self);
+                    initFocusHandler(view, self.bodySlyFrame);
                 });
             });
         }
 
         var lastFocus = 0;
-        function initFocusHandler(view, slyFrame, self) {
+        function initFocusHandler(view) {
 
-            var selectedIndexElement = view.querySelector('.selectedIndex');
+            if (pageOptions.handleFocus) {
+                
+                var scrollSlider = view.querySelector('.contentScrollSlider');
 
-            var scrollSlider = view.querySelector('.contentScrollSlider');
-            scrollSlider.addEventListener('focusin', function (e) {
+                scrollSlider.addEventListener('focusin', onFocusIn);
+                scrollSlider.addEventListener('focusout', onFocusOut);
+            }
+        }
 
-                if (self.listController) {
-                    return;
-                }
+        function onFocusIn(e) {
+            var focused = Emby.FocusManager.focusableParent(e.target);
+            focusedElement = focused;
+            zoomElement = focused ? (focused.tagName == 'PAPER-BUTTON' ? focused.querySelector('.content') : focused.querySelector('.cardBox')) : null;
 
-                var focused = Emby.FocusManager.focusableParent(e.target);
-                focusedElement = focused;
+            if (focused) {
 
-                if (focused) {
-
-                    if (selectedIndexElement) {
-                        var index = focused.getAttribute('data-index');
-                        if (index) {
-                            selectedIndexElement.innerHTML = 1 + parseInt(index);
-                        }
-                    }
-
-                    var now = new Date().getTime();
-
-                    var animate = pageOptions.animateFocus || (now - lastFocus) > 100;
-
-                    slyFrame.toCenter(focused, !animate);
-                    lastFocus = now;
-                    startZoomTimer();
-                }
-            });
-            scrollSlider.addEventListener('focusout', function (e) {
-
-                if (self.listController) {
-                    return;
-                }
-
-                var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
-                selectedItemInfoInner.innerHTML = '';
-
-                var focused = focusedElement;
-                focusedElement = null;
-
-                if (focused) {
-                    var elem = focused.querySelector('.focusedTransform');
-                    if (elem) {
-                        elem.classList.remove('focusedTransform');
+                if (selectedIndexElement) {
+                    var index = focused.getAttribute('data-index');
+                    if (index) {
+                        selectedIndexElement.innerHTML = 1 + parseInt(index);
                     }
                 }
 
-                if (currentAnimation) {
-                    currentAnimation.cancel();
-                    currentAnimation = null;
-                }
-            });
+                var now = new Date().getTime();
+
+                var animate = pageOptions.animateFocus || (now - lastFocus) > 50;
+
+                self.bodySlyFrame.toCenter(focused, !animate);
+                lastFocus = now;
+                startZoomTimer();
+            }
+        }
+
+        function onFocusOut(e) {
+            selectedItemInfoInner.innerHTML = '';
+
+            var zoomed = zoomElement;
+            focusedElement = null;
+            zoomElement = null;
+
+            if (zoomed) {
+                zoomed.classList.remove('focusedTransform');
+            }
+
+            if (currentAnimation) {
+                currentAnimation.cancel();
+                currentAnimation = null;
+            }
         }
 
         var zoomTimeout;
@@ -260,7 +257,7 @@
             ];
 
             var card = elem;
-            elem = elem.tagName == 'PAPER-BUTTON' ? elem.querySelector('.content') : elem.querySelector('.cardBox');
+            elem = zoomElement;
 
             var onAnimationFinished = function () {
                 if (document.activeElement == card) {
@@ -308,7 +305,6 @@
                 html += '</div>';
             }
 
-            var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
             var mediaInfo = DefaultTheme.CardBuilder.getMediaInfoHtml(item);
 
             if (mediaInfo) {
@@ -330,7 +326,10 @@
             }
 
             selectedItemInfoInner.innerHTML = html;
-            fadeIn(selectedItemInfoInner, 1);
+
+            if (html) {
+                fadeIn(selectedItemInfoInner, 1);
+            }
         }
 
         function fadeIn(elem, iterations) {
