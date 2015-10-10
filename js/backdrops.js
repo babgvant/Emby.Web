@@ -45,10 +45,11 @@
         setTimeout(function () {
 
             backdropImage.classList.remove('hide');
-            if (existingBackdropImage && existingBackdropImage.parentNode) {
-                existingBackdropImage.parentNode.removeChild(existingBackdropImage);
-            }
-            fadeIn(backdropImage, 1);
+            fadeIn(backdropImage, 1).onfinish = function() {
+                if (existingBackdropImage && existingBackdropImage.parentNode) {
+                    existingBackdropImage.parentNode.removeChild(existingBackdropImage);
+                }
+            };
 
         }, 100);
 
