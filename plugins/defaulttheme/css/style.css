@@ -286,6 +286,7 @@
 
     .userViewNames h2 {
         margin-top: 0;
+        margin-bottom: .7em;
     }
 
     .userViewNames .btnUserViewHeader {
@@ -353,6 +354,7 @@
 .sectionTitle {
     text-transform: uppercase;
     padding-left: .25em;
+    font-size: 90%;
 }
 
 .homeBody {
