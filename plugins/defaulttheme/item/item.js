@@ -223,11 +223,24 @@
 
     function renderDetails(view, item) {
 
+        var mainSection = view.querySelector('.mainSection');
+
+        mainSection.style.minHeight = (Math.round(view.querySelector('.itemPageContainer').offsetHeight * .72)) + 'px';
+
         if (item.Type == "Season" || item.Type == "MusicArtist" || enableTrackList(item)) {
-            view.querySelector('.mainSection').classList.add('miniMainSection');
+            mainSection.classList.add('miniMainSection');
         } else {
-            view.querySelector('.mainSection').classList.remove('miniMainSection');
+            mainSection.classList.remove('miniMainSection');
         }
+
+        var taglineElem = view.querySelector('.tagline')
+        if (item.Taglines && item.Taglines.length) {
+            taglineElem.classList.remove('hide');
+            taglineElem.innerHTML = item.Taglines[0];
+        } else {
+            taglineElem.classList.add('hide');
+        }
+
 
         var overviewElem = view.querySelector('.overview')
         if (item.Overview && item.Type != 'MusicArtist' && item.Type != 'MusicAlbum') {
