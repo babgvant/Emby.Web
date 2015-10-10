@@ -38,20 +38,16 @@
         backdropImage.style.backgroundImage = "url('" + url + "')";
         backdropImage.setAttribute('data-url', url);
 
-        backdropImage.classList.add('hide');
+        //backdropImage.classList.add('hide');
 
         elem.appendChild(backdropImage);
 
-        setTimeout(function () {
-
-            backdropImage.classList.remove('hide');
-            fadeIn(backdropImage, 1).onfinish = function() {
-                if (existingBackdropImage && existingBackdropImage.parentNode) {
-                    existingBackdropImage.parentNode.removeChild(existingBackdropImage);
-                }
-            };
-
-        }, 100);
+        //backdropImage.classList.remove('hide');
+        fadeIn(backdropImage, 1).onfinish = function () {
+            if (existingBackdropImage && existingBackdropImage.parentNode) {
+                existingBackdropImage.parentNode.removeChild(existingBackdropImage);
+            }
+        };
 
         document.querySelector('.themeContainer').classList.add('withBackdrop');
     }

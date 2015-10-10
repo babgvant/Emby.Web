@@ -9,13 +9,9 @@
     height: 100%;
 }
 
-.itemSection {
-    margin-bottom: 70px;
+.itemSection > h2 {
+    margin-bottom: .25em;
 }
-
-    .itemSection > h2 {
-        margin-bottom: .25em;
-    }
 
 .itemFloatClear {
     clear: both;
@@ -76,8 +72,7 @@
 }
 
 .tagline {
-    color: #FFEB3B;
-    font-style: italic;
+    color: #4CAF50;
 }
 
 .mediaInfo {
@@ -121,6 +116,7 @@
 
     .detailImage {
         max-height: 440px;
+        ite;
     }
 }
 
@@ -150,7 +146,7 @@
 }
 
     .nameContainer h2 {
-        margin-top: 0;
+        margin: .4em 0 1.7em;
     }
 
 .trackList {

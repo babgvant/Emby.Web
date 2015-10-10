@@ -225,7 +225,9 @@
 
         var mainSection = view.querySelector('.mainSection');
 
-        mainSection.style.minHeight = (Math.round(view.querySelector('.itemPageContainer').offsetHeight * .72)) + 'px';
+        if (item.Type != "Season") {
+            mainSection.style.minHeight = (Math.round(view.querySelector('.itemPageContainer').offsetHeight * .72)) + 'px';
+        }
 
         if (item.Type == "Season" || item.Type == "MusicArtist" || enableTrackList(item)) {
             mainSection.classList.add('miniMainSection');
