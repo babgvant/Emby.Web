@@ -179,7 +179,7 @@
         function onFocusIn(e) {
             var focused = Emby.FocusManager.focusableParent(e.target);
             focusedElement = focused;
-            zoomElement = focused ? (focused.tagName == 'PAPER-BUTTON' ? focused.querySelector('.content') : focused.querySelector('.cardBox')) : null;
+            zoomElement = focused ? (focused.tagName == 'PAPER-BUTTON' ? focused.querySelector('.cardBox') : focused.querySelector('.cardBox')) : null;
 
             if (focused) {
 

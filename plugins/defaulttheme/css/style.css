@@ -79,12 +79,12 @@
     vertical-align: middle;
 }
 
-.headerButtonContainer iron-icon {
+.headerButtonContainer paper-icon-button {
     width: 40px;
     height: 40px;
 }
 
-.userButtonContainer iron-icon {
+.userButtonContainer paper-icon-button {
     width: 44px;
     height: 44px;
 }
@@ -210,10 +210,6 @@
     padding: 5px 0;
 }
 
-.content.paper-button {
-    padding: 0.5em 0.57em;
-}
-
 .scrollFrameY {
     overflow: hidden;
 }
@@ -279,6 +275,10 @@
     display: inline-block;
     vertical-align: top;
 }
+
+    .cardColumn button.card {
+        display: block !important;
+    }
 
 .userViewNames {
     margin-bottom: 14px;
@@ -401,14 +401,20 @@
     border-radius: 5px;
     display: inline-block;
     padding: 4px 24px 4px 0;
-    margin-right: .5em;
     text-transform: uppercase;
     vertical-align: middle;
 }
 
+    .mediaInfoItem + .mediaInfoItem {
+        margin-left: .5em;
+    }
+
+.starRatingContainer + .mediaInfoItem {
+    margin-left: 1.25em;
+}
+
 .starRatingContainer {
     display: inline-block;
-    margin-right: 1.25em;
     vertical-align: middle;
 }
 
@@ -527,7 +533,7 @@
     width: 40%;
 }
 
-.nowPlayingButtonsContainer paper-icon-button iron-icon {
+.nowPlayingButtonsContainer paper-icon-button {
     width: 40px;
     height: 40px;
 }
@@ -535,12 +541,12 @@
 /* 1080p */
 @media all and (min-height: 1080px) {
 
-    .nowPlayingButtonsContainer paper-icon-button iron-icon {
+    .nowPlayingButtonsContainer paper-icon-button {
         width: 70px;
         height: 70px;
     }
 
-    .nowPlayingButtonsContainer .userDataIcons iron-icon {
+    .nowPlayingButtonsContainer .userDataIcons paper-icon-button {
         width: 50px;
         height: 50px;
     }
@@ -549,12 +555,12 @@
 /* 2560 * 1440 */
 @media all and (min-height: 1440px) {
 
-    .nowPlayingButtonsContainer paper-icon-button iron-icon {
+    .nowPlayingButtonsContainer paper-icon-button {
         width: 100px;
         height: 100px;
     }
 
-    .nowPlayingButtonsContainer .userDataIcons iron-icon {
+    .nowPlayingButtonsContainer .userDataIcons paper-icon-button {
         width: 80px;
         height: 80px;
     }

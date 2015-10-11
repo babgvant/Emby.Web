@@ -33,8 +33,13 @@
     width: 14.285714285714285714285714285714%;
 }
 
+.itemSection {
+    margin-bottom: 70px;
+}
+
 .mainSection {
     margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 .itemPageSide, .itemPageMain {
@@ -66,13 +71,8 @@
     color: #52B54B;
 }
 
-.itemPageButtons paper-icon-button iron-icon {
-    width: 44px;
-    height: 44px;
-}
-
 .tagline {
-    color: #4CAF50;
+    color: #FFEB3B;
 }
 
 .mediaInfo {
@@ -84,27 +84,9 @@
         height: 48px;
     }
 
-.itemPageButtons paper-fab iron-icon {
-    width: 36px;
-    height: 36px;
-}
-
-.itemPageButtons paper-fab {
-    background: #666;
-    margin-right: .25em;
-}
-
-    .itemPageButtons paper-fab[focused], .itemPageButtons paper-fab .keyboard-focus {
-        background: #52B54B !important;
-    }
-
 .itemPageButtons paper-button {
-    padding: 0;
+    padding: .3em .6em .45em;
 }
-
-    .itemPageButtons paper-button .content {
-        padding: .3em .6em .45em;
-    }
 
 .detailImage {
     max-width: 100%;
