@@ -413,8 +413,8 @@
 
             if (Emby.Dom.supportsWebComponents()) {
                 tagName = 'paper-button';
-                innerOpening = '';
-                innerClosing = '';
+                innerOpening = '<div class="cardBox">';
+                innerClosing = '</div>';
             } else {
                 tagName = 'button';
                 innerOpening = '<div class="cardBox">';
@@ -661,8 +661,8 @@
 
             if (Emby.Dom.supportsWebComponents()) {
                 tagName = 'paper-button';
-                innerOpening = '';
-                innerClosing = '';
+                innerOpening = '<div class="cardBox">';
+                innerClosing = '</div>';
             } else {
                 tagName = 'button';
                 innerOpening = '<div class="cardBox">';

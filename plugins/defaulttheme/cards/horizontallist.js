@@ -6,8 +6,6 @@
         var getItemsMethod = options.getItemsMethod;
         var lastFocus = 0;
         var focusedElement;
-        var zoomElement;
-        var currentAnimation;
 
         self.render = function () {
 
@@ -63,7 +61,6 @@
 
             var focused = Emby.FocusManager.focusableParent(e.target);
             focusedElement = focused;
-            zoomElement = focused ? (focused.tagName == 'PAPER-BUTTON' ? focused.querySelector('.cardBox') : focused.querySelector('.cardBox')) : null;
 
             if (focused) {
 
@@ -90,17 +87,11 @@
                 options.selectedItemInfoElement.innerHTML = '';
             }
 
-            var zoomed = zoomElement;
+            var focused = focusedElement;
             focusedElement = null;
-            zoomElement = null;
 
-            if (zoomed) {
-                zoomed.classList.remove('focusedTransform');
-            }
-
-            if (currentAnimation) {
-                currentAnimation.cancel();
-                currentAnimation = null;
+            if (focused) {
+                focused.classList.remove('transformCard');
             }
         }
 
@@ -111,7 +102,7 @@
             if (onZoomTimeout) {
                 clearTimeout(zoomTimeout);
             }
-            zoomTimeout = setTimeout(onZoomTimeout, 50);
+            zoomTimeout = setTimeout(onZoomTimeout, 100);
             if (selectedMediaInfoTimeout) {
                 clearTimeout(selectedMediaInfoTimeout);
             }
@@ -138,29 +129,10 @@
                 return;
             }
 
-            var keyframes = [
-                { transform: 'scale(1)  ', offset: 0 },
-              { transform: 'scale(1.12)', offset: 1 }
-            ];
-
             var card = elem;
-            elem = zoomElement;
 
-            var onAnimationFinished = function () {
-                if (document.activeElement == card) {
-                    elem.classList.add('focusedTransform');
-                }
-                currentAnimation = null;
-            };
-
-            if (elem.animate) {
-                var timing = { duration: 200, iterations: 1 };
-                var animation = elem.animate(keyframes, timing);
-
-                animation.onfinish = onAnimationFinished;
-                currentAnimation = animation;
-            } else {
-                onAnimationFinished();
+            if (document.activeElement == card) {
+                card.classList.add('transformCard');
             }
         }
 

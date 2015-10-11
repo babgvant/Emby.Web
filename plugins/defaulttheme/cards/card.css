@@ -60,6 +60,7 @@ button.card {
     margin: 5px;
     transition: none !important;
     border-radius: 0 !important;
+    /*border: 4px solid transparent;*/
 }
 
 .card[focused], .card:focus {
@@ -70,11 +71,28 @@ button.card {
     .card[focused] .cardBox, .card:focus .cardBox {
         -moz-box-shadow: #fff 0px 0px 1px 4px;
         box-shadow: #fff 0px 0px 1px 4px;
+        /*border-color: white;*/
+        /*border-radius: 5px!important;*/
     }
 
-.focusedTransform {
-    -webkit-transform: scale(1.12);
-    transform: scale(1.12);
+/*.card[focused]:not(.noScale) .cardBox, .card:focus:not(.noScale) .cardBox {
+    animation:SHW .2s;
+    animation-fill-mode: both;
+}*/
+
+.transformCard .cardBox {
+    animation: SHW .2s;
+    animation-fill-mode: both;
+}
+
+@keyframes SHW {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.12);
+    }
 }
 
 .cardImageContainer {
