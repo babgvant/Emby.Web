@@ -1,65 +1,39 @@
 (function () {
 
-    document.addEventListener("viewinit-defaulttheme-livetv", function (e) {
+    document.addEventListener("viewinit-defaulttheme-guide", function (e) {
 
-        new liveTVPage(e.detail.element, e.detail.params);
+        new guidePage(e.detail.element, e.detail.params);
     });
 
-    function liveTVPage(view, params) {
+    function guidePage(view, params) {
 
         var self = this;
+        var guideInstance;
 
         view.addEventListener('viewshow', function (e) {
 
-            require(['loading'], function (loading) {
+            Emby.Page.setTitle(Globalize.translate('Guide'));
+            Emby.Backdrop.clear();
 
-                if (!self.tabbedPage) {
-                    loading.show();
-                    renderTabs(view, params.tab, self, params);
-                }
-
-                Emby.Page.setTitle(Globalize.translate('LiveTV'));
-                Emby.Backdrop.clear();
-            });
+            if (!e.detail.isRestored) {
+                initGuide();
+            }
         });
 
         view.addEventListener('viewdestroy', function () {
 
-            if (self.tabbedPage) {
-                self.tabbedPage.destroy();
-            }
         });
-    }
 
-    function renderTabs(view, initialTabId, pageInstance, params) {
+        function initGuide() {
 
-        var tabs = [
-        {
-            Name: Globalize.translate('Suggested'),
-            Id: "suggested"
-        },
-        {
-            Name: Globalize.translate('Channels'),
-            Id: "channels"
-        },
-        {
-            Name: Globalize.translate('Recordings'),
-            Id: "recordings"
-        },
-        {
-            Name: Globalize.translate('Scheduled'),
-            Id: "scheduled"
-        }];
+            require(['tvguide'], function (guide) {
 
-        var tabbedPage = new DefaultTheme.TabbedPage(view);
-        tabbedPage.loadViewContent = loadViewContent;
-        tabbedPage.params = params;
-        tabbedPage.renderTabs(tabs, initialTabId);
-        pageInstance.tabbedPage = tabbedPage;
-    }
 
-    function loadViewContent(page, id, type) {
-
+                guideInstance = new guide({
+                    element: view.querySelector('.epg')
+                });
+            });
+        }
     }
 
 })();

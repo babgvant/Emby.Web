@@ -129,6 +129,10 @@ button.card {
     z-index: 1;
 }
 
+.fullInnerCardFooter {
+    right: 0;
+}
+
 .cardText {
     padding: .25em .35em;
     white-space: nowrap;

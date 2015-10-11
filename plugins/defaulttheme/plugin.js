@@ -54,14 +54,10 @@ define([], function () {
             ];
 
             if (Emby.Dom.supportsWebComponents()) {
-                list.push('html!bower_components/iron-icon/iron-icon.html');
-                list.push('html!bower_components/iron-iconset-svg/iron-iconset-svg.html');
                 list.push('html!' + Emby.PluginManager.mapRequire(self, 'icons.html'));
                 list.push('html!bower_components/paper-button/paper-button.html');
                 list.push('html!bower_components/paper-icon-button/paper-icon-button.html');
                 list.push('html!bower_components/paper-input/paper-input.html');
-                list.push('html!bower_components/paper-material/paper-material.html');
-                list.push('html!bower_components/paper-progress/paper-progress.html');
                 list.push('html!bower_components/paper-fab/paper-fab.html');
                 list.push('html!bower_components/paper-slider/paper-slider.html');
                 list.push('html!bower_components/paper-item/paper-icon-item.html');
