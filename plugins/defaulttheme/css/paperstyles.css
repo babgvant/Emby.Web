@@ -91,6 +91,10 @@ button.flat, paper-button {
         top: 18px;
     }
 
+    paper-button[focused], paper-button:focus {
+        font-weight: normal !important;
+    }
+
 #docspinner {
     display: block;
     margin-top: -14px;

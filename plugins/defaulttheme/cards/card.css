@@ -65,7 +65,6 @@ button.card {
 .card[focused], .card:focus {
     position: relative !important;
     z-index: 100000 !important;
-    font-weight: normal !important;
 }
 
     .card[focused] .cardBox, .card:focus .cardBox {
