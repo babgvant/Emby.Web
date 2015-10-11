@@ -4,7 +4,7 @@ define([], function () {
 
         var self = this;
 
-        self.name = 'Html Andio Player';
+        self.name = 'Html Audio Player';
         self.type = 'mediaplayer';
         self.packageName = 'htmlaudioplayer';
 
