@@ -225,8 +225,11 @@
 
         var mainSection = view.querySelector('.mainSection');
 
-        if (item.Type != "Season") {
+        if (item.Type != "Season" && item.Type != "MusicArtist" && item.Type != "MusicAlbum") {
             mainSection.style.minHeight = (Math.round(view.querySelector('.itemPageContainer').offsetHeight * .72)) + 'px';
+            mainSection.classList.add('smallBottomMargin');
+        } else {
+            mainSection.classList.remove('smallBottomMargin');
         }
 
         if (item.Type == "Season" || item.Type == "MusicArtist" || enableTrackList(item)) {

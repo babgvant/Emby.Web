@@ -185,7 +185,8 @@
             screensaverManager: "js/screensavermanager",
             viewManager: "js/viewmanager",
             slyScroller: "components/slyscroller",
-            appsettings: "components/appsettings"
+            appsettings: "components/appsettings",
+            tvguide: "components/tvguide/guide"
         };
 
         if (enableWebComponents()) {

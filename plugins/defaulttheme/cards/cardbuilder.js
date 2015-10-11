@@ -381,7 +381,13 @@
             nameHtml += '<div class="' + nameClass + '">' + getDisplayName(item) + '</div>';
         }
 
-        nameHtml += getProgressBarHtml(item);
+        var innerCardFooterClass = 'innerCardFooter';
+        var progressHtml = getProgressBarHtml(item);
+
+        if (progressHtml) {
+            nameHtml += progressHtml;
+            innerCardFooterClass += " fullInnerCardFooter";
+        }
 
         var data = '';
 
@@ -392,41 +398,23 @@
 
         var action = options.action || 'link';
 
-        if (Emby.Dom.supportsWebComponents()) {
-
-            return '\
-<paper-button data-index="'+ index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
-<div class="cardBox">\
-<div class="cardScalable">\
-<div class="cardPadder"></div>\
-<div class="cardContent">\
-' + cardImageContainer + '\
-</div>\
-<div class="innerCardFooter">\
-' + nameHtml + '\
-</div>\
-</div>\
-</div>' + data + '\
-</div>\
-</paper-button>';
-
-        }
+        var tagName = Emby.Dom.supportsWebComponents() ? 'paper-button' : 'button';
 
         return '\
-<button data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<' + tagName + ' data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
 ' + cardImageContainer + '\
 </div>\
-<div class="innerCardFooter">\
+<div class="' + innerCardFooterClass + '">\
 ' + nameHtml + '\
 </div>\
 </div>\
 </div>' + data + '\
 </div>\
-</button>';
+</' + tagName + '>';
     }
 
     function buildCards(items, options) {
