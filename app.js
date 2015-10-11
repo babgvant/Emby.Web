@@ -366,7 +366,9 @@
         'plugins/backdropscreensaver/plugin.js',
         'plugins/keyboard/plugin.js',
         'plugins/htmlvideoplayer/plugin.js',
-        'plugins/htmlaudioplayer/plugin.js'
+        'plugins/htmlaudioplayer/plugin.js',
+        'plugins/directshowaudioplayer/plugin.js',
+        'plugins/directshowvideoplayer/plugin.js'
         ];
 
         if (enableWebComponents()) {
