@@ -395,7 +395,8 @@
         if (Emby.Dom.supportsWebComponents()) {
 
             return '\
-<paper-button elevated="1" data-index="'+ index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<paper-button data-index="'+ index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
@@ -406,12 +407,13 @@
 </div>\
 </div>\
 </div>' + data + '\
+</div>\
 </paper-button>';
 
         }
 
         return '\
-<button elevated="1" data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
+<button data-index="' + index + '" data-action="' + action + '" data-isfolder="' + item.IsFolder + '" data-id="' + item.Id + '" data-type="' + item.Type + '" raised class="' + className + '"> \
 <div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\

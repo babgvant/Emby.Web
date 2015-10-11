@@ -61,6 +61,7 @@
 
         var html = '\
 <paper-button data-isfolder="'+ person.IsFolder + '" data-type="' + person.Type + '" data-action="link" data-id="' + person.Id + '" raised class="' + className + '"> \
+<div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
@@ -70,6 +71,7 @@
 </div>\
 <div class="cardFooter">\
 ' + nameHtml + '\
+</div>\
 </div>\
 </paper-button>'
         ;

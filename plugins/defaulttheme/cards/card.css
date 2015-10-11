@@ -5,13 +5,13 @@
     margin: 0;
     padding: 0;
     display: inline-block;
+    color: inherit !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 button.card {
-    margin: 0 !important;
     border: 0 !important;
-    padding: 0 !important;
-    outline: none !important;
     font-size: inherit !important;
     font-family: inherit !important;
 }
@@ -55,7 +55,7 @@ button.card {
     z-index: 1;
 }
 
-.card .content, .card .cardBox, .card paper-material {
+.card .cardBox {
     padding: 0 !important;
     margin: 5px;
     transition: none !important;
@@ -65,12 +65,13 @@ button.card {
 .card[focused], .card:focus {
     position: relative !important;
     z-index: 100000 !important;
+    font-weight: normal !important;
 }
 
-.card[focused] .content, .card:focus .cardBox {
-    -moz-box-shadow: #fff 0px 0px 1px 4px;
-    box-shadow: #fff 0px 0px 1px 4px;
-}
+    .card[focused] .cardBox, .card:focus .cardBox {
+        -moz-box-shadow: #fff 0px 0px 1px 4px;
+        box-shadow: #fff 0px 0px 1px 4px;
+    }
 
 .focusedTransform {
     -webkit-transform: scale(1.12);

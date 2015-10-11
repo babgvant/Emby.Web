@@ -50,6 +50,7 @@
 
         var html = '\
 <paper-button raised class="' + className + '"> \
+<div class="cardBox">\
 <div class="cardScalable">\
 <div class="cardPadder"></div>\
 <div class="cardContent">\
@@ -57,6 +58,7 @@
 </div>\
 <div class="innerCardFooter">\
 ' + nameHtml + '\
+</div>\
 </div>\
 </div>\
 </div>\
